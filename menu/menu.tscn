@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://c0mui01tvaame"]
 
-[ext_resource type="Script" path="res://menu/lobby.gd" id="1_k78bo"]
+[ext_resource type="Script" path="res://menu/menu.gd" id="1_k78bo"]
 
-[node name="Lobby" type="Control"]
+[node name="Menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,6 +11,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_k78bo")
 metadata/_edit_lock_ = true
+
+[node name="ErrorDialog" type="AcceptDialog" parent="."]
+title = "Ошибка!"
+position = Vector2i(1, 28)
+size = Vector2i(400, 100)
 
 [node name="IPDialog" type="ConfirmationDialog" parent="."]
 title = "Введи IP-адрес сервера"
@@ -25,6 +30,7 @@ offset_left = 8.0
 offset_top = 8.0
 offset_right = 381.0
 offset_bottom = 39.0
+text = "127.0.0.1"
 placeholder_text = "XXX.XXX.XXX.XXX"
 alignment = 1
 max_length = 19
@@ -101,15 +107,21 @@ layout_mode = 2
 auto_translate_mode = 1
 layout_mode = 2
 
-[node name="Ready" type="Button" parent="Base/Centering/Lobby"]
+[node name="StartGame" type="Button" parent="Base/Centering/Lobby"]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 4
 toggle_mode = true
-text = "Готово!"
+text = "Начать игру!"
+
+[node name="Hint" type="Label" parent="Base/Centering/Lobby"]
+visible = false
+layout_mode = 2
+text = "Начать игру может только хост."
+horizontal_alignment = 1
 
 [connection signal="confirmed" from="IPDialog" to="." method="_on_ip_dialog_confirmed"]
 [connection signal="text_changed" from="IPDialog/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="pressed" from="Base/Centering/Main/Buttons/Create" to="." method="_on_create_pressed"]
 [connection signal="pressed" from="Base/Centering/Main/Buttons/Join" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="Base/Centering/Lobby/Ready" to="." method="_on_create_pressed"]
+[connection signal="pressed" from="Base/Centering/Lobby/StartGame" to="." method="_on_create_pressed"]

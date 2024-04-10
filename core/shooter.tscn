@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://scqgxynxowrb"]
+[gd_scene load_steps=3 format=3 uid="uid://scqgxynxowrb"]
 
 [ext_resource type="Script" path="res://core/shooter.gd" id="1_lsxci"]
+[ext_resource type="PackedScene" uid="uid://c0mui01tvaame" path="res://menu/menu.tscn" id="2_b4glg"]
 
 [node name="Shooter" type="Node"]
 script = ExtResource("1_lsxci")
+
+[node name="Lobby" parent="." instance=ExtResource("2_b4glg")]
+auto_translate_mode = 1
+
+[connection signal="connection_closed" from="." to="Lobby" method="_on_connection_closed"]
+[connection signal="game_created" from="." to="Lobby" method="_on_game_created"]
+[connection signal="game_joined" from="." to="Lobby" method="_on_game_joined"]
+[connection signal="game_create_requested" from="Lobby" to="." method="create_game"]
+[connection signal="game_join_requested" from="Lobby" to="." method="join_game"]

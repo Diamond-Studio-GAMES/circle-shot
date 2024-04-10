@@ -6,6 +6,5 @@ extends Node
 
 
 func _physics_process(_delta: float) -> void:
-	for i: Player in _players.get_children():
-		pass
+	pass
 

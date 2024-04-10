@@ -1,29 +1,75 @@
 class_name Shooter
 extends Node
 
-var _lobby := preload("res://menu/lobby.tscn")
-const PORT = 14889
-const MAX_CLIENTS = 10
+## Shooter core class. Manages networking.
+##
+## [b]Note[/b]: Connection must be closed with [method close_connection] only
+## on server, because it will be automatically closed when disconnected.
+
+signal game_created(error: int)
+signal game_joined(error: int)
+signal connection_closed
+const PORT := 14889
+const MAX_CLIENTS := 10
+static var HEADLESS := false
+static var is_in_network := false
+static var is_game_started := false
 
 
 func _ready() -> void:
-	_create_lobby()
+	multiplayer.connection_failed.connect(_on_connection_failed)
+	multiplayer.connected_to_server.connect(_on_connected_to_server)
 
 
-func create_game():
-	var peer = ENetMultiplayerPeer.new()
-	peer.create_server(PORT, MAX_CLIENTS)
+func _process(_delta: float) -> void:
+	if is_in_network:
+		if multiplayer.multiplayer_peer:
+			if multiplayer.multiplayer_peer.get_connection_status() != \
+					MultiplayerPeer.CONNECTION_CONNECTED:
+				close_connection()
+		else:
+			close_connection()
+
+
+static func _static_init() -> void:
+	if DisplayServer.get_name() == "headless":
+		print("Detected headless platform")
+		HEADLESS = true
+
+
+func create_game() -> void:
+	var peer := ENetMultiplayerPeer.new()
+	var error := peer.create_server(PORT, MAX_CLIENTS)
+	if error:
+		game_created.emit(error)
+		return
+	multiplayer.multiplayer_peer = peer
+	is_in_network = true
+	game_created.emit(0)
+
+
+func join_game(ip: String) -> void:
+	var peer := ENetMultiplayerPeer.new()
+	var error := peer.create_client(ip, PORT)
+	if error:
+		game_joined.emit(error)
+		return
+	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
+		game_joined.emit(-1)
+		return
 	multiplayer.multiplayer_peer = peer
 
 
-func join_game(ip: String):
-	var peer = ENetMultiplayerPeer.new()
-	peer.create_client(ip, PORT)
-	multiplayer.multiplayer_peer = peer
+func close_connection() -> void:
+	multiplayer.multiplayer_peer = null
+	is_in_network = false
+	connection_closed.emit()
 
 
-func _create_lobby():
-	var lobby := _lobby.instantiate() as Lobby
-	lobby.game_created.connect(create_game)
-	lobby.game_joined.connect(join_game)
-	add_child(lobby)
+func _on_connected_to_server() -> void:
+	game_joined.emit(0)
+	is_in_network = true
+
+
+func _on_connection_failed() -> void:
+	game_joined.emit(-1)

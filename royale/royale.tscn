@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d3nsak46hbo2c"]
 
-[ext_resource type="PackedScene" uid="uid://dtui0y2krx3gd" path="res://levels/level0/level.tscn" id="1_7vymk"]
+[ext_resource type="PackedScene" uid="uid://dtui0y2krx3gd" path="res://royale/maps/classic/level.tscn" id="1_7vymk"]
 
 [node name="Game" type="Node"]
 

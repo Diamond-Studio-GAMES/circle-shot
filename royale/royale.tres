@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GameConfig" load_steps=2 format=3 uid="uid://i4s2m4jgbyvc"]
+
+[ext_resource type="Script" path="res://core/game_config.gd" id="1_x4pw4"]
+
+[resource]
+script = ExtResource("1_x4pw4")
+game_name = "Королевская битва"
+game_description = "Побеждает последний выживший!"
+maps_count = 0
