@@ -26,7 +26,8 @@ func add_player_entry(id: int, player_name: String) -> void:
 	var label := Label.new()
 	label.text = player_name
 	label.name = str(id)
-	if id == multiplayer.get_unique_id() or id == 1 and not Shooter.HEADLESS:
+	prints(id, multiplayer.get_unique_id(), player_name)
+	if id == multiplayer.get_unique_id():
 		label.text += " (Ты)"
 	_players_container.add_child(label)
 
@@ -37,7 +38,7 @@ func delete_player_entry(id: int) -> void:
 
 
 @rpc("any_peer")
-func register_new_player(player_name: String, data := {}) -> void:
+func register_new_player(player_name: String) -> void:
 	if not multiplayer.is_server():
 		return
 	var id := multiplayer.get_remote_sender_id()
@@ -54,13 +55,13 @@ func register_new_player(player_name: String, data := {}) -> void:
 		set_admin.rpc_id(id, false)
 	add_player_entry.rpc(id, player_name)
 	if not Shooter.HEADLESS:
-		add_player_entry(id, player_name)
+		add_player_entry(id if id else 1, player_name)
 
 
 @rpc
 func set_admin(admin: bool) -> void:
-	($Base/Centering/Lobby/StartGame as Button).visible = admin
-	($Base/Centering/Lobby/Hint as Label).visible = not admin
+	($Base/Centering/Lobby/AdminPanel as VBoxContainer).visible = admin
+	($Base/Centering/Lobby/ClientHint as Label).visible = not admin
 
 
 @rpc

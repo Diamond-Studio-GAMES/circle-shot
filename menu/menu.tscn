@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0mui01tvaame"]
+[gd_scene load_steps=3 format=3 uid="uid://c0mui01tvaame"]
 
 [ext_resource type="Script" path="res://menu/menu.gd" id="1_k78bo"]
+[ext_resource type="Texture2D" uid="uid://c5dcmh33o1646" path="res://icon.png" id="2_68g5o"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -55,11 +56,6 @@ layout_mode = 2
 [node name="Main" type="VBoxContainer" parent="Base/Centering"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="Base/Centering/Main"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "2Д-шутер"
-
 [node name="Name" type="HBoxContainer" parent="Base/Centering/Main"]
 layout_mode = 2
 
@@ -75,6 +71,7 @@ expand_to_text_length = true
 
 [node name="Buttons" type="HBoxContainer" parent="Base/Centering/Main"]
 layout_mode = 2
+alignment = 1
 
 [node name="Create" type="Button" parent="Base/Centering/Main/Buttons"]
 layout_mode = 2
@@ -107,21 +104,107 @@ layout_mode = 2
 auto_translate_mode = 1
 layout_mode = 2
 
-[node name="StartGame" type="Button" parent="Base/Centering/Lobby"]
+[node name="Game" type="TextureRect" parent="Base/Centering/Lobby"]
+auto_translate_mode = 1
+self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
+custom_minimum_size = Vector2(320, 64)
+layout_mode = 2
+texture = ExtResource("2_68g5o")
+expand_mode = 1
+
+[node name="Container" type="VBoxContainer" parent="Base/Centering/Lobby/Game"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Name" type="Label" parent="Base/Centering/Lobby/Game/Container"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "try"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="Base/Centering/Lobby/Game/Container"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "rtyrtyrtyrtyrtyrtyr"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Map" type="TextureRect" parent="Base/Centering/Lobby"]
+self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
+custom_minimum_size = Vector2(320, 64)
+layout_mode = 2
+texture = ExtResource("2_68g5o")
+expand_mode = 1
+
+[node name="Container" type="VBoxContainer" parent="Base/Centering/Lobby/Map"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Name" type="Label" parent="Base/Centering/Lobby/Map/Container"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "екукекуе"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="Base/Centering/Lobby/Map/Container"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "екнкенке"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ClientHint" type="Label" parent="Base/Centering/Lobby"]
+visible = false
+layout_mode = 2
+text = "Начать игру может только хост."
+horizontal_alignment = 1
+
+[node name="AdminPanel" type="VBoxContainer" parent="Base/Centering/Lobby"]
+visible = false
+layout_mode = 2
+
+[node name="StartGame" type="Button" parent="Base/Centering/Lobby/AdminPanel"]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 4
 toggle_mode = true
 text = "Начать игру!"
 
-[node name="Hint" type="Label" parent="Base/Centering/Lobby"]
-visible = false
+[node name="Buttons" type="HBoxContainer" parent="Base/Centering/Lobby/AdminPanel"]
 layout_mode = 2
-text = "Начать игру может только хост."
-horizontal_alignment = 1
+alignment = 1
+
+[node name="ChangeGame" type="Button" parent="Base/Centering/Lobby/AdminPanel/Buttons"]
+layout_mode = 2
+text = "Сменить режим игры..."
+
+[node name="ChangeMap" type="Button" parent="Base/Centering/Lobby/AdminPanel/Buttons"]
+auto_translate_mode = 1
+layout_mode = 2
+text = "Сменить карту..."
 
 [connection signal="confirmed" from="IPDialog" to="." method="_on_ip_dialog_confirmed"]
 [connection signal="text_changed" from="IPDialog/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="pressed" from="Base/Centering/Main/Buttons/Create" to="." method="_on_create_pressed"]
 [connection signal="pressed" from="Base/Centering/Main/Buttons/Join" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="Base/Centering/Lobby/StartGame" to="." method="_on_create_pressed"]
+[connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/StartGame" to="." method="_on_create_pressed"]
