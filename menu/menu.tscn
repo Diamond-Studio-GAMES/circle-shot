@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://c0mui01tvaame"]
+[gd_scene load_steps=5 format=3 uid="uid://c0mui01tvaame"]
 
 [ext_resource type="Script" path="res://menu/menu.gd" id="1_k78bo"]
+[ext_resource type="PackedScene" uid="uid://vvk157q87e75" path="res://menu/title.tscn" id="2_3biv4"]
 [ext_resource type="Texture2D" uid="uid://c5dcmh33o1646" path="res://icon.png" id="2_68g5o"]
+[ext_resource type="Script" path="res://menu/item_selector.gd" id="4_xhoqt"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -21,16 +23,16 @@ size = Vector2i(400, 100)
 [node name="IPDialog" type="ConfirmationDialog" parent="."]
 title = "Введи IP-адрес сервера"
 position = Vector2i(649, 302)
-size = Vector2i(389, 104)
+size = Vector2i(389, 120)
 ok_button_text = "Подключиться"
 dialog_hide_on_ok = false
 cancel_button_text = "Отмена"
 
 [node name="LineEdit" type="LineEdit" parent="IPDialog"]
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 381.0
-offset_bottom = 39.0
+offset_left = 32.0
+offset_top = 16.0
+offset_right = 357.0
+offset_bottom = 47.0
 text = "127.0.0.1"
 placeholder_text = "XXX.XXX.XXX.XXX"
 alignment = 1
@@ -50,10 +52,17 @@ offset_bottom = 120.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Title" parent="Base" instance=ExtResource("2_3biv4")]
+layout_mode = 2
+
 [node name="Centering" type="CenterContainer" parent="Base"]
 layout_mode = 2
 
 [node name="Main" type="VBoxContainer" parent="Base/Centering"]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Base/Centering/Main"]
+custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
 
 [node name="Name" type="HBoxContainer" parent="Base/Centering/Main"]
@@ -84,6 +93,11 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Присоединиться..."
 
+[node name="Status" type="Label" parent="Base/Centering/Main"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Lobby" type="VBoxContainer" parent="Base/Centering"]
 auto_translate_mode = 1
 visible = false
@@ -93,18 +107,22 @@ layout_mode = 2
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Игроки в лобби:"
+text = "Игроки в комнате:"
 
 [node name="Panel" type="PanelContainer" parent="Base/Centering/Lobby"]
 auto_translate_mode = 1
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 
-[node name="Players" type="VBoxContainer" parent="Base/Centering/Lobby/Panel"]
+[node name="Players" type="GridContainer" parent="Base/Centering/Lobby/Panel"]
 auto_translate_mode = 1
 layout_mode = 2
+columns = 2
 
-[node name="Game" type="TextureRect" parent="Base/Centering/Lobby"]
+[node name="Environment" type="HBoxContainer" parent="Base/Centering/Lobby"]
+layout_mode = 2
+
+[node name="Game" type="TextureRect" parent="Base/Centering/Lobby/Environment"]
 auto_translate_mode = 1
 self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
 custom_minimum_size = Vector2(320, 64)
@@ -112,7 +130,7 @@ layout_mode = 2
 texture = ExtResource("2_68g5o")
 expand_mode = 1
 
-[node name="Container" type="VBoxContainer" parent="Base/Centering/Lobby/Game"]
+[node name="Container" type="VBoxContainer" parent="Base/Centering/Lobby/Environment/Game"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -120,7 +138,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Name" type="Label" parent="Base/Centering/Lobby/Game/Container"]
+[node name="Name" type="Label" parent="Base/Centering/Lobby/Environment/Game/Container"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -129,7 +147,7 @@ text = "try"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="Label" parent="Base/Centering/Lobby/Game/Container"]
+[node name="Description" type="Label" parent="Base/Centering/Lobby/Environment/Game/Container"]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 1
@@ -138,14 +156,14 @@ text = "rtyrtyrtyrtyrtyrtyr"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Map" type="TextureRect" parent="Base/Centering/Lobby"]
+[node name="Map" type="TextureRect" parent="Base/Centering/Lobby/Environment"]
 self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
 custom_minimum_size = Vector2(320, 64)
 layout_mode = 2
 texture = ExtResource("2_68g5o")
 expand_mode = 1
 
-[node name="Container" type="VBoxContainer" parent="Base/Centering/Lobby/Map"]
+[node name="Container" type="VBoxContainer" parent="Base/Centering/Lobby/Environment/Map"]
 auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 15
@@ -154,7 +172,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Name" type="Label" parent="Base/Centering/Lobby/Map/Container"]
+[node name="Name" type="Label" parent="Base/Centering/Lobby/Environment/Map/Container"]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -164,7 +182,7 @@ text = "екукекуе"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="Label" parent="Base/Centering/Lobby/Map/Container"]
+[node name="Description" type="Label" parent="Base/Centering/Lobby/Environment/Map/Container"]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 1
@@ -172,6 +190,9 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "екнкенке"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Player" type="HBoxContainer" parent="Base/Centering/Lobby"]
+layout_mode = 2
 
 [node name="ClientHint" type="Label" parent="Base/Centering/Lobby"]
 visible = false
@@ -203,8 +224,42 @@ auto_translate_mode = 1
 layout_mode = 2
 text = "Сменить карту..."
 
+[node name="Leave" type="Button" parent="Base/Centering/Lobby"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Покинуть комнату"
+
+[node name="ItemSelector" type="Window" parent="."]
+position = Vector2i(0, 36)
+size = Vector2i(352, 400)
+visible = false
+wrap_controls = true
+popup_window = true
+script = ExtResource("4_xhoqt")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ItemSelector"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="Variants" type="GridContainer" parent="ItemSelector/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+
 [connection signal="confirmed" from="IPDialog" to="." method="_on_ip_dialog_confirmed"]
 [connection signal="text_changed" from="IPDialog/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="pressed" from="Base/Centering/Main/Buttons/Create" to="." method="_on_create_pressed"]
 [connection signal="pressed" from="Base/Centering/Main/Buttons/Join" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/StartGame" to="." method="_on_create_pressed"]
+[connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/Buttons/ChangeGame" to="." method="_on_change_game_pressed"]
+[connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/Buttons/ChangeMap" to="." method="_on_change_map_pressed"]
+[connection signal="pressed" from="Base/Centering/Lobby/Leave" to="." method="_on_leave_pressed"]
+[connection signal="item_selected" from="ItemSelector" to="." method="_on_item_selected"]

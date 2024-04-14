@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="GameConfig" load_steps=2 format=3 uid="uid://i4s2m4jgbyvc"]
+[gd_resource type="Resource" script_class="GameConfig" load_steps=3 format=3 uid="uid://i4s2m4jgbyvc"]
 
+[ext_resource type="Resource" uid="uid://b6lbtimr5h2h4" path="res://royale/maps/classic/classic.tres" id="1_j8k4y"]
 [ext_resource type="Script" path="res://core/game_config.gd" id="1_x4pw4"]
 
 [resource]
@@ -7,15 +8,5 @@ script = ExtResource("1_x4pw4")
 game_name = "Королевская битва"
 game_description = "Побеждает последний выживший!"
 game_path = "uid://hhq082lmqs3x"
-image_path = "uid://c5dcmh33o1646"
-maps_count = 1
-maps = Array[Dictionary]([{
-"description": "Как в старые добрые...",
-"image_path": "res://icon.png",
-"name": "Классика",
-"path": "uid://dtui0y2krx3gd"
-}])
-maps/1/name = "Классика"
-maps/1/description = "Как в старые добрые..."
-maps/1/path = "uid://dtui0y2krx3gd"
-maps/1/image_path = "res://icon.png"
+image_path = "uid://nk1w1iu0ambu"
+maps = Array[Resource("res://core/map_config.gd")]([ExtResource("1_j8k4y")])

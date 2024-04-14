@@ -11,22 +11,24 @@ config_version=5
 [application]
 
 config/name="2D Shooter"
-config/version="0.1"
+config/version="0.1.0"
 run/main_scene="res://core/shooter.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="2d-shooter"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.png"
 
 [debug]
 
 gdscript/warnings/untyped_declaration=2
-gdscript/warnings/unsafe_property_access=1
-gdscript/warnings/unsafe_method_access=1
-gdscript/warnings/unsafe_cast=1
-gdscript/warnings/unsafe_call_argument=1
 
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/subwindows/embed_subwindows=false
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [gui]
 
@@ -65,6 +67,7 @@ shoot={
 2d_physics/layer_1="world"
 2d_physics/layer_2="player"
 2d_physics/layer_3="attack"
+2d_physics/layer_4="boundary"
 
 [rendering]
 

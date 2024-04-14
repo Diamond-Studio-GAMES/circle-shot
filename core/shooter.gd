@@ -11,9 +11,10 @@ signal game_joined(error: int)
 signal connection_closed
 const PORT := 14889
 const MAX_CLIENTS := 10
+const items_db: ItemsDB = preload("uid://pwq1e7l2ckos")
 static var HEADLESS := false
 static var is_in_network := false
-static var is_game_started := false
+static var game: Game
 
 
 func _ready() -> void:
@@ -39,7 +40,7 @@ static func _static_init() -> void:
 
 func create_game() -> void:
 	var peer := ENetMultiplayerPeer.new()
-	var error := peer.create_server(PORT, MAX_CLIENTS)
+	var error := peer.create_server(PORT, MAX_CLIENTS - int(not HEADLESS))
 	if error:
 		game_created.emit(error)
 		return

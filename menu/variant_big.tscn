@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3 uid="uid://ck5uq0aa1ov56"]
+
+[ext_resource type="Texture2D" uid="uid://c5dcmh33o1646" path="res://icon.png" id="1_5kxha"]
+
+[node name="VariantBig" type="TextureRect"]
+auto_translate_mode = 1
+self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
+custom_minimum_size = Vector2(320, 64)
+texture = ExtResource("1_5kxha")
+expand_mode = 1
+
+[node name="Container" type="VBoxContainer" parent="."]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Name" type="Label" parent="Container"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "екукекуе"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="Container"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "екнкенке"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Click" type="Button" parent="."]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true

@@ -14,3 +14,4 @@ auto_translate_mode = 1
 [connection signal="game_joined" from="." to="Menu" method="_on_game_joined"]
 [connection signal="game_create_requested" from="Menu" to="." method="create_game"]
 [connection signal="game_join_requested" from="Menu" to="." method="join_game"]
+[connection signal="game_leave_requested" from="Menu" to="." method="close_connection"]
