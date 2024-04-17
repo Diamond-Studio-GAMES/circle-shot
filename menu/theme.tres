@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://bbeb6tjpfk7sg"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://bbeb6tjpfk7sg"]
 
 [ext_resource type="Texture2D" uid="uid://dmcjw00hj8l16" path="res://menu/button.png" id="1_12yto"]
 
@@ -49,6 +49,21 @@ texture_margin_right = 12.0
 texture_margin_bottom = 12.0
 modulate_color = Color(1, 1, 1, 0.752941)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w7tci"]
+texture = ExtResource("1_12yto")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+modulate_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7jmp"]
+texture = ExtResource("1_12yto")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vpn8g"]
 content_margin_left = 32.0
 content_margin_top = 16.0
@@ -80,4 +95,7 @@ Button/styles/normal = SubResource("StyleBoxTexture_gfqqs")
 Button/styles/pressed = SubResource("StyleBoxTexture_jeaw0")
 Label/colors/font_color = Color(0, 0, 0, 1)
 PanelContainer/styles/panel = SubResource("StyleBoxTexture_nn2ej")
+ProgressBar/constants/outline_size = 4
+ProgressBar/styles/background = SubResource("StyleBoxTexture_w7tci")
+ProgressBar/styles/fill = SubResource("StyleBoxTexture_n7jmp")
 Window/styles/panel = SubResource("StyleBoxEmpty_vpn8g")

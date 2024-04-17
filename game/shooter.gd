@@ -13,6 +13,8 @@ const PORT := 14889
 const MAX_CLIENTS := 10
 var is_in_network := false
 var game: Game
+@onready var _menu: Menu = $Menu
+@onready var _game_loader: GameLoader = $GameLoader
 
 
 func _ready() -> void:
@@ -57,6 +59,10 @@ func close_connection() -> void:
 	multiplayer.multiplayer_peer = null
 	is_in_network = false
 	connection_closed.emit()
+
+
+func start_game(game: int, map: int) -> void:
+	pass
 
 
 func _on_connected_to_server() -> void:

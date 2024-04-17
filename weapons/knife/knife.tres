@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponConfig" load_steps=2 format=3 uid="uid://bqt35gylr4la"]
+
+[ext_resource type="Script" path="res://config/weapon_config.gd" id="1_2u2my"]
+
+[resource]
+script = ExtResource("1_2u2my")
+weapon_name = "Нож"
+weapon_type = 3
+rarity = 0
+damage = 50
+damage_type = 0
+ammo_per_charge = 1
+ammo_total = -1
+weapon_path = ""
+image_path = "uid://c6hbriu7of77e"

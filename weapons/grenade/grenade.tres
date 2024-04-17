@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponConfig" load_steps=2 format=3 uid="uid://b6l0sibfxkmx6"]
+
+[ext_resource type="Script" path="res://config/weapon_config.gd" id="1_qq0ru"]
+
+[resource]
+script = ExtResource("1_qq0ru")
+weapon_name = "Граната"
+weapon_type = 0
+rarity = 0
+damage = 50
+damage_type = 1
+ammo_per_charge = 1
+ammo_total = 1
+weapon_path = ""
+image_path = "uid://jyvb0oir1emy"

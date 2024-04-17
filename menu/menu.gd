@@ -5,10 +5,14 @@ extends Control
 signal game_create_requested
 signal game_join_requested(ip: String)
 signal game_leave_requested
-@warning_ignore("unused_signal")
-signal game_start_requested()
+signal game_start_requested(game: int, map: int)
 var selected_game := 0
 var selected_map := 0
+var selected_light_weapon := 0
+var selected_heavy_weapon := 0
+var selected_support_weapon := 0
+var selected_melee_weapon := 0
+var selected_skin := 0
 var _players := {}
 var _player_admin_id := -1
 @onready var _ip_dialog: ConfirmationDialog = $IPDialog
@@ -20,6 +24,7 @@ var _player_admin_id := -1
 
 func _ready() -> void:
 	_update_game_and_map()
+	_update_weapons_and_skin()
 	_ip_dialog.register_text_enter($IPDialog/LineEdit as LineEdit)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
@@ -68,7 +73,7 @@ func register_new_player(player_name: String) -> void:
 
 @rpc("reliable")
 func set_admin(admin: bool) -> void:
-	($Base/Centering/Lobby/AdminPanel as VBoxContainer).visible = admin
+	($Base/Centering/Lobby/AdminPanel as HBoxContainer).visible = admin
 	($Base/Centering/Lobby/ClientHint as Label).visible = not admin
 
 
@@ -111,6 +116,30 @@ func _update_game_and_map() -> void:
 	($Base/Centering/Lobby/Environment/Map/Container/Name as Label).text = game.maps[selected_map].map_name
 	($Base/Centering/Lobby/Environment/Map/Container/Description as Label).text = \
 			game.maps[selected_map].map_description
+
+
+func _update_weapons_and_skin() -> void:
+	var light_weapon: WeaponConfig = Global.items_db.weapons_light[selected_light_weapon]
+	($Base/Centering/Lobby/Player/LightWeapon/Name as Label).text = light_weapon.weapon_name
+	($Base/Centering/Lobby/Player/LightWeapon as TextureRect).texture = \
+			load(light_weapon.image_path) as Texture2D
+	var heavy_weapon: WeaponConfig = Global.items_db.weapons_heavy[selected_heavy_weapon]
+	($Base/Centering/Lobby/Player/HeavyWeapon/Name as Label).text = heavy_weapon.weapon_name
+	($Base/Centering/Lobby/Player/HeavyWeapon as TextureRect).texture = \
+			load(heavy_weapon.image_path) as Texture2D
+	var support_weapon: WeaponConfig = Global.items_db.weapons_support[selected_support_weapon]
+	($Base/Centering/Lobby/Player/SupportWeapon/Name as Label).text = support_weapon.weapon_name
+	($Base/Centering/Lobby/Player/SupportWeapon as TextureRect).texture = \
+			load(support_weapon.image_path) as Texture2D
+	var melee_weapon: WeaponConfig = Global.items_db.weapons_melee[selected_melee_weapon]
+	($Base/Centering/Lobby/Player/MeleeWeapon/Name as Label).text = melee_weapon.weapon_name
+	($Base/Centering/Lobby/Player/MeleeWeapon as TextureRect).texture = \
+			load(melee_weapon.image_path) as Texture2D
+	
+	var skin: SkinConfig = Global.items_db.skins[selected_skin]
+	($Base/Centering/Lobby/Player/Skin/Name as Label).text = skin.skin_name
+	($Base/Centering/Lobby/Player/Skin as TextureRect).texture = \
+			load(skin.image_path) as Texture2D
 
 
 func _on_create_pressed() -> void:
@@ -194,6 +223,30 @@ func _on_change_map_pressed() -> void:
 	$ItemSelector.open_selection(ItemsDB.Item.MAP, selected_map, selected_game)
 
 
+func _on_change_skin_pressed() -> void:
+	$ItemSelector.open_selection(ItemsDB.Item.SKIN, selected_skin)
+
+
+func _on_change_light_weapon_pressed() -> void:
+	$ItemSelector.open_selection(ItemsDB.Item.WEAPON_LIGHT, selected_light_weapon)
+
+
+func _on_change_heavy_weapon_pressed() -> void:
+	$ItemSelector.open_selection(ItemsDB.Item.WEAPON_HEAVY, selected_heavy_weapon)
+
+
+func _on_change_support_weapon_pressed() -> void:
+	$ItemSelector.open_selection(ItemsDB.Item.WEAPON_SUPPORT, selected_support_weapon)
+
+
+func _on_change_melee_weapon_pressed() -> void:
+	$ItemSelector.open_selection(ItemsDB.Item.WEAPON_MELEE, selected_melee_weapon)
+
+
+func _on_start_game_pressed() -> void:
+	game_start_requested.emit(selected_game, selected_map)
+
+
 func _on_item_selected(type: ItemsDB.Item, id: int) -> void:
 	match type:
 		ItemsDB.Item.GAME:
@@ -206,3 +259,18 @@ func _on_item_selected(type: ItemsDB.Item, id: int) -> void:
 				request_set_environment.rpc_id(1, selected_game, id)
 			else:
 				request_set_environment(selected_game, id)
+		ItemsDB.Item.SKIN:
+			selected_skin = id
+			_update_weapons_and_skin()
+		ItemsDB.Item.WEAPON_LIGHT:
+			selected_light_weapon = id
+			_update_weapons_and_skin()
+		ItemsDB.Item.WEAPON_HEAVY:
+			selected_heavy_weapon = id
+			_update_weapons_and_skin()
+		ItemsDB.Item.WEAPON_SUPPORT:
+			selected_support_weapon = id
+			_update_weapons_and_skin()
+		ItemsDB.Item.WEAPON_MELEE:
+			selected_melee_weapon = id
+			_update_weapons_and_skin()
