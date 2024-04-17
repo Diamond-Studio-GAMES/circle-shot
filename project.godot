@@ -11,16 +11,24 @@ config_version=5
 [application]
 
 config/name="2D Shooter"
+config/name_localized={
+"ru": "2Д Шутер"
+}
 config/version="0.1.0"
-run/main_scene="res://core/shooter.tscn"
+run/main_scene="res://game/shooter.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="2d-shooter"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.png"
 
+[autoload]
+
+Global="*res://game/globals.gd"
+
 [debug]
 
 gdscript/warnings/untyped_declaration=2
+gdscript/warnings/unsafe_cast=1
 
 [display]
 
@@ -29,6 +37,10 @@ window/size/viewport_height=720
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[filesystem]
+
+import/fbx2gltf/enabled=false
 
 [gui]
 

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dw1607atagdix"
-path="res://.godot/imported/player_evil.png-9d3c329602ce41233f1cadb821c093a8.ctex"
+path="res://.godot/imported/player_evil.png-0df7533ffe0f69165568804ac96dbbd9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://player/player_evil.png"
-dest_files=["res://.godot/imported/player_evil.png-9d3c329602ce41233f1cadb821c093a8.ctex"]
+source_file="res://skins/default/player_evil.png"
+dest_files=["res://.godot/imported/player_evil.png-0df7533ffe0f69165568804ac96dbbd9.ctex"]
 
 [params]
 

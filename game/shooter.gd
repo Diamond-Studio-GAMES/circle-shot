@@ -11,10 +11,8 @@ signal game_joined(error: int)
 signal connection_closed
 const PORT := 14889
 const MAX_CLIENTS := 10
-const items_db: ItemsDB = preload("uid://pwq1e7l2ckos")
-static var HEADLESS := false
-static var is_in_network := false
-static var game: Game
+var is_in_network := false
+var game: Game
 
 
 func _ready() -> void:
@@ -32,15 +30,9 @@ func _process(_delta: float) -> void:
 			close_connection()
 
 
-static func _static_init() -> void:
-	if DisplayServer.get_name() == "headless":
-		print("Detected headless platform")
-		HEADLESS = true
-
-
 func create_game() -> void:
 	var peer := ENetMultiplayerPeer.new()
-	var error := peer.create_server(PORT, MAX_CLIENTS - int(not HEADLESS))
+	var error := peer.create_server(PORT, MAX_CLIENTS - int(not Global.HEADLESS))
 	if error:
 		game_created.emit(error)
 		return

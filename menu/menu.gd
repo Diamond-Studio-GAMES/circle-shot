@@ -23,7 +23,7 @@ func _ready() -> void:
 	_ip_dialog.register_text_enter($IPDialog/LineEdit as LineEdit)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
-	if Shooter.HEADLESS:
+	if Global.HEADLESS:
 		print("Creating server on headless...")
 		_on_create_pressed.call_deferred()
 
@@ -55,14 +55,14 @@ func register_new_player(player_name: String) -> void:
 	_players[id] = player_name
 	if _players.size() == 1:
 		_player_admin_id = id
-		if Shooter.HEADLESS:
+		if Global.HEADLESS:
 			set_admin.rpc_id(id, true)
 		else:
 			set_admin(true)
 	else:
 		set_admin.rpc_id(id, false)
 	add_player_entry.rpc(id, player_name)
-	if not Shooter.HEADLESS:
+	if not Global.HEADLESS:
 		add_player_entry(id if id else 1, player_name)
 
 
@@ -101,7 +101,7 @@ func create_error_dialog(text: String, code := -1) -> void:
 
 
 func _update_game_and_map() -> void:
-	var game: GameConfig = Shooter.items_db.games[selected_game]
+	var game: GameConfig = Global.items_db.games[selected_game]
 	($Base/Centering/Lobby/Environment/Game as TextureRect).texture = load(game.image_path) as Texture2D
 	($Base/Centering/Lobby/Environment/Game/Container/Name as Label).text = game.game_name
 	($Base/Centering/Lobby/Environment/Game/Container/Description as Label).text = game.game_description
@@ -148,7 +148,7 @@ func _on_game_created(error: int) -> void:
 		return
 	($Base/Centering/Lobby as Control).show()
 	($Base/Centering/Main as Control).hide()
-	if not Shooter.HEADLESS:
+	if not Global.HEADLESS:
 		register_new_player(($Base/Centering/Main/Name/LineEdit as LineEdit).text)
 
 
@@ -174,8 +174,11 @@ func _on_peer_disconnected(id: int) -> void:
 	if not multiplayer.is_server():
 		return
 	_players.erase(id)
+	if id == _player_admin_id:
+		_player_admin_id = (_players.keys() as Array[int])[0]
+		set_admin.rpc_id(_player_admin_id, true)
 	delete_player_entry.rpc(id)
-	if not Shooter.HEADLESS:
+	if not Global.HEADLESS:
 		delete_player_entry(id)
 
 

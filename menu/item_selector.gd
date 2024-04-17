@@ -19,7 +19,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 			_variants.columns = 1
 			title = "Выбери режим игры"
 			var counter := 0
-			for i: GameConfig in Shooter.items_db.games:
+			for i: GameConfig in Global.items_db.games:
 				var variant: TextureRect = _variant_big.instantiate()
 				variant.texture = load(i.image_path) as Texture2D
 				(variant.get_node(^"Container/Name") as Label).text = i.game_name
@@ -33,7 +33,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 			_variants.columns = 1
 			title = "Выбери карту"
 			var counter := 0
-			for i: MapConfig in Shooter.items_db.games[current_game].maps:
+			for i: MapConfig in Global.items_db.games[current_game].maps:
 				var variant: TextureRect = _variant_big.instantiate()
 				variant.texture = load(i.image_path) as Texture2D
 				(variant.get_node(^"Container/Name") as Label).text = i.map_name

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://3l0k1cn63ahd"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d5iul"]
-[ext_resource type="Texture2D" uid="uid://dw1607atagdix" path="res://player/player_evil.png" id="2_v2yey"]
+[ext_resource type="Texture2D" uid="uid://dw1607atagdix" path="res://skins/default/player_evil.png" id="2_v2yey"]
 [ext_resource type="Script" path="res://player/player_input.gd" id="3_knbu5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_23n60"]
