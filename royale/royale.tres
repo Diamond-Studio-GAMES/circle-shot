@@ -9,4 +9,4 @@ game_name = "Королевская битва"
 game_description = "Побеждает последний выживший!"
 game_path = "uid://hhq082lmqs3x"
 image_path = "uid://nk1w1iu0ambu"
-maps = Array[Resource("res://core/map_config.gd")]([ExtResource("1_j8k4y")])
+maps = Array[Resource("res://config/map_config.gd")]([ExtResource("1_j8k4y")])

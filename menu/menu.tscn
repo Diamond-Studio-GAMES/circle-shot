@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0mui01tvaame"]
+[gd_scene load_steps=4 format=3 uid="uid://c0mui01tvaame"]
 
 [ext_resource type="Script" path="res://menu/menu.gd" id="1_k78bo"]
 [ext_resource type="PackedScene" uid="uid://vvk157q87e75" path="res://menu/title.tscn" id="2_3biv4"]
-[ext_resource type="Texture2D" uid="uid://c5dcmh33o1646" path="res://icon.png" id="2_68g5o"]
 [ext_resource type="Script" path="res://menu/item_selector.gd" id="4_xhoqt"]
 
 [node name="Menu" type="Control"]
@@ -127,7 +126,6 @@ auto_translate_mode = 1
 self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
 custom_minimum_size = Vector2(320, 64)
 layout_mode = 2
-texture = ExtResource("2_68g5o")
 expand_mode = 1
 
 [node name="Container" type="VBoxContainer" parent="Base/Centering/Lobby/Environment/Game"]
@@ -160,7 +158,6 @@ vertical_alignment = 1
 self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
 custom_minimum_size = Vector2(320, 64)
 layout_mode = 2
-texture = ExtResource("2_68g5o")
 expand_mode = 1
 
 [node name="Container" type="VBoxContainer" parent="Base/Centering/Lobby/Environment/Map"]
@@ -192,6 +189,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Player" type="HBoxContainer" parent="Base/Centering/Lobby"]
+layout_mode = 2
+
+[node name="LightWeapon" type="TextureRect" parent="Base/Centering/Lobby/Player"]
+layout_mode = 2
+
+[node name="HeavyWeapon" type="TextureRect" parent="Base/Centering/Lobby/Player"]
+auto_translate_mode = 1
 layout_mode = 2
 
 [node name="ClientHint" type="Label" parent="Base/Centering/Lobby"]
@@ -262,4 +266,3 @@ size_flags_vertical = 0
 [connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/Buttons/ChangeGame" to="." method="_on_change_game_pressed"]
 [connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/Buttons/ChangeMap" to="." method="_on_change_map_pressed"]
 [connection signal="pressed" from="Base/Centering/Lobby/Leave" to="." method="_on_leave_pressed"]
-[connection signal="item_selected" from="ItemSelector" to="." method="_on_item_selected"]
