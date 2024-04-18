@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponConfig" load_steps=2 format=3 uid="uid://bb4c32cmatk2p"]
+
+[ext_resource type="Script" path="res://config/weapon_config.gd" id="1_sdfg8"]
+
+[resource]
+script = ExtResource("1_sdfg8")
+weapon_name = "Дробовик"
+weapon_type = 1
+rarity = 1
+damage = 53
+damage_type = 0
+ammo_per_charge = 3
+ammo_total = 21
+weapon_path = ""
+image_path = "uid://b1kgmgwrultvq"

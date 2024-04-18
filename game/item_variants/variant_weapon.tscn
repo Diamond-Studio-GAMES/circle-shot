@@ -2,7 +2,6 @@
 
 [node name="VariantWeapon" type="TextureRect"]
 auto_translate_mode = 1
-self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
 custom_minimum_size = Vector2(160, 160)
 expand_mode = 1
 stretch_mode = 5
@@ -57,6 +56,16 @@ text = "dfgdfgdfgdf"
 horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="RarityFill" type="ColorRect" parent="."]
+auto_translate_mode = 1
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Click" type="Button" parent="."]
 auto_translate_mode = 1

@@ -13,7 +13,7 @@ const PORT := 14889
 const MAX_CLIENTS := 10
 var is_in_network := false
 var game: Game
-@onready var _menu: Menu = $Menu
+@onready var _menu: GameMenu = $GameMenu
 @onready var _game_loader: GameLoader = $GameLoader
 
 
@@ -61,7 +61,7 @@ func close_connection() -> void:
 	connection_closed.emit()
 
 
-func start_game(game: int, map: int) -> void:
+func start_game(game_id: int, map_id: int) -> void:
 	pass
 
 

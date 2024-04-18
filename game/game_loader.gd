@@ -21,27 +21,43 @@ func _process(_delta: float) -> void:
 			ResourceLoader.THREAD_LOAD_LOADED:
 				_loaded_part.emit(true)
 			ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-				_bar.value = progress[0] / 2 + 50 * int(_loaded_game)
+				_bar.value = progress[0] / 2.0 + 50 * int(_loaded_game)
 
 
 func load_game(game: int, map: int) -> void:
 	_anim.play("StartLoad")
 	_status_text.text = "Загрузка игры..."
-	var _loading_path := Global.items_db.games[game].game_path
+	_loading_path = Global.items_db.games[game].game_path
 	ResourceLoader.load_threaded_request(_loading_path)
 	_is_loading = true
 	_loaded_game = false
 	var success: bool = await _loaded_part
 	if not success:
-		_end_load(false)
+		_fail_load()
 		return
 	var game_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
 	var game_node: Game = game_scene.instantiate()
 	get_parent().add_child(game_node, true)
-
-
-func _end_load(success: bool) -> void:
-	game_loaded.emit(success)
+	_loaded_game = true
+	_bar.value = 50
+	_loading_path = Global.items_db.games[game].maps[map].map_path
+	_status_text.text = "Загрузка карты..."
+	success = await _loaded_part
+	if not success:
+		game_node.queue_free()
+		_fail_load()
+		return
+	var map_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
+	var map_node: Game = map_scene.instantiate()
+	game_node.add_child(map_node, true)
 	_is_loading = false
-	_status_text.text = "Готово!" if success else "Ошибка загрузки!"
+	_bar.value = 100
+	_status_text.text = "Ожидание других игроков..."
+	game_loaded.emit(true)
+
+
+func _fail_load() -> void:
+	game_loaded.emit(false)
+	_is_loading = false
 	_anim.play("EndLoad")
+	_status_text.text = "Ошибка загрузки!"

@@ -56,6 +56,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				if current == counter:
 					(variant.get_node(^"Name") as Label).add_theme_color_override("font_color", Color.GREEN)
 				(variant.get_node(^"Description") as Label).text = i.skin_description
+				(variant.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(variant.get_node(^"Click") as Button).pressed.connect(_on_variant_pressed.bind(type, counter))
 				_variants.add_child(variant)
 				counter += 1
@@ -77,6 +78,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 						damage_text = "Урон: %d"
 				(variant.get_node(^"Damage") as Label).text = damage_text % i.damage
 				(variant.get_node(^"Ammo") as Label).text = "%d/%d" % [i.ammo_per_charge, i.ammo_total]
+				(variant.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(variant.get_node(^"Click") as Button).pressed.connect(_on_variant_pressed.bind(type, counter))
 				_variants.add_child(variant)
 				counter += 1
@@ -98,6 +100,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 						damage_text = "Урон: %d"
 				(variant.get_node(^"Damage") as Label).text = damage_text % i.damage
 				(variant.get_node(^"Ammo") as Label).text = "%d/%d" % [i.ammo_per_charge, i.ammo_total]
+				(variant.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(variant.get_node(^"Click") as Button).pressed.connect(_on_variant_pressed.bind(type, counter))
 				_variants.add_child(variant)
 				counter += 1
@@ -119,6 +122,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 						damage_text = "Урон: %d"
 				(variant.get_node(^"Damage") as Label).text = damage_text % i.damage
 				(variant.get_node(^"Ammo") as Label).text = "%d/%d" % [i.ammo_per_charge, i.ammo_total]
+				(variant.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(variant.get_node(^"Click") as Button).pressed.connect(_on_variant_pressed.bind(type, counter))
 				_variants.add_child(variant)
 				counter += 1
@@ -140,6 +144,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 						damage_text = "Урон: %d"
 				(variant.get_node(^"Damage") as Label).text = damage_text % i.damage
 				(variant.get_node(^"Ammo") as Label).text = "%d/%d" % [i.ammo_per_charge, i.ammo_total]
+				(variant.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(variant.get_node(^"Click") as Button).pressed.connect(_on_variant_pressed.bind(type, counter))
 				_variants.add_child(variant)
 				counter += 1

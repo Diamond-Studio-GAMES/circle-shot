@@ -1,4 +1,4 @@
-class_name Menu
+class_name GameMenu
 extends Control
 
 
@@ -60,10 +60,10 @@ func register_new_player(player_name: String) -> void:
 	_players[id] = player_name
 	if _players.size() == 1:
 		_player_admin_id = id
-		if Global.HEADLESS:
-			set_admin.rpc_id(id, true)
-		else:
+		if multiplayer.is_server():
 			set_admin(true)
+		else:
+			set_admin.rpc_id(id, true)
 	else:
 		set_admin.rpc_id(id, false)
 	add_player_entry.rpc(id, player_name)
@@ -95,7 +95,12 @@ func set_environment(game_id: int, map_id: int) -> void:
 func request_start_game() -> void:
 	if multiplayer.get_remote_sender_id() != _player_admin_id:
 		return
-		
+	start_game.rpc(selected_game, selected_map)
+
+
+@rpc("call_local", "reliable")
+func start_game(game_id: int, map_id: int) -> void:
+	game_start_requested.emit(game_id, map_id)
 
 
 func create_error_dialog(text: String, code := -1) -> void:
@@ -121,23 +126,36 @@ func _update_game_and_map() -> void:
 func _update_weapons_and_skin() -> void:
 	var light_weapon: WeaponConfig = Global.items_db.weapons_light[selected_light_weapon]
 	($Base/Centering/Lobby/Player/LightWeapon/Name as Label).text = light_weapon.weapon_name
+	($Base/Centering/Lobby/Player/LightWeapon/RarityFill as ColorRect).color = \
+			ItemsDB.RARITY_COLORS[light_weapon.rarity]
 	($Base/Centering/Lobby/Player/LightWeapon as TextureRect).texture = \
 			load(light_weapon.image_path) as Texture2D
+	
 	var heavy_weapon: WeaponConfig = Global.items_db.weapons_heavy[selected_heavy_weapon]
 	($Base/Centering/Lobby/Player/HeavyWeapon/Name as Label).text = heavy_weapon.weapon_name
+	($Base/Centering/Lobby/Player/HeavyWeapon/RarityFill as ColorRect).color = \
+			ItemsDB.RARITY_COLORS[heavy_weapon.rarity]
 	($Base/Centering/Lobby/Player/HeavyWeapon as TextureRect).texture = \
 			load(heavy_weapon.image_path) as Texture2D
+	
 	var support_weapon: WeaponConfig = Global.items_db.weapons_support[selected_support_weapon]
 	($Base/Centering/Lobby/Player/SupportWeapon/Name as Label).text = support_weapon.weapon_name
+	($Base/Centering/Lobby/Player/SupportWeapon/RarityFill as ColorRect).color = \
+			ItemsDB.RARITY_COLORS[support_weapon.rarity]
 	($Base/Centering/Lobby/Player/SupportWeapon as TextureRect).texture = \
 			load(support_weapon.image_path) as Texture2D
+	
 	var melee_weapon: WeaponConfig = Global.items_db.weapons_melee[selected_melee_weapon]
 	($Base/Centering/Lobby/Player/MeleeWeapon/Name as Label).text = melee_weapon.weapon_name
+	($Base/Centering/Lobby/Player/MeleeWeapon/RarityFill as ColorRect).color = \
+			ItemsDB.RARITY_COLORS[melee_weapon.rarity]
 	($Base/Centering/Lobby/Player/MeleeWeapon as TextureRect).texture = \
 			load(melee_weapon.image_path) as Texture2D
 	
 	var skin: SkinConfig = Global.items_db.skins[selected_skin]
 	($Base/Centering/Lobby/Player/Skin/Name as Label).text = skin.skin_name
+	($Base/Centering/Lobby/Player/Skin/RarityFill as ColorRect).color = \
+			ItemsDB.RARITY_COLORS[skin.rarity]
 	($Base/Centering/Lobby/Player/Skin as TextureRect).texture = \
 			load(skin.image_path) as Texture2D
 
@@ -244,7 +262,10 @@ func _on_change_melee_weapon_pressed() -> void:
 
 
 func _on_start_game_pressed() -> void:
-	game_start_requested.emit(selected_game, selected_map)
+	if multiplayer.is_server():
+		request_start_game()
+	else:
+		request_start_game.rpc_id(1)
 
 
 func _on_item_selected(type: ItemsDB.Item, id: int) -> void:

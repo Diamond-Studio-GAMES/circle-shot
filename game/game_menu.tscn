@@ -1,11 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0mui01tvaame"]
+[gd_scene load_steps=4 format=3 uid="uid://c0mui01tvaame"]
 
-[ext_resource type="Script" path="res://menu/menu.gd" id="1_k78bo"]
+[ext_resource type="Script" path="res://game/game_menu.gd" id="1_k78bo"]
 [ext_resource type="PackedScene" uid="uid://vvk157q87e75" path="res://menu/title.tscn" id="2_3biv4"]
-[ext_resource type="Texture2D" uid="uid://dyrjmg8rlcof3" path="res://weapons/ak_74/weapon.png" id="3_vs63i"]
-[ext_resource type="Script" path="res://menu/item_selector.gd" id="4_xhoqt"]
+[ext_resource type="Script" path="res://game/item_selector.gd" id="4_xhoqt"]
 
-[node name="Menu" type="Control"]
+[node name="GameMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -200,7 +199,6 @@ auto_translate_mode = 1
 custom_minimum_size = Vector2(0, 124)
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("3_vs63i")
 expand_mode = 1
 stretch_mode = 5
 
@@ -233,6 +231,16 @@ text = "PENIS"
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="RarityFill" type="ColorRect" parent="Base/Centering/Lobby/Player/Skin"]
+auto_translate_mode = 1
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="ChangeSkin" type="Button" parent="Base/Centering/Lobby/Player/Skin"]
 layout_mode = 1
 anchors_preset = 15
@@ -246,7 +254,6 @@ flat = true
 custom_minimum_size = Vector2(0, 124)
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("3_vs63i")
 expand_mode = 1
 stretch_mode = 5
 
@@ -280,6 +287,16 @@ text = "chlen"
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="RarityFill" type="ColorRect" parent="Base/Centering/Lobby/Player/LightWeapon"]
+auto_translate_mode = 1
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="ChangeLightWeapon" type="Button" parent="Base/Centering/Lobby/Player/LightWeapon"]
 auto_translate_mode = 1
 layout_mode = 1
@@ -295,7 +312,6 @@ auto_translate_mode = 1
 custom_minimum_size = Vector2(0, 124)
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("3_vs63i")
 expand_mode = 1
 stretch_mode = 5
 
@@ -329,10 +345,19 @@ text = "tryrt"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="ChangeHeavyWeapon" type="Button" parent="Base/Centering/Lobby/Player/HeavyWeapon"]
+[node name="RarityFill" type="ColorRect" parent="Base/Centering/Lobby/Player/HeavyWeapon"]
 auto_translate_mode = 1
+show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ChangeHeavyWeapon" type="Button" parent="Base/Centering/Lobby/Player/HeavyWeapon"]
+auto_translate_mode = 1
+layout_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -344,7 +369,6 @@ auto_translate_mode = 1
 custom_minimum_size = Vector2(0, 124)
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("3_vs63i")
 expand_mode = 1
 stretch_mode = 5
 
@@ -378,6 +402,16 @@ text = "trytry"
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="RarityFill" type="ColorRect" parent="Base/Centering/Lobby/Player/SupportWeapon"]
+auto_translate_mode = 1
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="ChangeSupportWeapon" type="Button" parent="Base/Centering/Lobby/Player/SupportWeapon"]
 auto_translate_mode = 1
 layout_mode = 1
@@ -393,7 +427,6 @@ auto_translate_mode = 1
 custom_minimum_size = Vector2(0, 124)
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("3_vs63i")
 expand_mode = 1
 stretch_mode = 5
 
@@ -427,6 +460,16 @@ text = "tyttyt"
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="RarityFill" type="ColorRect" parent="Base/Centering/Lobby/Player/MeleeWeapon"]
+auto_translate_mode = 1
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="ChangeMeleeWeapon" type="Button" parent="Base/Centering/Lobby/Player/MeleeWeapon"]
 auto_translate_mode = 1
 layout_mode = 1
@@ -452,7 +495,6 @@ alignment = 1
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 4
-toggle_mode = true
 text = "Начать игру!"
 
 [node name="ChangeGame" type="Button" parent="Base/Centering/Lobby/AdminPanel"]
@@ -506,3 +548,4 @@ size_flags_vertical = 0
 [connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/ChangeGame" to="." method="_on_change_game_pressed"]
 [connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/ChangeMap" to="." method="_on_change_map_pressed"]
 [connection signal="pressed" from="Base/Centering/Lobby/Leave" to="." method="_on_leave_pressed"]
+[connection signal="item_selected" from="ItemSelector" to="." method="_on_item_selected"]

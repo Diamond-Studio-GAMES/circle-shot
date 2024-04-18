@@ -11,17 +11,10 @@ enum Damage {
 	PER_SECOND = 0,
 	INSTANT = 1,
 }
-enum Rarity {
-	COMMON = 0,
-	RARE = 1,
-	EPIC = 2,
-	LEGENDARY = 3,
-	SECRET = 4,
-}
 
 @export var weapon_name := "Desert Eagle"
 @export var weapon_type := Weapon.LIGHT
-@export var rarity := Rarity.COMMON
+@export var rarity := ItemsDB.Rarity.COMMON
 @export_group("Stats")
 @export var damage: int
 @export var damage_type := Damage.PER_SECOND

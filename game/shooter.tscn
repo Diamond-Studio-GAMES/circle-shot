@@ -1,21 +1,21 @@
 [gd_scene load_steps=4 format=3 uid="uid://scqgxynxowrb"]
 
 [ext_resource type="Script" path="res://game/shooter.gd" id="1_lsxci"]
-[ext_resource type="PackedScene" uid="uid://c0mui01tvaame" path="res://menu/menu.tscn" id="2_b4glg"]
-[ext_resource type="PackedScene" uid="uid://cv8in67ldnddu" path="res://menu/game_loader.tscn" id="3_5kh8u"]
+[ext_resource type="PackedScene" uid="uid://c0mui01tvaame" path="res://game/game_menu.tscn" id="2_b4glg"]
+[ext_resource type="PackedScene" uid="uid://cv8in67ldnddu" path="res://game/game_loader.tscn" id="3_5kh8u"]
 
 [node name="Shooter" type="Node"]
 script = ExtResource("1_lsxci")
 
-[node name="Menu" parent="." instance=ExtResource("2_b4glg")]
+[node name="GameMenu" parent="." instance=ExtResource("2_b4glg")]
 auto_translate_mode = 1
 
 [node name="GameLoader" parent="." instance=ExtResource("3_5kh8u")]
-visible = false
 
-[connection signal="connection_closed" from="." to="Menu" method="_on_connection_closed"]
-[connection signal="game_created" from="." to="Menu" method="_on_game_created"]
-[connection signal="game_joined" from="." to="Menu" method="_on_game_joined"]
-[connection signal="game_create_requested" from="Menu" to="." method="create_game"]
-[connection signal="game_join_requested" from="Menu" to="." method="join_game"]
-[connection signal="game_leave_requested" from="Menu" to="." method="close_connection"]
+[connection signal="connection_closed" from="." to="GameMenu" method="_on_connection_closed"]
+[connection signal="game_created" from="." to="GameMenu" method="_on_game_created"]
+[connection signal="game_joined" from="." to="GameMenu" method="_on_game_joined"]
+[connection signal="game_create_requested" from="GameMenu" to="." method="create_game"]
+[connection signal="game_join_requested" from="GameMenu" to="." method="join_game"]
+[connection signal="game_leave_requested" from="GameMenu" to="." method="close_connection"]
+[connection signal="game_start_requested" from="GameMenu" to="." method="start_game"]
