@@ -7,6 +7,6 @@
 script = ExtResource("1_x4pw4")
 game_name = "Королевская битва"
 game_description = "Побеждает последний выживший!"
-game_path = "uid://hhq082lmqs3x"
+game_path = "uid://cm83ly2pk1dlo"
 image_path = "uid://nk1w1iu0ambu"
 maps = Array[Resource("res://config/map_config.gd")]([ExtResource("1_j8k4y")])

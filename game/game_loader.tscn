@@ -95,6 +95,7 @@ _data = {
 }
 
 [node name="GameLoader" type="CanvasLayer"]
+layer = 5
 visible = false
 script = ExtResource("1_px1l1")
 

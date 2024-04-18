@@ -34,7 +34,6 @@ gdscript/warnings/unsafe_cast=1
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
@@ -80,6 +79,8 @@ shoot={
 2d_physics/layer_2="player"
 2d_physics/layer_3="attack"
 2d_physics/layer_4="boundary"
+2d_physics/layer_5="destructible"
+2d_physics/layer_6="items"
 
 [rendering]
 

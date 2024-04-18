@@ -1,15 +1,12 @@
 class_name Game
 extends Node
 
+@warning_ignore("unused_signal") # Connected dynamically
+signal game_ended
 
 @onready var _players: Node = $Players
 
 
-func _ready() -> void:
-	#TODO: Add player spawnable code
-	pass
-
-
-func _physics_process(_delta: float) -> void:
-	pass
-
+func start_game(player_data: Dictionary) -> void:
+	prints("game started!", multiplayer.get_unique_id())
+	print("player data: ", player_data)

@@ -33,8 +33,31 @@ func _ready() -> void:
 		_on_create_pressed.call_deferred()
 
 
+## Returns player data in Array with following content: [br]
+## Index [code]0[/code]: player name,[br]
+## Index [code]1[/code]: selected Skin[br]
+## Index [code]2[/code], [code]3[/code], [code]4[/code] and [code]5[/code]:
+## selected Light, Heavy, Support and Melee weapons
+func get_player_data() -> Array:
+	return [
+		($Base/Centering/Main/Name/LineEdit as LineEdit).text,
+		selected_skin,
+		selected_light_weapon,
+		selected_heavy_weapon,
+		selected_support_weapon,
+		selected_melee_weapon,
+	]
+
+
+func create_error_dialog(text: String, code := -1) -> void:
+	_error_dialog.dialog_text = text
+	if code > 0:
+		text += " Код ошибки: %d" % code
+	_error_dialog.popup_centered()
+
+
 @rpc("reliable")
-func add_player_entry(id: int, player_name: String) -> void:
+func _add_player_entry(id: int, player_name: String) -> void:
 	var label := Label.new()
 	label.text = player_name
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -45,69 +68,63 @@ func add_player_entry(id: int, player_name: String) -> void:
 
 
 @rpc("reliable")
-func delete_player_entry(id: int) -> void:
+func _delete_player_entry(id: int) -> void:
 	_players_container.get_node(str(id)).queue_free()
 
 
 @rpc("any_peer", "reliable")
-func register_new_player(player_name: String) -> void:
+func _register_new_player(player_name: String) -> void:
 	if not multiplayer.is_server():
 		return
 	var id := multiplayer.get_remote_sender_id()
 	for i: int in _players:
-		add_player_entry.rpc_id(id, i, _players[i])
-	set_environment.rpc(selected_game, selected_map)
+		_add_player_entry.rpc_id(id, i, _players[i])
+	_set_environment.rpc_id(id, selected_game, selected_map)
 	_players[id] = player_name
 	if _players.size() == 1:
 		_player_admin_id = id
 		if multiplayer.is_server():
-			set_admin(true)
+			_set_admin(true)
 		else:
-			set_admin.rpc_id(id, true)
+			_set_admin.rpc_id(id, true)
 	else:
-		set_admin.rpc_id(id, false)
-	add_player_entry.rpc(id, player_name)
+		_set_admin.rpc_id(id, false)
+	_add_player_entry.rpc(id, player_name)
 	if not Global.HEADLESS:
-		add_player_entry(id if id else 1, player_name)
+		_add_player_entry(id if id else 1, player_name)
 
 
 @rpc("reliable")
-func set_admin(admin: bool) -> void:
+func _set_admin(admin: bool) -> void:
 	($Base/Centering/Lobby/AdminPanel as HBoxContainer).visible = admin
 	($Base/Centering/Lobby/ClientHint as Label).visible = not admin
+	($Base/Centering/Lobby/ClientHint as Label).text = "Начать игру может только хост."
 
 
 @rpc("any_peer", "reliable")
-func request_set_environment(game_id: int, map_id: int) -> void:
+func _request_set_environment(game_id: int, map_id: int) -> void:
 	if multiplayer.get_remote_sender_id() != _player_admin_id:
 		return
-	set_environment.rpc(game_id, map_id)
+	_set_environment.rpc(game_id, map_id)
 
 
 @rpc("call_local", "reliable")
-func set_environment(game_id: int, map_id: int) -> void:
+func _set_environment(game_id: int, map_id: int) -> void:
 	selected_game = game_id
 	selected_map = map_id
 	_update_game_and_map()
 
 
 @rpc("any_peer", "reliable")
-func request_start_game() -> void:
+func _request_start_game() -> void:
 	if multiplayer.get_remote_sender_id() != _player_admin_id:
 		return
-	start_game.rpc(selected_game, selected_map)
+	_start_game.rpc(selected_game, selected_map)
 
 
 @rpc("call_local", "reliable")
-func start_game(game_id: int, map_id: int) -> void:
+func _start_game(game_id: int, map_id: int) -> void:
 	game_start_requested.emit(game_id, map_id)
-
-
-func create_error_dialog(text: String, code := -1) -> void:
-	_error_dialog.dialog_text = text
-	if code > 0:
-		text += " Код ошибки: %d" % code
-	_error_dialog.popup_centered()
 
 
 func _update_game_and_map() -> void:
@@ -196,7 +213,7 @@ func _on_game_created(error: int) -> void:
 	($Base/Centering/Lobby as Control).show()
 	($Base/Centering/Main as Control).hide()
 	if not Global.HEADLESS:
-		register_new_player(($Base/Centering/Main/Name/LineEdit as LineEdit).text)
+		_register_new_player(($Base/Centering/Main/Name/LineEdit as LineEdit).text)
 
 
 func _on_game_joined(error: int) -> void:
@@ -204,9 +221,10 @@ func _on_game_joined(error: int) -> void:
 	if error:
 		create_error_dialog("Невозможно подключиться к серверу!", error)
 		return
+	($Base/Centering/Lobby/ClientHint as Label).text = "Ожидание сервера... (возможно, игра уже началась)"
 	($Base/Centering/Lobby as Control).show()
 	($Base/Centering/Main as Control).hide()
-	register_new_player.rpc_id(1, ($Base/Centering/Main/Name/LineEdit as LineEdit).text)
+	_register_new_player.rpc_id(1, ($Base/Centering/Main/Name/LineEdit as LineEdit).text)
 
 
 func _on_connection_closed() -> void:
@@ -223,10 +241,10 @@ func _on_peer_disconnected(id: int) -> void:
 	_players.erase(id)
 	if id == _player_admin_id:
 		_player_admin_id = (_players.keys() as Array[int])[0]
-		set_admin.rpc_id(_player_admin_id, true)
-	delete_player_entry.rpc(id)
+		_set_admin.rpc_id(_player_admin_id, true)
+	_delete_player_entry.rpc(id)
 	if not Global.HEADLESS:
-		delete_player_entry(id)
+		_delete_player_entry(id)
 
 
 func _on_server_disconnected() -> void:
@@ -263,23 +281,23 @@ func _on_change_melee_weapon_pressed() -> void:
 
 func _on_start_game_pressed() -> void:
 	if multiplayer.is_server():
-		request_start_game()
+		_request_start_game()
 	else:
-		request_start_game.rpc_id(1)
+		_request_start_game.rpc_id(1)
 
 
 func _on_item_selected(type: ItemsDB.Item, id: int) -> void:
 	match type:
 		ItemsDB.Item.GAME:
 			if not multiplayer.is_server():
-				request_set_environment.rpc_id(1, id, 0)
+				_request_set_environment.rpc_id(1, id, 0)
 			else:
-				request_set_environment(id, 0)
+				_request_set_environment(id, 0)
 		ItemsDB.Item.MAP:
 			if not multiplayer.is_server():
-				request_set_environment.rpc_id(1, selected_game, id)
+				_request_set_environment.rpc_id(1, selected_game, id)
 			else:
-				request_set_environment(selected_game, id)
+				_request_set_environment(selected_game, id)
 		ItemsDB.Item.SKIN:
 			selected_skin = id
 			_update_weapons_and_skin()
@@ -295,3 +313,14 @@ func _on_item_selected(type: ItemsDB.Item, id: int) -> void:
 		ItemsDB.Item.WEAPON_MELEE:
 			selected_melee_weapon = id
 			_update_weapons_and_skin()
+
+
+func _on_game_started(success: bool) -> void:
+	if not success:
+		create_error_dialog("Ошибка загрузки игры!")
+	else:
+		hide()
+
+
+func _on_game_ended() -> void:
+	show()

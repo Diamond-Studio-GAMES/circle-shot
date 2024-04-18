@@ -20,7 +20,7 @@ enum Damage {
 @export var damage_type := Damage.PER_SECOND
 @export var ammo_per_charge: int
 @export var ammo_total: int
-@export_group("Scenes")
+@export_group("Paths")
 @export_file("*.tscn") var weapon_path: String
 @export_file("*.png") var image_path: String
 
