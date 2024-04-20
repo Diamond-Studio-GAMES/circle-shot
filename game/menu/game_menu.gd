@@ -63,7 +63,7 @@ func _add_player_entry(id: int, player_name: String) -> void:
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.name = str(id)
 	if id == multiplayer.get_unique_id():
-		label.text += " (Ты)"
+		label.text += " [Ты]"
 	_players_container.add_child(label)
 
 
@@ -202,7 +202,7 @@ func _on_ip_dialog_confirmed() -> void:
 
 
 func _on_line_edit_text_changed(_new_text: String) -> void:
-	_ip_edit.placeholder_text = "XXX.XXX.XXX.XXX"
+	_ip_edit.placeholder_text = "123.456.789.012"
 
 
 func _on_game_created(error: int) -> void:
@@ -221,7 +221,7 @@ func _on_game_joined(error: int) -> void:
 	if error:
 		create_error_dialog("Невозможно подключиться к серверу!", error)
 		return
-	($Base/Centering/Lobby/ClientHint as Label).text = "Ожидание сервера... (возможно, игра уже началась)"
+	($Base/Centering/Lobby/ClientHint as Label).text = "Ожидание сервера... [возможно, игра уже началась]!"
 	($Base/Centering/Lobby as Control).show()
 	($Base/Centering/Main as Control).hide()
 	_register_new_player.rpc_id(1, ($Base/Centering/Main/Name/LineEdit as LineEdit).text)
