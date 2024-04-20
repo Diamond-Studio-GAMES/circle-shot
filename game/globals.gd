@@ -5,7 +5,7 @@ const items_db: ItemsDB = preload("uid://pwq1e7l2ckos")
 var HEADLESS := false
 
 # Path of user settings and items
-const file_name = "user://save.cfg"
+const FILE_NAME = "user://save.cfg"
 var save_file: ConfigFile
 
 func _ready() -> void:
