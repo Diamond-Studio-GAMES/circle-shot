@@ -24,6 +24,7 @@ func _ready() -> void:
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	connection_closed.connect(_on_connection_closed)
 
 
 func _process(_delta: float) -> void:
@@ -114,9 +115,9 @@ func _start_game() -> void:
 	game = $Game as Game
 	game.game_ended.connect(end_game)
 	if multiplayer.is_server():
-		game.start_game(_players_data)
+		game.init_game(_players_data)
 	else:
-		game.start_game()
+		game.init_game()
 	_game_loader.finish_load()
 
 

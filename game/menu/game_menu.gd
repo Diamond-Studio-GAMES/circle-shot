@@ -50,9 +50,9 @@ func get_player_data() -> Array:
 
 
 func create_error_dialog(text: String, code := -1) -> void:
-	($ErrorDialog as AcceptDialog).dialog_text = text
 	if code > 0:
 		text += " Код ошибки: %d" % code
+	($ErrorDialog as AcceptDialog).dialog_text = text
 	($ErrorDialog as AcceptDialog).popup_centered()
 
 
@@ -60,7 +60,7 @@ func create_error_dialog(text: String, code := -1) -> void:
 func _add_player_entry(id: int, player_name: String) -> void:
 	var label := Label.new()
 	label.text = player_name
-	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.size_flags_horizontal = SIZE_EXPAND_FILL
 	label.name = str(id)
 	if id == multiplayer.get_unique_id():
 		label.text += " [Ты]"

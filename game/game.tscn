@@ -1,11 +1,147 @@
-[gd_scene load_steps=2 format=3 uid="uid://d3nsak46hbo2c"]
+[gd_scene load_steps=7 format=3 uid="uid://d3nsak46hbo2c"]
 
 [ext_resource type="Script" path="res://game/game.gd" id="1_kxt6o"]
+[ext_resource type="Script" path="res://game/game_ui.gd" id="2_82bb5"]
+[ext_resource type="Script" path="res://game/chat.gd" id="3_8d55t"]
 
-[node name="Game" type="Node"]
+[sub_resource type="Animation" id="Animation_4bxhi"]
+resource_name = "Intro"
+length = 5.0
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tint:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3.5, 3.75),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0.25098), Color(0, 0, 0, 0.25098), Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Title:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.25, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Text:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5, 1.75, 3.25, 3.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1e-05, 1e-05), Vector2(1, 1), Vector2(1, 1), Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GO:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 3.5, 3.75, 4.6, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1e-05, 1e-05), Vector2(1, 1), Vector2(1, 1), Vector2(0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_atj0b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tint:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Title:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Text:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GO:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ctugk"]
+_data = {
+"Intro": SubResource("Animation_4bxhi"),
+"RESET": SubResource("Animation_atj0b")
+}
+
+[node name="Game" type="Node" groups=["Game"]]
 script = ExtResource("1_kxt6o")
 
-[node name="Players" type="Node2D" parent="." groups=["PlayersParent"]]
+[node name="Players" type="Node2D" parent="."]
 
 [node name="Projectiles" type="Node2D" parent="." groups=["ProjectilesParent"]]
 
@@ -24,11 +160,12 @@ spawn_path = NodePath("../VFX")
 spawn_limit = 100
 
 [node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(0.8, 0.8)
 position_smoothing_enabled = true
-position_smoothing_speed = 10.0
 
 [node name="GameUI" type="CanvasLayer" parent="."]
 layer = 2
+script = ExtResource("2_82bb5")
 
 [node name="Main" type="Control" parent="GameUI"]
 layout_mode = 3
@@ -49,7 +186,68 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="LeaveGame" type="Button" parent="GameUI/Main"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 63.0
+grow_horizontal = 0
+text = "Покинуть игру"
+
+[node name="Chat" type="Button" parent="GameUI/Main"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_top = 68.0
+offset_right = -16.0
+offset_bottom = 116.0
+grow_horizontal = 0
+toggle_mode = true
+text = "Чат"
+
+[node name="ChatPanel" type="PanelContainer" parent="GameUI/Main"]
+visible = false
+self_modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -496.0
+offset_top = 120.0
+offset_right = -16.0
+offset_bottom = 520.0
+grow_horizontal = 0
+script = ExtResource("3_8d55t")
+chat_button_path = NodePath("../Chat")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/Main/ChatPanel"]
+layout_mode = 2
+
+[node name="Messages" type="RichTextLabel" parent="GameUI/Main/ChatPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+scroll_following = true
+shortcut_keys_enabled = false
+meta_underlined = false
+hint_underlined = false
+selection_enabled = true
+
+[node name="LineEdit" type="LineEdit" parent="GameUI/Main/ChatPanel/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Отправить сообщение в чат..."
+
 [node name="Intro" type="Control" parent="GameUI"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -65,7 +263,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.25098)
+color = Color(0, 0, 0, 0)
 
 [node name="Title" type="Label" parent="GameUI/Intro"]
 layout_mode = 1
@@ -80,6 +278,7 @@ offset_right = 400.0
 offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1e-05, 1e-05)
 pivot_offset = Vector2(400, 40)
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -122,8 +321,51 @@ offset_right = 160.0
 offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1e-05, 1e-05)
 pivot_offset = Vector2(160, 64)
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 24
+text = "Каждый сам за себя!"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="GO" type="Label" parent="GameUI/Intro"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -80.0
+offset_right = 480.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(480, 80)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 80
+text = "ВПЕРЁД!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GameUI/Intro"]
+libraries = {
+"": SubResource("AnimationLibrary_ctugk")
+}
+
+[connection signal="local_player_created" from="." to="GameUI/Main/ChatPanel" method="_on_local_player_created"]
+[connection signal="toggled" from="GameUI/Main/Chat" to="GameUI/Main/ChatPanel" method="_on_chat_toggled"]
+[connection signal="text_submitted" from="GameUI/Main/ChatPanel/VBoxContainer/LineEdit" to="GameUI/Main/ChatPanel" method="_on_line_edit_text_submitted"]
+[connection signal="text_submitted" from="GameUI/Main/ChatPanel/VBoxContainer/LineEdit" to="GameUI/Main/ChatPanel/VBoxContainer/LineEdit" method="clear" unbinds=1]

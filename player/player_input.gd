@@ -2,6 +2,8 @@ class_name PlayerInput
 extends MultiplayerSynchronizer
 
 var direction := Vector2()
+var aiming_direction := Vector2()
+var shooting := false
 
 func _ready() -> void:
 	if get_multiplayer_authority() != multiplayer.get_unique_id():
