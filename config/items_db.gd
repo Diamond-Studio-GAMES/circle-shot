@@ -31,3 +31,6 @@ const RARITY_COLORS := {
 @export var weapons_heavy: Array[WeaponConfig]
 @export var weapons_support: Array[WeaponConfig]
 @export var weapons_melee: Array[WeaponConfig]
+@export_group("Spawnables", "spawnable_")
+@export_file("*.tscn") var spawnable_projectiles: Array[String]
+@export_file("*.tscn") var spawnable_vfx: Array[String]

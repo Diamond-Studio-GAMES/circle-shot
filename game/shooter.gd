@@ -17,7 +17,6 @@ var is_in_network := false
 var game: Game
 var _players_data := {}
 var _players_not_ready := [] # Array[int]
-@onready var _game_menu: GameMenu = $GameMenu
 @onready var _game_loader: GameLoader = $GameLoader
 
 
@@ -84,9 +83,9 @@ func load_game(game_id: int, map_id: int) -> void:
 		if Global.HEADLESS:
 			_players_not_ready.erase(1)
 		else:
-			_send_player_data(_game_menu.get_player_data())
+			_send_player_data(($GameMenu as GameMenu).get_player_data())
 	else:
-		_send_player_data.rpc_id(1, _game_menu.get_player_data())
+		_send_player_data.rpc_id(1, ($GameMenu as GameMenu).get_player_data())
 
 
 func end_game() -> void:
@@ -110,11 +109,14 @@ func _send_player_data(data: Array) -> void:
 
 
 @rpc("call_local", "reliable")
-func _start_game(players_data: Dictionary) -> void:
+func _start_game() -> void:
 	game_started.emit(true)
 	game = $Game as Game
 	game.game_ended.connect(end_game)
-	game.start_game(players_data)
+	if multiplayer.is_server():
+		game.start_game(_players_data)
+	else:
+		game.start_game()
 	_game_loader.finish_load()
 
 
@@ -122,7 +124,7 @@ func _check_players_ready() -> void:
 	if not multiplayer.is_server():
 		return
 	if _players_not_ready.is_empty():
-		_start_game.rpc(_players_data)
+		_start_game.rpc()
 
 
 func _on_connected_to_server() -> void:
@@ -132,6 +134,7 @@ func _on_connected_to_server() -> void:
 
 func _on_connection_failed() -> void:
 	game_joined.emit(-1)
+	multiplayer.multiplayer_peer = null
 
 
 func _on_peer_disconnected(id: int) -> void:

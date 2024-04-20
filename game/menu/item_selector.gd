@@ -1,3 +1,4 @@
+class_name ItemSelector
 extends Window
 
 

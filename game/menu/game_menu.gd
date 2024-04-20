@@ -19,7 +19,7 @@ var _player_admin_id := -1
 @onready var _ip_edit: LineEdit = $IPDialog/LineEdit
 @onready var _status: Label = $Base/Centering/Main/Status
 @onready var _players_container: GridContainer = $Base/Centering/Lobby/Panel/Players
-@onready var _error_dialog: AcceptDialog = $ErrorDialog
+@onready var _item_selector: ItemSelector = $ItemSelector
 
 
 func _ready() -> void:
@@ -33,7 +33,7 @@ func _ready() -> void:
 		_on_create_pressed.call_deferred()
 
 
-## Returns player data in Array with following content: [br]
+## Returns player data in [type Array] with following content: [br]
 ## Index [code]0[/code]: player name,[br]
 ## Index [code]1[/code]: selected Skin[br]
 ## Index [code]2[/code], [code]3[/code], [code]4[/code] and [code]5[/code]:
@@ -50,10 +50,10 @@ func get_player_data() -> Array:
 
 
 func create_error_dialog(text: String, code := -1) -> void:
-	_error_dialog.dialog_text = text
+	($ErrorDialog as AcceptDialog).dialog_text = text
 	if code > 0:
 		text += " Код ошибки: %d" % code
-	_error_dialog.popup_centered()
+	($ErrorDialog as AcceptDialog).popup_centered()
 
 
 @rpc("reliable")
@@ -252,31 +252,31 @@ func _on_server_disconnected() -> void:
 
 
 func _on_change_game_pressed() -> void:
-	$ItemSelector.open_selection(ItemsDB.Item.GAME, selected_game)
+	_item_selector.open_selection(ItemsDB.Item.GAME, selected_game)
 
 
 func _on_change_map_pressed() -> void:
-	$ItemSelector.open_selection(ItemsDB.Item.MAP, selected_map, selected_game)
+	_item_selector.open_selection(ItemsDB.Item.MAP, selected_map, selected_game)
 
 
 func _on_change_skin_pressed() -> void:
-	$ItemSelector.open_selection(ItemsDB.Item.SKIN, selected_skin)
+	_item_selector.open_selection(ItemsDB.Item.SKIN, selected_skin)
 
 
 func _on_change_light_weapon_pressed() -> void:
-	$ItemSelector.open_selection(ItemsDB.Item.WEAPON_LIGHT, selected_light_weapon)
+	_item_selector.open_selection(ItemsDB.Item.WEAPON_LIGHT, selected_light_weapon)
 
 
 func _on_change_heavy_weapon_pressed() -> void:
-	$ItemSelector.open_selection(ItemsDB.Item.WEAPON_HEAVY, selected_heavy_weapon)
+	_item_selector.open_selection(ItemsDB.Item.WEAPON_HEAVY, selected_heavy_weapon)
 
 
 func _on_change_support_weapon_pressed() -> void:
-	$ItemSelector.open_selection(ItemsDB.Item.WEAPON_SUPPORT, selected_support_weapon)
+	_item_selector.open_selection(ItemsDB.Item.WEAPON_SUPPORT, selected_support_weapon)
 
 
 func _on_change_melee_weapon_pressed() -> void:
-	$ItemSelector.open_selection(ItemsDB.Item.WEAPON_MELEE, selected_melee_weapon)
+	_item_selector.open_selection(ItemsDB.Item.WEAPON_MELEE, selected_melee_weapon)
 
 
 func _on_start_game_pressed() -> void:

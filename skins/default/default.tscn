@@ -1,5 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://c4mcmkcefammv"]
+[gd_scene load_steps=3 format=3 uid="uid://c4mcmkcefammv"]
 
 [ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://player/player.tscn" id="1_8bhyt"]
+[ext_resource type="Texture2D" uid="uid://dw1607atagdix" path="res://skins/default/player_evil.png" id="2_7jhvr"]
 
 [node name="Player" instance=ExtResource("1_8bhyt")]
+
+[node name="PlayerEvil" type="Sprite2D" parent="Visual" index="0"]
+texture = ExtResource("2_7jhvr")

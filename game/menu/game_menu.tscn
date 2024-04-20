@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://c0mui01tvaame"]
 
-[ext_resource type="Script" path="res://game/game_menu.gd" id="1_k78bo"]
+[ext_resource type="Script" path="res://game/menu/game_menu.gd" id="1_k78bo"]
 [ext_resource type="PackedScene" uid="uid://vvk157q87e75" path="res://menu/title.tscn" id="2_3biv4"]
-[ext_resource type="Script" path="res://game/item_selector.gd" id="4_xhoqt"]
+[ext_resource type="PackedScene" uid="uid://sm5vc72d2aw1" path="res://game/menu/item_selector.tscn" id="3_s4psv"]
 
 [node name="GameMenu" type="Control"]
 layout_mode = 3
@@ -511,29 +511,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "Покинуть комнату"
 
-[node name="ItemSelector" type="Window" parent="."]
-position = Vector2i(0, 36)
-size = Vector2i(360, 480)
-visible = false
-popup_window = true
-script = ExtResource("4_xhoqt")
-
-[node name="ScrollContainer" type="ScrollContainer" parent="ItemSelector"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = -8.0
-offset_bottom = -12.0
-grow_horizontal = 2
-grow_vertical = 2
-horizontal_scroll_mode = 0
-
-[node name="Variants" type="GridContainer" parent="ItemSelector/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
+[node name="ItemSelector" parent="." instance=ExtResource("3_s4psv")]
 
 [connection signal="confirmed" from="IPDialog" to="." method="_on_ip_dialog_confirmed"]
 [connection signal="text_changed" from="IPDialog/LineEdit" to="." method="_on_line_edit_text_changed"]

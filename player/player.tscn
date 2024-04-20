@@ -1,15 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://3l0k1cn63ahd"]
+[gd_scene load_steps=6 format=3 uid="uid://3l0k1cn63ahd"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d5iul"]
-[ext_resource type="Texture2D" uid="uid://dw1607atagdix" path="res://skins/default/player_evil.png" id="2_v2yey"]
 [ext_resource type="Script" path="res://player/player_input.gd" id="3_knbu5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_23n60"]
 radius = 76.0
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_c2pj3"]
-properties/0/path = NodePath("PlayerInput:direction")
-properties/0/spawn = true
+properties/0/path = NodePath(".:direction")
+properties/0/spawn = false
 properties/0/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_uh5p1"]
@@ -22,8 +21,17 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath(".:player")
 properties/2/spawn = true
 properties/2/replication_mode = 0
+properties/3/path = NodePath(".:weapons_data")
+properties/3/spawn = true
+properties/3/replication_mode = 0
+properties/4/path = NodePath(".:team")
+properties/4/spawn = true
+properties/4/replication_mode = 0
+properties/5/path = NodePath(".:player_name")
+properties/5/spawn = true
+properties/5/replication_mode = 0
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
 collision_mask = 3
 motion_mode = 1
@@ -55,14 +63,16 @@ theme_override_font_sizes/font_size = 24
 text = "yutyutyuytutyu"
 horizontal_alignment = 1
 
-[node name="Head" type="Sprite2D" parent="."]
-texture = ExtResource("2_v2yey")
+[node name="Visual" type="Node2D" parent="."]
 
-[node name="HandPivot" type="Marker2D" parent="."]
+[node name="HandPivot" type="Marker2D" parent="Visual"]
 position = Vector2(32, 32)
 gizmo_extents = 32.0
 
+[node name="CameraRemoteTransform" type="RemoteTransform2D" parent="."]
+
 [node name="PlayerInput" type="MultiplayerSynchronizer" parent="."]
+root_path = NodePath(".")
 replication_config = SubResource("SceneReplicationConfig_c2pj3")
 script = ExtResource("3_knbu5")
 
