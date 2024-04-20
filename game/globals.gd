@@ -14,7 +14,7 @@ func _ready() -> void:
 		HEADLESS = true
 	
 	save_file = ConfigFile.new()
-	save_file.load(file_name)
+	save_file.load(FILE_NAME)
 	
 
 # Functions for save file operations 
