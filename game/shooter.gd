@@ -16,7 +16,7 @@ const MAX_CLIENTS := 10
 var is_in_network := false
 var game: Game
 var _players_data := {}
-var _players_not_ready := [] # Array[int]
+var _players_not_ready := [] # Array[int] ДА ЛАДНО БЛЯТЬ
 @onready var _game_loader: GameLoader = $GameLoader
 
 
