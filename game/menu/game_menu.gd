@@ -202,7 +202,7 @@ func _on_ip_dialog_confirmed() -> void:
 
 
 func _on_line_edit_text_changed(_new_text: String) -> void:
-	_ip_edit.placeholder_text = "XУЙ.XУЙ.XУЙ.XУЙ"
+	_ip_edit.placeholder_text = "123.456.789.012"
 
 
 func _on_game_created(error: int) -> void:
