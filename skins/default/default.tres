@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_ca7qy")
-skin_name = "Классический"
+skin_name = "Обычный"
 skin_description = "Обычный колобок"
 rarity = 0
 skin_path = "uid://c4mcmkcefammv"

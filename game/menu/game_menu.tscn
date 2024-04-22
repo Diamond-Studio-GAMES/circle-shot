@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c0mui01tvaame"]
+[gd_scene load_steps=5 format=3 uid="uid://c0mui01tvaame"]
 
 [ext_resource type="Script" path="res://game/menu/game_menu.gd" id="1_k78bo"]
 [ext_resource type="PackedScene" uid="uid://vvk157q87e75" path="res://menu/title.tscn" id="2_3biv4"]
 [ext_resource type="PackedScene" uid="uid://sm5vc72d2aw1" path="res://game/menu/item_selector.tscn" id="3_s4psv"]
+[ext_resource type="Script" path="res://game/chat.gd" id="4_1xn6o"]
 
 [node name="GameMenu" type="Control"]
 layout_mode = 3
@@ -13,6 +14,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_k78bo")
 metadata/_edit_lock_ = true
+
+[node name="BG" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="ErrorDialog" type="AcceptDialog" parent="."]
 title = "Ошибка!"
@@ -75,7 +84,6 @@ text = "Твоё имя:"
 [node name="LineEdit" type="LineEdit" parent="Base/Centering/Main/Name"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Колобок"
 max_length = 32
 expand_to_text_length = true
 
@@ -506,12 +514,64 @@ auto_translate_mode = 1
 layout_mode = 2
 text = "Сменить карту..."
 
-[node name="Leave" type="Button" parent="Base/Centering/Lobby"]
+[node name="ControlButtons" type="HBoxContainer" parent="Base/Centering/Lobby"]
 layout_mode = 2
-size_flags_horizontal = 8
+
+[node name="Chat" type="Button" parent="Base/Centering/Lobby/ControlButtons"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_horizontal = 2
+toggle_mode = true
+text = "   Чат   "
+
+[node name="Leave" type="Button" parent="Base/Centering/Lobby/ControlButtons"]
+layout_mode = 2
+size_flags_horizontal = 10
 text = "Покинуть комнату"
 
 [node name="ItemSelector" parent="." instance=ExtResource("3_s4psv")]
+transient = true
+
+[node name="ChatPanel" type="PanelContainer" parent="."]
+auto_translate_mode = 1
+visible = false
+self_modulate = Color(1, 1, 1, 0.878431)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -304.0
+offset_top = -200.0
+offset_right = -8.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("4_1xn6o")
+chat_button_path = NodePath("../Base/Centering/Lobby/ControlButtons/Chat")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ChatPanel"]
+auto_translate_mode = 1
+layout_mode = 2
+
+[node name="Messages" type="RichTextLabel" parent="ChatPanel/VBoxContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+scroll_following = true
+shortcut_keys_enabled = false
+meta_underlined = false
+hint_underlined = false
+selection_enabled = true
+
+[node name="LineEdit" type="LineEdit" parent="ChatPanel/VBoxContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+placeholder_text = "Отправить сообщение в чат..."
 
 [connection signal="confirmed" from="IPDialog" to="." method="_on_ip_dialog_confirmed"]
 [connection signal="text_changed" from="IPDialog/LineEdit" to="." method="_on_line_edit_text_changed"]
@@ -525,5 +585,8 @@ text = "Покинуть комнату"
 [connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/ChangeGame" to="." method="_on_change_game_pressed"]
 [connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/ChangeMap" to="." method="_on_change_map_pressed"]
-[connection signal="pressed" from="Base/Centering/Lobby/Leave" to="." method="_on_leave_pressed"]
+[connection signal="toggled" from="Base/Centering/Lobby/ControlButtons/Chat" to="ChatPanel" method="_on_chat_toggled"]
+[connection signal="pressed" from="Base/Centering/Lobby/ControlButtons/Leave" to="." method="_on_leave_pressed"]
 [connection signal="item_selected" from="ItemSelector" to="." method="_on_item_selected"]
+[connection signal="text_submitted" from="ChatPanel/VBoxContainer/LineEdit" to="ChatPanel" method="_on_line_edit_text_submitted"]
+[connection signal="text_submitted" from="ChatPanel/VBoxContainer/LineEdit" to="ChatPanel/VBoxContainer/LineEdit" method="clear" unbinds=1]

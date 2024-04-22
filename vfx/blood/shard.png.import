@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c40q3nwga77jn"
-path="res://.godot/imported/image.png-5df86f796032e8a069b8ae0210b99d40.ctex"
+uid="uid://vdagnimwlvoy"
+path="res://.godot/imported/shard.png-af768982252794fed27197973fad21a6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://royale/maps/classic/image.png"
-dest_files=["res://.godot/imported/image.png-5df86f796032e8a069b8ae0210b99d40.ctex"]
+source_file="res://vfx/blood/shard.png"
+dest_files=["res://.godot/imported/shard.png-af768982252794fed27197973fad21a6.ctex"]
 
 [params]
 

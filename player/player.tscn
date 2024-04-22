@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://3l0k1cn63ahd"]
+[gd_scene load_steps=11 format=3 uid="uid://3l0k1cn63ahd"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d5iul"]
+[ext_resource type="Texture2D" uid="uid://byjbep0gi5cm3" path="res://vfx/blood/drop.png" id="3_8a6xh"]
 [ext_resource type="Texture2D" uid="uid://d2j3okv8l0sm3" path="res://player/control_indicator.png" id="3_fptox"]
 [ext_resource type="Script" path="res://player/player_input.gd" id="3_knbu5"]
 
@@ -19,27 +20,39 @@ properties/2/replication_mode = 2
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath(".:velocity")
-properties/1/spawn = false
-properties/1/replication_mode = 1
-properties/2/path = NodePath(".:player")
+properties/1/path = NodePath(".:player")
+properties/1/spawn = true
+properties/1/replication_mode = 0
+properties/2/path = NodePath(".:weapons_data")
 properties/2/spawn = true
 properties/2/replication_mode = 0
-properties/3/path = NodePath(".:weapons_data")
+properties/3/path = NodePath(".:team")
 properties/3/spawn = true
 properties/3/replication_mode = 0
-properties/4/path = NodePath(".:team")
+properties/4/path = NodePath(".:player_name")
 properties/4/spawn = true
 properties/4/replication_mode = 0
-properties/5/path = NodePath(".:player_name")
+properties/5/path = NodePath(".:can_control")
 properties/5/spawn = true
-properties/5/replication_mode = 0
-properties/6/path = NodePath(".:can_control")
-properties/6/spawn = true
-properties/6/replication_mode = 2
+properties/5/replication_mode = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_23n60"]
 radius = 76.0
+
+[sub_resource type="Curve" id="Curve_bslwl"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.134328, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.75, 0.0100001), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_33cen"]
+curve = SubResource("Curve_bslwl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fn3uq"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, -32, 0)
+emission_shape = 1
+emission_sphere_radius = 64.0
+gravity = Vector3(0, 98, 0)
+alpha_curve = SubResource("CurveTexture_33cen")
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
@@ -55,6 +68,8 @@ script = ExtResource("3_knbu5")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_uh5p1")
+
+[node name="WeaponTimer" type="Timer" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_23n60")
@@ -80,14 +95,21 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 24
-text = "yutyutyuytutyu"
+text = "Player"
 horizontal_alignment = 1
 
 [node name="Visual" type="Node2D" parent="."]
 
-[node name="HandPivot" type="Marker2D" parent="Visual"]
+[node name="Weapons" type="Marker2D" parent="Visual"]
 position = Vector2(32, 32)
 gizmo_extents = 32.0
+
+[node name="Blood" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 6
+process_material = SubResource("ParticleProcessMaterial_fn3uq")
+texture = ExtResource("3_8a6xh")
+lifetime = 2.0
 
 [node name="ControlIndicator" type="Sprite2D" parent="."]
 visible = false

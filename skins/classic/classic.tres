@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkinConfig" load_steps=2 format=3 uid="uid://bsorviu43e0b1"]
+
+[ext_resource type="Script" path="res://config/skin_config.gd" id="1_308x6"]
+
+[resource]
+script = ExtResource("1_308x6")
+skin_name = "Классический"
+skin_description = "Добрый колобок"
+rarity = 0
+skin_path = "uid://cuqnkho78cmd6"
+image_path = "uid://cux3audvtug0l"

@@ -23,6 +23,14 @@ func post_message(message: String) -> void:
 		tween.tween_property(_chat_button, "self_modulate", Color.WHITE, 0.25)
 
 
+func create_prefix_from_name(player_name: String) -> void:
+	_prefix = "[color=red]%s[/color]: " % player_name
+
+
+func clear_chat() -> void:
+	_messages.text = ""
+
+
 func _on_local_player_created(player: Player) -> void:
 	_prefix = "[color=#%s]%s[/color]: " % [Game.TEAM_COLORS[player.team].to_html(false), player.player_name]
 

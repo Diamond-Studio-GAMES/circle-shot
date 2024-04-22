@@ -7,8 +7,16 @@ auto_translate_mode = 1
 position = Vector2i(0, 36)
 size = Vector2i(360, 480)
 visible = false
+unresizable = true
 popup_window = true
 script = ExtResource("1_5l6gd")
+
+[node name="BG" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 auto_translate_mode = 1

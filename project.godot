@@ -74,6 +74,10 @@ shoot={
 ]
 }
 
+[input_devices]
+
+buffering/agile_event_flushing=true
+
 [layer_names]
 
 2d_physics/layer_1="world"
@@ -83,8 +87,11 @@ shoot={
 2d_physics/layer_5="destructible"
 2d_physics/layer_6="items"
 
+[physics]
+
+common/enable_object_picking=false
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-environment/defaults/default_clear_color=Color(1, 1, 1, 1)

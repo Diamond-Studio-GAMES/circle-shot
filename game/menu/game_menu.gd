@@ -23,8 +23,14 @@ var _player_admin_id := -1
 
 
 func _ready() -> void:
-	_update_game_and_map()
+	($Base/Centering/Main/Name/LineEdit as LineEdit).text = Global.get_string("player_name", "Колобок")
+	selected_skin = Global.get_int("selected_skin")
+	selected_light_weapon = Global.get_int("selected_light_weapon")
+	selected_heavy_weapon = Global.get_int("selected_heavy_weapon")
+	selected_support_weapon = Global.get_int("selected_support_weapon")
+	selected_melee_weapon = Global.get_int("selected_melee_weapon")
 	_update_weapons_and_skin()
+	_update_game_and_map()
 	_ip_dialog.register_text_enter($IPDialog/LineEdit as LineEdit)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
@@ -40,7 +46,7 @@ func _ready() -> void:
 ## selected Light, Heavy, Support and Melee weapons
 func get_player_data() -> Array:
 	return [
-		($Base/Centering/Main/Name/LineEdit as LineEdit).text,
+		_get_player_name(),
 		selected_skin,
 		selected_light_weapon,
 		selected_heavy_weapon,
@@ -63,7 +69,7 @@ func _add_player_entry(id: int, player_name: String) -> void:
 	label.size_flags_horizontal = SIZE_EXPAND_FILL
 	label.name = str(id)
 	if id == multiplayer.get_unique_id():
-		label.text += " [Ты]"
+		label.text += " (Ты)"
 	_players_container.add_child(label)
 
 
@@ -81,6 +87,7 @@ func _register_new_player(player_name: String) -> void:
 		_add_player_entry.rpc_id(id, i, _players[i])
 	_set_environment.rpc_id(id, selected_game, selected_map)
 	_players[id] = player_name
+	($ChatPanel as Chat).post_message.rpc("Игра: Игрок [color=green]%s[/color] подключился!" % player_name)
 	if _players.size() == 1:
 		_player_admin_id = id
 		if multiplayer.is_server():
@@ -98,7 +105,10 @@ func _register_new_player(player_name: String) -> void:
 func _set_admin(admin: bool) -> void:
 	($Base/Centering/Lobby/AdminPanel as HBoxContainer).visible = admin
 	($Base/Centering/Lobby/ClientHint as Label).visible = not admin
-	($Base/Centering/Lobby/ClientHint as Label).text = "Начать игру может только хост."
+	if admin:
+		_request_set_environment(Global.get_int("selected_game"), Global.get_int("selected_map"))
+	else:
+		($Base/Centering/Lobby/ClientHint as Label).text = "Начать игру может только хост."
 
 
 @rpc("any_peer", "reliable")
@@ -132,12 +142,14 @@ func _update_game_and_map() -> void:
 	($Base/Centering/Lobby/Environment/Game as TextureRect).texture = load(game.image_path) as Texture2D
 	($Base/Centering/Lobby/Environment/Game/Container/Name as Label).text = game.game_name
 	($Base/Centering/Lobby/Environment/Game/Container/Description as Label).text = game.game_description
+	Global.set_int("selected_game", selected_game)
 	
 	($Base/Centering/Lobby/Environment/Map as TextureRect).texture = \
 			load(game.maps[selected_map].image_path) as Texture2D
 	($Base/Centering/Lobby/Environment/Map/Container/Name as Label).text = game.maps[selected_map].map_name
 	($Base/Centering/Lobby/Environment/Map/Container/Description as Label).text = \
 			game.maps[selected_map].map_description
+	Global.set_int("selected_map", selected_map)
 
 
 func _update_weapons_and_skin() -> void:
@@ -147,6 +159,7 @@ func _update_weapons_and_skin() -> void:
 			ItemsDB.RARITY_COLORS[light_weapon.rarity]
 	($Base/Centering/Lobby/Player/LightWeapon as TextureRect).texture = \
 			load(light_weapon.image_path) as Texture2D
+	Global.set_int("selected_light_weapon", selected_light_weapon)
 	
 	var heavy_weapon: WeaponConfig = Global.items_db.weapons_heavy[selected_heavy_weapon]
 	($Base/Centering/Lobby/Player/HeavyWeapon/Name as Label).text = heavy_weapon.weapon_name
@@ -154,6 +167,7 @@ func _update_weapons_and_skin() -> void:
 			ItemsDB.RARITY_COLORS[heavy_weapon.rarity]
 	($Base/Centering/Lobby/Player/HeavyWeapon as TextureRect).texture = \
 			load(heavy_weapon.image_path) as Texture2D
+	Global.set_int("selected_heavy_weapon", selected_heavy_weapon)
 	
 	var support_weapon: WeaponConfig = Global.items_db.weapons_support[selected_support_weapon]
 	($Base/Centering/Lobby/Player/SupportWeapon/Name as Label).text = support_weapon.weapon_name
@@ -161,6 +175,7 @@ func _update_weapons_and_skin() -> void:
 			ItemsDB.RARITY_COLORS[support_weapon.rarity]
 	($Base/Centering/Lobby/Player/SupportWeapon as TextureRect).texture = \
 			load(support_weapon.image_path) as Texture2D
+	Global.set_int("selected_support_weapon", selected_support_weapon)
 	
 	var melee_weapon: WeaponConfig = Global.items_db.weapons_melee[selected_melee_weapon]
 	($Base/Centering/Lobby/Player/MeleeWeapon/Name as Label).text = melee_weapon.weapon_name
@@ -168,6 +183,7 @@ func _update_weapons_and_skin() -> void:
 			ItemsDB.RARITY_COLORS[melee_weapon.rarity]
 	($Base/Centering/Lobby/Player/MeleeWeapon as TextureRect).texture = \
 			load(melee_weapon.image_path) as Texture2D
+	Global.set_int("selected_melee_weapon", selected_melee_weapon)
 	
 	var skin: SkinConfig = Global.items_db.skins[selected_skin]
 	($Base/Centering/Lobby/Player/Skin/Name as Label).text = skin.skin_name
@@ -175,14 +191,25 @@ func _update_weapons_and_skin() -> void:
 			ItemsDB.RARITY_COLORS[skin.rarity]
 	($Base/Centering/Lobby/Player/Skin as TextureRect).texture = \
 			load(skin.image_path) as Texture2D
+	Global.set_int("selected_skin", selected_skin)
+
+
+func _get_player_name() -> String:
+	return ($Base/Centering/Main/Name/LineEdit as LineEdit).text.strip_edges().strip_escapes()
 
 
 func _on_create_pressed() -> void:
+	if _get_player_name().is_empty():
+		create_error_dialog("Недопустимое имя!")
+		return
 	_status.text = "Создание сервера..."
 	game_create_requested.emit()
 
 
 func _on_join_pressed() -> void:
+	if _get_player_name().strip_edges().is_empty():
+		create_error_dialog("Недопустимое имя!")
+		return
 	_ip_dialog.popup_centered()
 	_ip_edit.grab_focus()
 
@@ -212,8 +239,11 @@ func _on_game_created(error: int) -> void:
 		return
 	($Base/Centering/Lobby as Control).show()
 	($Base/Centering/Main as Control).hide()
+	($ChatPanel as Chat).create_prefix_from_name(_get_player_name())
+	Global.set_string("player_name", _get_player_name())
+	_players.clear()
 	if not Global.HEADLESS:
-		_register_new_player(($Base/Centering/Main/Name/LineEdit as LineEdit).text)
+		_register_new_player(_get_player_name())
 
 
 func _on_game_joined(error: int) -> void:
@@ -221,16 +251,21 @@ func _on_game_joined(error: int) -> void:
 	if error:
 		create_error_dialog("Невозможно подключиться к серверу!", error)
 		return
-	($Base/Centering/Lobby/ClientHint as Label).text = "Ожидание сервера... [возможно, игра уже началась]!"
+	($Base/Centering/Lobby/ClientHint as Label).text = "Ожидание сервера... (возможно, игра уже началась)!"
 	($Base/Centering/Lobby as Control).show()
 	($Base/Centering/Main as Control).hide()
-	_register_new_player.rpc_id(1, ($Base/Centering/Main/Name/LineEdit as LineEdit).text)
+	($ChatPanel as Chat).create_prefix_from_name(_get_player_name())
+	Global.set_string("player_name", _get_player_name())
+	_register_new_player.rpc_id(1, _get_player_name())
 
 
 func _on_connection_closed() -> void:
 	show()
 	for i: Node in _players_container.get_children():
 		i.queue_free()
+	($ChatPanel as Chat).clear_chat()
+	($Base/Centering/Lobby/ControlButtons/Chat as Button).toggled.emit(false)
+	($Base/Centering/Lobby/ControlButtons/Chat as Button).button_pressed = false
 	($Base/Centering/Lobby as Control).hide()
 	($Base/Centering/Main as Control).show()
 
@@ -238,6 +273,7 @@ func _on_connection_closed() -> void:
 func _on_peer_disconnected(id: int) -> void:
 	if not multiplayer.is_server():
 		return
+	($ChatPanel as Chat).post_message.rpc("Игра: Игрок [color=green]%s[/color] отключился!" % _players[id])
 	_players.erase(id)
 	if id == _player_admin_id:
 		_player_admin_id = (_players.keys() as Array[int])[0]

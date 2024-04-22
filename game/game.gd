@@ -20,9 +20,10 @@ var local_player: Player
 var game_started := false
 var _players_data := {}
 var _players := {}
+@onready var _chat: Chat = $GameUI/Main/ChatPanel
 
-# Why _ready don't work???
-func _enter_tree() -> void:
+
+func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
 	var player_spawner: MultiplayerSpawner = $PlayerSpawner
@@ -31,9 +32,9 @@ func _enter_tree() -> void:
 	var projectiles_spawner: MultiplayerSpawner = $ProjectilesSpawner
 	for i: String in Global.items_db.spawnable_projectiles:
 		projectiles_spawner.add_spawnable_scene(ResourceUID.get_id_path(ResourceUID.text_to_id(i)))
-	var vfx_spawner: MultiplayerSpawner = $VFXSpawner
-	for i: String in Global.items_db.spawnable_vfx:
-		vfx_spawner.add_spawnable_scene(ResourceUID.get_id_path(ResourceUID.text_to_id(i)))
+	var other_spawner: MultiplayerSpawner = $OtherSpawner
+	for i: String in Global.items_db.spawnable_other:
+		other_spawner.add_spawnable_scene(ResourceUID.get_id_path(ResourceUID.text_to_id(i)))
 
 
 func init_game(players_data := {}) -> void:
@@ -63,6 +64,7 @@ func spawn_player(id: int) -> void:
 	player.can_control = game_started
 	_players[id] = player
 	$Players.add_child(player, true)
+	player.killed.connect(_on_player_killed)
 
 
 func set_local_player(player: Player) -> void:
@@ -102,10 +104,24 @@ func _get_spawn_point(_id: int) -> Vector2:
 	return Vector2()
 
 
+func _on_player_killed(who: int, by: int) -> void:
+	_chat.post_message.rpc("Игра: [color=#%s]%s[/color] убивает игрока [color=#%s]%s[/color]!" % [
+		TEAM_COLORS[_players_data[by][6]].to_html(false),
+		_players_data[by][0],
+		TEAM_COLORS[_players_data[who][6]].to_html(false),
+		_players_data[who][0],
+	])
+
+
 func _on_peer_disconnected(id: int) -> void:
 	if not multiplayer.is_server():
 		return
+	_chat.post_message.rpc("Игра: Игрок [color=#%s]%s[/color] отключился!" % [
+		TEAM_COLORS[_players_data[id][6]].to_html(false),
+		_players_data[id][0],
+	])
 	if id in _players:
-		_players[id].queue_free()
+		if is_instance_valid(_players[id]):
+			_players[id].queue_free()
 		_players.erase(id)
 	_players_data.erase(id)

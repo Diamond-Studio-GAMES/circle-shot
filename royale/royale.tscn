@@ -1,7 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://cm83ly2pk1dlo"]
+[gd_scene load_steps=6 format=3 uid="uid://yfpyfv6boyao"]
 
 [ext_resource type="PackedScene" uid="uid://d3nsak46hbo2c" path="res://game/game.tscn" id="1_5uf7s"]
 [ext_resource type="Script" path="res://royale/royale.gd" id="2_d2r5a"]
+[ext_resource type="Script" path="res://player/weapon/attack_area.gd" id="3_u4qop"]
+[ext_resource type="Texture2D" uid="uid://d01n7clmawdjx" path="res://vfx/blood/vignette.png" id="4_tdjad"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oocr0"]
+size = Vector2(800, 800)
 
 [node name="Game" instance=ExtResource("1_5uf7s")]
 script = ExtResource("2_d2r5a")
+metadata/_edit_vertical_guides_ = [-6400.0, 6400.0]
+metadata/_edit_horizontal_guides_ = [-6400.0, 6400.0]
+
+[node name="AttackArea" type="Area2D" parent="." index="8"]
+position = Vector2(1680, 400)
+script = ExtResource("3_u4qop")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" index="0"]
+shape = SubResource("RectangleShape2D_oocr0")
+
+[node name="Sprite2D" type="Sprite2D" parent="AttackArea" index="1"]
+self_modulate = Color(1, 1, 0, 1)
+position = Vector2(1.12057e-05, -4.58956e-06)
+scale = Vector2(0.833333, 1.48148)
+texture = ExtResource("4_tdjad")

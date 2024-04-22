@@ -1,0 +1,10 @@
+[gd_resource type="NoiseTexture2D" load_steps=2 format=3 uid="uid://bew6f3wt1larh"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_egjar"]
+noise_type = 2
+
+[resource]
+height = 288
+generate_mipmaps = false
+seamless = true
+noise = SubResource("FastNoiseLite_egjar")

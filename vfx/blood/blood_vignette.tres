@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cmd5ms7ovbyru"]
+
+[ext_resource type="Shader" path="res://vfx/blood/blood_vignette.gdshader" id="1_8scdv"]
+[ext_resource type="Texture2D" uid="uid://bew6f3wt1larh" path="res://vfx/blood/noise.tres" id="2_rbbqx"]
+
+[resource]
+shader = ExtResource("1_8scdv")
+shader_parameter/time_multiplier = 0.05
+shader_parameter/alpha_multiplier = 0.375
+shader_parameter/noise_scale = 0.5
+shader_parameter/alpha_total_multiplier = 0.5
+shader_parameter/noise = ExtResource("2_rbbqx")

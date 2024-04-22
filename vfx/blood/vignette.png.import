@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b8xuly3rioypj"
-path="res://.godot/imported/tiles.png-8a3f406fe9530fe78f53b49c236ab2a7.ctex"
+uid="uid://d01n7clmawdjx"
+path="res://.godot/imported/vignette.png-63254ca8eb332db1f13375a138802837.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://royale/maps/classic/tiles.png"
-dest_files=["res://.godot/imported/tiles.png-8a3f406fe9530fe78f53b49c236ab2a7.ctex"]
+source_file="res://vfx/blood/vignette.png"
+dest_files=["res://.godot/imported/vignette.png-63254ca8eb332db1f13375a138802837.ctex"]
 
 [params]
 

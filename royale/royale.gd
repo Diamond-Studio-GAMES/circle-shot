@@ -3,6 +3,10 @@ extends Game
 var _spawn_points: Array[Node]
 var _spawn_counter := 0 
 
+func _ready() -> void:
+	super()
+
+
 func _make_teams() -> void:
 	_spawn_points = $Map/SpawnPoints.get_children()
 	_spawn_points.shuffle()
