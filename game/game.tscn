@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d3nsak46hbo2c"]
+[gd_scene load_steps=16 format=3 uid="uid://d3nsak46hbo2c"]
 
 [ext_resource type="Script" path="res://game/game.gd" id="1_kxt6o"]
 [ext_resource type="Script" path="res://game/game_ui.gd" id="2_82bb5"]
@@ -7,6 +7,7 @@
 [ext_resource type="Material" uid="uid://cmd5ms7ovbyru" path="res://vfx/blood/blood_vignette.tres" id="3_wrcxj"]
 [ext_resource type="Texture2D" uid="uid://d4b1wfymlf7bu" path="res://player/health_bar_empty.png" id="5_os8qt"]
 [ext_resource type="Texture2D" uid="uid://low3v5d2q65l" path="res://player/health_bar.png" id="6_igi7v"]
+[ext_resource type="Texture2D" uid="uid://p85ppsyx0g2n" path="res://player/weapon_bg.png" id="7_nj1v0"]
 
 [sub_resource type="Animation" id="Animation_j6hmo"]
 resource_name = "Death"
@@ -309,6 +310,53 @@ text = "100/100"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="CurrentWeapon" type="TextureButton" parent="GameUI/Main/Player"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -232.0
+offset_bottom = -88.0
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("7_nj1v0")
+
+[node name="Icon" type="TextureRect" parent="GameUI/Main/Player/CurrentWeapon"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameUI/Main/Player/CurrentWeapon"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "120/60"
+
 [node name="PlayerTint" type="ColorRect" parent="GameUI/Main"]
 layout_mode = 1
 anchors_preset = 15
@@ -354,14 +402,17 @@ auto_translate_mode = 1
 visible = false
 self_modulate = Color(1, 1, 1, 0.878431)
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -496.0
-offset_top = 120.0
-offset_right = -16.0
-offset_bottom = 520.0
-grow_horizontal = 0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -200.0
+offset_right = 240.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("3_8d55t")
 chat_button_path = NodePath("../Chat")
 

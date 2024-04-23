@@ -5,6 +5,8 @@ extends CharacterBody2D
 signal health_changed(old_value: int, new_value: int)
 signal killed(who: int, by: int)
 signal died(who: int)
+signal weapon_changed(type: ItemsDB.Item)
+signal ammo_text_updated(text: String)
 @export var SPEED := 640.0
 # Sync on start
 var player := 1:
@@ -19,7 +21,7 @@ var can_control := true
 var current_health := 100
 var max_health := 100
 var speed_multiplier := 1.0
-var can_operate_weapon := true
+var weapon_locked := false
 var _going_to_die := false
 var _current_weapon: Weapon
 # VFX
