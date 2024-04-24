@@ -11,5 +11,5 @@ damage = 38
 damage_type = 0
 ammo_per_charge = 13
 ammo_total = 52
-weapon_path = ""
+weapon_path = "uid://bsgtxdfb2n4u3"
 image_path = "uid://b74jcdw45c73w"

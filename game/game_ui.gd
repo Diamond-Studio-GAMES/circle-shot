@@ -1,9 +1,15 @@
-class_name GameUI
-extends CanvasLayer
+extends Node
 
+
+var _player: Player
 @onready var _health_bar: TextureProgressBar = $Main/Player/HealthBar
 @onready var _health_text: Label = $Main/Player/HealthBar/Label
 @onready var _tint_anim: AnimationPlayer = $Main/PlayerTint/AnimationPlayer
+@onready var _ammo_text: Label = $Main/Player/CurrentWeapon/Label
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	pass
 
 
 func _on_leave_game_pressed() -> void:
@@ -19,6 +25,12 @@ func _on_local_player_created(player: Player) -> void:
 	_tint_anim.play("RESET")
 	player.health_changed.connect(_on_player_health_changed)
 	player.died.connect(_on_player_died)
+	player.ammo_text_updated.connect(_on_ammo_text_updated)
+	player.weapon_changed.connect(_on_weapon_changed)
+	# Weapon image setup
+	
+	
+	_player = player
 
 
 func _on_player_health_changed(old_value: int, new_value: int) -> void:
@@ -35,3 +47,23 @@ func _on_player_health_changed(old_value: int, new_value: int) -> void:
 func _on_player_died(_who: int) -> void:
 	($Main/Player as Control).hide()
 	_tint_anim.play("Death")
+
+
+func _on_ammo_text_updated(text: String) -> void:
+	_ammo_text.text = text
+
+
+func _on_weapon_changed(to: Weapon.Type) -> void:
+	pass
+
+
+func open_weapon_selection() -> void:
+	($Main/Player/WeaponSelection as Control).show()
+	($Main/Player/CurrentWeapon as Control).hide()
+
+
+func select_weapon(type: Weapon.Type) -> void:
+	($Main/Player/WeaponSelection as Control).hide()
+	($Main/Player/CurrentWeapon as Control).show()
+	if is_instance_valid(_player):
+		_player.request_change_weapon(type)

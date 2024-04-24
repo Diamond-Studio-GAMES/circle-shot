@@ -37,10 +37,14 @@ func _on_local_player_created(player: Player) -> void:
 
 func _on_chat_toggled(toggled_on: bool) -> void:
 	visible = toggled_on
+	if toggled_on:
+		($VBoxContainer/LineEdit as Control).grab_focus()
 
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
-	var message := _prefix + new_text.replace("[", "[lb]")
+	var message := _prefix + new_text.strip_edges().strip_escapes().replace("[", "[lb]")
+	if message == _prefix:
+		return
 	if multiplayer.is_server():
 		_request_post_message(message)
 	else:

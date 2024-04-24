@@ -1,6 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://3l0k1cn63ahd"]
+[gd_scene load_steps=13 format=3 uid="uid://3l0k1cn63ahd"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_d5iul"]
+[ext_resource type="PackedScene" uid="uid://bp6v2plelkof8" path="res://vfx/blood/blood_shards.tscn" id="2_c1fvu"]
+[ext_resource type="PackedScene" uid="uid://ctqgs3w1llfuf" path="res://vfx/blood/death_blood.tscn" id="3_5avli"]
 [ext_resource type="Texture2D" uid="uid://byjbep0gi5cm3" path="res://vfx/blood/drop.png" id="3_8a6xh"]
 [ext_resource type="Texture2D" uid="uid://d2j3okv8l0sm3" path="res://player/control_indicator.png" id="3_fptox"]
 [ext_resource type="Script" path="res://player/player_input.gd" id="3_knbu5"]
@@ -12,9 +14,12 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath(".:aiming_direction")
 properties/1/spawn = false
 properties/1/replication_mode = 1
-properties/2/path = NodePath(".:shooting")
+properties/2/path = NodePath(".:is_shooting")
 properties/2/spawn = false
 properties/2/replication_mode = 2
+properties/3/path = NodePath(".:is_aiming")
+properties/3/spawn = false
+properties/3/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_uh5p1"]
 properties/0/path = NodePath(".:position")
@@ -60,6 +65,8 @@ collision_mask = 3
 motion_mode = 1
 platform_on_leave = 2
 script = ExtResource("1_d5iul")
+_hurt_vfx = ExtResource("2_c1fvu")
+_death_vfx = ExtResource("3_5avli")
 
 [node name="PlayerInput" type="MultiplayerSynchronizer" parent="."]
 root_path = NodePath(".")
@@ -118,3 +125,5 @@ position = Vector2(0, 96)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fptox")
 offset = Vector2(0, 32)
+
+[connection signal="timeout" from="WeaponTimer" to="." method="_on_weapon_timer_timeout"]

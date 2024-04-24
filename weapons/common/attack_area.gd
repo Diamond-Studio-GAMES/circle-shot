@@ -1,20 +1,8 @@
-extends Area2D
+extends Attack
 
-@export var damage: int = 10
+
 @export var interval: float = 1.0
-@export var who := -1
-@export var team := -1
-@export_flags_2d_physics var target_mask := 2
 var _players := {}
-
-func _ready() -> void:
-	collision_layer = 4
-	collision_mask = target_mask
-	monitorable = false
-	if not multiplayer.is_server():
-		return
-	body_entered.connect(_on_body_entered)
-	body_exited.connect(_on_body_exited)
 
 
 func _physics_process(delta: float) -> void:

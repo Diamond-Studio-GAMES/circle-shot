@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://dbtrtohutlbyt" path="res://skins/default/default.tres" id="3_4g07f"]
 [ext_resource type="Resource" uid="uid://bsorviu43e0b1" path="res://skins/classic/classic.tres" id="4_4h4k1"]
 [ext_resource type="Resource" uid="uid://cico6bxoxthxp" path="res://weapons/ak_74/ak_74.tres" id="4_lef67"]
-[ext_resource type="Resource" uid="uid://ec5r1p2ay37a" path="res://weapons/p350/p350.tres" id="5_e2ndw"]
+[ext_resource type="Resource" uid="uid://ec5r1p2ay37a" path="res://weapons/p_350/p_350.tres" id="5_e2ndw"]
 [ext_resource type="Resource" uid="uid://bb4c32cmatk2p" path="res://weapons/shotgun/shotgun.tres" id="5_rs7cj"]
 [ext_resource type="Resource" uid="uid://gkuvrx6p0txb" path="res://weapons/sniper_rifle/sniper_rifle.tres" id="6_qn14x"]
 [ext_resource type="Resource" uid="uid://bqt35gylr4la" path="res://weapons/knife/knife.tres" id="6_svctq"]

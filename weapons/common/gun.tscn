@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckvaaln275hfv"]
+
+[ext_resource type="Script" path="res://weapons/common/gun.gd" id="1_in83w"]
+
+[node name="Gun" type="Node2D"]
+script = ExtResource("1_in83w")
+
+[node name="Aim" type="Line2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://d3nsak46hbo2c"]
+[gd_scene load_steps=19 format=3 uid="uid://d3nsak46hbo2c"]
 
 [ext_resource type="Script" path="res://game/game.gd" id="1_kxt6o"]
 [ext_resource type="Script" path="res://game/game_ui.gd" id="2_82bb5"]
@@ -8,6 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://d4b1wfymlf7bu" path="res://player/health_bar_empty.png" id="5_os8qt"]
 [ext_resource type="Texture2D" uid="uid://low3v5d2q65l" path="res://player/health_bar.png" id="6_igi7v"]
 [ext_resource type="Texture2D" uid="uid://p85ppsyx0g2n" path="res://player/weapon_bg.png" id="7_nj1v0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0kb2l"]
+size = Vector2(288, 144)
 
 [sub_resource type="Animation" id="Animation_j6hmo"]
 resource_name = "Death"
@@ -62,6 +65,13 @@ _data = {
 "Hurt": SubResource("Animation_42oh0"),
 "RESET": SubResource("Animation_koxqv")
 }
+
+[sub_resource type="InputEventAction" id="InputEventAction_gbih3"]
+action = &"chat"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_46aca"]
+events = [SubResource("InputEventAction_gbih3")]
 
 [sub_resource type="Animation" id="Animation_4bxhi"]
 resource_name = "Intro"
@@ -310,7 +320,7 @@ text = "100/100"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CurrentWeapon" type="TextureButton" parent="GameUI/Main/Player"]
+[node name="CurrentWeapon" type="TextureRect" parent="GameUI/Main/Player"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -322,7 +332,8 @@ offset_top = -232.0
 offset_bottom = -88.0
 grow_horizontal = 0
 grow_vertical = 2
-texture_normal = ExtResource("7_nj1v0")
+mouse_filter = 2
+texture = ExtResource("7_nj1v0")
 
 [node name="Icon" type="TextureRect" parent="GameUI/Main/Player/CurrentWeapon"]
 layout_mode = 1
@@ -356,6 +367,240 @@ grow_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
 text = "120/60"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GameUI/Main/Player/CurrentWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="WeaponSelection" type="Control" parent="GameUI/Main/Player"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="LightWeapon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -232.0
+offset_bottom = -88.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_nj1v0")
+
+[node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/LightWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/LightWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GameUI/Main/Player/WeaponSelection/LightWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="HeavyWeapon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -88.0
+offset_bottom = 56.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_nj1v0")
+
+[node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/HeavyWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/HeavyWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GameUI/Main/Player/WeaponSelection/HeavyWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="SupportWeapon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = 56.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_nj1v0")
+
+[node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/SupportWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/SupportWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GameUI/Main/Player/WeaponSelection/SupportWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="MeleeWeapon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = 200.0
+offset_bottom = 344.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_nj1v0")
+
+[node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/MeleeWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/MeleeWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GameUI/Main/Player/WeaponSelection/MeleeWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
 
 [node name="PlayerTint" type="ColorRect" parent="GameUI/Main"]
 layout_mode = 1
@@ -395,6 +640,8 @@ offset_right = -16.0
 offset_bottom = 116.0
 grow_horizontal = 0
 toggle_mode = true
+shortcut = SubResource("Shortcut_46aca")
+shortcut_in_tooltip = false
 text = "Чат"
 
 [node name="ChatPanel" type="PanelContainer" parent="GameUI/Main"]
@@ -559,6 +806,11 @@ libraries = {
 
 [connection signal="local_player_created" from="." to="GameUI" method="_on_local_player_created"]
 [connection signal="local_player_created" from="." to="GameUI/Main/ChatPanel" method="_on_local_player_created"]
+[connection signal="pressed" from="GameUI/Main/Player/CurrentWeapon/TouchScreenButton" to="GameUI" method="open_weapon_selection"]
+[connection signal="pressed" from="GameUI/Main/Player/WeaponSelection/LightWeapon/TouchScreenButton" to="GameUI" method="select_weapon" binds= [0]]
+[connection signal="pressed" from="GameUI/Main/Player/WeaponSelection/HeavyWeapon/TouchScreenButton" to="GameUI" method="select_weapon" binds= [1]]
+[connection signal="pressed" from="GameUI/Main/Player/WeaponSelection/SupportWeapon/TouchScreenButton" to="GameUI" method="select_weapon" binds= [2]]
+[connection signal="pressed" from="GameUI/Main/Player/WeaponSelection/MeleeWeapon/TouchScreenButton" to="GameUI" method="select_weapon" binds= [3]]
 [connection signal="pressed" from="GameUI/Main/LeaveGame" to="GameUI" method="_on_leave_game_pressed"]
 [connection signal="toggled" from="GameUI/Main/Chat" to="GameUI/Main/ChatPanel" method="_on_chat_toggled"]
 [connection signal="text_submitted" from="GameUI/Main/ChatPanel/VBoxContainer/LineEdit" to="GameUI/Main/ChatPanel" method="_on_line_edit_text_submitted"]

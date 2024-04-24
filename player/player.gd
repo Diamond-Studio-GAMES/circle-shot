@@ -5,7 +5,7 @@ extends CharacterBody2D
 signal health_changed(old_value: int, new_value: int)
 signal killed(who: int, by: int)
 signal died(who: int)
-signal weapon_changed(type: ItemsDB.Item)
+signal weapon_changed(type: Weapon.Type)
 signal ammo_text_updated(text: String)
 @export var SPEED := 640.0
 # Sync on start
@@ -21,14 +21,14 @@ var can_control := true
 var current_health := 100
 var max_health := 100
 var speed_multiplier := 1.0
-var weapon_locked := false
+var can_use_weapon := true
 var _going_to_die := false
 var _current_weapon: Weapon
 # VFX
-var _hurt_vfx: PackedScene = preload("uid://bp6v2plelkof8")
-var _death_vfx: PackedScene = preload("uid://ctqgs3w1llfuf")
+@export var _hurt_vfx: PackedScene
+@export var _death_vfx: PackedScene
 @onready var remote_transform: RemoteTransform2D = $RemoteTransform
-@onready var player_input: PlayerInput = $PlayerInput
+@onready var input: PlayerInput = $PlayerInput
 @onready var _visual: Node2D = $Visual
 @onready var _blood: GPUParticles2D = $Blood
 @onready var _weapon_timer: Timer = $WeaponTimer
@@ -39,6 +39,18 @@ var _death_vfx: PackedScene = preload("uid://ctqgs3w1llfuf")
 func _ready() -> void:
 	($Name/Label as Label).text = player_name
 	($Name/Label as Label).self_modulate = Game.TEAM_COLORS[team]
+	
+	var light_weapon_scene: PackedScene = load(Global.items_db.weapons_light[weapons_data[0]].weapon_path)
+	var light_weapon: Weapon = light_weapon_scene.instantiate()
+	$Visual/Weapons.add_child(light_weapon)
+	light_weapon.player = self
+	
+	# Other Weapons
+	
+	_current_weapon = light_weapon
+	_current_weapon.make_current()
+	weapon_changed.emit(Weapon.Type.LIGHT)
+	
 	if player == multiplayer.get_unique_id():
 		(get_tree().current_scene as Shooter).game.set_local_player(self)
 		($ControlIndicator as Node2D).show()
@@ -46,9 +58,11 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	velocity = player_input.direction.normalized() * SPEED * speed_multiplier * int(can_control)
-	if velocity.x != 0:
+	velocity = input.direction.normalized() * SPEED * speed_multiplier * int(can_control)
+	if velocity.x != 0.0:
 		_visual.scale.x = -1 if velocity.x < 0 else 1
+	if input.is_aiming:
+		_visual.scale.x = -1 if input.aiming_direction.x < 0 else 1
 	move_and_slide()
 
 
@@ -97,3 +111,41 @@ func heal(amount: int) -> void:
 		return
 	var new_health := clampi(current_health + amount, 0, max_health)
 	set_health.rpc(new_health)
+
+
+func request_change_weapon(to: Weapon.Type) -> void:
+	if not multiplayer.is_server():
+		_change_weapon_requested.rpc_id(1, to)
+	else:
+		if not can_use_weapon:
+			return
+		change_weapon.rpc(to)
+
+
+@rpc("call_local", "reliable", "authority", 2)
+func change_weapon(to: Weapon.Type) -> void:
+	_current_weapon.unmake_current()
+	_current_weapon = _weapons.get_child(to)
+	_current_weapon.make_current()
+	weapon_changed.emit(to)
+	ammo_text_updated.emit(_current_weapon.get_ammo_text())
+
+
+func lock_weapon_use(time: float) -> void:
+	can_use_weapon = false
+	_weapon_timer.start(time + _weapon_timer.time_left)
+
+
+@rpc("any_peer", "reliable", "call_remote", 2)
+func _change_weapon_requested(to: Weapon.Type) -> void:
+	if not multiplayer.is_server():
+		return
+	if not can_use_weapon:
+		return
+	if player != multiplayer.get_remote_sender_id():
+		return
+	change_weapon.rpc(to)
+
+
+func _on_weapon_timer_timeout() -> void:
+	can_use_weapon = true
