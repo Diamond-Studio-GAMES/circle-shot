@@ -15,6 +15,9 @@ metadata/_edit_horizontal_guides_ = [-6400.0, 6400.0]
 
 [node name="AttackArea" type="Area2D" parent="." index="8"]
 position = Vector2(1680, 400)
+collision_layer = 4
+collision_mask = 2
+monitorable = false
 script = ExtResource("3_u4qop")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" index="0"]

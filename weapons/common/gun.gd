@@ -6,19 +6,21 @@ extends Weapon
 @export var shoot_interval: float = 0.5
 @export var ammo_per_shot: int = 1
 var _shoot_timer: float = 0.0
+@onready var _shoot_point: Marker2D = $ShootPoint
 @onready var _anim: AnimationPlayer = $AnimationPlayer
 @onready var _aim: Node2D = $Aim
 
 
 func _process(delta: float) -> void:
-	_aim.visible = player.input.is_aiming and player.can_use_weapon
+	_aim.visible = player.input.is_aiming and _can_use_weapon()
 	if _aim.visible:
 		var aim_direction: Vector2 = player.input.aiming_direction
 		aim_direction.x = absf(aim_direction.x) 
 		rotation = aim_direction.angle()
 	_shoot_timer -= delta
 	if multiplayer.is_server():
-		if player.input.is_shooting and _shoot_timer <= 0.0 and ammo >= ammo_per_shot:
+		if player.input.is_shooting and _shoot_timer <= 0.0 \
+				and ammo >= ammo_per_shot and _can_use_weapon():
 			shoot()
 
 

@@ -24,6 +24,7 @@ var speed_multiplier := 1.0
 var can_use_weapon := true
 var _going_to_die := false
 var _current_weapon: Weapon
+var _current_weapon_type: Weapon.Type
 # VFX
 @export var _hurt_vfx: PackedScene
 @export var _death_vfx: PackedScene
@@ -48,6 +49,7 @@ func _ready() -> void:
 	# Other Weapons
 	
 	_current_weapon = light_weapon
+	_current_weapon_type = Weapon.Type.LIGHT
 	_current_weapon.make_current()
 	weapon_changed.emit(Weapon.Type.LIGHT)
 	
@@ -87,7 +89,7 @@ func set_health(health: int) -> void:
 		hurt_vfx.position = position
 		_vfx_parent.add_child(hurt_vfx)
 	else:
-		pass
+		pass # Heal vfx
 	current_health = health
 	if current_health < max_health * 0.33:
 		_blood.emitting = true
@@ -114,6 +116,8 @@ func heal(amount: int) -> void:
 
 
 func request_change_weapon(to: Weapon.Type) -> void:
+	if to == _current_weapon_type:
+		return
 	if not multiplayer.is_server():
 		_change_weapon_requested.rpc_id(1, to)
 	else:
@@ -139,6 +143,8 @@ func lock_weapon_use(time: float) -> void:
 @rpc("any_peer", "reliable", "call_remote", 2)
 func _change_weapon_requested(to: Weapon.Type) -> void:
 	if not multiplayer.is_server():
+		return
+	if to == _current_weapon_type:
 		return
 	if not can_use_weapon:
 		return

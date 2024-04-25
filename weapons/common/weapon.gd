@@ -46,3 +46,7 @@ func _shoot() -> void:
 
 func _make_current() -> void:
 	pass
+
+
+func _can_use_weapon() -> bool:
+	return player.can_use_weapon and player.can_control

@@ -115,6 +115,7 @@ _data = {
 [node name="DeathBlood" type="Node2D"]
 
 [node name="Death" type="Sprite2D" parent="."]
+z_index = -2
 texture = ExtResource("1_oknxm")
 
 [node name="Particles" type="GPUParticles2D" parent="."]

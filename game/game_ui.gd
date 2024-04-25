@@ -9,7 +9,8 @@ var _player: Player
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	pass
+	if event.is_action("select_weapon"):
+		pass
 
 
 func _on_leave_game_pressed() -> void:
