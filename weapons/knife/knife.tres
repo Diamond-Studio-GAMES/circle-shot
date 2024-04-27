@@ -9,5 +9,5 @@ weapon_type = 3
 rarity = 0
 damage_text = "Урон: 50"
 ammo_text = "Не ограничено"
-weapon_path = ""
+weapon_path = "uid://bynopfeo8pgxf"
 image_path = "uid://c6hbriu7of77e"

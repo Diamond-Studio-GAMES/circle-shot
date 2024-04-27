@@ -48,10 +48,17 @@ func _ready() -> void:
 	
 	var light_weapon_scene: PackedScene = load(Global.items_db.weapons_light[weapons_data[0]].weapon_path)
 	var light_weapon: Weapon = light_weapon_scene.instantiate()
-	$Visual/Weapons.add_child(light_weapon)
 	light_weapon.player = self
-	
-	# Ещё оружки
+	$Visual/Weapons.add_child(light_weapon)
+	light_weapon.unmake_current()
+	# Ещё
+	$Visual/Weapons.add_child(Node.new())
+	$Visual/Weapons.add_child(Node.new())
+	var melee_weapon_scene: PackedScene = load(Global.items_db.weapons_melee[weapons_data[3]].weapon_path)
+	var melee_weapon: Weapon = melee_weapon_scene.instantiate()
+	melee_weapon.player = self
+	$Visual/Weapons.add_child(melee_weapon)
+	melee_weapon.unmake_current()
 	
 	_current_weapon = light_weapon
 	_current_weapon_type = Weapon.Type.LIGHT
@@ -132,6 +139,7 @@ func change_weapon(to: Weapon.Type) -> void:
 	_current_weapon.unmake_current()
 	_current_weapon = _weapons.get_child(to)
 	_current_weapon.make_current()
+	_current_weapon_type = to
 	weapon_changed.emit(to)
 	ammo_text_updated.emit(_current_weapon.get_ammo_text())
 
