@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4cr4b5wn24yt"]
+
+[ext_resource type="PackedScene" uid="uid://1durulsrwk7o" path="res://weapons/common/bullet.tscn" id="1_5swxt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cqwwe"]
+size = Vector2(48, 8)
+
+[node name="P350Bullet" instance=ExtResource("1_5swxt")]
+speed = 3000.0
+damage = 19
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(1, 0.5)
+
+[node name="CollisionShape2D" parent="." index="2"]
+shape = SubResource("RectangleShape2D_cqwwe")

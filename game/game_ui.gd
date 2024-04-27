@@ -10,7 +10,15 @@ var _player: Player
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action("select_weapon"):
-		pass
+		open_weapon_selection()
+	elif event.is_action("weapon_light"):
+		select_weapon(Weapon.Type.LIGHT)
+	elif event.is_action("weapon_heavy"):
+		select_weapon(Weapon.Type.HEAVY)
+	elif event.is_action("weapon_support"):
+		select_weapon(Weapon.Type.SUPPORT)
+	elif event.is_action("weapon_melee"):
+		select_weapon(Weapon.Type.MELEE)
 
 
 func _on_leave_game_pressed() -> void:
@@ -24,12 +32,29 @@ func _on_local_player_created(player: Player) -> void:
 	_health_text.text = "100/100"
 	($Main/Player/BloodVignette as Control).hide()
 	_tint_anim.play("RESET")
+	
 	player.health_changed.connect(_on_player_health_changed)
 	player.died.connect(_on_player_died)
 	player.ammo_text_updated.connect(_on_ammo_text_updated)
 	player.weapon_changed.connect(_on_weapon_changed)
-	# Weapon image setup
 	
+	($Main/Player/WeaponSelection/LightWeapon/Icon as TextureRect).texture = \
+			load(Global.items_db.weapons_light[player.weapons_data[0]].image_path) as Texture2D
+	($Main/Player/WeaponSelection/LightWeapon/Label as Label).text = \
+			Global.items_db.weapons_light[player.weapons_data[0]].weapon_name
+	($Main/Player/WeaponSelection/HeavyWeapon/Icon as TextureRect).texture = \
+			load(Global.items_db.weapons_heavy[player.weapons_data[1]].image_path) as Texture2D
+	($Main/Player/WeaponSelection/HeavyWeapon/Label as Label).text = \
+			Global.items_db.weapons_heavy[player.weapons_data[1]].weapon_name
+	($Main/Player/WeaponSelection/SupportWeapon/Icon as TextureRect).texture = \
+			load(Global.items_db.weapons_support[player.weapons_data[2]].image_path) as Texture2D
+	($Main/Player/WeaponSelection/SupportWeapon/Label as Label).text = \
+			Global.items_db.weapons_support[player.weapons_data[2]].weapon_name
+	($Main/Player/WeaponSelection/MeleeWeapon/Icon as TextureRect).texture = \
+			load(Global.items_db.weapons_melee[player.weapons_data[3]].image_path) as Texture2D
+	($Main/Player/WeaponSelection/MeleeWeapon/Label as Label).text = \
+			Global.items_db.weapons_melee[player.weapons_data[3]].weapon_name
+	_on_weapon_changed(Weapon.Type.LIGHT)
 	
 	_player = player
 
@@ -55,7 +80,19 @@ func _on_ammo_text_updated(text: String) -> void:
 
 
 func _on_weapon_changed(to: Weapon.Type) -> void:
-	pass
+	match to:
+		Weapon.Type.LIGHT:
+			($Main/Player/CurrentWeapon/Icon as TextureRect).texture = \
+					($Main/Player/WeaponSelection/LightWeapon/Icon as TextureRect).texture
+		Weapon.Type.HEAVY:
+			($Main/Player/CurrentWeapon/Icon as TextureRect).texture = \
+					($Main/Player/WeaponSelection/HeavyWeapon/Icon as TextureRect).texture
+		Weapon.Type.SUPPORT:
+			($Main/Player/CurrentWeapon/Icon as TextureRect).texture = \
+					($Main/Player/WeaponSelection/SupportWeapon/Icon as TextureRect).texture
+		Weapon.Type.MELEE:
+			($Main/Player/CurrentWeapon/Icon as TextureRect).texture = \
+					($Main/Player/WeaponSelection/MeleeWeapon/Icon as TextureRect).texture
 
 
 func open_weapon_selection() -> void:

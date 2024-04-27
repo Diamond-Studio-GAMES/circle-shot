@@ -8,7 +8,7 @@ signal died(who: int)
 signal weapon_changed(type: Weapon.Type)
 signal ammo_text_updated(text: String)
 @export var SPEED := 640.0
-# Sync on start
+# Синхронизируются при спавне
 var player := 1:
 	set(id):
 		player = id
@@ -16,16 +16,17 @@ var player := 1:
 var team := 0
 var player_name := "Колобок"
 var weapons_data: Array
-# State variables
+# Переменные состояния
 var can_control := true
+var can_use_weapon := true
 var current_health := 100
 var max_health := 100
 var speed_multiplier := 1.0
-var can_use_weapon := true
+var damage_multiplier: float = 1.0
 var _going_to_die := false
 var _current_weapon: Weapon
 var _current_weapon_type: Weapon.Type
-# VFX
+# ВизЭффекты
 @export var _hurt_vfx: PackedScene
 @export var _death_vfx: PackedScene
 @onready var remote_transform: RemoteTransform2D = $RemoteTransform
@@ -40,30 +41,30 @@ var _current_weapon_type: Weapon.Type
 func _ready() -> void:
 	($Name/Label as Label).text = player_name
 	($Name/Label as Label).self_modulate = Game.TEAM_COLORS[team]
+	if player == multiplayer.get_unique_id():
+		(get_tree().current_scene as Shooter).game.set_local_player(self)
+		($ControlIndicator as Node2D).show()
+		($ControlIndicator as Node2D).self_modulate = Game.TEAM_COLORS[team]
 	
 	var light_weapon_scene: PackedScene = load(Global.items_db.weapons_light[weapons_data[0]].weapon_path)
 	var light_weapon: Weapon = light_weapon_scene.instantiate()
 	$Visual/Weapons.add_child(light_weapon)
 	light_weapon.player = self
 	
-	# Other Weapons
+	# Ещё оружки
 	
 	_current_weapon = light_weapon
 	_current_weapon_type = Weapon.Type.LIGHT
 	_current_weapon.make_current()
 	weapon_changed.emit(Weapon.Type.LIGHT)
-	
-	if player == multiplayer.get_unique_id():
-		(get_tree().current_scene as Shooter).game.set_local_player(self)
-		($ControlIndicator as Node2D).show()
-		($ControlIndicator as Node2D).self_modulate = Game.TEAM_COLORS[team]
+	ammo_text_updated.emit(_current_weapon.get_ammo_text())
 
 
 func _physics_process(_delta: float) -> void:
 	velocity = input.direction.normalized() * SPEED * speed_multiplier * int(can_control)
 	if velocity.x != 0.0:
 		_visual.scale.x = -1 if velocity.x < 0 else 1
-	if input.is_aiming:
+	if can_control:
 		_visual.scale.x = -1 if input.aiming_direction.x < 0 else 1
 	move_and_slide()
 
@@ -88,8 +89,8 @@ func set_health(health: int) -> void:
 		var hurt_vfx: Node2D = _hurt_vfx.instantiate()
 		hurt_vfx.position = position
 		_vfx_parent.add_child(hurt_vfx)
-	else:
-		pass # Heal vfx
+	else: 
+		pass # Примерно эффект хила нужен
 	current_health = health
 	if current_health < max_health * 0.33:
 		_blood.emitting = true

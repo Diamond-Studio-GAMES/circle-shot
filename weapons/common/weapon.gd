@@ -7,16 +7,16 @@ enum Type {
 	SUPPORT = 2,
 	MELEE = 3,
 }
-@export var per_load_ammo := 10
-@export var total_ammo := 150
+@export var ammo_per_load := 10
+@export var ammo_total := 150
 var ammo := 10
 var player: Player
-@warning_ignore("unused_private_class_variable") # For child classes
+@warning_ignore("unused_private_class_variable") # Для дочерних классов
 @onready var _projectiles_parent: Node2D = get_tree().get_first_node_in_group("ProjectilesParent")
 
 
 func _ready() -> void:
-	ammo = per_load_ammo
+	ammo = ammo_per_load
 
 
 @rpc("call_local", "reliable", "authority", 2)
@@ -37,7 +37,9 @@ func unmake_current() -> void:
 
 
 func get_ammo_text() -> String:
-	return "%d/%d" % [ammo, total_ammo]
+	if ammo + ammo_total <= 0:
+		return "Нет патронов"
+	return "%d/%d" % [ammo, ammo_total]
 
 
 func _shoot() -> void:

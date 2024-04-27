@@ -25,7 +25,7 @@ func _notification(what: int) -> void:
 			save_file.save(FILE_NAME)
 
 
-#region Get and Set Functions
+#region Функции задавания и получения значений
 func get_variant(id: String, default_value: Variant) -> Variant:
 	return save_file.get_value(DEFAULT_SECTION, id, default_value)
 

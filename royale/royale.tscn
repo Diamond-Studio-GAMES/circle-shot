@@ -28,3 +28,12 @@ self_modulate = Color(1, 1, 0, 1)
 position = Vector2(1.12057e-05, -4.58956e-06)
 scale = Vector2(0.833333, 1.48148)
 texture = ExtResource("4_tdjad")
+
+[node name="Title" parent="GameUI/Intro" index="1"]
+text = "КОРОЛЕВСКАЯ БИТВА"
+
+[node name="Description" parent="GameUI/Intro/Title" index="0"]
+text = "Побеждает последний выживший!"
+
+[node name="Text" parent="GameUI/Intro" index="2"]
+text = "Каждый сам за себя!"

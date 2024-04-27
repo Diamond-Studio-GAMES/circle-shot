@@ -1,10 +1,7 @@
 class_name Shooter
 extends Node
 
-## Shooter core class. Manages networking.
-##
-## [b]Note[/b]: Connection must be closed with [method close_connection] only
-## on server, because it will be automatically closed when disconnected.
+## Главный класс Шутера. Управляет сетью и переходами между состояниями игры.
 
 signal game_created(error: int)
 signal game_joined(error: int)
@@ -57,7 +54,7 @@ func join_game(ip: String) -> void:
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		game_joined.emit(-1)
 		return
-	# Workaround connected_to_server emitted, even when refusing
+	# Обход подачи сигнала connected_to_server, даже когда отклоняем соединение
 	for i: ENetPacketPeer in peer.host.get_peers():
 		i.set_timeout(1000, 2000, 4000)
 	multiplayer.multiplayer_peer = peer

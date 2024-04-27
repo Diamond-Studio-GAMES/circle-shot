@@ -358,7 +358,7 @@ offset_top = -232.0
 offset_bottom = -88.0
 grow_horizontal = 0
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 0
 texture = ExtResource("7_nj1v0")
 
 [node name="Icon" type="TextureRect" parent="GameUI/Main/Player/CurrentWeapon"]
@@ -374,7 +374,6 @@ offset_right = 120.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="GameUI/Main/Player/CurrentWeapon"]
@@ -421,7 +420,7 @@ offset_top = -232.0
 offset_bottom = -88.0
 grow_horizontal = 0
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 0
 texture = ExtResource("7_nj1v0")
 
 [node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/LightWeapon"]
@@ -438,7 +437,6 @@ offset_right = 120.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/LightWeapon"]
@@ -476,7 +474,7 @@ offset_top = -88.0
 offset_bottom = 56.0
 grow_horizontal = 0
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 0
 texture = ExtResource("7_nj1v0")
 
 [node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/HeavyWeapon"]
@@ -493,7 +491,6 @@ offset_right = 120.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/HeavyWeapon"]
@@ -531,7 +528,7 @@ offset_top = 56.0
 offset_bottom = 200.0
 grow_horizontal = 0
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 0
 texture = ExtResource("7_nj1v0")
 
 [node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/SupportWeapon"]
@@ -548,7 +545,6 @@ offset_right = 120.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/SupportWeapon"]
@@ -586,7 +582,7 @@ offset_top = 200.0
 offset_bottom = 344.0
 grow_horizontal = 0
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 0
 texture = ExtResource("7_nj1v0")
 
 [node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/MeleeWeapon"]
@@ -603,7 +599,6 @@ offset_right = 120.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/MeleeWeapon"]
@@ -752,7 +747,7 @@ theme_override_constants/shadow_offset_x = 0
 theme_override_constants/shadow_offset_y = 3
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 48
-text = "КОРОЛЕВСКАЯ БИТВА"
+text = "ИГРА"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -771,7 +766,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 0
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 4
-text = "Побеждает последний выживший!"
+text = "Описание"
 horizontal_alignment = 1
 
 [node name="Text" type="Label" parent="GameUI/Intro"]
@@ -795,7 +790,7 @@ theme_override_constants/shadow_offset_x = 0
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 24
-text = "Каждый сам за себя!"
+text = "Описание 2"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

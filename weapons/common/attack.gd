@@ -1,9 +1,9 @@
 class_name Attack
 extends Area2D
 
-@export var damage: int = 10
-@export var who := -1
-@export var team := -1
+@export var damage: int
+@export var who: int = -1
+@export var team: int = -1
 
 func _ready() -> void:
 	monitorable = false
@@ -11,6 +11,10 @@ func _ready() -> void:
 		return
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+
+
+func _damage_player(player: Player, amount: int = damage) -> void:
+	player.damage(amount, who if who > 0 else player.player)
 
 
 func _on_body_entered(_body: Node2D) -> void:

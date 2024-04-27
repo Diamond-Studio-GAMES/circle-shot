@@ -71,14 +71,8 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				(variant.get_node(^"Name") as Label).text = i.weapon_name
 				if current == counter:
 					(variant.get_node(^"Name") as Label).add_theme_color_override("font_color", Color.GREEN)
-				var damage_text := ""
-				match i.damage_type:
-					WeaponConfig.Damage.PER_SECOND:
-						damage_text = "Урон/с: %d"
-					WeaponConfig.Damage.INSTANT:
-						damage_text = "Урон: %d"
-				(variant.get_node(^"Damage") as Label).text = damage_text % i.damage
-				(variant.get_node(^"Ammo") as Label).text = "%d/%d" % [i.ammo_per_charge, i.ammo_total]
+				(variant.get_node(^"Damage") as Label).text = i.damage_text
+				(variant.get_node(^"Ammo") as Label).text = i.ammo_text
 				(variant.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(variant.get_node(^"Click") as Button).pressed.connect(_on_variant_pressed.bind(type, counter))
 				_variants.add_child(variant)
@@ -93,14 +87,8 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				(variant.get_node(^"Name") as Label).text = i.weapon_name
 				if current == counter:
 					(variant.get_node(^"Name") as Label).add_theme_color_override("font_color", Color.GREEN)
-				var damage_text := ""
-				match i.damage_type:
-					WeaponConfig.Damage.PER_SECOND:
-						damage_text = "Урон/с: %d"
-					WeaponConfig.Damage.INSTANT:
-						damage_text = "Урон: %d"
-				(variant.get_node(^"Damage") as Label).text = damage_text % i.damage
-				(variant.get_node(^"Ammo") as Label).text = "%d/%d" % [i.ammo_per_charge, i.ammo_total]
+				(variant.get_node(^"Damage") as Label).text = i.damage_text
+				(variant.get_node(^"Ammo") as Label).text = i.ammo_text
 				(variant.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(variant.get_node(^"Click") as Button).pressed.connect(_on_variant_pressed.bind(type, counter))
 				_variants.add_child(variant)
@@ -115,14 +103,8 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				(variant.get_node(^"Name") as Label).text = i.weapon_name
 				if current == counter:
 					(variant.get_node(^"Name") as Label).add_theme_color_override("font_color", Color.GREEN)
-				var damage_text := ""
-				match i.damage_type:
-					WeaponConfig.Damage.PER_SECOND:
-						damage_text = "Урон/с: %d"
-					WeaponConfig.Damage.INSTANT:
-						damage_text = "Урон: %d"
-				(variant.get_node(^"Damage") as Label).text = damage_text % i.damage
-				(variant.get_node(^"Ammo") as Label).text = "%d/%d" % [i.ammo_per_charge, i.ammo_total]
+				(variant.get_node(^"Damage") as Label).text = i.damage_text
+				(variant.get_node(^"Ammo") as Label).text = i.ammo_text
 				(variant.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(variant.get_node(^"Click") as Button).pressed.connect(_on_variant_pressed.bind(type, counter))
 				_variants.add_child(variant)
@@ -137,14 +119,8 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				(variant.get_node(^"Name") as Label).text = i.weapon_name
 				if current == counter:
 					(variant.get_node(^"Name") as Label).add_theme_color_override("font_color", Color.GREEN)
-				var damage_text := ""
-				match i.damage_type:
-					WeaponConfig.Damage.PER_SECOND:
-						damage_text = "Урон/с: %d"
-					WeaponConfig.Damage.INSTANT:
-						damage_text = "Урон: %d"
-				(variant.get_node(^"Damage") as Label).text = damage_text % i.damage
-				(variant.get_node(^"Ammo") as Label).text = "%d/%d" % [i.ammo_per_charge, i.ammo_total]
+				(variant.get_node(^"Damage") as Label).text = i.damage_text
+				(variant.get_node(^"Ammo") as Label).text = i.ammo_text
 				(variant.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(variant.get_node(^"Click") as Button).pressed.connect(_on_variant_pressed.bind(type, counter))
 				_variants.add_child(variant)

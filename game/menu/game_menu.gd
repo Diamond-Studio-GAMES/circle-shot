@@ -39,11 +39,11 @@ func _ready() -> void:
 		_on_create_pressed.call_deferred()
 
 
-## Returns player data in [type Array] with following content: [br]
-## Index [code]0[/code]: player name,[br]
-## Index [code]1[/code]: selected Skin[br]
-## Index [code]2[/code], [code]3[/code], [code]4[/code] and [code]5[/code]:
-## selected Light, Heavy, Support and Melee weapons
+## Возвращает данные в виде [type Array] со следующим содержимым: [br]
+## Индекс [code]0[/code]: имя игрока,[br]
+## Индекс [code]1[/code]: выбранный скин[br]
+## Индекс [code]2[/code], [code]3[/code], [code]4[/code] и [code]5[/code]:
+## выбранные лёгкое, тяжёлое, ближнее оружия и оружие поддержки
 func get_player_data() -> Array:
 	return [
 		_get_player_name(),

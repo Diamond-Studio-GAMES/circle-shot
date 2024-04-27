@@ -1,7 +1,7 @@
 extends Attack
 
 
-@export var interval: float = 1.0
+@export var damage_interval: float = 1.0
 var _players := {}
 
 
@@ -14,8 +14,8 @@ func _physics_process(delta: float) -> void:
 	for i: Player in _players:
 		_players[i] -= delta
 		if _players[i] <= 0:
-			i.damage(damage, who if who > 0 else i.player)
-			_players[i] = interval
+			_damage_player(i)
+			_players[i] = damage_interval
 
 
 func _on_body_entered(body: Node2D) -> void:
