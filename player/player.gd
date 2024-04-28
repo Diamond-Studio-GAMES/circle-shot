@@ -21,9 +21,10 @@ var can_control := true
 var can_use_weapon := true
 var current_health := 100
 var max_health := 100
-var speed_multiplier := 1.0
+var speed_multiplier: float = 1.0
 var damage_multiplier: float = 1.0
 var _going_to_die := false
+var _server_position := Vector2.ZERO
 var _current_weapon: Weapon
 var _current_weapon_type: Weapon.Type
 # ВизЭффекты
@@ -51,8 +52,12 @@ func _ready() -> void:
 	light_weapon.player = self
 	$Visual/Weapons.add_child(light_weapon)
 	light_weapon.unmake_current()
+	var heavy_weapon_scene: PackedScene = load(Global.items_db.weapons_heavy[weapons_data[1]].weapon_path)
+	var heavy_weapon: Weapon = heavy_weapon_scene.instantiate()
+	heavy_weapon.player = self
+	$Visual/Weapons.add_child(heavy_weapon)
+	heavy_weapon.unmake_current()
 	# Ещё
-	$Visual/Weapons.add_child(Node.new())
 	$Visual/Weapons.add_child(Node.new())
 	var melee_weapon_scene: PackedScene = load(Global.items_db.weapons_melee[weapons_data[3]].weapon_path)
 	var melee_weapon: Weapon = melee_weapon_scene.instantiate()
@@ -67,13 +72,18 @@ func _ready() -> void:
 	ammo_text_updated.emit(_current_weapon.get_ammo_text())
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	velocity = input.direction.normalized() * SPEED * speed_multiplier * int(can_control)
 	if velocity.x != 0.0:
 		_visual.scale.x = -1 if velocity.x < 0 else 1
 	if can_control:
 		_visual.scale.x = -1 if input.aiming_direction.x < 0 else 1
 	move_and_slide()
+	
+	if multiplayer.is_server():
+		_set_server_position.rpc(position)
+	else:
+		position = position.move_toward(_server_position, SPEED)
 
 
 @rpc("call_local", "reliable", "authority", 1)
@@ -147,6 +157,11 @@ func change_weapon(to: Weapon.Type) -> void:
 func lock_weapon_use(time: float) -> void:
 	can_use_weapon = false
 	_weapon_timer.start(time + _weapon_timer.time_left)
+
+
+@rpc("call_remote", "authority", "unreliable_ordered", 1)
+func _set_server_position(server_position: Vector2) -> void:
+	_server_position = server_position
 
 
 @rpc("any_peer", "reliable", "call_remote", 2)

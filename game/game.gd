@@ -91,8 +91,7 @@ func _start_game() -> void:
 	game_started = true
 	if not multiplayer.is_server():
 		return
-	for i: Player in $Players.get_children():
-		i.can_control = true
+	get_tree().set_group("Player", "can_control", true)
 
 
 func _make_teams() -> void:

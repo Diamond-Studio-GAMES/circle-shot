@@ -75,7 +75,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Base/Reloading:position")
+tracks/3/path = NodePath("Base/Reload:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -187,7 +187,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Base/Reloading:position")
+tracks/5/path = NodePath("Base/Reload:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -228,7 +228,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Base/Reloading:position")
+tracks/2/path = NodePath("Base/Reload:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -272,7 +272,7 @@ position = Vector2(141.25, -45)
 scale = Vector2(0.75, -0.75)
 texture = ExtResource("3_xrh2t")
 
-[node name="Reloading" type="Sprite2D" parent="Base" index="1"]
+[node name="Reload" type="Sprite2D" parent="Base" index="1"]
 position = Vector2(59, -65)
 texture = ExtResource("2_nnulw")
 region_enabled = true

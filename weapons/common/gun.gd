@@ -20,10 +20,11 @@ func _process(delta: float) -> void:
 		aim_direction.x = absf(aim_direction.x) 
 		rotation = aim_direction.angle()
 	_shoot_timer -= delta
-	if multiplayer.is_server():
-		if player.input.is_shooting and _shoot_timer <= 0.0 \
-				and ammo >= ammo_per_shot and _can_use_weapon():
-			shoot.rpc()
+	if multiplayer.multiplayer_peer:
+		if multiplayer.is_server():
+			if player.input.is_shooting and _shoot_timer <= 0.0 \
+					and ammo >= ammo_per_shot and _can_use_weapon():
+				shoot.rpc()
 
 
 func _make_current() -> void:

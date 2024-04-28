@@ -83,17 +83,19 @@ func _register_new_player(player_name: String) -> void:
 	if not multiplayer.is_server():
 		return
 	var id := multiplayer.get_remote_sender_id()
+	if id == 0:
+		id = 1 # Локально от сервера
 	for i: int in _players:
 		_add_player_entry.rpc_id(id, i, _players[i])
 	_set_environment.rpc_id(id, selected_game, selected_map)
 	_players[id] = player_name
 	($ChatPanel as Chat).post_message.rpc("Игра: Игрок [color=green]%s[/color] подключился!" % player_name)
 	if _players.size() == 1:
-		_player_admin_id = id
-		if multiplayer.is_server():
+		if id == 1:
 			_set_admin(true)
 		else:
 			_set_admin.rpc_id(id, true)
+		_player_admin_id = id
 	else:
 		_set_admin.rpc_id(id, false)
 	_add_player_entry.rpc(id, player_name)
@@ -127,7 +129,12 @@ func _set_environment(game_id: int, map_id: int) -> void:
 
 @rpc("any_peer", "reliable")
 func _request_start_game() -> void:
-	if multiplayer.get_remote_sender_id() != _player_admin_id:
+	if not multiplayer.is_server():
+		return
+	var id: int = multiplayer.get_remote_sender_id()
+	if id == 0:
+		id = 1
+	if id != _player_admin_id:
 		return
 	_start_game.rpc(selected_game, selected_map)
 
@@ -239,10 +246,10 @@ func _on_game_created(error: int) -> void:
 		return
 	($Base/Centering/Lobby as Control).show()
 	($Base/Centering/Main as Control).hide()
-	($ChatPanel as Chat).create_prefix_from_name(_get_player_name())
-	Global.set_string("player_name", _get_player_name())
 	_players.clear()
 	if not Global.HEADLESS:
+		($ChatPanel as Chat).create_prefix_from_name(_get_player_name())
+		Global.set_string("player_name", _get_player_name())
 		_register_new_player(_get_player_name())
 
 
