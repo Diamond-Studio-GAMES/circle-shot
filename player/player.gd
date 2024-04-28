@@ -73,12 +73,13 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if multiplayer.is_server():
-		velocity = input.direction.normalized() * SPEED * speed_multiplier * int(can_control)
-		move_and_slide()
-		_set_server_position.rpc(position)
-	else:
-		position = position.move_toward(_server_position, SPEED * speed_multiplier)
+	if multiplayer.multiplayer_peer:
+		if multiplayer.is_server():
+			velocity = input.direction.normalized() * SPEED * speed_multiplier * int(can_control)
+			move_and_slide()
+			_set_server_position.rpc(position)
+		else:
+			position = position.move_toward(_server_position, SPEED * speed_multiplier)
 	
 	if velocity.x != 0.0:
 		_visual.scale.x = -1 if velocity.x < 0 else 1

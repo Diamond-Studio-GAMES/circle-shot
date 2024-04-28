@@ -13,6 +13,7 @@ auto_translate_mode = 1
 [node name="GameLoader" parent="." instance=ExtResource("3_5kh8u")]
 
 [connection signal="connection_closed" from="." to="GameMenu" method="_on_connection_closed"]
+[connection signal="connection_closed" from="." to="GameLoader" method="_on_connection_closed"]
 [connection signal="game_created" from="." to="GameMenu" method="_on_game_created"]
 [connection signal="game_ended" from="." to="GameMenu" method="_on_game_ended"]
 [connection signal="game_joined" from="." to="GameMenu" method="_on_game_joined"]

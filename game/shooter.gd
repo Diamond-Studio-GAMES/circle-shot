@@ -84,6 +84,7 @@ func load_game(game_id: int, map_id: int) -> void:
 			_send_player_data(($GameMenu as GameMenu).get_player_data())
 	else:
 		_send_player_data.rpc_id(1, ($GameMenu as GameMenu).get_player_data())
+	connection_closed.connect(_game_loader.finish_load, CONNECT_ONE_SHOT)
 
 
 func end_game() -> void:
@@ -111,6 +112,7 @@ func _start_game() -> void:
 	game_started.emit(true)
 	game = $Game as Game
 	game.game_ended.connect(end_game)
+	connection_closed.disconnect(_game_loader.finish_load)
 	if multiplayer.is_server():
 		game.init_game(_players_data)
 	else:

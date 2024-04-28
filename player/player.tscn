@@ -52,6 +52,9 @@ properties/3/replication_mode = 0
 properties/4/path = NodePath(".:velocity")
 properties/4/spawn = false
 properties/4/replication_mode = 1
+properties/5/path = NodePath(".:position")
+properties/5/spawn = true
+properties/5/replication_mode = 0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2

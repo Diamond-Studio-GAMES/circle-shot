@@ -51,7 +51,6 @@ func load_game(game: int, map: int) -> void:
 		return
 	success = await _loaded_part
 	if not success:
-		game_node.queue_free()
 		_fail_load()
 		return
 	var map_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
@@ -70,6 +69,14 @@ func finish_load() -> void:
 
 func _fail_load() -> void:
 	game_loaded.emit(false)
+	var game_node: Game = get_node_or_null("../Game")
+	if game_node:
+		game_node.queue_free()
 	_is_loading = false
 	_anim.play("EndLoad")
 	_status_text.text = "Ошибка загрузки!"
+
+
+func _on_connection_closed() -> void:
+	if _is_loading:
+		_fail_load()
