@@ -72,18 +72,18 @@ func _ready() -> void:
 	ammo_text_updated.emit(_current_weapon.get_ammo_text())
 
 
-func _physics_process(delta: float) -> void:
-	velocity = input.direction.normalized() * SPEED * speed_multiplier * int(can_control)
+func _physics_process(_delta: float) -> void:
+	if multiplayer.is_server():
+		velocity = input.direction.normalized() * SPEED * speed_multiplier * int(can_control)
+		move_and_slide()
+		_set_server_position.rpc(position)
+	else:
+		position = position.move_toward(_server_position, SPEED * speed_multiplier)
+	
 	if velocity.x != 0.0:
 		_visual.scale.x = -1 if velocity.x < 0 else 1
 	if can_control:
 		_visual.scale.x = -1 if input.aiming_direction.x < 0 else 1
-	move_and_slide()
-	
-	if multiplayer.is_server():
-		_set_server_position.rpc(position)
-	else:
-		position = position.move_toward(_server_position, SPEED)
 
 
 @rpc("call_local", "reliable", "authority", 1)
