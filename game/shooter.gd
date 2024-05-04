@@ -82,6 +82,7 @@ func load_game(game_id: int, map_id: int) -> void:
 	if multiplayer.is_server():
 		if Global.HEADLESS:
 			_players_not_ready.erase(1)
+			_check_players_ready()
 		else:
 			_send_player_data(($GameMenu as GameMenu).get_player_data())
 	else:

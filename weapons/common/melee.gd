@@ -2,6 +2,7 @@ extends Weapon
 
 
 @export var shoot_interval: float = 1.0
+@export var equip_time: float = 0.65
 @export var damage: int
 @export var attack_time: float = 0.5
 var _shoot_timer: float = 0.0
@@ -40,7 +41,7 @@ func _shoot() -> void:
 
 func _make_current() -> void:
 	rotation = 0
-	player.lock_weapon_use(0.65)
+	player.lock_weapon_use(equip_time)
 	_anim.play("Equip")
 	await _anim.animation_finished
 	var aim_direction: Vector2 = player.input.aiming_direction

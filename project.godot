@@ -19,7 +19,15 @@ run/main_scene="res://game/shooter.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="2d-shooter"
 config/features=PackedStringArray("4.3", "GL Compatibility")
-config/icon="res://icon.png"
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/image="res://misc/boot_splash.png"
+config/icon="res://misc/icon.png"
+config/windows_native_icon="res://misc/windows_icon.ico"
+boot_splash/minimum_display_time=500
+
+[audio]
+
+buses/default_bus_layout="res://misc/bus_layout.tres"
 
 [autoload]
 
@@ -27,6 +35,8 @@ Global="*res://game/globals.gd"
 
 [debug]
 
+settings/crash_handler/message="Game crashed! You should restart it, but if crash persist, report it on https://github.com/Summersay415/2d-shooter/issues"
+settings/crash_handler/message.editor="Game crashed! This can be an engine bug or developer mistake."
 gdscript/warnings/untyped_declaration=2
 gdscript/warnings/unsafe_cast=1
 gdscript/warnings/unsafe_call_argument=1
@@ -139,3 +149,5 @@ common/enable_object_picking=false
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_s3tc_bptc=true
+textures/vram_compression/import_etc2_astc=true

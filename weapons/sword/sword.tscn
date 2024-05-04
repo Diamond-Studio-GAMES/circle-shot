@@ -161,6 +161,7 @@ _data = {
 [node name="Sword" type="Node2D"]
 script = ExtResource("1_13kgy")
 shoot_interval = 1.2
+equip_time = 0.85
 damage = 45
 attack_time = 0.7
 ammo_per_load = 1
