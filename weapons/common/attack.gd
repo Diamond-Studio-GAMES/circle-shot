@@ -2,8 +2,8 @@ class_name Attack
 extends Area2D
 
 @export var damage: int
-@export var who: int = -1
-@export var team: int = -1
+var who: int = -1
+var team: int = -1
 
 func _ready() -> void:
 	monitorable = false

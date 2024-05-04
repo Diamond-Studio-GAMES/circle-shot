@@ -13,15 +13,15 @@ var _loading_path: String
 
 func _process(_delta: float) -> void:
 	if _is_loading:
-		var progress: Array[int] = [0]
+		var progress: Array[float] = []
 		var status := ResourceLoader.load_threaded_get_status(_loading_path, progress)
 		match status:
-			ResourceLoader.THREAD_LOAD_FAILED, ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
-				_loaded_part.emit(false)
 			ResourceLoader.THREAD_LOAD_LOADED:
 				_loaded_part.emit(true)
 			ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-				_bar.value = progress[0] / 2.0 + 50 * int(_loaded_game)
+				_bar.value = roundf(progress[0] * 50) + 50 * int(_loaded_game)
+			_:
+				_loaded_part.emit(false)
 
 
 func load_game(game: int, map: int) -> void:
@@ -40,7 +40,7 @@ func load_game(game: int, map: int) -> void:
 		return
 	var game_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
 	var game_node: Game = game_scene.instantiate()
-	get_parent().add_child(game_node, true)
+	get_parent().add_child(game_node)
 	_loaded_game = true
 	_bar.value = 50
 	_status_text.text = "Загрузка карты..."
@@ -55,7 +55,7 @@ func load_game(game: int, map: int) -> void:
 		return
 	var map_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
 	var map_node: Node2D = map_scene.instantiate()
-	game_node.add_child(map_node, true)
+	game_node.add_child(map_node)
 	_is_loading = false
 	_bar.value = 100
 	_status_text.text = "Ожидание других игроков..."

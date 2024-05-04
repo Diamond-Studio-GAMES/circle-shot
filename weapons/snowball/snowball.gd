@@ -1,8 +1,9 @@
 extends Weapon
 
 
-@export var equip_time: float = 0.5
+@export var equip_time_per_snowball: float = 0.5
 @export var reload_time: float = 1.5
+@export var throw_time: float = 0.4
 @export var shoot_interval: float = 0.5
 @export var ammo_per_shot: int = 1
 @export var spread: float = 4.0
@@ -18,7 +19,7 @@ func _process(delta: float) -> void:
 	if _can_use_weapon():
 		var aim_direction: Vector2 = player.input.aiming_direction
 		aim_direction.x = absf(aim_direction.x) 
-		rotation = aim_direction.angle()
+		_aim.rotation = aim_direction.angle()
 	_shoot_timer -= delta
 	if multiplayer.multiplayer_peer:
 		if multiplayer.is_server():
@@ -28,47 +29,45 @@ func _process(delta: float) -> void:
 
 
 func _make_current() -> void:
-	rotation = 0
-	player.lock_weapon_use(equip_time + 0.15)
-	_anim.play("Equip")
-	await _anim.animation_finished
-	var aim_direction: Vector2 = player.input.aiming_direction
-	aim_direction.x = absf(aim_direction.x) 
-	var tween := create_tween()
-	tween.tween_property(self, "rotation", aim_direction.angle(), 0.15)
+	player.lock_weapon_use(equip_time_per_snowball * ammo + 0.05)
+	if ammo > 0:
+		_anim.play("Equip0")
+		await _anim.animation_finished
+	if ammo > 1:
+		_anim.play("Equip1")
 
 
 func _shoot() -> void:
+	player.lock_weapon_use(throw_time)
+	var throw_direction: Vector2 = player.input.aiming_direction
 	_shoot_timer = shoot_interval
 	ammo -= ammo_per_shot
-	_anim.play("Shoot")
+	if ammo == 0:
+		_anim.play("Throw1")
+	else:
+		_anim.play("Throw0")
 	_anim.seek(0, true)
+	await _anim.animation_finished
 	if multiplayer.is_server():
 		var projectile_node: Attack = projectile.instantiate()
 		projectile_node.global_position = _shoot_point.global_position
 		projectile_node.damage = roundi(projectile_node.damage * player.damage_multiplier)
-		projectile_node.rotation = player.input.aiming_direction.angle() \
+		projectile_node.rotation = throw_direction.angle() \
 				+ deg_to_rad(randf_range(-spread, spread))
 		projectile_node.team = player.team
 		projectile_node.who = player.player
 		projectile_node.name += str(randi())
 		_projectiles_parent.add_child(projectile_node)
 	if ammo <= 0:
-		await _anim.animation_finished
 		_reload()
 
 
 func _reload() -> void:
 	if ammo_total < ammo_per_load:
 		return
-	var past_rotation := rotation
-	var tween := create_tween()
-	tween.tween_property(self, "rotation", 0.0, 0.15)
 	_anim.play("Reload")
-	player.lock_weapon_use(reload_time + 0.15)
+	player.lock_weapon_use(reload_time)
 	await _anim.animation_finished
-	tween = create_tween()
-	tween.tween_property(self, "rotation", past_rotation, 0.15)
 	ammo = ammo_per_load
 	ammo_total -= ammo_per_load
 	player.ammo_text_updated.emit(get_ammo_text())

@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="ItemsDB" load_steps=13 format=3 uid="uid://pwq1e7l2ckos"]
+[gd_resource type="Resource" script_class="ItemsDB" load_steps=17 format=3 uid="uid://pwq1e7l2ckos"]
 
+[ext_resource type="Script" path="res://config/game_config.gd" id="1_b4c63"]
 [ext_resource type="Resource" uid="uid://i4s2m4jgbyvc" path="res://royale/royale.tres" id="1_dqspy"]
 [ext_resource type="Script" path="res://config/items_db.gd" id="2_gvmco"]
 [ext_resource type="Resource" uid="uid://dbtrtohutlbyt" path="res://skins/default/default.tres" id="3_4g07f"]
 [ext_resource type="Resource" uid="uid://bsorviu43e0b1" path="res://skins/classic/classic.tres" id="4_4h4k1"]
 [ext_resource type="Resource" uid="uid://cico6bxoxthxp" path="res://weapons/ak_74/ak_74.tres" id="4_lef67"]
+[ext_resource type="Script" path="res://config/skin_config.gd" id="4_savot"]
 [ext_resource type="Resource" uid="uid://ec5r1p2ay37a" path="res://weapons/p_350/p_350.tres" id="5_e2ndw"]
 [ext_resource type="Resource" uid="uid://c5fk7qvfajug7" path="res://skins/kabakova/kabakova.tres" id="5_lmi8j"]
 [ext_resource type="Resource" uid="uid://bb4c32cmatk2p" path="res://weapons/shotgun/shotgun.tres" id="5_rs7cj"]
@@ -12,14 +14,16 @@
 [ext_resource type="Resource" uid="uid://bqt35gylr4la" path="res://weapons/knife/knife.tres" id="6_svctq"]
 [ext_resource type="Resource" uid="uid://b6l0sibfxkmx6" path="res://weapons/grenade/grenade.tres" id="7_0fj5y"]
 [ext_resource type="Resource" uid="uid://bxma7nn66sax2" path="res://weapons/snowball/snowball.tres" id="7_d3yey"]
+[ext_resource type="Script" path="res://config/weapon_config.gd" id="8_0dalf"]
+[ext_resource type="Resource" uid="uid://bsr137cw1pcmq" path="res://weapons/sword/sword.tres" id="15_k0ucr"]
 
 [resource]
 script = ExtResource("2_gvmco")
-games = Array[Resource("res://config/game_config.gd")]([ExtResource("1_dqspy")])
-skins = Array[Resource("res://config/skin_config.gd")]([ExtResource("3_4g07f"), ExtResource("4_4h4k1"), ExtResource("5_lmi8j")])
-weapons_light = Array[Resource("res://config/weapon_config.gd")]([ExtResource("5_e2ndw"), ExtResource("7_d3yey")])
-weapons_heavy = Array[Resource("res://config/weapon_config.gd")]([ExtResource("4_lef67"), ExtResource("5_rs7cj"), ExtResource("6_qn14x")])
-weapons_support = Array[Resource("res://config/weapon_config.gd")]([ExtResource("7_0fj5y")])
-weapons_melee = Array[Resource("res://config/weapon_config.gd")]([ExtResource("6_svctq")])
-spawnable_projectiles = Array[String](["uid://c4cr4b5wn24yt", "uid://tbn6kstqx2sj"])
+games = Array[ExtResource("1_b4c63")]([ExtResource("1_dqspy")])
+skins = Array[ExtResource("4_savot")]([ExtResource("3_4g07f"), ExtResource("4_4h4k1"), ExtResource("5_lmi8j")])
+weapons_light = Array[ExtResource("8_0dalf")]([ExtResource("5_e2ndw"), ExtResource("7_d3yey")])
+weapons_heavy = Array[ExtResource("8_0dalf")]([ExtResource("4_lef67"), ExtResource("5_rs7cj"), ExtResource("6_qn14x")])
+weapons_support = Array[ExtResource("8_0dalf")]([ExtResource("7_0fj5y")])
+weapons_melee = Array[ExtResource("8_0dalf")]([ExtResource("6_svctq"), ExtResource("15_k0ucr")])
+spawnable_projectiles = Array[String](["uid://c4cr4b5wn24yt", "uid://tbn6kstqx2sj", "uid://c7yp4ideasf2", "uid://cm0sqwulviy72"])
 spawnable_other = Array[String]([])

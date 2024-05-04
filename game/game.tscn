@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://d3nsak46hbo2c"]
+[gd_scene load_steps=17 format=3 uid="uid://d3nsak46hbo2c"]
 
 [ext_resource type="Script" path="res://game/game.gd" id="1_kxt6o"]
 [ext_resource type="Script" path="res://game/game_ui.gd" id="2_82bb5"]
@@ -65,13 +65,6 @@ _data = {
 "Hurt": SubResource("Animation_42oh0"),
 "RESET": SubResource("Animation_koxqv")
 }
-
-[sub_resource type="InputEventAction" id="InputEventAction_gbih3"]
-action = &"chat"
-pressed = true
-
-[sub_resource type="Shortcut" id="Shortcut_46aca"]
-events = [SubResource("InputEventAction_gbih3")]
 
 [sub_resource type="Animation" id="Animation_4bxhi"]
 resource_name = "Intro"
@@ -662,8 +655,6 @@ offset_right = -16.0
 offset_bottom = 116.0
 grow_horizontal = 0
 toggle_mode = true
-shortcut = SubResource("Shortcut_46aca")
-shortcut_in_tooltip = false
 text = "Чат"
 
 [node name="ChatPanel" type="PanelContainer" parent="GameUI/Main"]

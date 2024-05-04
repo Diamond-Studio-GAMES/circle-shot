@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://bynopfeo8pgxf"]
 
 [ext_resource type="Texture2D" uid="uid://c6hbriu7of77e" path="res://weapons/knife/knife.png" id="1_8am4s"]
-[ext_resource type="Script" path="res://weapons/knife/knife.gd" id="1_efdma"]
+[ext_resource type="Script" path="res://weapons/common/melee.gd" id="1_efdma"]
 [ext_resource type="Script" path="res://weapons/common/attack_area.gd" id="3_f45r0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3hp3s"]
@@ -112,7 +112,7 @@ _data = {
 
 [node name="Knife" type="Node2D"]
 script = ExtResource("1_efdma")
-damage = 50
+damage = 65
 ammo_per_load = 1
 ammo_total = 0
 

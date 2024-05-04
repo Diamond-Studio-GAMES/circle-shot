@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cqmt55f6clp6c" path="res://skins/kabakova/kabakova.png" id="2_wnbls"]
 
 [node name="Player" instance=ExtResource("1_g8270")]
-_death_vfx = ExtResource("2_fr12t")
+death_vfx = ExtResource("2_fr12t")
 
 [node name="Kabakova" type="Sprite2D" parent="Visual" index="0"]
 texture = ExtResource("2_wnbls")

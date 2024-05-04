@@ -3,6 +3,7 @@ extends Weapon
 
 @export var shoot_interval: float = 1.0
 @export var damage: int
+@export var attack_time: float = 0.5
 var _shoot_timer: float = 0.0
 @onready var _anim: AnimationPlayer = $AnimationPlayer
 @onready var _aim: Node2D = $Aim
@@ -29,7 +30,7 @@ func _process(delta: float) -> void:
 
 
 func _shoot() -> void:
-	player.lock_weapon_use(0.5)
+	player.lock_weapon_use(attack_time)
 	_shoot_timer = shoot_interval
 	_anim.play("Attack")
 	_anim.seek(0, true)

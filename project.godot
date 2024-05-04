@@ -35,7 +35,6 @@ gdscript/warnings/unsafe_call_argument=1
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
@@ -109,6 +108,11 @@ chat={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":84,"key_label":0,"unicode":116,"location":0,"echo":false,"script":null)
 ]
 }
+close_chat={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194305,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
 
 [input_devices]
 
@@ -117,12 +121,15 @@ pointing/emulate_touch_from_mouse=true
 
 [layer_names]
 
+2d_render/layer_1="default"
+2d_render/layer_2="minimap"
 2d_physics/layer_1="world"
 2d_physics/layer_2="player"
 2d_physics/layer_3="attack"
 2d_physics/layer_4="boundary"
 2d_physics/layer_5="destructible"
 2d_physics/layer_6="items"
+2d_physics/layer_7="other"
 
 [physics]
 

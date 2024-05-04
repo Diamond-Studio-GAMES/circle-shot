@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cyro3oroia5l6" path="res://weapons/common/bullet.png" id="2_u82m3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5au6r"]
-size = Vector2(48, 16)
+size = Vector2(96, 16)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_viq1e"]
 properties/0/path = NodePath(".:rotation")
@@ -34,6 +34,7 @@ one_shot = true
 autostart = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-24, 0)
 shape = SubResource("RectangleShape2D_5au6r")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]

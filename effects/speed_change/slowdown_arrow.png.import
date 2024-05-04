@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1kgmgwrultvq"
-path="res://.godot/imported/weapon.png-1ca886fca4abc5e7fa54e6c96e65a03e.ctex"
+uid="uid://cwxopkcr11xs2"
+path="res://.godot/imported/slowdown_arrow.png-3d0c14f3afb9131ed56229f6e8ca03a5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://weapons/shotgun/weapon.png"
-dest_files=["res://.godot/imported/weapon.png-1ca886fca4abc5e7fa54e6c96e65a03e.ctex"]
+source_file="res://effects/speed_change/slowdown_arrow.png"
+dest_files=["res://.godot/imported/slowdown_arrow.png-3d0c14f3afb9131ed56229f6e8ca03a5.ctex"]
 
 [params]
 

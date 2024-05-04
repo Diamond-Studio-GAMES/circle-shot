@@ -6,19 +6,46 @@ var _player: Player
 @onready var _health_text: Label = $Main/Player/HealthBar/Label
 @onready var _tint_anim: AnimationPlayer = $Main/PlayerTint/AnimationPlayer
 @onready var _ammo_text: Label = $Main/Player/CurrentWeapon/Label
+@onready var _chat_button: BaseButton = $Main/Chat
+
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("close_chat") and _chat_button.button_pressed:
+		_chat_button.button_pressed = false
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if event.is_action("select_weapon"):
-		open_weapon_selection()
-	elif event.is_action("weapon_light"):
+	if event.is_action_pressed("select_weapon"):
+		if ($Main/Player/WeaponSelection as Control).visible:
+			close_weapon_selection()
+		else:
+			open_weapon_selection()
+	elif event.is_action_pressed("weapon_light"):
 		select_weapon(Weapon.Type.LIGHT)
-	elif event.is_action("weapon_heavy"):
+	elif event.is_action_pressed("weapon_heavy"):
 		select_weapon(Weapon.Type.HEAVY)
-	elif event.is_action("weapon_support"):
+	elif event.is_action_pressed("weapon_support"):
 		select_weapon(Weapon.Type.SUPPORT)
-	elif event.is_action("weapon_melee"):
+	elif event.is_action_pressed("weapon_melee"):
 		select_weapon(Weapon.Type.MELEE)
+	elif event.is_action_pressed("chat") and not _chat_button.button_pressed:
+		_chat_button.button_pressed = true
+
+
+func open_weapon_selection() -> void:
+	($Main/Player/WeaponSelection as Control).show()
+	($Main/Player/CurrentWeapon as Control).hide()
+
+
+func close_weapon_selection() -> void:
+	($Main/Player/WeaponSelection as Control).hide()
+	($Main/Player/CurrentWeapon as Control).show()
+
+
+func select_weapon(type: Weapon.Type) -> void:
+	close_weapon_selection()
+	if is_instance_valid(_player):
+		_player.request_change_weapon(type)
 
 
 func _on_leave_game_pressed() -> void:
@@ -93,15 +120,3 @@ func _on_weapon_changed(to: Weapon.Type) -> void:
 		Weapon.Type.MELEE:
 			($Main/Player/CurrentWeapon/Icon as TextureRect).texture = \
 					($Main/Player/WeaponSelection/MeleeWeapon/Icon as TextureRect).texture
-
-
-func open_weapon_selection() -> void:
-	($Main/Player/WeaponSelection as Control).show()
-	($Main/Player/CurrentWeapon as Control).hide()
-
-
-func select_weapon(type: Weapon.Type) -> void:
-	($Main/Player/WeaponSelection as Control).hide()
-	($Main/Player/CurrentWeapon as Control).show()
-	if is_instance_valid(_player):
-		_player.request_change_weapon(type)

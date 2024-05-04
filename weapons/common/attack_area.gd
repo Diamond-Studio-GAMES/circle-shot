@@ -1,9 +1,7 @@
 extends Attack
 
-
 @export var damage_interval: float = 1.0
 var _players := {}
-
 
 func _physics_process(delta: float) -> void:
 	if multiplayer.multiplayer_peer:

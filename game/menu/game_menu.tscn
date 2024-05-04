@@ -572,6 +572,7 @@ selection_enabled = true
 auto_translate_mode = 1
 layout_mode = 2
 placeholder_text = "Отправить сообщение в чат..."
+max_length = 100
 
 [connection signal="confirmed" from="IPDialog" to="." method="_on_ip_dialog_confirmed"]
 [connection signal="text_changed" from="IPDialog/LineEdit" to="." method="_on_line_edit_text_changed"]

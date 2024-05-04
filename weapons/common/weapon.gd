@@ -1,6 +1,7 @@
 class_name Weapon
 extends Node2D
 
+
 enum Type {
 	LIGHT = 0,
 	HEAVY = 1,

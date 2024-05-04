@@ -100,7 +100,7 @@ func _register_new_player(player_name: String) -> void:
 		_set_admin.rpc_id(id, false)
 	_add_player_entry.rpc(id, player_name)
 	if not Global.HEADLESS:
-		_add_player_entry(id if id else 1, player_name)
+		_add_player_entry(id, player_name)
 
 
 @rpc("reliable")
@@ -258,7 +258,9 @@ func _on_game_joined(error: int) -> void:
 	if error:
 		create_error_dialog("Невозможно подключиться к серверу!", error)
 		return
-	($Base/Centering/Lobby/ClientHint as Label).text = "Ожидание сервера... (возможно, игра уже началась)!"
+	($Base/Centering/Lobby/AdminPanel as HBoxContainer).hide()
+	($Base/Centering/Lobby/ClientHint as Label).show()
+	($Base/Centering/Lobby/ClientHint as Label).text = "Ожидание сервера... (возможно, игра уже началась)"
 	($Base/Centering/Lobby as Control).show()
 	($Base/Centering/Main as Control).hide()
 	($ChatPanel as Chat).create_prefix_from_name(_get_player_name())
@@ -283,8 +285,11 @@ func _on_peer_disconnected(id: int) -> void:
 	($ChatPanel as Chat).post_message.rpc("Игра: Игрок [color=green]%s[/color] отключился!" % _players[id])
 	_players.erase(id)
 	if id == _player_admin_id:
-		_player_admin_id = (_players.keys() as Array[int])[0]
-		_set_admin.rpc_id(_player_admin_id, true)
+		if _players.size() > 0:
+			_player_admin_id = (_players.keys() as Array[int])[0]
+			_set_admin.rpc_id(_player_admin_id, true)
+		else:
+			_player_admin_id = -1
 	_delete_player_entry.rpc(id)
 	if not Global.HEADLESS:
 		_delete_player_entry(id)

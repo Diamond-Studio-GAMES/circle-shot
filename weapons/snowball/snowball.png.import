@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dldqsm5tvmy3m"
-path="res://.godot/imported/weapon.png-3b7f33ca449a242a5eb9037aede8dba9.ctex"
+path="res://.godot/imported/snowball.png-99889129c03495e8ca74a9021ade45d1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://weapons/snowball/weapon.png"
-dest_files=["res://.godot/imported/weapon.png-3b7f33ca449a242a5eb9037aede8dba9.ctex"]
+source_file="res://weapons/snowball/snowball.png"
+dest_files=["res://.godot/imported/snowball.png-99889129c03495e8ca74a9021ade45d1.ctex"]
 
 [params]
 

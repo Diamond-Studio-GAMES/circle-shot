@@ -55,6 +55,9 @@ properties/4/replication_mode = 1
 properties/5/path = NodePath(".:position")
 properties/5/spawn = true
 properties/5/replication_mode = 0
+properties/6/path = NodePath(".:server_position")
+properties/6/spawn = true
+properties/6/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
@@ -62,8 +65,8 @@ collision_mask = 3
 motion_mode = 1
 platform_on_leave = 2
 script = ExtResource("1_d5iul")
-_hurt_vfx = ExtResource("2_c1fvu")
-_death_vfx = ExtResource("3_5avli")
+hurt_vfx = ExtResource("2_c1fvu")
+death_vfx = ExtResource("3_5avli")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_23n60")
@@ -94,16 +97,19 @@ horizontal_alignment = 1
 
 [node name="Visual" type="Node2D" parent="."]
 
-[node name="Weapons" type="Marker2D" parent="Visual"]
-position = Vector2(32, 32)
-gizmo_extents = 32.0
-
-[node name="Blood" type="GPUParticles2D" parent="."]
+[node name="Blood" type="GPUParticles2D" parent="Visual"]
 emitting = false
 amount = 6
 process_material = SubResource("ParticleProcessMaterial_fn3uq")
 texture = ExtResource("3_8a6xh")
 lifetime = 2.0
+visibility_rect = Rect2(-640, -640, 1280, 1280)
+
+[node name="Weapons" type="Marker2D" parent="Visual"]
+position = Vector2(32, 32)
+gizmo_extents = 32.0
+
+[node name="Effects" type="Node2D" parent="."]
 
 [node name="ControlIndicator" type="Sprite2D" parent="."]
 visible = false

@@ -71,12 +71,14 @@ func load_game(game_id: int, map_id: int) -> void:
 		multiplayer.multiplayer_peer.refuse_new_connections = true
 		_players_not_ready = multiplayer.get_peers()
 		_players_not_ready.append(1)
+		_players_data.clear()
 	_game_loader.load_game(game_id, map_id)
 	var success: bool = await _game_loader.game_loaded
 	if not success:
 		close_connection()
 		game_started.emit(false)
 		return
+	connection_closed.connect(_game_loader.finish_load, CONNECT_ONE_SHOT)
 	if multiplayer.is_server():
 		if Global.HEADLESS:
 			_players_not_ready.erase(1)
@@ -84,7 +86,6 @@ func load_game(game_id: int, map_id: int) -> void:
 			_send_player_data(($GameMenu as GameMenu).get_player_data())
 	else:
 		_send_player_data.rpc_id(1, ($GameMenu as GameMenu).get_player_data())
-	connection_closed.connect(_game_loader.finish_load, CONNECT_ONE_SHOT)
 
 
 func end_game() -> void:

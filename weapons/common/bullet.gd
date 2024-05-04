@@ -1,10 +1,8 @@
 extends Attack
 
-
 @export var speed: float = 1280.0
 @export var hit_vfx: PackedScene
 var direction := Vector2.ZERO
-
 
 func _ready() -> void:
 	super()

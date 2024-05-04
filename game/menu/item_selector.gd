@@ -127,6 +127,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				counter += 1
 	
 	popup_centered()
+	grab_focus()
 
 
 func _on_variant_pressed(type: ItemsDB.Item, id: int) -> void:

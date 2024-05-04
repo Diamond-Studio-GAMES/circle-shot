@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_b1y7i")
-weapon_name = "Снежок"
+weapon_name = "Снежки"
 weapon_type = 0
 rarity = 2
 damage_text = "Урон/с: 20"
 ammo_text = "2/20"
-weapon_path = ""
+weapon_path = "uid://cr1yo5ya4kwex"
 image_path = "uid://dldqsm5tvmy3m"
