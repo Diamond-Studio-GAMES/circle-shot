@@ -61,14 +61,13 @@ func _shoot() -> void:
 func _reload() -> void:
 	if ammo_total < ammo_per_load:
 		return
-	var past_rotation := rotation
 	var tween := create_tween()
 	tween.tween_property(self, "rotation", 0.0, 0.15)
 	_anim.play("Reload")
 	player.lock_weapon_use(reload_time + 0.15)
 	await _anim.animation_finished
 	tween = create_tween()
-	tween.tween_property(self, "rotation", past_rotation, 0.15)
+	tween.tween_property(self, "rotation", player.input.aiming_direction.angle(), 0.15)
 	ammo = ammo_per_load
 	ammo_total -= ammo_per_load
 	player.ammo_text_updated.emit(get_ammo_text())

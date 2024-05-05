@@ -9,5 +9,5 @@ weapon_type = 1
 rarity = 1
 damage_text = "Урон/с: 53"
 ammo_text = "3/21"
-weapon_path = ""
+weapon_path = "uid://vaggbadprpmu"
 image_path = "uid://b1kgmgwrultvq"
