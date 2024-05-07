@@ -115,7 +115,10 @@ func _set_admin(admin: bool) -> void:
 
 @rpc("any_peer", "reliable")
 func _request_set_environment(game_id: int, map_id: int) -> void:
-	if multiplayer.get_remote_sender_id() != _player_admin_id:
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if sender_id == 0:
+		sender_id = 1
+	if sender_id != _player_admin_id:
 		return
 	_set_environment.rpc(game_id, map_id)
 
