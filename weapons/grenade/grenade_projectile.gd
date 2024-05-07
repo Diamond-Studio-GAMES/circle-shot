@@ -2,7 +2,6 @@ extends AnimatableBody2D
 
 
 @export var speed: float = 800.0
-var who: int = -1
 var direction := Vector2.ZERO
 var _exploded := false
 

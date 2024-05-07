@@ -76,7 +76,7 @@ func set_local_player(player: Player) -> void:
 		var tween := create_tween()
 		tween.set_ease(Tween.EASE_OUT)
 		tween.set_trans(Tween.TRANS_SINE)
-		tween.tween_property($Camera as Node2D, "position", player.position, 4.0)
+		tween.tween_property($Camera as Node2D, ^"position", player.position, 4.0)
 		await tween.finished
 		player.remote_transform.remote_path = player.remote_transform.get_path_to($Camera)
 

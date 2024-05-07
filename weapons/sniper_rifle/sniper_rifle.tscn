@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://4q0rrm6arbyx"]
+[gd_scene load_steps=11 format=3 uid="uid://4q0rrm6arbyx"]
 
 [ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://weapons/common/gun.tscn" id="1_57777"]
 [ext_resource type="Texture2D" uid="uid://0vtm3lrt8183" path="res://weapons/sniper_rifle/sniper_rifle.png" id="2_4kyvs"]
+[ext_resource type="Script" path="res://weapons/sniper_rifle/sniper_rifle.gd" id="2_ir31q"]
 [ext_resource type="PackedScene" uid="uid://cm0sqwulviy72" path="res://weapons/sniper_rifle/sniper_bullet.tscn" id="2_stbvt"]
 [ext_resource type="Texture2D" uid="uid://rvu643208pjh" path="res://weapons/common/shoot_effect.png" id="3_nfw2e"]
 
@@ -139,6 +140,8 @@ _data = {
 }
 
 [node name="SniperRifle" instance=ExtResource("1_57777")]
+script = ExtResource("2_ir31q")
+aim_zoom = Vector2(0.4, 0.4)
 equip_time = 1.0
 reload_time = 1.35
 spread = 0.0

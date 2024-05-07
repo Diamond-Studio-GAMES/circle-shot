@@ -35,7 +35,7 @@ func _make_current() -> void:
 	var aim_direction: Vector2 = player.input.aiming_direction
 	aim_direction.x = absf(aim_direction.x) 
 	var tween := create_tween()
-	tween.tween_property(self, "rotation", aim_direction.angle(), 0.15)
+	tween.tween_property(self, ^"rotation", aim_direction.angle(), 0.15)
 
 
 func _shoot() -> void:
@@ -62,12 +62,14 @@ func _reload() -> void:
 	if ammo_total < ammo_per_load:
 		return
 	var tween := create_tween()
-	tween.tween_property(self, "rotation", 0.0, 0.15)
+	tween.tween_property(self, ^"rotation", 0.0, 0.15)
 	_anim.play("Reload")
 	player.lock_weapon_use(reload_time + 0.15)
 	await _anim.animation_finished
+	var aim_direction: Vector2 = player.input.aiming_direction
+	aim_direction.x = absf(aim_direction.x) 
 	tween = create_tween()
-	tween.tween_property(self, "rotation", player.input.aiming_direction.angle(), 0.15)
+	tween.tween_property(self, ^"rotation", aim_direction.angle(), 0.15)
 	ammo = ammo_per_load
 	ammo_total -= ammo_per_load
 	player.ammo_text_updated.emit(get_ammo_text())

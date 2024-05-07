@@ -47,7 +47,7 @@ func _make_current() -> void:
 	var aim_direction: Vector2 = player.input.aiming_direction
 	aim_direction.x = absf(aim_direction.x) 
 	var tween := create_tween()
-	tween.tween_property(self, "rotation", aim_direction.angle(), 0.15)
+	tween.tween_property(self, ^"rotation", aim_direction.angle(), 0.15)
 
 
 func get_ammo_text() -> String:

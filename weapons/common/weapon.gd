@@ -35,6 +35,7 @@ func make_current() -> void:
 func unmake_current() -> void:
 	hide()
 	process_mode = PROCESS_MODE_DISABLED
+	_unmake_current()
 
 
 func get_ammo_text() -> String:
@@ -48,6 +49,10 @@ func _shoot() -> void:
 
 
 func _make_current() -> void:
+	pass
+
+
+func _unmake_current() -> void:
 	pass
 
 

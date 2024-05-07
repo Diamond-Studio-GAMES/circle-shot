@@ -1,0 +1,223 @@
+[gd_scene load_steps=14 format=3 uid="uid://ci53ewradle3k"]
+
+[ext_resource type="Script" path="res://weapons/grenade/grenade_projectile.gd" id="1_kvo22"]
+[ext_resource type="Texture2D" uid="uid://bgjjt2h71ua2o" path="res://weapons/smoke_grenade/smoke_grenade.png" id="2_j4l0k"]
+[ext_resource type="Texture2D" uid="uid://ckrtcxwael50f" path="res://weapons/smoke_grenade/smoke.png" id="3_5rgnc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yd8qm"]
+radius = 24.0
+
+[sub_resource type="Animation" id="Animation_ls7g7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.488692]
+}
+
+[sub_resource type="Animation" id="Animation_6w6ul"]
+resource_name = "Rotate"
+length = 1.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.488692, 6.77188]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dvnv4"]
+_data = {
+"RESET": SubResource("Animation_ls7g7"),
+"Rotate": SubResource("Animation_6w6ul")
+}
+
+[sub_resource type="Animation" id="Animation_l1xfq"]
+resource_name = "Explode"
+length = 10.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Base:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(10),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SmokeCPUParticles")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"restart"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_ljxxu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Base:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yppsx"]
+_data = {
+"Explode": SubResource("Animation_l1xfq"),
+"RESET": SubResource("Animation_ljxxu")
+}
+
+[sub_resource type="Curve" id="Curve_1wwd0"]
+min_value = -200.0
+max_value = 200.0
+_data = [Vector2(0, -0.560974), 0.0, 0.0, 0, 0, Vector2(0.152249, 65.0772), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_orwtl"]
+max_value = 2.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.75, 1.3), 0.0, 0.0, 0, 0, Vector2(1, 1.6), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+metadata/_snap_count = 20
+
+[sub_resource type="Gradient" id="Gradient_jcbp3"]
+offsets = PackedFloat32Array(0, 0.800766, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.752941, 1, 1, 1, 0)
+
+[node name="SmokeGrenadeProjectile" type="AnimatableBody2D"]
+collision_layer = 4
+collision_mask = 27
+sync_to_physics = false
+script = ExtResource("1_kvo22")
+speed = 1000.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_yd8qm")
+
+[node name="Base" type="Sprite2D" parent="."]
+rotation = 0.488692
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_j4l0k")
+region_enabled = true
+region_rect = Rect2(0, 28, 120, 92)
+
+[node name="Up" type="Sprite2D" parent="Base"]
+position = Vector2(-22.5, -60)
+texture = ExtResource("2_j4l0k")
+region_enabled = true
+region_rect = Rect2(0, 0, 75, 28)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Base"]
+libraries = {
+"": SubResource("AnimationLibrary_dvnv4")
+}
+autoplay = "Rotate"
+
+[node name="ExplosionTimer" type="Timer" parent="."]
+wait_time = 2.5
+one_shot = true
+autostart = true
+
+[node name="Explosion" type="Node2D" parent="."]
+visible = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Explosion"]
+libraries = {
+"": SubResource("AnimationLibrary_yppsx")
+}
+
+[node name="SmokeCPUParticles" type="CPUParticles2D" parent="Explosion"]
+z_index = 4
+scale = Vector2(2, 2)
+amount = 80
+lifetime = 10.0
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.25
+local_coords = true
+texture = ExtResource("3_5rgnc")
+emission_shape = 1
+emission_sphere_radius = 80.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 150.0
+initial_velocity_max = 600.0
+angular_velocity_max = 30.0
+linear_accel_min = -8.0
+linear_accel_max = -8.0
+linear_accel_curve = SubResource("Curve_1wwd0")
+scale_amount_min = 6.0
+scale_amount_max = 6.0
+scale_amount_curve = SubResource("Curve_orwtl")
+color_ramp = SubResource("Gradient_jcbp3")
+
+[connection signal="timeout" from="ExplosionTimer" to="." method="_on_explosion_timer_timeout"]

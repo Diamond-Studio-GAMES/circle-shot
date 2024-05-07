@@ -8,6 +8,6 @@ weapon_name = "Граната"
 weapon_type = 2
 rarity = 0
 damage_text = "Урон: 25-80"
-ammo_text = "2 штуки"
+ammo_text = "3 штуки"
 weapon_path = "uid://b5t5tgu043bm"
 image_path = "uid://jyvb0oir1emy"

@@ -19,8 +19,8 @@ func post_message(message: String) -> void:
 	_messages.append_text(message + '\n')
 	if not visible:
 		var tween := create_tween()
-		tween.tween_property(_chat_button, "self_modulate", Color.GREEN, 0.25)
-		tween.tween_property(_chat_button, "self_modulate", Color.WHITE, 0.25)
+		tween.tween_property(_chat_button, ^"self_modulate", Color.GREEN, 0.25)
+		tween.tween_property(_chat_button, ^"self_modulate", Color.WHITE, 0.25)
 
 
 func create_prefix_from_name(player_name: String) -> void:

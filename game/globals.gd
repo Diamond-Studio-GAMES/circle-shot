@@ -4,7 +4,7 @@ extends Node
 const FILE_NAME := "user://save.cfg"
 const DEFAULT_SECTION := "save"
 var HEADLESS := false
-var items_db: ItemsDB = preload("uid://pwq1e7l2ckos")
+var items_db: ItemsDB = load("uid://pwq1e7l2ckos")
 var save_file: ConfigFile
 
 
