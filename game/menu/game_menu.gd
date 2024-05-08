@@ -217,7 +217,7 @@ func _on_create_pressed() -> void:
 
 
 func _on_join_pressed() -> void:
-	if _get_player_name().strip_edges().is_empty():
+	if _get_player_name().is_empty():
 		create_error_dialog("Недопустимое имя!")
 		return
 	_ip_dialog.popup_centered()
@@ -242,6 +242,10 @@ func _on_line_edit_text_changed(_new_text: String) -> void:
 	_ip_edit.placeholder_text = "123.456.789.012"
 
 
+func _on_connected_to_ip_pressed() -> void:
+	DisplayServer.clipboard_set(_ip_edit.text)
+
+
 func _on_game_created(error: int) -> void:
 	_status.text = ""
 	if error:
@@ -249,6 +253,8 @@ func _on_game_created(error: int) -> void:
 		return
 	($Base/Centering/Lobby as Control).show()
 	($Base/Centering/Main as Control).hide()
+	($Base/Centering/Lobby/ControlButtons/ConnectedToIP as Control).hide()
+	($Base/Centering/Lobby/ControlButtons/ViewIPs as Control).show()
 	_players.clear()
 	if not Global.HEADLESS:
 		($ChatPanel as Chat).create_prefix_from_name(_get_player_name())
@@ -263,6 +269,9 @@ func _on_game_joined(error: int) -> void:
 		return
 	($Base/Centering/Lobby/AdminPanel as HBoxContainer).hide()
 	($Base/Centering/Lobby/ClientHint as Label).show()
+	($Base/Centering/Lobby/ControlButtons/ConnectedToIP as Control).show()
+	($Base/Centering/Lobby/ControlButtons/ConnectedToIP as LinkButton).text = "Подключён к %s" % _ip_edit.text
+	($Base/Centering/Lobby/ControlButtons/ViewIPs as Control).hide()
 	($Base/Centering/Lobby/ClientHint as Label).text = "Ожидание сервера... (возможно, игра уже началась)"
 	($Base/Centering/Lobby as Control).show()
 	($Base/Centering/Main as Control).hide()

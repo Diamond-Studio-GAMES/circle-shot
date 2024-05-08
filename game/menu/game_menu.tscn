@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0mui01tvaame"]
+[gd_scene load_steps=6 format=3 uid="uid://c0mui01tvaame"]
 
 [ext_resource type="Script" path="res://game/menu/game_menu.gd" id="1_k78bo"]
 [ext_resource type="PackedScene" uid="uid://vvk157q87e75" path="res://menu/title.tscn" id="2_3biv4"]
 [ext_resource type="PackedScene" uid="uid://sm5vc72d2aw1" path="res://game/menu/item_selector.tscn" id="3_s4psv"]
 [ext_resource type="Script" path="res://game/chat.gd" id="4_1xn6o"]
+[ext_resource type="Script" path="res://game/menu/view_ip_dialog.gd" id="5_erlbj"]
 
 [node name="GameMenu" type="Control"]
 layout_mode = 3
@@ -25,12 +26,12 @@ grow_vertical = 2
 
 [node name="ErrorDialog" type="AcceptDialog" parent="."]
 title = "Ошибка!"
-position = Vector2i(1, 28)
+initial_position = 2
 size = Vector2i(400, 100)
 
 [node name="IPDialog" type="ConfirmationDialog" parent="."]
 title = "Введи IP-адрес сервера"
-position = Vector2i(649, 302)
+initial_position = 2
 size = Vector2i(389, 120)
 ok_button_text = "Подключиться"
 dialog_hide_on_ok = false
@@ -520,17 +521,34 @@ layout_mode = 2
 [node name="Chat" type="Button" parent="Base/Centering/Lobby/ControlButtons"]
 auto_translate_mode = 1
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 0
 toggle_mode = true
 text = "   Чат   "
 
+[node name="ConnectedToIP" type="LinkButton" parent="Base/Centering/Lobby/ControlButtons"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.125, 0.125, 0.125, 1)
+theme_override_colors/font_hover_color = Color(0.105469, 0.105469, 0.105469, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.167969, 0.167969, 0.167969, 1)
+text = "Подключён к "
+underline = 1
+
+[node name="ViewIPs" type="Button" parent="Base/Centering/Lobby/ControlButtons"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Просмотреть IP-адреса"
+
 [node name="Leave" type="Button" parent="Base/Centering/Lobby/ControlButtons"]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 8
 text = "Покинуть комнату"
 
 [node name="ItemSelector" parent="." instance=ExtResource("3_s4psv")]
-transient = true
 
 [node name="ChatPanel" type="PanelContainer" parent="."]
 auto_translate_mode = 1
@@ -574,6 +592,16 @@ layout_mode = 2
 placeholder_text = "Отправить сообщение в чат..."
 max_length = 100
 
+[node name="ViewIPDialog" type="AcceptDialog" parent="."]
+title = "Ваши IP-адреса"
+initial_position = 2
+size = Vector2i(640, 160)
+dialog_autowrap = true
+script = ExtResource("5_erlbj")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="ViewIPDialog"]
+timeout = 5.0
+
 [connection signal="confirmed" from="IPDialog" to="." method="_on_ip_dialog_confirmed"]
 [connection signal="text_changed" from="IPDialog/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="pressed" from="Base/Centering/Main/Buttons/Create" to="." method="_on_create_pressed"]
@@ -587,7 +615,11 @@ max_length = 100
 [connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/ChangeGame" to="." method="_on_change_game_pressed"]
 [connection signal="pressed" from="Base/Centering/Lobby/AdminPanel/ChangeMap" to="." method="_on_change_map_pressed"]
 [connection signal="toggled" from="Base/Centering/Lobby/ControlButtons/Chat" to="ChatPanel" method="_on_chat_toggled"]
+[connection signal="pressed" from="Base/Centering/Lobby/ControlButtons/ConnectedToIP" to="." method="_on_connected_to_ip_pressed"]
+[connection signal="pressed" from="Base/Centering/Lobby/ControlButtons/ViewIPs" to="ViewIPDialog" method="popup_centered"]
 [connection signal="pressed" from="Base/Centering/Lobby/ControlButtons/Leave" to="." method="_on_leave_pressed"]
 [connection signal="item_selected" from="ItemSelector" to="." method="_on_item_selected"]
 [connection signal="text_submitted" from="ChatPanel/VBoxContainer/LineEdit" to="ChatPanel" method="_on_line_edit_text_submitted"]
 [connection signal="text_submitted" from="ChatPanel/VBoxContainer/LineEdit" to="ChatPanel/VBoxContainer/LineEdit" method="clear" unbinds=1]
+[connection signal="custom_action" from="ViewIPDialog" to="ViewIPDialog" method="_on_custom_action"]
+[connection signal="request_completed" from="ViewIPDialog/HTTPRequest" to="ViewIPDialog" method="_on_request_completed"]

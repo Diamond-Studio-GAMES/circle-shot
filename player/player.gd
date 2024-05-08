@@ -11,6 +11,7 @@ signal ammo_text_updated(text: String)
 # ВизЭффекты
 @export var hurt_vfx: PackedScene
 @export var death_vfx: PackedScene
+@export var heal_vfx: PackedScene
 # Синхронизируются при спавне
 var player := 1:
 	set(id):
@@ -113,7 +114,9 @@ func set_health(health: int) -> void:
 		hurt_vfx_node.position = position
 		_vfx_parent.add_child(hurt_vfx_node)
 	else: 
-		pass # Примерно эффект хила нужен
+		var heal_vfx_node: Node2D = heal_vfx.instantiate()
+		heal_vfx_node.position = position
+		_vfx_parent.add_child(heal_vfx_node)
 	current_health = health
 	if current_health < max_health * 0.33:
 		_blood.emitting = true
