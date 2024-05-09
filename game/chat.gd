@@ -5,6 +5,7 @@ extends Control
 var _prefix: String
 @onready var _chat_button: Button = get_node(chat_button_path)
 @onready var _messages: RichTextLabel = $VBoxContainer/Messages
+@onready var _line_edit: LineEdit = $VBoxContainer/HBoxContainer/LineEdit
 
 
 @rpc("any_peer", "call_remote", "reliable", 5)
@@ -31,6 +32,18 @@ func clear_chat() -> void:
 	_messages.text = ""
 
 
+func send_message() -> void:
+	var message := _prefix + _line_edit.text.strip_edges().strip_escapes().replace("[", "[lb]")
+	_line_edit.clear()
+	_line_edit.grab_focus()
+	if message == _prefix:
+		return
+	if multiplayer.is_server():
+		_request_post_message(message)
+	else:
+		_request_post_message.rpc_id(1, message)
+
+
 func _on_local_player_created(player: Player) -> void:
 	_prefix = "[color=#%s]%s[/color]: " % [Game.TEAM_COLORS[player.team].to_html(false), player.player_name]
 
@@ -38,14 +51,4 @@ func _on_local_player_created(player: Player) -> void:
 func _on_chat_toggled(toggled_on: bool) -> void:
 	visible = toggled_on
 	if toggled_on:
-		($VBoxContainer/LineEdit as Control).grab_focus()
-
-
-func _on_line_edit_text_submitted(new_text: String) -> void:
-	var message := _prefix + new_text.strip_edges().strip_escapes().replace("[", "[lb]")
-	if message == _prefix:
-		return
-	if multiplayer.is_server():
-		_request_post_message(message)
-	else:
-		_request_post_message.rpc_id(1, message)
+		_line_edit.grab_focus()

@@ -20,7 +20,7 @@ var local_player: Player
 var game_started := false
 var _players_data := {}
 var _players := {}
-@onready var _chat: Chat = $GameUI/Main/ChatPanel
+@onready var _game_ui: GameUI = $GameUI
 
 
 func _ready() -> void:
@@ -104,23 +104,33 @@ func _get_spawn_point(_id: int) -> Vector2:
 
 
 func _on_player_killed(who: int, by: int) -> void:
-	_chat.post_message.rpc("Игра: [color=#%s]%s[/color] убивает игрока [color=#%s]%s[/color]!" % [
+	var message_text: String = "[color=#%s]%s[/color] убивает игрока [color=#%s]%s[/color]!" % [
 		TEAM_COLORS[_players_data[by][6]].to_html(false),
 		_players_data[by][0],
 		TEAM_COLORS[_players_data[who][6]].to_html(false),
 		_players_data[who][0],
-	])
+	]
+	_game_ui.show_status.rpc(message_text, 2.5)
+	if not Global.HEADLESS:
+		_game_ui.show_status(message_text, 2.5)
+	_game_ui.chat.post_message.rpc("Игра: " + message_text)
 
 
 func _on_peer_disconnected(id: int) -> void:
 	if not multiplayer.is_server():
 		return
-	_chat.post_message.rpc("Игра: Игрок [color=#%s]%s[/color] отключился!" % [
+	var message_text: String = "Игрок [color=#%s]%s[/color] отключился!" % [
 		TEAM_COLORS[_players_data[id][6]].to_html(false),
 		_players_data[id][0],
-	])
+	]
+	_game_ui.show_status.rpc(message_text, 1.5)
+	if not Global.HEADLESS:
+		_game_ui.show_status(message_text, 1.5)
+	_game_ui.chat.post_message.rpc("Игра: " + message_text)
 	if id in _players:
 		if is_instance_valid(_players[id]):
 			_players[id].queue_free()
 		_players.erase(id)
 	_players_data.erase(id)
+	if _players_data.is_empty():
+		end_game()

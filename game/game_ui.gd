@@ -1,12 +1,16 @@
+class_name GameUI
 extends Node
 
 
 var _player: Player
+var _status_tween: Tween
+@onready var chat: Chat = $Main/ChatPanel
 @onready var _health_bar: TextureProgressBar = $Main/Player/HealthBar
 @onready var _health_text: Label = $Main/Player/HealthBar/Label
 @onready var _tint_anim: AnimationPlayer = $Main/PlayerTint/AnimationPlayer
 @onready var _ammo_text: Label = $Main/Player/CurrentWeapon/Label
-@onready var _chat_button: BaseButton = $Main/Chat
+@onready var _status_label: RichTextLabel = $Main/StatusLabel
+@onready var _chat_button: BaseButton = chat.get_node(chat.chat_button_path)
 
 
 func _input(event: InputEvent) -> void:
@@ -30,6 +34,17 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		select_weapon(Weapon.Type.MELEE)
 	elif event.is_action_pressed("chat") and not _chat_button.button_pressed:
 		_chat_button.button_pressed = true
+
+
+@rpc("authority", "call_remote", "reliable", 5)
+func show_status(text: String, duration: float = 2.0) -> void:
+	_status_label.self_modulate = Color.WHITE
+	_status_label.text = "[center]%s[/center]" % text
+	if is_instance_valid(_status_tween):
+		_status_tween.kill()
+	_status_tween = create_tween()
+	_status_tween.tween_interval(duration)
+	_status_tween.tween_property(_status_label, "self_modulate", Color.TRANSPARENT, 0.5)
 
 
 func open_weapon_selection() -> void:

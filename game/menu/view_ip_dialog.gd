@@ -37,21 +37,23 @@ func _find_ips() -> void:
 			other_ips.append(ip)
 	
 	dialog_text = ""
-	dialog_text += "Локальные IP-адреса: "
-	var first := true
-	for ip: String in preffered_ips:
-		if not first:
-			dialog_text += ", "
-		dialog_text += ip
-		first = false
-	dialog_text += '\n'
-	dialog_text += "Остальные локальные IP-адреса: "
-	first = true
-	for ip: String in other_ips:
-		if not first:
-			dialog_text += ", "
-		dialog_text += ip
-		first = false
+	if not preffered_ips.is_empty():
+		dialog_text += "Локальные IP-адреса: "
+		var first := true
+		for ip: String in preffered_ips:
+			if not first:
+				dialog_text += ", "
+			dialog_text += ip
+			first = false
+		dialog_text += '\n'
+	if not other_ips.is_empty():
+		dialog_text += "Остальные локальные IP-адреса: "
+		var first := true
+		for ip: String in other_ips:
+			if not first:
+				dialog_text += ", "
+			dialog_text += ip
+			first = false
 	
 	_global_ip_fetched = false
 	var error: int = _http_request.request("https://icanhazip.com/")

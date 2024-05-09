@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://d3nsak46hbo2c"]
+[gd_scene load_steps=18 format=3 uid="uid://d3nsak46hbo2c"]
 
 [ext_resource type="Script" path="res://game/game.gd" id="1_kxt6o"]
 [ext_resource type="Script" path="res://game/game_ui.gd" id="2_82bb5"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://d4b1wfymlf7bu" path="res://player/health_bar_empty.png" id="5_os8qt"]
 [ext_resource type="Texture2D" uid="uid://low3v5d2q65l" path="res://player/health_bar.png" id="6_igi7v"]
 [ext_resource type="Texture2D" uid="uid://p85ppsyx0g2n" path="res://player/weapon_bg.png" id="7_nj1v0"]
+[ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/chat_send.png" id="9_2uw6w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0kb2l"]
 size = Vector2(288, 144)
@@ -631,6 +632,23 @@ libraries = {
 "": SubResource("AnimationLibrary_e0ahq")
 }
 
+[node name="StatusLabel" type="RichTextLabel" parent="GameUI/Main"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 96.0
+offset_right = 320.0
+offset_bottom = 119.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/outline_size = 4
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+
 [node name="LeaveGame" type="Button" parent="GameUI/Main"]
 layout_mode = 1
 anchors_preset = 1
@@ -693,10 +711,21 @@ meta_underlined = false
 hint_underlined = false
 selection_enabled = true
 
-[node name="LineEdit" type="LineEdit" parent="GameUI/Main/ChatPanel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/Main/ChatPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="GameUI/Main/ChatPanel/VBoxContainer/HBoxContainer"]
 auto_translate_mode = 1
 layout_mode = 2
-placeholder_text = "Отправить сообщение в чат..."
+size_flags_horizontal = 3
+placeholder_text = "Сообщение..."
+max_length = 64
+
+[node name="Send" type="TextureButton" parent="GameUI/Main/ChatPanel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+texture_normal = ExtResource("9_2uw6w")
+stretch_mode = 3
 
 [node name="Intro" type="Control" parent="GameUI"]
 visible = false
@@ -826,5 +855,5 @@ libraries = {
 [connection signal="pressed" from="GameUI/Main/Player/WeaponSelection/MeleeWeapon/TouchScreenButton" to="GameUI" method="select_weapon" binds= [3]]
 [connection signal="pressed" from="GameUI/Main/LeaveGame" to="GameUI" method="_on_leave_game_pressed"]
 [connection signal="toggled" from="GameUI/Main/Chat" to="GameUI/Main/ChatPanel" method="_on_chat_toggled"]
-[connection signal="text_submitted" from="GameUI/Main/ChatPanel/VBoxContainer/LineEdit" to="GameUI/Main/ChatPanel" method="_on_line_edit_text_submitted"]
-[connection signal="text_submitted" from="GameUI/Main/ChatPanel/VBoxContainer/LineEdit" to="GameUI/Main/ChatPanel/VBoxContainer/LineEdit" method="clear" unbinds=1]
+[connection signal="text_submitted" from="GameUI/Main/ChatPanel/VBoxContainer/HBoxContainer/LineEdit" to="GameUI/Main/ChatPanel" method="send_message" unbinds=1]
+[connection signal="pressed" from="GameUI/Main/ChatPanel/VBoxContainer/HBoxContainer/Send" to="GameUI/Main/ChatPanel" method="send_message"]
