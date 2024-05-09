@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://x2oithhak41y"]
+
+[ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://player/player.tscn" id="1_5adea"]
+[ext_resource type="Texture2D" uid="uid://b3x23ajo3vrs7" path="res://skins/telegram/telegram.png" id="2_bd058"]
+
+[node name="Player" instance=ExtResource("1_5adea")]
+
+[node name="Telegram" type="Sprite2D" parent="Visual" index="0"]
+texture = ExtResource("2_bd058")

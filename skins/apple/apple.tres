@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkinConfig" load_steps=2 format=3 uid="uid://dvnh4idsj61sj"]
+
+[ext_resource type="Script" path="res://config/skin_config.gd" id="1_el00n"]
+
+[resource]
+script = ExtResource("1_el00n")
+skin_name = "Apple"
+skin_description = "Гнилое яблоко"
+rarity = 1
+skin_path = "uid://hu5r8bfwm35u"
+image_path = "uid://du5ppe5qo0scu"

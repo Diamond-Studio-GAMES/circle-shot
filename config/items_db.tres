@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ItemsDB" load_steps=20 format=3 uid="uid://pwq1e7l2ckos"]
+[gd_resource type="Resource" script_class="ItemsDB" load_steps=24 format=3 uid="uid://pwq1e7l2ckos"]
 
 [ext_resource type="Script" path="res://config/game_config.gd" id="1_b4c63"]
 [ext_resource type="Resource" uid="uid://i4s2m4jgbyvc" path="res://royale/royale.tres" id="1_dqspy"]
@@ -16,14 +16,18 @@
 [ext_resource type="Resource" uid="uid://dk5cbfv04bbfs" path="res://skins/dealer/dealer.tres" id="7_a6dy2"]
 [ext_resource type="Resource" uid="uid://bxma7nn66sax2" path="res://weapons/snowball/snowball.tres" id="7_d3yey"]
 [ext_resource type="Resource" uid="uid://civajcyxxjsc4" path="res://skins/sunflower/sunflower.tres" id="7_rjvol"]
+[ext_resource type="Resource" uid="uid://c2hjmk44ru68x" path="res://skins/telegram/telegram.tres" id="7_wvjju"]
 [ext_resource type="Script" path="res://config/weapon_config.gd" id="8_0dalf"]
+[ext_resource type="Resource" uid="uid://dvnh4idsj61sj" path="res://skins/apple/apple.tres" id="8_46tbg"]
+[ext_resource type="Resource" uid="uid://bqi8cjsnsn84v" path="res://skins/android/android.tres" id="8_wsnl6"]
+[ext_resource type="Resource" uid="uid://caehyd61mjpwo" path="res://skins/clike/clike.tres" id="10_5dx5r"]
 [ext_resource type="Resource" uid="uid://bsr137cw1pcmq" path="res://weapons/sword/sword.tres" id="15_k0ucr"]
 [ext_resource type="Resource" uid="uid://buyl81nl44qfx" path="res://weapons/smoke_grenade/smoke_grenade.tres" id="17_nr8qx"]
 
 [resource]
 script = ExtResource("2_gvmco")
 games = Array[ExtResource("1_b4c63")]([ExtResource("1_dqspy")])
-skins = Array[ExtResource("4_savot")]([ExtResource("3_4g07f"), ExtResource("4_4h4k1"), ExtResource("7_rjvol"), ExtResource("7_a6dy2"), ExtResource("5_lmi8j")])
+skins = Array[ExtResource("4_savot")]([ExtResource("3_4g07f"), ExtResource("4_4h4k1"), ExtResource("7_wvjju"), ExtResource("8_46tbg"), ExtResource("8_wsnl6"), ExtResource("7_rjvol"), ExtResource("7_a6dy2"), ExtResource("10_5dx5r"), ExtResource("5_lmi8j")])
 weapons_light = Array[ExtResource("8_0dalf")]([ExtResource("5_e2ndw"), ExtResource("7_d3yey")])
 weapons_heavy = Array[ExtResource("8_0dalf")]([ExtResource("4_lef67"), ExtResource("5_rs7cj"), ExtResource("6_qn14x")])
 weapons_support = Array[ExtResource("8_0dalf")]([ExtResource("7_0fj5y"), ExtResource("17_nr8qx")])

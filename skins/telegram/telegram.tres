@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkinConfig" load_steps=2 format=3 uid="uid://c2hjmk44ru68x"]
+
+[ext_resource type="Script" path="res://config/skin_config.gd" id="1_newbi"]
+
+[resource]
+script = ExtResource("1_newbi")
+skin_name = "Telegram"
+skin_description = "А вы знали, что в нём можно общаться?"
+rarity = 1
+skin_path = "uid://x2oithhak41y"
+image_path = "uid://b3x23ajo3vrs7"
