@@ -3,6 +3,12 @@ extends Game
 var _spawn_points: Array[Node]
 var _spawn_counter := 0 
 
+func _start_game() -> void:
+	super()
+	for smoke: Node2D in $PoisonSmoke.get_children():
+		var tween: Tween = smoke.create_tween()
+		tween.tween_property(smoke, "position", Vector2.ZERO, 400.0)
+
 
 func _make_teams() -> void:
 	_spawn_points = $Map/SpawnPoints.get_children()

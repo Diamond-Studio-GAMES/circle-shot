@@ -542,7 +542,7 @@ underline = 1
 visible = false
 layout_mode = 2
 size_flags_horizontal = 6
-text = "Просмотреть IP-адреса"
+text = "Просмотреть IP-адреса..."
 
 [node name="Leave" type="Button" parent="Base/Centering/Lobby/ControlButtons"]
 layout_mode = 2

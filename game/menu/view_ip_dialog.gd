@@ -11,18 +11,25 @@ const HIDE_IPS: Array[String] = [
 ]
 
 var _global_ip_fetched := false
+var _preffered_ips: Array[String]
+var _other_ips: Array[String]
+var _global_ip: String
 @onready var _http_request: HTTPRequest = $HTTPRequest
 
 
 func _ready() -> void:
 	_find_ips()
-	add_button("Обновить IP-адреса", true, "update_ips")
+	add_button("Обновить IP-адреса", false, "update_ips")
+	add_button("Копировать IP-адреса", true, "copy_ips")
 
 
 func _find_ips() -> void:
+	_preffered_ips.clear()
+	_other_ips.clear()
+	_global_ip = ""
+	_global_ip_fetched = false
+	
 	var ip_addresses: PackedStringArray = IP.get_local_addresses()
-	var preffered_ips: Array[String]
-	var other_ips: Array[String]
 	for ip: String in ip_addresses:
 		if ip in HIDE_IPS:
 			continue
@@ -32,32 +39,31 @@ func _find_ips() -> void:
 				preffered = true
 				break
 		if preffered:
-			preffered_ips.append(ip)
+			_preffered_ips.append(ip)
 		else:
-			other_ips.append(ip)
+			_other_ips.append(ip)
 	
 	dialog_text = ""
-	if not preffered_ips.is_empty():
+	if not _preffered_ips.is_empty():
 		dialog_text += "Локальные IP-адреса: "
 		var first := true
-		for ip: String in preffered_ips:
+		for ip: String in _preffered_ips:
 			if not first:
 				dialog_text += ", "
 			dialog_text += ip
 			first = false
 		dialog_text += '\n'
-	if not other_ips.is_empty():
+	if not _other_ips.is_empty():
 		dialog_text += "Остальные локальные IP-адреса: "
 		var first := true
-		for ip: String in other_ips:
+		for ip: String in _other_ips:
 			if not first:
 				dialog_text += ", "
 			dialog_text += ip
 			first = false
 	
-	_global_ip_fetched = false
 	var error: int = _http_request.request("https://icanhazip.com/")
-	if error != 0:
+	if error != OK:
 		# Ошибку печатать
 		dialog_text += '\n'
 		dialog_text += "Невозможно создать запрос для получения глобального IP-адреса! Код ошибки: %d" % error
@@ -76,11 +82,37 @@ func _on_request_completed(result: int, response_code: int, _headers: PackedStri
 		dialog_text += '\n'
 		dialog_text += "Ошибка получения глобального IP-адреса! Код ошибки: %d" % response_code
 		return
+	_global_ip = body.get_string_from_utf8().strip_escapes()
 	dialog_text += '\n'
-	dialog_text += "Глобальный IP-адрес: %s" % body.get_string_from_utf8()
+	dialog_text += "Глобальный IP-адрес: %s" % _global_ip
+	dialog_text += '\n'
+	dialog_text += "Чтобы игроки могли подключиться по глобальному IP-адресу, \
+			необходимо открыть порт: %d" % Shooter.PORT
 	_global_ip_fetched = true
 
 
 func _on_custom_action(action: StringName) -> void:
-	if action == &"update_ips":
-		_find_ips()
+	match action:
+		&"update_ips":
+			_find_ips()
+		&"copy_ips":
+			var to_copy: String = ""
+			if not _preffered_ips.is_empty():
+				var first := true
+				for ip: String in _preffered_ips:
+					if not first:
+						to_copy += ' '
+					to_copy += ip
+					first = false
+				to_copy += '\n'
+			if not _global_ip.is_empty():
+				to_copy += _global_ip
+				to_copy += '\n'
+			if not _other_ips.is_empty():
+				var first := true
+				for ip: String in _other_ips:
+					if not first:
+						to_copy += ' '
+					to_copy += ip
+					first = false
+			DisplayServer.clipboard_set(to_copy)
