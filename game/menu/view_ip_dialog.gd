@@ -97,6 +97,9 @@ func _on_custom_action(action: StringName) -> void:
 			_find_ips()
 		&"copy_ips":
 			var to_copy: String = ""
+			if not _global_ip.is_empty():
+				to_copy += _global_ip
+				to_copy += '\n'
 			if not _preffered_ips.is_empty():
 				var first := true
 				for ip: String in _preffered_ips:
@@ -104,9 +107,6 @@ func _on_custom_action(action: StringName) -> void:
 						to_copy += ' '
 					to_copy += ip
 					first = false
-				to_copy += '\n'
-			if not _global_ip.is_empty():
-				to_copy += _global_ip
 				to_copy += '\n'
 			if not _other_ips.is_empty():
 				var first := true

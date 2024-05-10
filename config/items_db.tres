@@ -33,4 +33,4 @@ weapons_heavy = Array[ExtResource("8_0dalf")]([ExtResource("4_lef67"), ExtResour
 weapons_support = Array[ExtResource("8_0dalf")]([ExtResource("7_0fj5y"), ExtResource("17_nr8qx")])
 weapons_melee = Array[ExtResource("8_0dalf")]([ExtResource("6_svctq"), ExtResource("15_k0ucr")])
 spawnable_projectiles = Array[String](["uid://c4cr4b5wn24yt", "uid://tbn6kstqx2sj", "uid://c7yp4ideasf2", "uid://cm0sqwulviy72", "uid://co7528ytx5rvc"])
-spawnable_other = Array[String]([])
+spawnable_other = Array[String](["uid://bysyaaj2r7stt"])

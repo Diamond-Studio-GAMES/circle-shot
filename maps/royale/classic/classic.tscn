@@ -61,3 +61,63 @@ position = Vector2(33, 3920)
 
 [node name="9" parent="SpawnPoints" index="9"]
 position = Vector2(4946, 4348)
+
+[node name="0" parent="HealPoints" index="0"]
+position = Vector2(-1034, -1309)
+
+[node name="1" parent="HealPoints" index="1"]
+position = Vector2(1149, -1433)
+
+[node name="2" parent="HealPoints" index="2"]
+position = Vector2(-921, -89)
+
+[node name="3" parent="HealPoints" index="3"]
+position = Vector2(884, -40)
+
+[node name="4" parent="HealPoints" index="4"]
+position = Vector2(1147, 1014)
+
+[node name="5" parent="HealPoints" index="5"]
+position = Vector2(-981, 1128)
+
+[node name="6" parent="HealPoints" index="6"]
+position = Vector2(-2438, -2392)
+
+[node name="7" parent="HealPoints" index="7"]
+position = Vector2(2703, -2168)
+
+[node name="8" parent="HealPoints" index="8"]
+position = Vector2(2313, 1836)
+
+[node name="9" parent="HealPoints" index="9"]
+position = Vector2(-2022, 1837)
+
+[node name="10" parent="HealPoints" index="10"]
+position = Vector2(-2250, -269)
+
+[node name="11" parent="HealPoints" index="11"]
+position = Vector2(2487, -117)
+
+[node name="12" parent="HealPoints" index="12"]
+position = Vector2(126, 1981)
+
+[node name="13" parent="HealPoints" index="13"]
+position = Vector2(-5137, -3118)
+
+[node name="14" parent="HealPoints" index="14"]
+position = Vector2(-149, -3336)
+
+[node name="15" parent="HealPoints" index="15"]
+position = Vector2(4762, -2759)
+
+[node name="16" parent="HealPoints" index="16"]
+position = Vector2(4951, 961)
+
+[node name="17" parent="HealPoints" index="17"]
+position = Vector2(4202, 3348)
+
+[node name="18" parent="HealPoints" index="18"]
+position = Vector2(-1435, 3402)
+
+[node name="19" parent="HealPoints" index="19"]
+position = Vector2(-4515, 2315)

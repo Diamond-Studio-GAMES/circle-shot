@@ -221,6 +221,10 @@ func _on_join_pressed() -> void:
 		create_error_dialog("Недопустимое имя!")
 		return
 	_ip_dialog.popup_centered()
+	if _ip_edit.text.is_empty():
+		var clipboard_content: String = DisplayServer.clipboard_get().get_slice('\n', 0)
+		if clipboard_content.is_valid_ip_address():
+			_ip_edit.text = clipboard_content
 	_ip_edit.grab_focus()
 
 

@@ -43,3 +43,85 @@ gizmo_extents = 76.0
 [node name="9" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(187, 318)
 gizmo_extents = 76.0
+
+[node name="HealPoints" type="Node2D" parent="."]
+
+[node name="0" type="Marker2D" parent="HealPoints"]
+position = Vector2(-266, -205)
+gizmo_extents = 160.0
+
+[node name="1" type="Marker2D" parent="HealPoints"]
+position = Vector2(157, -425)
+gizmo_extents = 160.0
+
+[node name="2" type="Marker2D" parent="HealPoints"]
+position = Vector2(727, -217)
+gizmo_extents = 160.0
+
+[node name="3" type="Marker2D" parent="HealPoints"]
+position = Vector2(340, -312)
+gizmo_extents = 160.0
+
+[node name="4" type="Marker2D" parent="HealPoints"]
+position = Vector2(843, 166)
+gizmo_extents = 160.0
+
+[node name="5" type="Marker2D" parent="HealPoints"]
+position = Vector2(635, 472)
+gizmo_extents = 160.0
+
+[node name="6" type="Marker2D" parent="HealPoints"]
+position = Vector2(282, 536)
+gizmo_extents = 160.0
+
+[node name="7" type="Marker2D" parent="HealPoints"]
+position = Vector2(-97, 520)
+gizmo_extents = 160.0
+
+[node name="8" type="Marker2D" parent="HealPoints"]
+position = Vector2(-343, 332)
+gizmo_extents = 160.0
+
+[node name="9" type="Marker2D" parent="HealPoints"]
+position = Vector2(-454, 29)
+gizmo_extents = 160.0
+
+[node name="10" type="Marker2D" parent="HealPoints"]
+position = Vector2(-586, -253)
+gizmo_extents = 160.0
+
+[node name="11" type="Marker2D" parent="HealPoints"]
+position = Vector2(-137, -549)
+gizmo_extents = 160.0
+
+[node name="12" type="Marker2D" parent="HealPoints"]
+position = Vector2(440, -599)
+gizmo_extents = 160.0
+
+[node name="13" type="Marker2D" parent="HealPoints"]
+position = Vector2(1049, -282)
+gizmo_extents = 160.0
+
+[node name="14" type="Marker2D" parent="HealPoints"]
+position = Vector2(1006, 384)
+gizmo_extents = 160.0
+
+[node name="15" type="Marker2D" parent="HealPoints"]
+position = Vector2(443, 719)
+gizmo_extents = 160.0
+
+[node name="16" type="Marker2D" parent="HealPoints"]
+position = Vector2(-10, 790)
+gizmo_extents = 160.0
+
+[node name="17" type="Marker2D" parent="HealPoints"]
+position = Vector2(-288, 697)
+gizmo_extents = 160.0
+
+[node name="18" type="Marker2D" parent="HealPoints"]
+position = Vector2(-637, 551)
+gizmo_extents = 160.0
+
+[node name="19" type="Marker2D" parent="HealPoints"]
+position = Vector2(-794, 248)
+gizmo_extents = 160.0

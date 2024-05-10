@@ -133,4 +133,4 @@ func _on_peer_disconnected(id: int) -> void:
 		_players.erase(id)
 	_players_data.erase(id)
 	if _players_data.is_empty():
-		end_game()
+		end_game.rpc()

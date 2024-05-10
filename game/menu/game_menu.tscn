@@ -43,8 +43,7 @@ offset_left = 32.0
 offset_top = 16.0
 offset_right = 357.0
 offset_bottom = 47.0
-text = "127.0.0.1"
-placeholder_text = "XXX.XXX.XXX.XXX"
+placeholder_text = "123.456.789.012"
 alignment = 1
 max_length = 19
 
