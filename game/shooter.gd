@@ -8,7 +8,7 @@ signal game_joined(error: int)
 signal connection_closed
 signal game_started(success: bool)
 signal game_ended
-const PORT := 14889
+const PORT := 14888
 const MAX_CLIENTS := 10
 var is_in_network := false
 var game: Game

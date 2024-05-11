@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwtddg0cmagg1"
-path="res://.godot/imported/chat_send.png-acb2e172564d8d36dc72dae2c80646bc.ctex"
+uid="uid://chfx32osm5nwo"
+path="res://.godot/imported/joystick_tip_aim.png-e74c0722e7ed1da087cb62274c99e34e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/chat_send.png"
-dest_files=["res://.godot/imported/chat_send.png-acb2e172564d8d36dc72dae2c80646bc.ctex"]
+source_file="res://game/ui/joystick_tip_aim.png"
+dest_files=["res://.godot/imported/joystick_tip_aim.png-e74c0722e7ed1da087cb62274c99e34e.ctex"]
 
 [params]
 

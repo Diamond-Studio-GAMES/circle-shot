@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://game/menu/game_menu.gd" id="1_k78bo"]
 [ext_resource type="PackedScene" uid="uid://vvk157q87e75" path="res://menu/title.tscn" id="2_3biv4"]
 [ext_resource type="PackedScene" uid="uid://sm5vc72d2aw1" path="res://game/menu/item_selector.tscn" id="3_s4psv"]
-[ext_resource type="Script" path="res://game/chat.gd" id="4_1xn6o"]
+[ext_resource type="Script" path="res://game/ui/chat.gd" id="4_1xn6o"]
 [ext_resource type="Script" path="res://game/menu/view_ip_dialog.gd" id="5_erlbj"]
-[ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/chat_send.png" id="5_skcbq"]
+[ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/ui/chat_send.png" id="5_skcbq"]
 
 [node name="GameMenu" type="Control"]
 layout_mode = 3

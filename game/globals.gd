@@ -12,6 +12,8 @@ func _ready() -> void:
 	if DisplayServer.get_name() == "headless" or OS.has_feature("dedicated_server"):
 		print("Detected headless platform")
 		HEADLESS = true
+	if OS.has_feature("pc"):
+		get_tree().root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
 	
 	save_file = ConfigFile.new()
 	save_file.load(FILE_NAME)
