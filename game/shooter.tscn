@@ -33,6 +33,7 @@ horizontal_alignment = 1
 script = ExtResource("4_pds1q")
 
 [node name="PingTimer" type="Timer" parent="PingLayer/PingCounter"]
+one_shot = true
 
 [connection signal="connection_closed" from="." to="GameMenu" method="_on_connection_closed"]
 [connection signal="connection_closed" from="." to="GameLoader" method="_on_connection_closed"]

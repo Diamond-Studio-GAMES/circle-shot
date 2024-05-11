@@ -108,10 +108,10 @@ func _on_player_health_changed(old_value: int, new_value: int) -> void:
 	_health_text.text = "%d/%d" % [_health_bar.value, _health_bar.max_value]
 	if new_value < old_value:
 		_tint_anim.play("Hurt")
-		if new_value < _health_bar.max_value * 0.33:
-			($Main/Player/BloodVignette as Control).show()
-		else:
-			($Main/Player/BloodVignette as Control).hide()
+	if new_value < _health_bar.max_value * 0.34:
+		($Main/Player/BloodVignette as Control).show()
+	else:
+		($Main/Player/BloodVignette as Control).hide()
 
 
 func _on_player_died(_who: int) -> void:

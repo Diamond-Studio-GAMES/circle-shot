@@ -64,13 +64,21 @@ func _spawn_heal_box() -> void:
 
 
 func _check_winner() -> void:
-	if _alive_players.size() == 1:
-		var winner_id: int = _alive_players[0]
-		var winner_name: String = _players_data[winner_id][0]
-		_show_winner.rpc(winner_id, winner_name)
-		if not Global.HEADLESS:
-			_show_winner(winner_id, winner_name)
-	await get_tree().create_timer(7.5).timeout
+	if _alive_players.size() != 1:
+		return
+	var winner_id: int = _alive_players[0]
+	var winner_name: String = _players_data[winner_id][0]
+	_show_winner.rpc(winner_id, winner_name)
+	if not Global.HEADLESS:
+		_show_winner(winner_id, winner_name)
+	($HealBoxSpawnTimer as Timer).stop()
+	await get_tree().create_timer(6.5).timeout
+	get_tree().call_group(&"Player", &"queue_free")
+	for i: Node in get_tree().get_first_node_in_group(&"ProjectilesParent").get_children():
+		i.queue_free()
+	for i: Node in get_tree().get_first_node_in_group(&"OtherParent").get_children():
+		i.queue_free()
+	await get_tree().create_timer(1.0).timeout
 	end_game.rpc()
 
 

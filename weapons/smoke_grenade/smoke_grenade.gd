@@ -24,7 +24,7 @@ func _process(_delta: float) -> void:
 
 
 func _make_current() -> void:
-	if ammo > 0 and _can_throw:
+	if ammo > 0 and _can_throw and process_mode != PROCESS_MODE_DISABLED:
 		show()
 		_anim.play("Equip")
 		player.lock_weapon_use(equip_time)

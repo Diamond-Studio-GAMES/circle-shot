@@ -85,7 +85,7 @@ text = "Твоё имя:"
 [node name="LineEdit" type="LineEdit" parent="Base/Centering/Main/Name"]
 layout_mode = 2
 size_flags_horizontal = 3
-max_length = 32
+max_length = 24
 expand_to_text_length = true
 
 [node name="Buttons" type="HBoxContainer" parent="Base/Centering/Main"]
