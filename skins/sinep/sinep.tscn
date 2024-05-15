@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cd1lphpx3gsyb"]
+
+[ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://player/player.tscn" id="1_rhaul"]
+[ext_resource type="Texture2D" uid="uid://dpk0u7atpi23s" path="res://skins/sinep/sinep.png" id="2_at1jw"]
+
+[node name="Player" instance=ExtResource("1_rhaul")]
+
+[node name="sineP" type="Sprite2D" parent="Visual" index="0"]
+texture = ExtResource("2_at1jw")

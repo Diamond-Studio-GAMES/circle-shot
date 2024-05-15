@@ -48,12 +48,12 @@ _data = {
 
 [node name="SnowballProjectile" instance=ExtResource("1_hgbjm")]
 script = ExtResource("2_jresf")
-effect_duration = 1.5
-effect_multiplier = 0.75
+effect_duration = 2.0
+effect_multiplier = 0.7
 should_stack = true
 speed = 2000.0
 hit_vfx = ExtResource("3_iu2pn")
-damage = 10
+damage = 15
 
 [node name="Sprite2D" parent="." index="0"]
 visible = false

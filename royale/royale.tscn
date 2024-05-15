@@ -171,6 +171,17 @@ libraries = {
 "": SubResource("AnimationLibrary_n8n4b")
 }
 
+[node name="PlayerCounter" type="Label" parent="GameUI/Main" index="6"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 171.0
+offset_bottom = 39.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "Осталось игроков: "
+
 [node name="Title" parent="GameUI/Intro" index="1"]
 text = "КОРОЛЕВСКАЯ БИТВА"
 

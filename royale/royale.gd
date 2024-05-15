@@ -17,6 +17,7 @@ func _start_game() -> void:
 	if multiplayer.is_server():
 		($HealBoxSpawnTimer as Timer).start()
 		_alive_players = _players_data.keys()
+		_set_alive_players.rpc(_alive_players.size())
 		for i: Player in get_tree().get_nodes_in_group(&"Player"):
 			i.died.connect(_on_player_died)
 	for smoke: Node2D in $PoisonSmoke.get_children():
@@ -49,6 +50,11 @@ func _show_winner(winner: int, winner_name: String) -> void:
 	else:
 		($GameUI/Main/GameEnd as Label).text = "ПОБЕДИТЕЛЬ: %s" % winner_name
 	($GameUI/Main/GameEnd/AnimationPlayer as AnimationPlayer).play(&"Victory")
+
+
+@rpc("call_local", "reliable")
+func _set_alive_players(count: int) -> void:
+	($GameUI/Main/PlayerCounter as Label).text = "Осталось игроков: %d" % count
 
 
 func _spawn_heal_box() -> void:
@@ -114,10 +120,12 @@ func _on_local_player_died(_who: int) -> void:
 
 func _on_player_died(who: int) -> void:
 	_alive_players.erase(who)
+	_set_alive_players.rpc(_alive_players.size())
 	_check_winner()
 
 
 func _on_peer_disconnected(id: int) -> void:
 	_alive_players.erase(id)
+	_set_alive_players.rpc(_alive_players.size())
 	_check_winner()
 	super(id)

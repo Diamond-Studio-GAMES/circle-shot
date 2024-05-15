@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkinConfig" load_steps=2 format=3 uid="uid://d3i1eoyd4e1n2"]
+
+[ext_resource type="Script" path="res://config/skin_config.gd" id="1_oll6o"]
+
+[resource]
+script = ExtResource("1_oll6o")
+skin_name = "синеП"
+skin_description = "ZVP ан учорд Я"
+rarity = 1
+skin_path = "uid://cd1lphpx3gsyb"
+image_path = "uid://dpk0u7atpi23s"
