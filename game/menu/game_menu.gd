@@ -247,7 +247,8 @@ func _on_line_edit_text_changed(_new_text: String) -> void:
 
 
 func _on_connected_to_ip_pressed() -> void:
-	DisplayServer.clipboard_set(_ip_edit.text)
+	if OS.has_feature("pc"):
+		DisplayServer.clipboard_set(_ip_edit.text)
 
 
 func _on_game_created(error: int) -> void:

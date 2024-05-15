@@ -75,7 +75,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_dae75"]
 resource_name = "Reload"
-length = 1.35
+length = 1.25
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -84,7 +84,7 @@ tracks/0/path = NodePath("Weapon:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6, 0.75, 0.9),
+"times": PackedFloat32Array(0, 0.4, 0.6, 0.8),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(0, 0), Vector2(0, 0), Vector2(-12, -6), Vector2(0, 0)]
@@ -96,10 +96,10 @@ tracks/1/path = NodePath("Weapon:rotation")
 tracks/1/interp = 3
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.4, 1.1, 1.35),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.15, 1, 1.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [0.0, 0.0, 0.392699, 0.392699, 0.0]
+"values": [0.0, 0.392699, 0.392699, 0.0]
 }
 
 [sub_resource type="Animation" id="Animation_pwqt3"]
@@ -141,9 +141,9 @@ _data = {
 
 [node name="SniperRifle" instance=ExtResource("1_57777")]
 script = ExtResource("2_ir31q")
-aim_zoom = Vector2(0.4, 0.4)
+aim_zoom = Vector2(0.5, 0.5)
 equip_time = 1.0
-reload_time = 1.35
+reload_time = 1.25
 spread = 0.0
 projectile = ExtResource("2_stbvt")
 ammo_per_load = 1

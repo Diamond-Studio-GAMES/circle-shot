@@ -20,7 +20,8 @@ var _global_ip: String
 func _ready() -> void:
 	_find_ips()
 	add_button("Обновить IP-адреса", false, "update_ips")
-	add_button("Копировать IP-адреса", true, "copy_ips")
+	if OS.has_feature("pc"):
+		add_button("Копировать IP-адреса", true, "copy_ips")
 
 
 func _find_ips() -> void:

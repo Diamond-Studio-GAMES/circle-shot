@@ -551,23 +551,24 @@ text = "Покинуть комнату"
 [node name="ItemSelector" parent="." instance=ExtResource("3_s4psv")]
 
 [node name="ChatPanel" type="PanelContainer" parent="."]
-auto_translate_mode = 1
+auto_translate_mode = 2
 visible = false
 self_modulate = Color(1, 1, 1, 0.878431)
 layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
+anchors_preset = -1
+anchor_left = 0.878
 anchor_top = 0.5
-anchor_right = 1.0
+anchor_right = 0.878
 anchor_bottom = 0.5
-offset_left = -304.0
+offset_left = -148.0
 offset_top = -200.0
-offset_right = -8.0
+offset_right = 148.16
 offset_bottom = 200.0
 grow_horizontal = 0
 grow_vertical = 2
 script = ExtResource("4_1xn6o")
 chat_button_path = NodePath("../Base/Centering/Lobby/ControlButtons/Chat")
+metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ChatPanel"]
 auto_translate_mode = 1
@@ -577,14 +578,12 @@ layout_mode = 2
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
-focus_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 scroll_following = true
 shortcut_keys_enabled = false
 meta_underlined = false
 hint_underlined = false
-selection_enabled = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ChatPanel/VBoxContainer"]
 layout_mode = 2

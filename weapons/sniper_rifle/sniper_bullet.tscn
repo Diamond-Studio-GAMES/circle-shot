@@ -7,7 +7,7 @@ size = Vector2(144, 16)
 
 [node name="SniperBullet" instance=ExtResource("1_u0vms")]
 speed = 4000.0
-damage = 80
+damage = 65
 
 [node name="Timer" parent="." index="1"]
 wait_time = 3.0

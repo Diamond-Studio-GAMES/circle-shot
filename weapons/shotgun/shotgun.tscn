@@ -216,6 +216,7 @@ _data = {
 
 [node name="Shotgun" instance=ExtResource("1_hu422")]
 script = ExtResource("2_bxqwq")
+buckshot_spread = 30.0
 equip_time = 0.7
 reload_time = 2.5
 shoot_interval = 0.9
@@ -252,7 +253,7 @@ position = Vector2(204, -18)
 [node name="Aim" parent="." index="2"]
 visible = false
 position = Vector2(204, -18)
-points = PackedVector2Array(0, 0, 2000, -1400, 2000, 1400)
+points = PackedVector2Array(0, 0, 2000, -1150, 2000, 1150)
 closed = true
 
 [node name="AnimationPlayer" parent="." index="3"]

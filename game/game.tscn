@@ -283,7 +283,7 @@ spawn_limit = 50
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(0.6, 0.6)
 position_smoothing_enabled = true
-position_smoothing_speed = 15.0
+position_smoothing_speed = 10.0
 
 [node name="GameUI" type="CanvasLayer" parent="."]
 layer = 2
@@ -733,7 +733,7 @@ toggle_mode = true
 text = "Чат"
 
 [node name="ChatPanel" type="PanelContainer" parent="GameUI/Main"]
-auto_translate_mode = 1
+auto_translate_mode = 2
 visible = false
 self_modulate = Color(1, 1, 1, 0.878431)
 layout_mode = 1
@@ -759,14 +759,12 @@ layout_mode = 2
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
-focus_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 scroll_following = true
 shortcut_keys_enabled = false
 meta_underlined = false
 hint_underlined = false
-selection_enabled = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="GameUI/Main/ChatPanel/VBoxContainer"]
 layout_mode = 2

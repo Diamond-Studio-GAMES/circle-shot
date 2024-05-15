@@ -1,5 +1,6 @@
 extends "res://weapons/common/gun.gd"
 
+@export var buckshot_spread: float = 30.0
 
 func _shoot() -> void:
 	_shoot_timer = shoot_interval
@@ -12,7 +13,7 @@ func _shoot() -> void:
 			projectile_node.global_position = _shoot_point.global_position
 			projectile_node.damage = roundi(projectile_node.damage * player.damage_multiplier)
 			projectile_node.rotation = player.input.aiming_direction.angle() \
-					+ deg_to_rad(35 - 14 * i)
+					+ deg_to_rad(buckshot_spread * (1 - 0.4 * i))
 			projectile_node.team = player.team
 			projectile_node.who = player.player
 			projectile_node.name += str(randi())
