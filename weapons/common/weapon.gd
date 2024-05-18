@@ -10,6 +10,7 @@ enum Type {
 }
 @export var ammo_per_load := 10
 @export var ammo_total := 150
+@export var speed_multiplier_when_current := 1.0
 var ammo := 10
 var player: Player
 @warning_ignore("unused_private_class_variable") # Для дочерних классов
@@ -29,12 +30,14 @@ func shoot() -> void:
 func make_current() -> void:
 	show()
 	process_mode = PROCESS_MODE_INHERIT
+	player.speed_multiplier *= speed_multiplier_when_current
 	_make_current()
 
 
 func unmake_current() -> void:
 	hide()
 	process_mode = PROCESS_MODE_DISABLED
+	player.speed_multiplier /= speed_multiplier_when_current
 	_unmake_current()
 
 
