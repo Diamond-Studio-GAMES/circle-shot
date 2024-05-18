@@ -24,7 +24,8 @@ var _players := {}
 
 
 func _ready() -> void:
-	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	if multiplayer.is_server():
+		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
 	var player_spawner: MultiplayerSpawner = $PlayerSpawner
 	for i: SkinConfig in Global.items_db.skins:
@@ -117,8 +118,6 @@ func _on_player_killed(who: int, by: int) -> void:
 
 
 func _on_peer_disconnected(id: int) -> void:
-	if not multiplayer.is_server():
-		return
 	var message_text: String = "Игрок [color=#%s]%s[/color] отключился!" % [
 		TEAM_COLORS[_players_data[id][6]].to_html(false),
 		_players_data[id][0],

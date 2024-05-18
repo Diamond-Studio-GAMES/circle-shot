@@ -55,7 +55,7 @@ one_shot = true
 [connection signal="game_created" from="." to="GameMenu" method="_on_game_created"]
 [connection signal="game_ended" from="." to="GameMenu" method="_on_game_ended"]
 [connection signal="game_joined" from="." to="GameMenu" method="_on_game_joined"]
-[connection signal="game_joined" from="." to="DebugDataLayer/PingLabel" method="_on_game_joined"]
+[connection signal="game_joined" from="." to="DebugDataLayer" method="_on_game_joined"]
 [connection signal="game_started" from="." to="GameMenu" method="_on_game_started"]
 [connection signal="game_create_requested" from="GameMenu" to="." method="create_game"]
 [connection signal="game_join_requested" from="GameMenu" to="." method="join_game"]
