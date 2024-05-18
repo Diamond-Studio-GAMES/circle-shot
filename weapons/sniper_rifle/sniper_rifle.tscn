@@ -148,6 +148,7 @@ spread = 0.0
 projectile = ExtResource("2_stbvt")
 ammo_per_load = 1
 ammo_total = 10
+speed_multiplier_when_current = 0.7
 
 [node name="Weapon" type="Sprite2D" parent="." index="0"]
 scale = Vector2(1.5, 1.5)
