@@ -108,6 +108,7 @@ func _set_admin(admin: bool) -> void:
 	($Base/Centering/Lobby/AdminPanel as HBoxContainer).visible = admin
 	($Base/Centering/Lobby/ClientHint as Label).visible = not admin
 	if admin:
+		# Странный код
 		_request_set_environment(Global.get_int("selected_game"), Global.get_int("selected_map"))
 	else:
 		($Base/Centering/Lobby/ClientHint as Label).text = "Начать игру может только хост."

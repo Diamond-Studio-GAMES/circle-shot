@@ -9,7 +9,7 @@
 script = ExtResource("1_lsxci")
 
 [node name="GameMenu" parent="." instance=ExtResource("2_b4glg")]
-auto_translate_mode = 1
+metadata/_edit_lock_ = true
 
 [node name="GameLoader" parent="." instance=ExtResource("3_5kh8u")]
 

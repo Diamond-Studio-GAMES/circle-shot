@@ -15,7 +15,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_k78bo")
-metadata/_edit_lock_ = true
 
 [node name="BG" type="ColorRect" parent="."]
 layout_mode = 1

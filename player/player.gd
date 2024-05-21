@@ -53,22 +53,26 @@ func _ready() -> void:
 	var light_weapon: Weapon = light_weapon_scene.instantiate()
 	light_weapon.player = self
 	_weapons.add_child(light_weapon)
-	light_weapon.unmake_current()
+	light_weapon.hide()
+	light_weapon.process_mode = PROCESS_MODE_DISABLED
 	var heavy_weapon_scene: PackedScene = load(Global.items_db.weapons_heavy[weapons_data[1]].weapon_path)
 	var heavy_weapon: Weapon = heavy_weapon_scene.instantiate()
 	heavy_weapon.player = self
 	_weapons.add_child(heavy_weapon)
-	heavy_weapon.unmake_current()
+	heavy_weapon.hide()
+	heavy_weapon.process_mode = PROCESS_MODE_DISABLED
 	var support_weapon_scene: PackedScene = load(Global.items_db.weapons_support[weapons_data[2]].weapon_path)
 	var support_weapon: Weapon = support_weapon_scene.instantiate()
 	support_weapon.player = self
 	_weapons.add_child(support_weapon)
-	support_weapon.unmake_current()
+	support_weapon.hide()
+	support_weapon.process_mode = PROCESS_MODE_DISABLED
 	var melee_weapon_scene: PackedScene = load(Global.items_db.weapons_melee[weapons_data[3]].weapon_path)
 	var melee_weapon: Weapon = melee_weapon_scene.instantiate()
 	melee_weapon.player = self
 	_weapons.add_child(melee_weapon)
-	melee_weapon.unmake_current()
+	melee_weapon.hide()
+	melee_weapon.process_mode = PROCESS_MODE_DISABLED
 	
 	_current_weapon = light_weapon
 	_current_weapon_type = Weapon.Type.LIGHT
