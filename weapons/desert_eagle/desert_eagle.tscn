@@ -228,19 +228,19 @@ texture = ExtResource("3_lxdps")
 [node name="Base" type="Sprite2D" parent="." index="1"]
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("4_d7c0d")
-offset = Vector2(64, -8)
+offset = Vector2(48, -8)
 
 [node name="Shoot" type="Sprite2D" parent="Base" index="0"]
 visible = false
 show_behind_parent = true
-position = Vector2(190, -46)
+position = Vector2(155, -40)
 texture = ExtResource("5_12sp2")
 
 [node name="ShootPoint" parent="." index="2"]
-position = Vector2(136, -37)
+position = Vector2(109, -32)
 
 [node name="Aim" parent="." index="3"]
-position = Vector2(136, -37)
+position = Vector2(109, -32)
 points = PackedVector2Array(0, 0, 1920, 0)
 width = 8.0
 

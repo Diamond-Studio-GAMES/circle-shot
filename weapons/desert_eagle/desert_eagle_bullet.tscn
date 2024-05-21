@@ -7,7 +7,7 @@ size = Vector2(96, 8)
 
 [node name="DesertEagleBullet" instance=ExtResource("1_vbv8p")]
 speed = 2600.0
-damage = 32
+damage = 27
 
 [node name="Sprite2D" parent="." index="0"]
 scale = Vector2(1, 0.5)
