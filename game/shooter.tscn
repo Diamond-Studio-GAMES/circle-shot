@@ -61,4 +61,4 @@ one_shot = true
 [connection signal="game_join_requested" from="GameMenu" to="." method="join_game"]
 [connection signal="game_leave_requested" from="GameMenu" to="." method="close_connection"]
 [connection signal="game_start_requested" from="GameMenu" to="." method="load_game"]
-[connection signal="timeout" from="DebugDataLayer/PingLabel/PingTimer" to="DebugDataLayer/PingLabel" method="_on_ping_timer_timeout"]
+[connection signal="timeout" from="DebugDataLayer/PingLabel/PingTimer" to="DebugDataLayer" method="_on_ping_timer_timeout"]

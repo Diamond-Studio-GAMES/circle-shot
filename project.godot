@@ -14,7 +14,7 @@ config/name="2D Shooter"
 config/name_localized={
 "ru": "2Д Шутер"
 }
-config/version="1.0.0"
+config/version="1.0.1"
 run/main_scene="res://misc/splash_screen.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="2d-shooter"
