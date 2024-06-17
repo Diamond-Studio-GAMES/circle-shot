@@ -6,7 +6,7 @@ signal item_selected(type: ItemsDB.Item, id: int)
 var _variant_environment: PackedScene = preload("uid://ck5uq0aa1ov56")
 var _variant_skin: PackedScene = preload("uid://c07pym82q5utt")
 var _variant_weapon: PackedScene = preload("uid://dq213xkmsonsl")
-@onready var _variants: GridContainer = $ScrollContainer/Variants
+@onready var _variants: FlowContainer = $ScrollContainer/Variants
 
 
 func _ready() -> void:
@@ -19,7 +19,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 	
 	match type:
 		ItemsDB.Item.GAME:
-			_variants.columns = 1
+			_variants.alignment = FlowContainer.ALIGNMENT_CENTER
 			title = "Выбери режим игры"
 			var counter := 0
 			for i: GameConfig in Global.items_db.games:
@@ -33,7 +33,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				_variants.add_child(variant)
 				counter += 1
 		ItemsDB.Item.MAP:
-			_variants.columns = 1
+			_variants.alignment = FlowContainer.ALIGNMENT_CENTER
 			title = "Выбери карту"
 			var counter := 0
 			for i: MapConfig in Global.items_db.games[current_game].maps:
@@ -47,7 +47,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				_variants.add_child(variant)
 				counter += 1
 		ItemsDB.Item.SKIN:
-			_variants.columns = 2
+			_variants.alignment = FlowContainer.ALIGNMENT_BEGIN
 			title = "Выбери скин"
 			var counter := 0
 			for i: SkinConfig in Global.items_db.skins:
@@ -62,7 +62,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				_variants.add_child(variant)
 				counter += 1
 		ItemsDB.Item.WEAPON_LIGHT:
-			_variants.columns = 2
+			_variants.alignment = FlowContainer.ALIGNMENT_BEGIN
 			title = "Выбери лёгкое оружие"
 			var counter := 0
 			for i: WeaponConfig in Global.items_db.weapons_light:
@@ -78,7 +78,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				_variants.add_child(variant)
 				counter += 1
 		ItemsDB.Item.WEAPON_HEAVY:
-			_variants.columns = 2
+			_variants.alignment = FlowContainer.ALIGNMENT_BEGIN
 			title = "Выбери тяжёлое оружие"
 			var counter := 0
 			for i: WeaponConfig in Global.items_db.weapons_heavy:
@@ -94,7 +94,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				_variants.add_child(variant)
 				counter += 1
 		ItemsDB.Item.WEAPON_SUPPORT:
-			_variants.columns = 2
+			_variants.alignment = FlowContainer.ALIGNMENT_BEGIN
 			title = "Выбери оружие поддержки"
 			var counter := 0
 			for i: WeaponConfig in Global.items_db.weapons_support:
@@ -110,7 +110,7 @@ func open_selection(type: ItemsDB.Item, current: int, current_game := 0) -> void
 				_variants.add_child(variant)
 				counter += 1
 		ItemsDB.Item.WEAPON_MELEE:
-			_variants.columns = 2
+			_variants.alignment = FlowContainer.ALIGNMENT_BEGIN
 			title = "Выбери ближнее оружие"
 			var counter := 0
 			for i: WeaponConfig in Global.items_db.weapons_melee:

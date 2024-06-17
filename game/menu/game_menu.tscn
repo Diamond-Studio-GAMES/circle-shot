@@ -28,11 +28,15 @@ grow_vertical = 2
 title = "Ошибка!"
 initial_position = 2
 size = Vector2i(400, 100)
+unresizable = true
 
 [node name="IPDialog" type="ConfirmationDialog" parent="."]
 title = "Введи IP-адрес сервера"
 initial_position = 2
 size = Vector2i(389, 120)
+exclusive = false
+unresizable = true
+popup_window = true
 ok_button_text = "Подключиться"
 dialog_hide_on_ok = false
 cancel_button_text = "Отмена"
@@ -604,6 +608,9 @@ stretch_mode = 3
 title = "Ваши IP-адреса"
 initial_position = 2
 size = Vector2i(640, 160)
+exclusive = false
+unresizable = true
+popup_window = true
 dialog_autowrap = true
 script = ExtResource("5_erlbj")
 

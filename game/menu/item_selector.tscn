@@ -8,8 +8,8 @@ initial_position = 2
 size = Vector2i(360, 480)
 visible = false
 transient = true
-exclusive = true
-unresizable = true
+popup_window = true
+min_size = Vector2i(360, 360)
 script = ExtResource("1_5l6gd")
 
 [node name="BG" type="ColorRect" parent="."]
@@ -32,8 +32,8 @@ grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
 
-[node name="Variants" type="GridContainer" parent="ScrollContainer"]
+[node name="Variants" type="HFlowContainer" parent="ScrollContainer"]
 auto_translate_mode = 1
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 3
 size_flags_vertical = 0
