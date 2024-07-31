@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3 uid="uid://c80v57cmun6n5"]
+
+[ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://game/player/player.tscn" id="1_g8270"]
+[ext_resource type="PackedScene" uid="uid://cio2wgh4fglo4" path="res://game/skins/kabakova/death_kabakova.tscn" id="2_fr12t"]
+[ext_resource type="Texture2D" uid="uid://cqmt55f6clp6c" path="res://game/skins/kabakova/kabakova.png" id="2_wnbls"]
+
+[node name="Player" instance=ExtResource("1_g8270")]
+death_vfx = ExtResource("2_fr12t")
+
+[node name="Kabakova" type="Sprite2D" parent="Visual" index="0"]
+texture = ExtResource("2_wnbls")

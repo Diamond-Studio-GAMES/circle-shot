@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://baoklmloqoop3"]
+
+[ext_resource type="Script" path="res://game/entity/effect/effect.gd" id="1_hdjbs"]
+
+[node name="Effect" type="Node2D"]
+script = ExtResource("1_hdjbs")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

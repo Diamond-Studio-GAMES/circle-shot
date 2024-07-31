@@ -1,0 +1,207 @@
+[gd_scene load_steps=9 format=3 uid="uid://coip6hjdsbg57"]
+
+[ext_resource type="Script" path="res://game/weapons/common/melee.gd" id="1_13kgy"]
+[ext_resource type="Texture2D" uid="uid://23oj05orcymg" path="res://game/weapons/sword/sword.png" id="2_8pya7"]
+[ext_resource type="Script" path="res://game/weapons/common/attack_area.gd" id="3_tfkvu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3hp3s"]
+size = Vector2(256, 432)
+
+[sub_resource type="Animation" id="Animation_5thpn"]
+resource_name = "Attack"
+length = 0.7
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AttackArea/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4, 0.5, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [-0.261799, -1.27689, -1.27689, 1.25367, 1.25367, -0.261799]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AttackPolygon:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AttackPolygon:polygon")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.25, 0.3, 0.35, 0.4, 0.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [PackedVector2Array(113, -219, 118, -162, 86, -148, 110, -117, 74, -99, 61, -65, 84, -8, 259, -90, 264, -144, 238, -168, 189, -210), PackedVector2Array(113, -219, 118, -162, 86, -148, 110, -117, 74, -99, 61, -65, 84, -8, 86, 52, 278, 74, 278, -58, 264, -144, 238, -168, 189, -210), PackedVector2Array(113, -219, 118, -162, 86, -148, 110, -117, 74, -99, 61, -65, 85, -33, 86, -15, 49, 69, 109, 240, 231, 164, 270, 65, 282, -25, 267, -96, 238, -168, 189, -210), PackedVector2Array(282, -37, 224, -14, 196, -55, 139, -27, 118, -78, 73, -61, 86, -15, 49, 69, 109, 240, 231, 164, 270, 65), PackedVector2Array(216, 120, 211, 83, 167, 82, 170, 28, 126, 42, 78, 16, 49, 69, 109, 240, 231, 164, 261, 107)]
+}
+
+[sub_resource type="Animation" id="Animation_636hb"]
+resource_name = "Equip"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3996, 0.4995, 0.6993),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 24), Vector2(16, -16), Vector2(16, -16), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3996, 0.4995, 0.6993),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [2.44346, -1.22173, -1.22173, -0.261799]
+}
+
+[sub_resource type="Animation" id="Animation_1qggq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.261799]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 24)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AttackPolygon:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AttackPolygon:polygon")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [PackedVector2Array(113, -219, 118, -162, 86, -148, 110, -117, 74, -99, 61, -65, 84, -8, 259, -90, 264, -144, 238, -168, 189, -210)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4jlhl"]
+_data = {
+"Attack": SubResource("Animation_5thpn"),
+"Equip": SubResource("Animation_636hb"),
+"RESET": SubResource("Animation_1qggq")
+}
+
+[node name="Sword" type="Node2D"]
+script = ExtResource("1_13kgy")
+shoot_interval = 1.2
+equip_time = 0.85
+damage = 65
+attack_time = 0.7
+ammo_per_load = 1
+ammo_total = 0
+
+[node name="AttackPolygon" type="Polygon2D" parent="."]
+visible = false
+color = Color(0.445312, 0.445312, 0.445312, 1)
+polygon = PackedVector2Array(113, -219, 118, -162, 86, -148, 110, -117, 74, -99, 61, -65, 84, -8, 259, -90, 264, -144, 238, -168, 189, -210)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 24)
+rotation = -0.261799
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_8pya7")
+offset = Vector2(72, 0)
+
+[node name="Aim" type="Line2D" parent="."]
+z_index = 4
+position = Vector2(128, 0)
+points = PackedVector2Array(-41, 0, -71, -70, -13, -212, 70, -212, 148, -74, 148, 74, 70, 212, -13, 212, -71, 70)
+closed = true
+width = 8.0
+default_color = Color(0, 0, 0, 0.25098)
+
+[node name="AttackArea" type="Area2D" parent="."]
+position = Vector2(144, 0)
+collision_layer = 4
+collision_mask = 2
+monitorable = false
+script = ExtResource("3_tfkvu")
+damage_interval = 0.9
+damage = 65
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(8, 0)
+shape = SubResource("RectangleShape2D_3hp3s")
+disabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4jlhl")
+}

@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://sm5vc72d2aw1"]
+
+[ext_resource type="Script" path="res://game/lobby/item_selector.gd" id="1_5l6gd"]
+
+[node name="ItemSelector" type="Window"]
+auto_translate_mode = 1
+initial_position = 2
+size = Vector2i(360, 480)
+visible = false
+transient = true
+popup_window = true
+min_size = Vector2i(360, 360)
+script = ExtResource("1_5l6gd")
+
+[node name="BG" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+auto_translate_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -8.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="Variants" type="HFlowContainer" parent="ScrollContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0

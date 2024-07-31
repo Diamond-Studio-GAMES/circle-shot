@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponConfig" load_steps=2 format=3 uid="uid://d1deru0vmrlc8"]
+
+[ext_resource type="Script" path="res://game/data/weapon_config.gd" id="1_fksgu"]
+
+[resource]
+script = ExtResource("1_fksgu")
+weapon_name = "Desert Eagle"
+weapon_type = 0
+rarity = 1
+damage_text = "Урон/с: 39"
+ammo_text = "7/35"
+weapon_path = "uid://bt2uws44q5uk"
+image_path = "uid://cfo1rv56h4024"

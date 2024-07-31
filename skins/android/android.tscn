@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://w0n5no7svnpc"]
-
-[ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://player/player.tscn" id="1_q4bfs"]
-[ext_resource type="Texture2D" uid="uid://ka6tiy6jadmu" path="res://skins/android/android.png" id="2_6jplg"]
-
-[node name="Player" instance=ExtResource("1_q4bfs")]
-
-[node name="Sprite2D" type="Sprite2D" parent="Visual" index="0"]
-texture = ExtResource("2_6jplg")

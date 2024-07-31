@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkinConfig" load_steps=2 format=3 uid="uid://caehyd61mjpwo"]
+
+[ext_resource type="Script" path="res://game/data/skin_config.gd" id="1_d400q"]
+
+[resource]
+script = ExtResource("1_d400q")
+skin_name = "C-like"
+skin_description = "Да не знаю я никаких С..."
+rarity = 3
+skin_path = "uid://cw5ms0gp35p0b"
+image_path = "uid://bljt8bxcqypuu"

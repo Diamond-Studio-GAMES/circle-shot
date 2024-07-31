@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkinConfig" load_steps=2 format=3 uid="uid://civajcyxxjsc4"]
+
+[ext_resource type="Script" path="res://game/data/skin_config.gd" id="1_bngjp"]
+
+[resource]
+script = ExtResource("1_bngjp")
+skin_name = "Подсолнух"
+skin_description = "Тяжело играть одной рукой?"
+rarity = 2
+skin_path = "uid://bpjnm762i7c78"
+image_path = "uid://cpdges6wbihy0"

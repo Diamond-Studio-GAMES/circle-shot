@@ -10,14 +10,11 @@ config_version=5
 
 [application]
 
-config/name="2D Shooter"
-config/name_localized={
-"ru": "2Д Шутер"
-}
-config/version="1.0.1"
-run/main_scene="res://misc/splash_screen.tscn"
+config/name="Circle Shot"
+config/version="2.0-dev1"
+run/main_scene="res://main/splash_screen.tscn"
 config/use_custom_user_dir=true
-config/custom_user_dir_name="2d-shooter"
+config/custom_user_dir_name="circle-shot"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="res://misc/boot_splash.png"
@@ -31,7 +28,7 @@ buses/default_bus_layout="res://misc/bus_layout.tres"
 
 [autoload]
 
-Global="*res://game/globals.gd"
+Global="*res://main/globals.gd"
 
 [debug]
 

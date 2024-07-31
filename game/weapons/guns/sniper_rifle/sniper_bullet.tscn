@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cm0sqwulviy72"]
+
+[ext_resource type="PackedScene" uid="uid://1durulsrwk7o" path="res://game/weapons/common/bullet.tscn" id="1_u0vms"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yhfxa"]
+size = Vector2(144, 16)
+
+[node name="SniperBullet" instance=ExtResource("1_u0vms")]
+speed = 3800.0
+damage = 55
+
+[node name="Timer" parent="." index="1"]
+wait_time = 3.0
+
+[node name="CollisionShape2D" parent="." index="2"]
+position = Vector2(-48, 0)
+shape = SubResource("RectangleShape2D_yhfxa")

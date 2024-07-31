@@ -1,0 +1,915 @@
+[gd_scene load_steps=24 format=3 uid="uid://d3nsak46hbo2c"]
+
+[ext_resource type="Script" path="res://game/main/game.gd" id="1_kxt6o"]
+[ext_resource type="Script" path="res://game/ui/game_ui.gd" id="2_82bb5"]
+[ext_resource type="Script" path="res://game/ui/chat.gd" id="3_8d55t"]
+[ext_resource type="Texture2D" uid="uid://d01n7clmawdjx" path="res://game/vfx/blood/vignette.png" id="3_k6kxk"]
+[ext_resource type="Material" uid="uid://cmd5ms7ovbyru" path="res://game/vfx/blood/blood_vignette.tres" id="3_wrcxj"]
+[ext_resource type="Texture2D" uid="uid://d4b1wfymlf7bu" path="res://game/player/health_bar_empty.png" id="5_os8qt"]
+[ext_resource type="Texture2D" uid="uid://low3v5d2q65l" path="res://game/player/health_bar.png" id="6_igi7v"]
+[ext_resource type="Texture2D" uid="uid://p85ppsyx0g2n" path="res://game/player/weapon_bg.png" id="7_nj1v0"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick.tscn" id="8_drmlu"]
+[ext_resource type="Script" path="res://game/ui/touch_ui.gd" id="8_vleyw"]
+[ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/ui/chat_send.png" id="9_2uw6w"]
+[ext_resource type="Texture2D" uid="uid://d3dyhqt2lduyi" path="res://game/ui/joystick_base.png" id="10_xc043"]
+[ext_resource type="Texture2D" uid="uid://cwx57jlb3j88p" path="res://game/ui/joystick_tip_move.png" id="11_ng7co"]
+[ext_resource type="Texture2D" uid="uid://chfx32osm5nwo" path="res://game/ui/joystick_tip_aim.png" id="12_67581"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0kb2l"]
+size = Vector2(288, 144)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6sal7"]
+size = Vector2(640, 256)
+
+[sub_resource type="Animation" id="Animation_j6hmo"]
+resource_name = "Death"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 0), Color(1, 0, 0, 1), Color(1, 0, 0, 0.25098), Color(0, 0, 0, 0.25098)]
+}
+
+[sub_resource type="Animation" id="Animation_42oh0"]
+resource_name = "Hurt"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 0), Color(1, 0, 0, 0.188235), Color(1, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_koxqv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_e0ahq"]
+_data = {
+"Death": SubResource("Animation_j6hmo"),
+"Hurt": SubResource("Animation_42oh0"),
+"RESET": SubResource("Animation_koxqv")
+}
+
+[sub_resource type="Animation" id="Animation_4bxhi"]
+resource_name = "Intro"
+length = 5.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tint:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3.5, 3.75),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0.25098), Color(0, 0, 0, 0.25098), Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Title:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.25, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Text:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5, 1.75, 3.25, 3.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1e-05, 1e-05), Vector2(1, 1), Vector2(1, 1), Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GO:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 3.5, 3.75, 4.6, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1e-05, 1e-05), Vector2(1, 1), Vector2(1, 1), Vector2(0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Main:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Main:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 5, 5.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_atj0b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tint:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Title:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Text:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GO:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Main:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Main:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ctugk"]
+_data = {
+"Intro": SubResource("Animation_4bxhi"),
+"RESET": SubResource("Animation_atj0b")
+}
+
+[node name="Game" type="Node"]
+script = ExtResource("1_kxt6o")
+
+[node name="Players" type="Node2D" parent="."]
+
+[node name="Projectiles" type="Node2D" parent="." groups=["ProjectilesParent"]]
+
+[node name="Other" type="Node2D" parent="." groups=["OtherParent"]]
+
+[node name="VFX" type="Node2D" parent="." groups=["VFXParent"]]
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../Players")
+spawn_limit = 10
+
+[node name="ProjectilesSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../Projectiles")
+spawn_limit = 100
+
+[node name="OtherSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../Other")
+spawn_limit = 50
+
+[node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(0.6, 0.6)
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+
+[node name="GameUI" type="CanvasLayer" parent="."]
+layer = 2
+script = ExtResource("2_82bb5")
+
+[node name="Main" type="Control" parent="GameUI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Player" type="Control" parent="GameUI/Main"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BloodVignette" type="TextureRect" parent="GameUI/Main/Player"]
+visible = false
+material = ExtResource("3_wrcxj")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_k6kxk")
+
+[node name="HealthBar" type="TextureProgressBar" parent="GameUI/Main/Player"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -288.0
+offset_top = 24.0
+offset_right = 288.0
+offset_bottom = 88.0
+grow_horizontal = 2
+mouse_filter = 2
+value = 100.0
+texture_under = ExtResource("5_os8qt")
+texture_progress = ExtResource("6_igi7v")
+
+[node name="Label" type="Label" parent="GameUI/Main/Player/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentWeapon" type="TextureRect" parent="GameUI/Main/Player"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -232.0
+offset_bottom = -88.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("7_nj1v0")
+
+[node name="Icon" type="TextureRect" parent="GameUI/Main/Player/CurrentWeapon"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameUI/Main/Player/CurrentWeapon"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "120/60"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GameUI/Main/Player/CurrentWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="WeaponSelection" type="Control" parent="GameUI/Main/Player"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="LightWeapon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -232.0
+offset_bottom = -88.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("7_nj1v0")
+
+[node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/LightWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/LightWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GameUI/Main/Player/WeaponSelection/LightWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="HeavyWeapon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -88.0
+offset_bottom = 56.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("7_nj1v0")
+
+[node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/HeavyWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/HeavyWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GameUI/Main/Player/WeaponSelection/HeavyWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="SupportWeapon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = 56.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("7_nj1v0")
+
+[node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/SupportWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/SupportWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GameUI/Main/Player/WeaponSelection/SupportWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="MeleeWeapon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = 200.0
+offset_bottom = 344.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("7_nj1v0")
+
+[node name="Icon" type="TextureRect" parent="GameUI/Main/Player/WeaponSelection/MeleeWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameUI/Main/Player/WeaponSelection/MeleeWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GameUI/Main/Player/WeaponSelection/MeleeWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="TouchUI" type="Control" parent="GameUI/Main/Player"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("8_vleyw")
+
+[node name="MoveVirtualJoystick" parent="GameUI/Main/Player/TouchUI" instance=ExtResource("8_drmlu")]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 128.0
+offset_top = -328.0
+offset_right = 328.0
+offset_bottom = -128.0
+grow_vertical = 0
+joystick_mode = 1
+pressed_color = Color(0, 0.273438, 1, 1)
+base_texture = ExtResource("10_xc043")
+tip_texture = ExtResource("11_ng7co")
+use_input_actions = false
+
+[node name="AimVirtualJoystick" parent="GameUI/Main/Player/TouchUI" instance=ExtResource("8_drmlu")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -328.0
+offset_top = -328.0
+offset_right = -128.0
+offset_bottom = -128.0
+grow_horizontal = 0
+grow_vertical = 0
+joystick_mode = 1
+pressed_color = Color(1, 0, 0, 1)
+base_texture = ExtResource("10_xc043")
+tip_texture = ExtResource("12_67581")
+use_input_actions = false
+
+[node name="ShootArea" type="TouchScreenButton" parent="GameUI/Main/Player/TouchUI"]
+position = Vector2(320, 128)
+shape = SubResource("RectangleShape2D_6sal7")
+
+[node name="PlayerTint" type="ColorRect" parent="GameUI/Main"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GameUI/Main/PlayerTint"]
+libraries = {
+"": SubResource("AnimationLibrary_e0ahq")
+}
+
+[node name="StatusLabel" type="RichTextLabel" parent="GameUI/Main"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 96.0
+offset_right = 320.0
+offset_bottom = 119.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/outline_size = 4
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+
+[node name="LeaveGame" type="Button" parent="GameUI/Main"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 63.0
+grow_horizontal = 0
+text = "Покинуть игру"
+
+[node name="Chat" type="Button" parent="GameUI/Main"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_top = 68.0
+offset_right = -16.0
+offset_bottom = 116.0
+grow_horizontal = 0
+toggle_mode = true
+text = "Чат"
+
+[node name="ChatPanel" type="PanelContainer" parent="GameUI/Main"]
+auto_translate_mode = 2
+visible = false
+self_modulate = Color(1, 1, 1, 0.878431)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -200.0
+offset_right = 240.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_8d55t")
+chat_button_path = NodePath("../Chat")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/Main/ChatPanel"]
+auto_translate_mode = 1
+layout_mode = 2
+
+[node name="Messages" type="RichTextLabel" parent="GameUI/Main/ChatPanel/VBoxContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+scroll_following = true
+shortcut_keys_enabled = false
+meta_underlined = false
+hint_underlined = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/Main/ChatPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="GameUI/Main/ChatPanel/VBoxContainer/HBoxContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Сообщение..."
+max_length = 64
+
+[node name="Send" type="TextureButton" parent="GameUI/Main/ChatPanel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+texture_normal = ExtResource("9_2uw6w")
+stretch_mode = 3
+
+[node name="Intro" type="Control" parent="GameUI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Tint" type="ColorRect" parent="GameUI/Intro"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
+
+[node name="Title" type="Label" parent="GameUI/Intro"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -40.0
+offset_right = 400.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(400, 40)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 48
+text = "ИГРА"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="GameUI/Intro/Title"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 4
+text = "Описание"
+horizontal_alignment = 1
+
+[node name="Text" type="Label" parent="GameUI/Intro"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -64.0
+offset_right = 160.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(160, 64)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 24
+text = "Описание 2"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="GO" type="Label" parent="GameUI/Intro"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -80.0
+offset_right = 480.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(480, 80)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 80
+text = "ВПЕРЁД!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GameUI/Intro"]
+libraries = {
+"": SubResource("AnimationLibrary_ctugk")
+}
+
+[connection signal="local_player_created" from="." to="GameUI" method="_on_local_player_created"]
+[connection signal="local_player_created" from="." to="GameUI/Main/Player/TouchUI" method="_on_local_player_created"]
+[connection signal="local_player_created" from="." to="GameUI/Main/ChatPanel" method="_on_local_player_created"]
+[connection signal="pressed" from="GameUI/Main/Player/CurrentWeapon/TouchScreenButton" to="GameUI" method="open_weapon_selection"]
+[connection signal="pressed" from="GameUI/Main/Player/WeaponSelection/LightWeapon/TouchScreenButton" to="GameUI" method="select_weapon" binds= [0]]
+[connection signal="pressed" from="GameUI/Main/Player/WeaponSelection/HeavyWeapon/TouchScreenButton" to="GameUI" method="select_weapon" binds= [1]]
+[connection signal="pressed" from="GameUI/Main/Player/WeaponSelection/SupportWeapon/TouchScreenButton" to="GameUI" method="select_weapon" binds= [2]]
+[connection signal="pressed" from="GameUI/Main/Player/WeaponSelection/MeleeWeapon/TouchScreenButton" to="GameUI" method="select_weapon" binds= [3]]
+[connection signal="pressed" from="GameUI/Main/LeaveGame" to="GameUI" method="_on_leave_game_pressed"]
+[connection signal="toggled" from="GameUI/Main/Chat" to="GameUI/Main/ChatPanel" method="_on_chat_toggled"]
+[connection signal="text_submitted" from="GameUI/Main/ChatPanel/VBoxContainer/HBoxContainer/LineEdit" to="GameUI/Main/ChatPanel" method="send_message" unbinds=1]
+[connection signal="pressed" from="GameUI/Main/ChatPanel/VBoxContainer/HBoxContainer/Send" to="GameUI/Main/ChatPanel" method="send_message"]

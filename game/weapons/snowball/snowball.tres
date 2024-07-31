@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponConfig" load_steps=2 format=3 uid="uid://bxma7nn66sax2"]
+
+[ext_resource type="Script" path="res://game/data/weapon_config.gd" id="1_b1y7i"]
+
+[resource]
+script = ExtResource("1_b1y7i")
+weapon_name = "Снежки"
+weapon_type = 0
+rarity = 2
+damage_text = "Урон/с: 30"
+ammo_text = "2/30"
+weapon_path = "uid://cr1yo5ya4kwex"
+image_path = "uid://dldqsm5tvmy3m"

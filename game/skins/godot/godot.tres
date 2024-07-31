@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkinConfig" load_steps=2 format=3 uid="uid://c5avhdvv4xovn"]
+
+[ext_resource type="Script" path="res://game/data/skin_config.gd" id="1_levmi"]
+
+[resource]
+script = ExtResource("1_levmi")
+skin_name = "Godot"
+skin_description = "Вот он, настоящий движок!"
+rarity = 2
+skin_path = "uid://ds0ff0j1qcmoc"
+image_path = "uid://cyd4ngcmai4cl"

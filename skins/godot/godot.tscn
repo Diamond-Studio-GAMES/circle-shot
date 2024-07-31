@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://ds0ff0j1qcmoc"]
-
-[ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://player/player.tscn" id="1_5sqc1"]
-[ext_resource type="Texture2D" uid="uid://cyd4ngcmai4cl" path="res://skins/godot/godot.png" id="2_661qc"]
-
-[node name="Player" instance=ExtResource("1_5sqc1")]
-
-[node name="Godot" type="Sprite2D" parent="Visual" index="0"]
-texture = ExtResource("2_661qc")
