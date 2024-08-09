@@ -1,0 +1,351 @@
+class_name Lobby
+extends Control
+
+
+var _selected_event: int = 0
+var _selected_map: int = 0
+var _selected_skin: int = 0
+var _selected_light_weapon: int = 0
+var _selected_heavy_weapon: int = 0
+var _selected_support_weapon: int = 0
+var _selected_melee_weapon: int = 0
+var _selected_skill: int = 0
+var _players := {}
+var _player_admin_id: int = -1
+var _udp := PacketPeerUDP.new()
+var _player_entry_scene: PackedScene = preload("uid://dj0mx5ui2wu4n")
+@onready var _game: Game = get_parent()
+@onready var _players_container: GridContainer = %PlayersContainer
+@onready var _item_selector: ItemSelector = $ItemSelector
+
+
+func _ready() -> void:
+	_game.created.connect(_on_game_created)
+	_game.joined.connect(_on_game_joined)
+	_game.closed.connect(_on_game_closed)
+	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	hide()
+	
+	_selected_skin = Globals.get_int("selected_skin")
+	_selected_light_weapon = Globals.get_int("selected_light_weapon")
+	_selected_heavy_weapon = Globals.get_int("selected_heavy_weapon")
+	_selected_support_weapon = Globals.get_int("selected_support_weapon")
+	_selected_melee_weapon = Globals.get_int("selected_melee_weapon")
+	_selected_skill = Globals.get_int("selected_skill")
+	_update_equip()
+	_update_environment()
+	
+	_udp.set_broadcast_enabled(true)
+	_udp.set_dest_address("255.255.255.255", Game.LISTEN_PORT)
+
+
+@rpc("reliable", "call_local")
+func _add_player_entry(id: int, player_name: String) -> void:
+	var player_entry: Node = _player_entry_scene.instantiate()
+	player_entry.name = str(id)
+	if id == multiplayer.get_unique_id():
+		player_name += " (Ты)"
+		(player_entry.get_node(^"Kick") as BaseButton).disabled = true
+	(player_entry.get_node(^"Name") as Label).text = player_name
+	# Проверка на админа своеобразная
+	(player_entry.get_node(^"Kick") as Control).visible = %AdminPanel.visible
+	(player_entry.get_node(^"Kick") as BaseButton).pressed.connect(_on_kick_pressed.bind(id))
+	_players_container.add_child(player_entry)
+
+
+@rpc("reliable")
+func _delete_player_entry(id: int) -> void:
+	_players_container.get_node(str(id)).queue_free()
+
+
+@rpc("any_peer", "reliable")
+func _register_new_player(player_name: String) -> void:
+	if not multiplayer.is_server():
+		return
+	var id: int = multiplayer.get_remote_sender_id()
+	if id == 0:
+		id = 1 # Локально от сервера
+	for i: int in _players:
+		_add_player_entry.rpc_id(id, i, _players[i])
+	_set_environment.rpc_id(id, _selected_event, _selected_map)
+	_players[id] = player_name
+	($Panels/Chat as Chat).post_message.rpc(
+			"Игра: Игрок [color=green]%s[/color] подключился!" % player_name
+	)
+	if _players.size() == 1:
+		if id == 1:
+			_set_admin(true)
+		else:
+			_set_admin.rpc_id(id, true)
+		_player_admin_id = id
+	else:
+		_set_admin.rpc_id(id, false)
+	_add_player_entry.rpc(id, player_name)
+
+
+@rpc("reliable")
+func _set_admin(admin: bool) -> void:
+	(%AdminPanel as HBoxContainer).visible = admin
+	(%ClientHint as Label).visible = not admin
+	for i: Node in _players_container.get_children():
+		i.get_node(^"Kick").visible = admin
+	if admin:
+		# Странный код
+		_request_set_environment(Globals.get_int("selected_event"), Globals.get_int("selected_map"))
+	else:
+		(%ClientHint as Label).text = "Начать игру может только хост."
+
+
+@rpc("any_peer", "reliable")
+func _request_set_environment(event_id: int, map_id: int) -> void:
+	if not multiplayer.is_server():
+		return
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if sender_id == 0:
+		sender_id = 1
+	if sender_id != _player_admin_id:
+		return
+	_game.max_players = Globals.items_db.events[event_id].max_players
+	_set_environment.rpc(event_id, map_id)
+
+
+@rpc("call_local", "reliable")
+func _set_environment(event_id: int, map_id: int) -> void:
+	_selected_event = event_id
+	_selected_map = map_id
+	_update_environment()
+
+
+@rpc("any_peer", "reliable")
+func _request_kick_player(id: int) -> void:
+	if not multiplayer.is_server():
+		return
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if sender_id == 0:
+		sender_id = 1
+	if sender_id != _player_admin_id:
+		return
+	multiplayer.multiplayer_peer.disconnect_peer(id)
+
+
+@rpc("any_peer", "reliable")
+func _request_start_event() -> void:
+	if not multiplayer.is_server():
+		return
+	var id: int = multiplayer.get_remote_sender_id()
+	if id == 0:
+		id = 1
+	if id != _player_admin_id:
+		return
+	_start_game.rpc(_selected_event, _selected_map)
+
+
+@rpc("call_local", "reliable")
+func _start_game(event_id: int, map_id: int) -> void:
+	_game.load_event(event_id, map_id)
+
+
+func _update_environment() -> void:
+	var event: EventData = Globals.items_db.events[_selected_event]
+	(%Event as TextureRect).texture = load(event.image_path)
+	(%Event/Container/Name as Label).text = event.name
+	(%Event/Container/Description as Label).text = event.brief_description
+	Globals.set_int("selected_event", _selected_event)
+	
+	(%Map as TextureRect).texture = load(event.maps[_selected_map].image_path)
+	(%Map/Container/Name as Label).text = event.maps[_selected_map].name
+	(%Map/Container/Description as Label).text = event.maps[_selected_map].brief_description
+	Globals.set_int("selected_map", _selected_map)
+
+
+func _update_equip() -> void:
+	var skin: SkinData = Globals.items_db.skins[_selected_skin]
+	(%Skin/Name as Label).text = skin.name
+	(%Skin/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[skin.rarity]
+	(%Skin as TextureRect).texture = load(skin.image_path)
+	Globals.set_int("selected_skin", _selected_skin)
+	
+	var light_weapon: WeaponData = Globals.items_db.weapons_light[_selected_light_weapon]
+	(%LightWeapon/Name as Label).text = light_weapon.name
+	(%LightWeapon/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[light_weapon.rarity]
+	(%LightWeapon as TextureRect).texture = load(light_weapon.image_path)
+	Globals.set_int("selected_light_weapon", _selected_light_weapon)
+	
+	var heavy_weapon: WeaponData = Globals.items_db.weapons_heavy[_selected_heavy_weapon]
+	(%HeavyWeapon/Name as Label).text = heavy_weapon.name
+	(%HeavyWeapon/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[heavy_weapon.rarity]
+	(%HeavyWeapon as TextureRect).texture = load(heavy_weapon.image_path)
+	Globals.set_int("selected_heavy_weapon", _selected_heavy_weapon)
+	
+	var support_weapon: WeaponData = Globals.items_db.weapons_support[_selected_support_weapon]
+	(%SupportWeapon/Name as Label).text = support_weapon.name
+	(%SupportWeapon/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[support_weapon.rarity]
+	(%SupportWeapon as TextureRect).texture = load(support_weapon.image_path)
+	Globals.set_int("selected_support_weapon", _selected_support_weapon)
+	
+	var melee_weapon: WeaponData = Globals.items_db.weapons_melee[_selected_melee_weapon]
+	(%MeleeWeapon/Name as Label).text = melee_weapon.name
+	(%MeleeWeapon/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[melee_weapon.rarity]
+	(%MeleeWeapon as TextureRect).texture = load(melee_weapon.image_path)
+	Globals.set_int("selected_melee_weapon", _selected_melee_weapon)
+	
+	var skill: SkillData = Globals.items_db.skills[_selected_skill]
+	(%Skill/Name as Label).text = skill.name
+	(%Skill/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[skill.rarity]
+	(%Skill as TextureRect).texture = load(skill.image_path)
+	Globals.set_int("selected_skill", _selected_skill)
+
+
+func _on_game_created() -> void:
+	show()
+	(%ControlButtons/ConnectedToIP as Control).hide()
+	(%ControlButtons/ViewIPs as Control).show()
+	_players.clear()
+	($UDPTimer as Timer).start()
+	if not Globals.headless:
+		($Panels/Chat as Chat).create_prefix_from_name(Globals.get_string("player_name"))
+		_register_new_player(Globals.get_string("player_name"))
+
+
+func _on_game_joined() -> void:
+	show()
+	(%AdminPanel as HBoxContainer).hide()
+	(%ClientHint as Label).show()
+	(%ControlButtons/ConnectedToIP as Control).show()
+	var peers: Array[ENetPacketPeer] = \
+			(multiplayer.multiplayer_peer as ENetMultiplayerPeer).host.get_peers()
+	(%ControlButtons/ConnectedToIP as LinkButton).text = "Подключён к %s" % \
+			peers[0].get_remote_address()
+	(%ControlButtons/ViewIPs as Control).hide()
+	(%ClientHint as Label).text = "Ожидание сервера..."
+	($Panels/Chat as Chat).create_prefix_from_name(Globals.get_string("player_name"))
+	_register_new_player.rpc_id(1, Globals.get_string("player_name"))
+
+
+func _on_game_closed() -> void:
+	hide()
+	if not ($UDPTimer as Timer).is_stopped():
+		($UDPTimer as Timer).stop()
+	for i: Node in _players_container.get_children():
+		i.queue_free()
+	($Panels/Chat as Chat).clear_chat()
+	(%ControlButtons/Chat as Button).button_pressed = false
+
+
+func _on_game_started() -> void:
+	hide()
+	if not ($UDPTimer as Timer).is_stopped():
+		($UDPTimer as Timer).stop()
+
+
+func _on_game_ended() -> void:
+	show()
+	if multiplayer.is_server():
+		($UDPTimer as Timer).start()
+
+
+func _on_peer_disconnected(id: int) -> void:
+	if not multiplayer.is_server():
+		return
+	($Panels/Chat as Chat).post_message.rpc(
+			"Игра: Игрок [color=green]%s[/color] отключился!" % _players[id]
+	)
+	_players.erase(id)
+	if id == _player_admin_id:
+		if _players.size() > 0:
+			_player_admin_id = (_players.keys() as Array[int])[0]
+			_set_admin.rpc_id(_player_admin_id, true)
+		else:
+			_player_admin_id = -1
+	_delete_player_entry.rpc(id)
+	if not Globals.headless:
+		_delete_player_entry(id)
+
+
+#func _on_change_game_pressed() -> void:
+	#_item_selector.open_selection(ItemsDB.Item.EVENT, selected_game)
+#
+#
+#func _on_change_map_pressed() -> void:
+	#_item_selector.open_selection(ItemsDB.Item.MAP, selected_map, selected_game)
+#
+#
+#func _on_change_skin_pressed() -> void:
+	#_item_selector.open_selection(ItemsDB.Item.SKIN, selected_skin)
+#
+#
+#func _on_change_light_weapon_pressed() -> void:
+	#_item_selector.open_selection(ItemsDB.Item.WEAPON_LIGHT, selected_light_weapon)
+#
+#
+#func _on_change_heavy_weapon_pressed() -> void:
+	#_item_selector.open_selection(ItemsDB.Item.WEAPON_HEAVY, selected_heavy_weapon)
+#
+#
+#func _on_change_support_weapon_pressed() -> void:
+	#_item_selector.open_selection(ItemsDB.Item.WEAPON_SUPPORT, selected_support_weapon)
+#
+#
+#func _on_change_melee_weapon_pressed() -> void:
+	#_item_selector.open_selection(ItemsDB.Item.WEAPON_MELEE, selected_melee_weapon)
+
+
+func _on_kick_pressed(id: int) -> void:
+	if multiplayer.is_server():
+		_request_kick_player(id)
+	else:
+		_request_kick_player.rpc_id(1, id)
+
+
+func _on_start_event_pressed() -> void:
+	if multiplayer.is_server():
+		_request_start_event()
+	else:
+		_request_start_event.rpc_id(1)
+
+
+func _on_udp_timer_timeout() -> void:
+	var data := PackedByteArray()
+	data.append(_players.size())
+	data.append(_game.max_players)
+	data.append_array(Globals.get_string("player_name").to_utf8_buffer())
+	_udp.put_packet(data)
+
+
+func _on_leave_pressed() -> void:
+	_game.close()
+
+
+func _on_connected_to_ip_pressed() -> void:
+	var peers: Array[ENetPacketPeer] = \
+			(multiplayer.multiplayer_peer as ENetMultiplayerPeer).host.get_peers()
+	DisplayServer.clipboard_set(peers[0].get_remote_address())
+
+
+func _on_item_selected(type: ItemsDB.Item, id: int) -> void:
+	match type:
+		ItemsDB.Item.EVENT:
+			if not multiplayer.is_server():
+				_request_set_environment.rpc_id(1, id, 0)
+			else:
+				_request_set_environment(id, 0)
+		ItemsDB.Item.MAP:
+			if not multiplayer.is_server():
+				_request_set_environment.rpc_id(1, _selected_event, id)
+			else:
+				_request_set_environment(_selected_event, id)
+		ItemsDB.Item.SKIN:
+			_selected_skin = id
+			_update_equip()
+		ItemsDB.Item.WEAPON_LIGHT:
+			_selected_light_weapon = id
+			_update_equip()
+		ItemsDB.Item.WEAPON_HEAVY:
+			_selected_heavy_weapon = id
+			_update_equip()
+		ItemsDB.Item.WEAPON_SUPPORT:
+			_selected_support_weapon = id
+			_update_equip()
+		ItemsDB.Item.WEAPON_MELEE:
+			_selected_melee_weapon = id
+			_update_equip()

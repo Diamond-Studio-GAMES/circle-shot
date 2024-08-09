@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://dkyu57ilvneen"]
 
-[ext_resource type="PackedScene" uid="uid://baoklmloqoop3" path="res://game/entity/effect/effect.tscn" id="1_g2k05"]
+[ext_resource type="PackedScene" uid="uid://baoklmloqoop3" path="res://game/entity/effect.tscn" id="1_g2k05"]
 [ext_resource type="Script" path="res://game/effects/speed_change/speed_change.gd" id="2_unayg"]
 [ext_resource type="Texture2D" uid="uid://b2evahyx7nncs" path="res://game/effects/speed_change/speedup_arrow.png" id="4_bowyg"]
 [ext_resource type="Texture2D" uid="uid://cwxopkcr11xs2" path="res://game/effects/speed_change/slowdown_arrow.png" id="5_dxcf3"]

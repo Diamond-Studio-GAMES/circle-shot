@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Circle Shot"
 config/version="2.0-dev1"
-run/main_scene="res://main/splash_screen.tscn"
+run/main_scene="res://main/main.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="circle-shot"
 config/features=PackedStringArray("4.3", "GL Compatibility")
@@ -28,11 +28,11 @@ buses/default_bus_layout="res://misc/bus_layout.tres"
 
 [autoload]
 
-Global="*res://main/globals.gd"
+Globals="*res://main/globals.gd"
 
 [debug]
 
-settings/crash_handler/message="Game crashed! You should restart it, but if crash persist, report it on https://github.com/Summersay415/2d-shooter/issues"
+settings/crash_handler/message="Game crashed! You should restart it, but if crash persist, report it on https://github.com/Diamond-Studio-GAMES/circle-shot/issues"
 settings/crash_handler/message.editor="Game crashed! This can be an engine bug or developer mistake."
 gdscript/warnings/untyped_declaration=2
 gdscript/warnings/unsafe_cast=1
@@ -52,7 +52,7 @@ import/fbx2gltf/enabled=false
 
 [gui]
 
-theme/custom="res://menu/theme.tres"
+theme/custom="res://menu/theme/theme.tres"
 
 [input]
 

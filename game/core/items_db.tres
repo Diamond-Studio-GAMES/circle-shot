@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="ItemsDB" load_steps=30 format=3 uid="uid://pwq1e7l2ckos"]
+
+[ext_resource type="Script" path="res://game/events/common/event_data.gd" id="1_yrpvj"]
+[ext_resource type="Resource" uid="uid://i4s2m4jgbyvc" path="res://game/events/royale/royale.tres" id="2_8tgde"]
+[ext_resource type="Script" path="res://game/core/items_db.gd" id="2_y7sof"]
+[ext_resource type="Script" path="res://game/player/skin_data.gd" id="3_c4k52"]
+[ext_resource type="Script" path="res://game/player/skill_data.gd" id="3_x8mha"]
+[ext_resource type="Resource" uid="uid://ccsednjhd5m3o" path="res://game/skills/potion/potion.tres" id="4_hfvvw"]
+[ext_resource type="Resource" uid="uid://dbtrtohutlbyt" path="res://game/skins/default/default.tres" id="4_kr1x8"]
+[ext_resource type="Resource" uid="uid://bsorviu43e0b1" path="res://game/skins/classic/classic.tres" id="5_3l44y"]
+[ext_resource type="Resource" uid="uid://c2hjmk44ru68x" path="res://game/skins/telegram/telegram.tres" id="6_etdf3"]
+[ext_resource type="Resource" uid="uid://dvnh4idsj61sj" path="res://game/skins/apple/apple.tres" id="7_7vr63"]
+[ext_resource type="Resource" uid="uid://bqi8cjsnsn84v" path="res://game/skins/android/android.tres" id="8_yhh8f"]
+[ext_resource type="Resource" uid="uid://d3i1eoyd4e1n2" path="res://game/skins/sinep/sinep.tres" id="9_jevbu"]
+[ext_resource type="Resource" uid="uid://civajcyxxjsc4" path="res://game/skins/sunflower/sunflower.tres" id="10_2k6xx"]
+[ext_resource type="Resource" uid="uid://sgi4ij07qfbi" path="res://game/skins/piper/piper.tres" id="11_bvpy1"]
+[ext_resource type="Resource" uid="uid://c5avhdvv4xovn" path="res://game/skins/godot/godot.tres" id="12_oy32e"]
+[ext_resource type="Resource" uid="uid://dk5cbfv04bbfs" path="res://game/skins/dealer/dealer.tres" id="13_o4wj6"]
+[ext_resource type="Resource" uid="uid://caehyd61mjpwo" path="res://game/skins/clike/clike.tres" id="14_rknbs"]
+[ext_resource type="Resource" uid="uid://c5fk7qvfajug7" path="res://game/skins/kabakova/kabakova.tres" id="15_c1d01"]
+[ext_resource type="Script" path="res://game/player/weapon_data.gd" id="16_uslwp"]
+[ext_resource type="Resource" uid="uid://cico6bxoxthxp" path="res://game/weapons/guns/ak_74/ak_74.tres" id="17_7vx3p"]
+[ext_resource type="Resource" uid="uid://bb4c32cmatk2p" path="res://game/weapons/guns/shotgun/shotgun.tres" id="18_hjrvg"]
+[ext_resource type="Resource" uid="uid://gkuvrx6p0txb" path="res://game/weapons/guns/sniper_rifle/sniper_rifle.tres" id="19_5dl73"]
+[ext_resource type="Resource" uid="uid://ec5r1p2ay37a" path="res://game/weapons/guns/p_350/p_350.tres" id="20_wegr4"]
+[ext_resource type="Resource" uid="uid://d1deru0vmrlc8" path="res://game/weapons/guns/desert_eagle/desert_eagle.tres" id="21_43s3b"]
+[ext_resource type="Resource" uid="uid://bxma7nn66sax2" path="res://game/weapons/snowball/snowball.tres" id="22_lw2ls"]
+[ext_resource type="Resource" uid="uid://bqt35gylr4la" path="res://game/weapons/knife/knife.tres" id="23_50d6n"]
+[ext_resource type="Resource" uid="uid://bsr137cw1pcmq" path="res://game/weapons/sword/sword.tres" id="24_gbbrj"]
+[ext_resource type="Resource" uid="uid://b6l0sibfxkmx6" path="res://game/weapons/grenade/grenade.tres" id="25_wbuqy"]
+[ext_resource type="Resource" uid="uid://buyl81nl44qfx" path="res://game/weapons/smoke_grenade/smoke_grenade.tres" id="26_xy8s6"]
+
+[resource]
+script = ExtResource("2_y7sof")
+events = Array[ExtResource("1_yrpvj")]([ExtResource("2_8tgde")])
+skins = Array[ExtResource("3_c4k52")]([ExtResource("4_kr1x8"), ExtResource("5_3l44y"), ExtResource("6_etdf3"), ExtResource("7_7vr63"), ExtResource("8_yhh8f"), ExtResource("9_jevbu"), ExtResource("10_2k6xx"), ExtResource("11_bvpy1"), ExtResource("12_oy32e"), ExtResource("13_o4wj6"), ExtResource("14_rknbs"), ExtResource("15_c1d01")])
+weapons_light = Array[ExtResource("16_uslwp")]([ExtResource("20_wegr4"), ExtResource("21_43s3b"), ExtResource("22_lw2ls")])
+weapons_heavy = Array[ExtResource("16_uslwp")]([ExtResource("17_7vx3p"), ExtResource("18_hjrvg"), ExtResource("19_5dl73")])
+weapons_support = Array[ExtResource("16_uslwp")]([ExtResource("25_wbuqy"), ExtResource("26_xy8s6")])
+weapons_melee = Array[ExtResource("16_uslwp")]([ExtResource("23_50d6n"), ExtResource("24_gbbrj")])
+skills = Array[ExtResource("3_x8mha")]([ExtResource("4_hfvvw")])

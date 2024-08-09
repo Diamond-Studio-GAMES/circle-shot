@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="WeaponConfig" load_steps=2 format=3 uid="uid://d1deru0vmrlc8"]
 
-[ext_resource type="Script" path="res://game/data/weapon_config.gd" id="1_fksgu"]
+[ext_resource type="Script" path="res://game/player/weapon_data.gd" id="1_fksgu"]
 
 [resource]
 script = ExtResource("1_fksgu")

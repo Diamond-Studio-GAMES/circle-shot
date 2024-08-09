@@ -1,0 +1,66 @@
+[gd_scene load_steps=4 format=3 uid="uid://scqgxynxowrb"]
+
+[ext_resource type="Script" path="res://game/core/game.gd" id="1_j8au2"]
+[ext_resource type="PackedScene" uid="uid://cv8in67ldnddu" path="res://game/core/loader.tscn" id="2_5mtye"]
+[ext_resource type="Script" path="res://game/core/debug_data.gd" id="3_0xkxq"]
+
+[node name="Game" type="Node"]
+script = ExtResource("1_j8au2")
+
+[node name="Loader" parent="." instance=ExtResource("2_5mtye")]
+
+[node name="DebugData" type="CanvasLayer" parent="."]
+layer = 6
+script = ExtResource("3_0xkxq")
+
+[node name="FPSLabel" type="Label" parent="DebugData"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -320.0
+offset_top = 24.0
+offset_right = -200.0
+offset_bottom = 48.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "FPS: 60"
+horizontal_alignment = 1
+
+[node name="PingLabel" type="Label" parent="DebugData"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -320.0
+offset_top = 56.0
+offset_right = -200.0
+offset_bottom = 80.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Пинг: 999 мс"
+horizontal_alignment = 1
+
+[node name="PingTimer" type="Timer" parent="DebugData/PingLabel"]
+one_shot = true
+
+[node name="ErrorDialog" type="AcceptDialog" parent="."]
+auto_translate_mode = 1
+title = "Ошибка!"
+initial_position = 2
+size = Vector2i(400, 112)
+unresizable = true
+
+[node name="ConnectingDialog" type="AcceptDialog" parent="."]
+auto_translate_mode = 1
+title = "Подключение"
+initial_position = 2
+size = Vector2i(400, 112)
+unresizable = true
+ok_button_text = "Отмена"
+dialog_text = "Подключение к 192.168.100.1..."
+
+[connection signal="timeout" from="DebugData/PingLabel/PingTimer" to="DebugData" method="_on_ping_timer_timeout"]
+[connection signal="canceled" from="ConnectingDialog" to="." method="close"]
+[connection signal="confirmed" from="ConnectingDialog" to="." method="close"]

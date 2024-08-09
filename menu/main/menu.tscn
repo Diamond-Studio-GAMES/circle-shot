@@ -1,0 +1,139 @@
+[gd_scene load_steps=10 format=3 uid="uid://4wb77emq8t5p"]
+
+[ext_resource type="Script" path="res://menu/main/menu.gd" id="1_6hvox"]
+[ext_resource type="Texture2D" uid="uid://drssc5o2ehjq" path="res://main/logo.png" id="1_m6h1l"]
+[ext_resource type="Texture2D" uid="uid://brcdsp82d82se" path="res://game/theme/background.png" id="2_f1en6"]
+[ext_resource type="Texture2D" uid="uid://dnho657mg7o1w" path="res://menu/theme/icons/solo_game.png" id="2_tkm62"]
+[ext_resource type="Texture2D" uid="uid://bxs6sdufwbl8p" path="res://menu/theme/icons/together_game.png" id="3_fpx5a"]
+[ext_resource type="Texture2D" uid="uid://djuddec1qr5ot" path="res://menu/theme/icons/shop.png" id="4_jpuob"]
+[ext_resource type="Texture2D" uid="uid://d2rpk8yt0h06x" path="res://menu/theme/icons/achievements.png" id="5_noej1"]
+[ext_resource type="Texture2D" uid="uid://c3sk875fn0rx" path="res://menu/theme/icons/settings.png" id="6_0pcoh"]
+[ext_resource type="Texture2D" uid="uid://b0j3g7rkerkdm" path="res://menu/theme/icons/about.png" id="7_aw44p"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6hvox")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.768627, 0.768627, 0.768627, 1)
+
+[node name="Image" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -800.0
+offset_top = -360.0
+offset_right = 800.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_f1en6")
+
+[node name="Logo" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 16.0
+offset_right = 400.0
+offset_bottom = 176.0
+grow_horizontal = 2
+texture = ExtResource("1_m6h1l")
+
+[node name="ButtonsContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -194.0
+offset_top = -124.0
+offset_right = 194.0
+offset_bottom = 188.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
+
+[node name="PlaySolo" type="Button" parent="ButtonsContainer"]
+custom_minimum_size = Vector2(192, 192)
+layout_mode = 2
+theme_override_constants/outline_size = 0
+theme_override_constants/icon_max_width = 0
+disabled = true
+text = "Играть одному"
+icon = ExtResource("2_tkm62")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="PlayOnline" type="Button" parent="ButtonsContainer"]
+custom_minimum_size = Vector2(192, 192)
+layout_mode = 2
+theme_override_constants/icon_max_width = 0
+text = "Играть по сети"
+icon = ExtResource("3_fpx5a")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Shop" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+disabled = true
+text = "Магазин"
+icon = ExtResource("4_jpuob")
+
+[node name="Achievements" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+disabled = true
+text = "Достижения"
+icon = ExtResource("5_noej1")
+
+[node name="Settings" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+disabled = true
+text = "Настройки"
+icon = ExtResource("6_0pcoh")
+
+[node name="About" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+disabled = true
+text = "Об игре"
+icon = ExtResource("7_aw44p")
+
+[node name="NameDialog" type="AcceptDialog" parent="."]
+title = "Как тебя зовут, игрок?"
+size = Vector2i(456, 144)
+unresizable = true
+ok_button_text = "Вперёд!"
+dialog_hide_on_ok = false
+dialog_close_on_escape = false
+
+[node name="LineEdit" type="LineEdit" parent="NameDialog"]
+offset_left = 32.0
+offset_top = 16.0
+offset_right = 213.0
+offset_bottom = 63.0
+placeholder_text = "Твоё имя..."
+alignment = 1
+max_length = 24
+expand_to_text_length = true
+
+[connection signal="pressed" from="ButtonsContainer/PlayOnline" to="." method="_on_play_online_pressed"]
+[connection signal="confirmed" from="NameDialog" to="." method="_on_name_dialog_confirmed"]
+[connection signal="visibility_changed" from="NameDialog" to="." method="_on_name_dialog_visibility_changed"]

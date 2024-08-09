@@ -1,0 +1,155 @@
+[gd_scene load_steps=6 format=3 uid="uid://wgln4clkkuuk"]
+
+[ext_resource type="Script" path="res://game/menus/connect/connect_local_menu.gd" id="1_f4u3n"]
+[ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="1_xj6us"]
+[ext_resource type="Texture2D" uid="uid://brcdsp82d82se" path="res://game/theme/background.png" id="2_4da87"]
+[ext_resource type="Texture2D" uid="uid://h6smixikm521" path="res://game/theme/icons/create.png" id="2_rk7v2"]
+[ext_resource type="Texture2D" uid="uid://cuig0ueedrpys" path="res://game/theme/icons/join.png" id="3_ug3n1"]
+
+[node name="ConnectLocalMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_f4u3n")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.768627, 0.768627, 0.768627, 1)
+
+[node name="Image" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -800.0
+offset_top = -360.0
+offset_right = 800.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_4da87")
+
+[node name="Base" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -23.5
+offset_right = 35.0
+offset_bottom = 23.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Base"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBox" type="VBoxContainer" parent="Base/Margin"]
+layout_mode = 2
+
+[node name="Title" type="HBoxContainer" parent="Base/Margin/VBox"]
+layout_mode = 2
+
+[node name="Separator" type="Control" parent="Base/Margin/VBox/Title"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TitleLabel" type="Label" parent="Base/Margin/VBox/Title"]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "Локальная игра"
+horizontal_alignment = 1
+
+[node name="Exit" type="Button" parent="Base/Margin/VBox/Title"]
+layout_mode = 2
+size_flags_horizontal = 10
+icon = ExtResource("1_xj6us")
+
+[node name="Create" type="Button" parent="Base/Margin/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Создать игру"
+icon = ExtResource("2_rk7v2")
+
+[node name="Separator" type="HBoxContainer" parent="Base/Margin/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="LeftSeparator" type="HSeparator" parent="Base/Margin/VBox/Separator"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Base/Margin/VBox/Separator"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
+text = "или"
+
+[node name="RightSeparator" type="HSeparator" parent="Base/Margin/VBox/Separator"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LocalLabel" type="Label" parent="Base/Margin/VBox"]
+layout_mode = 2
+text = "Игры в локальной сети:"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="Base/Margin/VBox"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Base/Margin/VBox/PanelContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+
+[node name="GamesContainer" type="VBoxContainer" parent="Base/Margin/VBox/PanelContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="NoGamesLabel" type="Label" parent="Base/Margin/VBox/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Игр не найдено"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ConnectIP" type="HBoxContainer" parent="Base/Margin/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="IPEdit" type="LineEdit" parent="Base/Margin/VBox/ConnectIP"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(192, 0)
+layout_mode = 2
+placeholder_text = "Введи IP сервера..."
+alignment = 1
+max_length = 39
+expand_to_text_length = true
+virtual_keyboard_type = 3
+clear_button_enabled = true
+
+[node name="Join" type="Button" parent="Base/Margin/VBox/ConnectIP"]
+layout_mode = 2
+text = "Подключиться"
+icon = ExtResource("3_ug3n1")
+
+[connection signal="pressed" from="Base/Margin/VBox/Title/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Base/Margin/VBox/Create" to="." method="_on_create_pressed"]
+[connection signal="text_submitted" from="Base/Margin/VBox/ConnectIP/IPEdit" to="." method="_on_join_pressed" unbinds=1]
+[connection signal="pressed" from="Base/Margin/VBox/ConnectIP/Join" to="." method="_on_join_pressed"]

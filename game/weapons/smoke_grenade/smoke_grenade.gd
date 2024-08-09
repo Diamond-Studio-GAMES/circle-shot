@@ -1,7 +1,7 @@
 extends Weapon
 
 
-@export var projectile: PackedScene
+@export var projectile_scene: PackedScene
 @export var throw_time: float = 1.0
 @export var equip_time: float = 1.0
 var _can_throw := true
@@ -40,11 +40,11 @@ func _shoot() -> void:
 	_anim.play("Throw")
 	var throw_direction: Vector2 = player.input.aiming_direction
 	await _anim.animation_finished
-	var projectile_node: Node2D = projectile.instantiate()
-	projectile_node.global_position = _throw_point.global_position
-	projectile_node.rotation = throw_direction.angle()
-	projectile_node.name += str(randi())
-	_projectiles_parent.add_child(projectile_node)
+	var projectile: Node2D = projectile_scene.instantiate()
+	projectile.global_position = _throw_point.global_position
+	projectile.rotation = throw_direction.angle()
+	projectile.name += str(randi())
+	_projectiles_parent.add_child(projectile)
 
 
 func get_ammo_text() -> String:

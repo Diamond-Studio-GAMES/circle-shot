@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3 uid="uid://ccsednjhd5m3o"]
+
+[ext_resource type="Script" path="res://game/player/skill_data.gd" id="1_dkhs1"]
+
+[resource]
+script = ExtResource("1_dkhs1")
+name = "Целебное зелье"
+brief_description = "Исцеляет 60 ОЗ"
+using_text = "1 исп."
+rarity = 0
+id = "potion"
+scene_path = ""
+image_path = "uid://mgk0jafbvi4h"
+spawnable_scenes_paths = Array[String]([])

@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://dj0mx5ui2wu4n"]
+
+[ext_resource type="Texture2D" uid="uid://1hk5pve5cp0m" path="res://game/theme/icons/kick.png" id="1_k7dg0"]
+[ext_resource type="Texture2D" uid="uid://kuiewk52kk1s" path="res://menu/theme/icons/empty.png" id="2_iotav"]
+
+[node name="PlayerEntry" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+size_flags_horizontal = 3
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Kick" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+texture_normal = ExtResource("1_k7dg0")
+texture_pressed = ExtResource("1_k7dg0")
+texture_hover = ExtResource("1_k7dg0")
+texture_disabled = ExtResource("2_iotav")
+ignore_texture_size = true
+stretch_mode = 0

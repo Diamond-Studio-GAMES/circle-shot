@@ -1,5 +1,5 @@
 class_name Player
-extends CharacterBody2D
+extends Entity
 
 
 signal health_changed(old_value: int, new_value: int)
@@ -9,9 +9,9 @@ signal weapon_changed(type: Weapon.Type)
 signal ammo_text_updated(text: String)
 @export var SPEED := 640.0
 # ВизЭффекты
-@export var hurt_vfx: PackedScene
-@export var death_vfx: PackedScene
-@export var heal_vfx: PackedScene
+@export var hurt_vfx_scene: PackedScene
+@export var death_vfx_scene: PackedScene
+@export var heal_vfx_scene: PackedScene
 # Синхронизируются при спавне
 var player := 1:
 	set(id):
@@ -43,31 +43,31 @@ var _current_weapon_type: Weapon.Type
 
 func _ready() -> void:
 	($Name/Label as Label).text = player_name
-	($Name/Label as Label).self_modulate = Game.TEAM_COLORS[team]
+	($Name/Label as Label).self_modulate = TEAM_COLORS[team]
 	if player == multiplayer.get_unique_id():
-		(get_tree().current_scene as Shooter).game.set_local_player(self)
+		(get_tree().current_scene as Game).game.set_local_player(self)
 		($ControlIndicator as Node2D).show()
-		($ControlIndicator as Node2D).self_modulate = Game.TEAM_COLORS[team]
+		($ControlIndicator as Node2D).self_modulate = TEAM_COLORS[team]
 	
-	var light_weapon_scene: PackedScene = load(Global.items_db.weapons_light[weapons_data[0]].weapon_path)
+	var light_weapon_scene: PackedScene = load(Globals.items_db.weapons_light[weapons_data[0]].weapon_path)
 	var light_weapon: Weapon = light_weapon_scene.instantiate()
 	light_weapon.player = self
 	_weapons.add_child(light_weapon)
 	light_weapon.hide()
 	light_weapon.process_mode = PROCESS_MODE_DISABLED
-	var heavy_weapon_scene: PackedScene = load(Global.items_db.weapons_heavy[weapons_data[1]].weapon_path)
+	var heavy_weapon_scene: PackedScene = load(Globals.items_db.weapons_heavy[weapons_data[1]].weapon_path)
 	var heavy_weapon: Weapon = heavy_weapon_scene.instantiate()
 	heavy_weapon.player = self
 	_weapons.add_child(heavy_weapon)
 	heavy_weapon.hide()
 	heavy_weapon.process_mode = PROCESS_MODE_DISABLED
-	var support_weapon_scene: PackedScene = load(Global.items_db.weapons_support[weapons_data[2]].weapon_path)
+	var support_weapon_scene: PackedScene = load(Globals.items_db.weapons_support[weapons_data[2]].weapon_path)
 	var support_weapon: Weapon = support_weapon_scene.instantiate()
 	support_weapon.player = self
 	_weapons.add_child(support_weapon)
 	support_weapon.hide()
 	support_weapon.process_mode = PROCESS_MODE_DISABLED
-	var melee_weapon_scene: PackedScene = load(Global.items_db.weapons_melee[weapons_data[3]].weapon_path)
+	var melee_weapon_scene: PackedScene = load(Globals.items_db.weapons_melee[weapons_data[3]].weapon_path)
 	var melee_weapon: Weapon = melee_weapon_scene.instantiate()
 	melee_weapon.player = self
 	_weapons.add_child(melee_weapon)
@@ -108,19 +108,19 @@ func set_health(health: int) -> void:
 		if multiplayer.is_server():
 			queue_free()
 		_going_to_die = true
-		var death_vfx_node: Node2D = death_vfx.instantiate()
-		death_vfx_node.position = position
-		_vfx_parent.add_child(death_vfx_node)
+		var death_vfx: Node2D = death_vfx_scene.instantiate()
+		death_vfx.position = position
+		_vfx_parent.add_child(death_vfx)
 		return
 	health_changed.emit(current_health, health)
 	if health < current_health:
-		var hurt_vfx_node: Node2D = hurt_vfx.instantiate()
-		hurt_vfx_node.position = position
-		_vfx_parent.add_child(hurt_vfx_node)
+		var hurt_vfx: Node2D = hurt_vfx_scene.instantiate()
+		hurt_vfx.position = position
+		_vfx_parent.add_child(hurt_vfx)
 	else: 
-		var heal_vfx_node: Node2D = heal_vfx.instantiate()
-		heal_vfx_node.position = position
-		_vfx_parent.add_child(heal_vfx_node)
+		var heal_vfx: Node2D = heal_vfx_scene.instantiate()
+		heal_vfx.position = position
+		_vfx_parent.add_child(heal_vfx)
 	current_health = health
 	if current_health < max_health * 0.33:
 		_blood.emitting = true
@@ -178,17 +178,17 @@ func lock_weapon_use(time: float) -> void:
 func add_effect(effect_path: String, duration: float = 1.0, data := [], should_stack := true) -> void:
 	if multiplayer.get_remote_sender_id() != 1:
 		return
-	var effect_node: Effect = (load(effect_path) as PackedScene).instantiate()
-	if not effect_node.can_stack or not should_stack:
-		var path_to_exist_effect := NodePath(effect_node.name)
+	var effect: Effect = (load(effect_path) as PackedScene).instantiate()
+	if not effect.can_stack or not should_stack:
+		var path_to_exist_effect := NodePath(effect.name)
 		if _effects.has_node(path_to_exist_effect):
 			(_effects.get_node(path_to_exist_effect) as Effect).duration += duration
-			effect_node.free()
+			effect.free()
 			return
-	effect_node.player = self
-	effect_node.duration = duration
-	effect_node.data = data
-	_effects.add_child(effect_node)
+	effect.player = self
+	effect.duration = duration
+	effect.data = data
+	_effects.add_child(effect)
 
 
 @rpc("any_peer", "reliable", "call_remote", 2)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=4 uid="uid://dtui0y2krx3gd"]
 
 [ext_resource type="TileSet" uid="uid://b2sv5fnlc14qj" path="res://game/maps/royale/classic/tile_set.tres" id="1_g2p64"]
-[ext_resource type="PackedScene" uid="uid://dp6wxqvjukdht" path="res://game/modes/royale/base_map.tscn" id="1_rlqm4"]
+[ext_resource type="PackedScene" uid="uid://dp6wxqvjukdht" path="res://game/events/royale/base_map.tscn" id="1_rlqm4"]
 
 [node name="Map" instance=ExtResource("1_rlqm4")]
 metadata/_edit_vertical_guides_ = [-6400.0, 6400.0]
