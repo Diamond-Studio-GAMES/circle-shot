@@ -19,6 +19,7 @@ func _ready() -> void:
 		_ip_edit.text = clipboard_content
 	
 	_udp.listen(Game.LISTEN_PORT)
+	print_verbose("Started listening...")
 
 
 func _process(_delta: float) -> void:
@@ -28,24 +29,34 @@ func _process(_delta: float) -> void:
 	_udp.poll()
 	if _udp.is_connection_available():
 		var peer: PacketPeerUDP = _udp.take_connection()
-		var ip_nodepath := NodePath(peer.get_packet_ip().replace('.', '_'))
 		var data: PackedByteArray = peer.get_packet()
-		var player_name: String = data.slice(2).get_string_from_utf8()
-		var players: int = data[0]
-		var max_players: int = data[1]
-		if _games_container.has_node(ip_nodepath):
-			(_games_container.get_node(ip_nodepath).get_node(^"Timer") as Timer).start()
-			(_games_container.get_node(ip_nodepath) as Button).text = "%s (%d/%d)" % [
+		var id_nodepath := NodePath("Game%d" % data[0])
+		var player_name: String = data.slice(3).get_string_from_utf8()
+		var players: int = data[1]
+		var max_players: int = data[2]
+		print_verbose("Found game: %s (%d/%d) with ID %d from IP: %s" % [
+			player_name,
+			players,
+			max_players,
+			data[0],
+			peer.get_packet_ip()
+		])
+		
+		if _games_container.has_node(id_nodepath):
+			(_games_container.get_node(id_nodepath).get_node(^"Timer") as Timer).start()
+			(_games_container.get_node(id_nodepath) as Button).text = "%s (%d/%d)" % [
 				player_name,
 				players,
 				max_players
 			]
+			print_verbose("Game %d already in list. Updating timer." % data[0])
 		else:
 			var local_game_entry: Button = _local_game_entry_scene.instantiate()
-			local_game_entry.name = ip_nodepath.get_concatenated_names() # Конвертация в StringName
+			local_game_entry.name = id_nodepath.get_concatenated_names() # Конвертация в StringName
 			local_game_entry.text = "%s (%d/%d)" % [player_name, players, max_players]
 			local_game_entry.pressed.connect(_game.join.bind(peer.get_packet_ip()))
 			_games_container.add_child(local_game_entry)
+			print_verbose("Game %d added to the list." % data[0])
 	
 	_no_games_label.visible = _games_container.get_child_count() == 0
 
@@ -65,13 +76,16 @@ func _on_exit_pressed() -> void:
 func _on_game_created() -> void:
 	hide()
 	_udp.stop()
+	print_verbose("Listening stopped.")
 
 
 func _on_game_joined() -> void:
 	hide()
 	_udp.stop()
+	print_verbose("Listening stopped.")
 
 
 func _on_game_closed() -> void:
 	show()
 	_udp.listen(Game.LISTEN_PORT)
+	print_verbose("Listening restarted...")

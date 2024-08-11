@@ -189,6 +189,7 @@ func _init_lobby() -> void:
 	var lobby_scene: PackedScene = load("uid://cmwb81du1kbtm")
 	var lobby: Control = lobby_scene.instantiate()
 	add_child(lobby)
+	print_verbose("Created lobby.")
 
 
 func _authenticate_callback(peer: int, data: PackedByteArray) -> void:
@@ -249,6 +250,7 @@ func _authenticate_callback(peer: int, data: PackedByteArray) -> void:
 	
 	_scene_multiplayer.send_auth(peer, PackedByteArray([OK]))
 	_scene_multiplayer.complete_auth(peer)
+	print_verbose("Completing authentication for peer %d." % peer)
 
 
 func _on_peer_authenticating(peer: int) -> void:
@@ -279,10 +281,10 @@ func _on_peer_authentication_failed(peer: int) -> void:
 func _on_connected_to_server() -> void:
 	($ConnectingDialog as Window).hide()
 	joined.emit()
-	print_verbose("Connected to server.")
 	multiplayer.connection_failed.disconnect(_on_connection_failed)
 	multiplayer.connected_to_server.disconnect(_on_connected_to_server)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	print_verbose("Connected to server.")
 
 
 func _on_connection_failed() -> void:
@@ -293,14 +295,11 @@ func _on_connection_failed() -> void:
 
 
 func _on_peer_disconnected(id: int) -> void:
-	# Подключается только на стороне сервера
-	#if not multiplayer.is_server():
-		#return
-	print_verbose("Peer disconnected: %d." % id)
 	if id in _players_not_ready:
 		_players_not_ready.erase(id)
 		_players_data.erase(id)
 		_check_players_ready()
+	print_verbose("Peer disconnected: %d." % id)
 
 
 func _on_server_disconnected() -> void:

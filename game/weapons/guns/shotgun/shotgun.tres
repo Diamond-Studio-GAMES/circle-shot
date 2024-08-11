@@ -1,13 +1,16 @@
-[gd_resource type="Resource" script_class="WeaponConfig" load_steps=2 format=3 uid="uid://bb4c32cmatk2p"]
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://bb4c32cmatk2p"]
 
 [ext_resource type="Script" path="res://game/player/weapon_data.gd" id="1_sdfg8"]
 
 [resource]
 script = ExtResource("1_sdfg8")
-weapon_name = "Дробовик"
-weapon_type = 1
+name = "Дробовик"
+type = 0
 rarity = 1
 damage_text = "Урон/с: 53"
 ammo_text = "3/21"
-weapon_path = "uid://vaggbadprpmu"
+description = ""
+id = "shotgun"
+scene_path = "uid://vaggbadprpmu"
 image_path = "uid://b1kgmgwrultvq"
+spawnable_scenes_paths = Array[String](["uid://co7528ytx5rvc"])

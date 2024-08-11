@@ -11,11 +11,12 @@ config_version=5
 [application]
 
 config/name="Circle Shot"
-config/version="2.0-dev1"
+config/version="2.0.0.1"
 run/main_scene="res://main/main.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="circle-shot"
 config/features=PackedStringArray("4.3", "GL Compatibility")
+run/max_fps=60
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="res://misc/boot_splash.png"
 config/icon="res://misc/icon.png"

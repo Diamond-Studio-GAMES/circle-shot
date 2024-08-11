@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://vaggbadprpmu"]
 
-[ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/base/gun.tscn" id="1_hu422"]
+[ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_hu422"]
 [ext_resource type="Texture2D" uid="uid://cln1si1eynqrx" path="res://game/weapons/guns/shotgun/base.png" id="2_2dero"]
 [ext_resource type="Script" path="res://game/weapons/guns/shotgun/shotgun.gd" id="2_bxqwq"]
 [ext_resource type="PackedScene" uid="uid://co7528ytx5rvc" path="res://game/weapons/guns/shotgun/buckshot.tscn" id="3_1xtgg"]

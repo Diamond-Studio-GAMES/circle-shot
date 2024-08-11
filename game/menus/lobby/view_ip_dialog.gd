@@ -18,9 +18,13 @@ var _global_ip: String
 
 
 func _ready() -> void:
-	_find_ips()
 	add_button("Обновить IP-адреса", false, "update_ips")
 	add_button("Копировать IP-адреса", true, "copy_ips")
+
+
+func _show() -> void:
+	_find_ips()
+	show()
 
 
 func _find_ips() -> void:
@@ -62,6 +66,8 @@ func _find_ips() -> void:
 			dialog_text += ip
 			first = false
 	
+	if _global_ip_fetched:
+		return
 	var error: Error = _http_request.request("https://icanhazip.com/")
 	if error != OK:
 		push_error("Can't connect to server! Error: %s" % error_string(error))
@@ -71,8 +77,6 @@ func _find_ips() -> void:
 
 
 func _on_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
-	if _global_ip_fetched:
-		return
 	if result != HTTPRequest.RESULT_SUCCESS:
 		push_error("Connect to server: result is not Success! Result: %d" % result)
 		dialog_text += '\n'

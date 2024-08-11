@@ -1,11 +1,12 @@
-[gd_resource type="Resource" script_class="SkinConfig" load_steps=2 format=3 uid="uid://sgi4ij07qfbi"]
+[gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://sgi4ij07qfbi"]
 
 [ext_resource type="Script" path="res://game/player/skin_data.gd" id="1_dltsc"]
 
 [resource]
 script = ExtResource("1_dltsc")
-skin_name = "Пайпер"
-skin_description = "ЭТО ПАЙПЕР?!?!?!"
+name = "Пайпер"
+brief_description = "ЭТО ПАЙПЕР?!?!?!"
 rarity = 2
-skin_path = "uid://cad2esn66vr66"
+id = "piper"
+scene_path = "uid://cad2esn66vr66"
 image_path = "uid://c6cl60m4btgyq"

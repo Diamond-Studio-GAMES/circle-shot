@@ -11,12 +11,14 @@ var _selected_support_weapon: int = 0
 var _selected_melee_weapon: int = 0
 var _selected_skill: int = 0
 var _players := {}
-var _player_admin_id: int = -1
-var _udp := PacketPeerUDP.new()
+var _admin_id: int = -1
+var _game_id: int = 0
+var _udp_peers: Array[PacketPeerUDP]
 var _player_entry_scene: PackedScene = preload("uid://dj0mx5ui2wu4n")
 @onready var _game: Game = get_parent()
 @onready var _players_container: GridContainer = %PlayersContainer
-@onready var _item_selector: ItemSelector = $ItemSelector
+@onready var _items_grid: ItemsGrid = %ItemsGrid
+@onready var _item_selector: Window = $ItemSelector
 
 
 func _ready() -> void:
@@ -35,8 +37,7 @@ func _ready() -> void:
 	_update_equip()
 	_update_environment()
 	
-	_udp.set_broadcast_enabled(true)
-	_udp.set_dest_address("255.255.255.255", Game.LISTEN_PORT)
+	_find_ips_for_broadcast()
 
 
 @rpc("reliable", "call_local")
@@ -51,16 +52,19 @@ func _add_player_entry(id: int, player_name: String) -> void:
 	(player_entry.get_node(^"Kick") as Control).visible = %AdminPanel.visible
 	(player_entry.get_node(^"Kick") as BaseButton).pressed.connect(_on_kick_pressed.bind(id))
 	_players_container.add_child(player_entry)
+	print_verbose("Added player %d entry with name: %s." % [id, player_name])
 
 
-@rpc("reliable")
+@rpc("reliable", "call_local")
 func _delete_player_entry(id: int) -> void:
 	_players_container.get_node(str(id)).queue_free()
+	print_verbose("Deleted player %d entry." % id)
 
 
 @rpc("any_peer", "reliable")
 func _register_new_player(player_name: String) -> void:
 	if not multiplayer.is_server():
+		push_warning("Unexpected call on client!")
 		return
 	var id: int = multiplayer.get_remote_sender_id()
 	if id == 0:
@@ -73,14 +77,15 @@ func _register_new_player(player_name: String) -> void:
 			"Игра: Игрок [color=green]%s[/color] подключился!" % player_name
 	)
 	if _players.size() == 1:
+		_admin_id = id
 		if id == 1:
 			_set_admin(true)
 		else:
 			_set_admin.rpc_id(id, true)
-		_player_admin_id = id
 	else:
 		_set_admin.rpc_id(id, false)
 	_add_player_entry.rpc(id, player_name)
+	print_verbose("Registered player %d with name %s." % [id, player_name])
 
 
 @rpc("reliable")
@@ -94,18 +99,25 @@ func _set_admin(admin: bool) -> void:
 		_request_set_environment(Globals.get_int("selected_event"), Globals.get_int("selected_map"))
 	else:
 		(%ClientHint as Label).text = "Начать игру может только хост."
+	print_verbose("Admin set: %s." % str(admin))
 
 
 @rpc("any_peer", "reliable")
 func _request_set_environment(event_id: int, map_id: int) -> void:
 	if not multiplayer.is_server():
+		push_warning("Unexpected call on client!")
 		return
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id == 0:
 		sender_id = 1
-	if sender_id != _player_admin_id:
+	if sender_id != _admin_id:
+		push_warning("Request rejected: player %d is not admin!" % sender_id)
 		return
 	_game.max_players = Globals.items_db.events[event_id].max_players
+	print_verbose("Accepted set environment request. Event ID: %d, Map ID: %d." % [
+		event_id,
+		map_id,
+	])
 	_set_environment.rpc(event_id, map_id)
 
 
@@ -113,30 +125,37 @@ func _request_set_environment(event_id: int, map_id: int) -> void:
 func _set_environment(event_id: int, map_id: int) -> void:
 	_selected_event = event_id
 	_selected_map = map_id
+	print_verbose("Environment set: Event ID - %d, Map ID - %d." % [event_id, map_id])
 	_update_environment()
 
 
 @rpc("any_peer", "reliable")
 func _request_kick_player(id: int) -> void:
 	if not multiplayer.is_server():
+		push_warning("Unexpected call on client!")
 		return
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id == 0:
 		sender_id = 1
-	if sender_id != _player_admin_id:
+	if sender_id != _admin_id:
+		push_warning("Request rejected: player %d is not admin!" % sender_id)
 		return
+	print_verbose("Accepted kick request. Kicking: %d." % id)
 	multiplayer.multiplayer_peer.disconnect_peer(id)
 
 
 @rpc("any_peer", "reliable")
 func _request_start_event() -> void:
 	if not multiplayer.is_server():
+		push_warning("Unexpected call on client!")
 		return
 	var id: int = multiplayer.get_remote_sender_id()
 	if id == 0:
 		id = 1
-	if id != _player_admin_id:
+	if id != _admin_id:
+		push_warning("Request rejected: player %d is not admin!" % id)
 		return
+	print_verbose("Accepted start event request. Starting...")
 	_start_game.rpc(_selected_event, _selected_map)
 
 
@@ -196,12 +215,46 @@ func _update_equip() -> void:
 	Globals.set_int("selected_skill", _selected_skill)
 
 
+func _find_ips_for_broadcast() -> void:
+	_udp_peers.clear()
+	print_verbose("Finding IPs for broadcast...")
+	# Отсылаем пакеты по всем локальным адресам
+	for i: String in IP.get_local_addresses():
+		if i.begins_with("192.168.") or i.begins_with("10.42."):
+			var udp := PacketPeerUDP.new()
+			udp.set_broadcast_enabled(true)
+			# Меняем конец IP на 255
+			var broadcast_ip: String = i.rsplit('.', true, 1)[0] + ".255"
+			udp.set_dest_address(broadcast_ip, Game.LISTEN_PORT)
+			print_verbose("Found IP to broadcast: %s" % broadcast_ip)
+			_udp_peers.append(udp)
+
+
+func _do_broadcast() -> void:
+	var data := PackedByteArray()
+	data.append(_game_id) # ID игры
+	data.append(_players.size()) # Текущее количество игроков
+	data.append(_game.max_players) # Максимальное количество игроков
+	data.append_array(Globals.get_string("player_name", "Local Server").to_utf8_buffer()) # Имя хоста
+	for i: PacketPeerUDP in _udp_peers:
+		i.put_packet(data)
+	print_verbose("Broadcast of Game %d done. Data sent: %s (%d/%d)" % [
+		_game_id,
+		Globals.get_string("player_name", "Local Server"),
+		_players.size(),
+		_game.max_players,
+	])
+
+
 func _on_game_created() -> void:
 	show()
 	(%ControlButtons/ConnectedToIP as Control).hide()
 	(%ControlButtons/ViewIPs as Control).show()
 	_players.clear()
 	($UDPTimer as Timer).start()
+	($UpdateIPSTimer as Timer).start()
+	_game_id = randi() % 256
+	_do_broadcast()
 	if not Globals.headless:
 		($Panels/Chat as Chat).create_prefix_from_name(Globals.get_string("player_name"))
 		_register_new_player(Globals.get_string("player_name"))
@@ -224,8 +277,11 @@ func _on_game_joined() -> void:
 
 func _on_game_closed() -> void:
 	hide()
+	_item_selector.hide()
 	if not ($UDPTimer as Timer).is_stopped():
 		($UDPTimer as Timer).stop()
+	if not ($UpdateIPSTimer as Timer).is_stopped():
+		($UpdateIPSTimer as Timer).stop()
 	for i: Node in _players_container.get_children():
 		i.queue_free()
 	($Panels/Chat as Chat).clear_chat()
@@ -234,14 +290,18 @@ func _on_game_closed() -> void:
 
 func _on_game_started() -> void:
 	hide()
+	_item_selector.hide()
 	if not ($UDPTimer as Timer).is_stopped():
 		($UDPTimer as Timer).stop()
+	if not ($UpdateIPSTimer as Timer).is_stopped():
+		($UpdateIPSTimer as Timer).stop()
 
 
 func _on_game_ended() -> void:
 	show()
 	if multiplayer.is_server():
 		($UDPTimer as Timer).start()
+		($UpdateIPSTimer as Timer).start()
 
 
 func _on_peer_disconnected(id: int) -> void:
@@ -251,43 +311,13 @@ func _on_peer_disconnected(id: int) -> void:
 			"Игра: Игрок [color=green]%s[/color] отключился!" % _players[id]
 	)
 	_players.erase(id)
-	if id == _player_admin_id:
+	if id == _admin_id:
 		if _players.size() > 0:
-			_player_admin_id = (_players.keys() as Array[int])[0]
-			_set_admin.rpc_id(_player_admin_id, true)
+			_admin_id = (_players.keys() as Array[int])[0]
+			_set_admin.rpc_id(_admin_id, true)
 		else:
-			_player_admin_id = -1
+			_admin_id = -1
 	_delete_player_entry.rpc(id)
-	if not Globals.headless:
-		_delete_player_entry(id)
-
-
-#func _on_change_game_pressed() -> void:
-	#_item_selector.open_selection(ItemsDB.Item.EVENT, selected_game)
-#
-#
-#func _on_change_map_pressed() -> void:
-	#_item_selector.open_selection(ItemsDB.Item.MAP, selected_map, selected_game)
-#
-#
-#func _on_change_skin_pressed() -> void:
-	#_item_selector.open_selection(ItemsDB.Item.SKIN, selected_skin)
-#
-#
-#func _on_change_light_weapon_pressed() -> void:
-	#_item_selector.open_selection(ItemsDB.Item.WEAPON_LIGHT, selected_light_weapon)
-#
-#
-#func _on_change_heavy_weapon_pressed() -> void:
-	#_item_selector.open_selection(ItemsDB.Item.WEAPON_HEAVY, selected_heavy_weapon)
-#
-#
-#func _on_change_support_weapon_pressed() -> void:
-	#_item_selector.open_selection(ItemsDB.Item.WEAPON_SUPPORT, selected_support_weapon)
-#
-#
-#func _on_change_melee_weapon_pressed() -> void:
-	#_item_selector.open_selection(ItemsDB.Item.WEAPON_MELEE, selected_melee_weapon)
 
 
 func _on_kick_pressed(id: int) -> void:
@@ -304,14 +334,6 @@ func _on_start_event_pressed() -> void:
 		_request_start_event.rpc_id(1)
 
 
-func _on_udp_timer_timeout() -> void:
-	var data := PackedByteArray()
-	data.append(_players.size())
-	data.append(_game.max_players)
-	data.append_array(Globals.get_string("player_name").to_utf8_buffer())
-	_udp.put_packet(data)
-
-
 func _on_leave_pressed() -> void:
 	_game.close()
 
@@ -322,7 +344,56 @@ func _on_connected_to_ip_pressed() -> void:
 	DisplayServer.clipboard_set(peers[0].get_remote_address())
 
 
+func _on_change_event_pressed() -> void:
+	_items_grid.list_items(ItemsDB.Item.EVENT, _selected_event)
+	_item_selector.title = "Выбор события"
+	_item_selector.popup_centered()
+
+
+func _on_change_map_pressed() -> void:
+	_items_grid.list_items(ItemsDB.Item.MAP, _selected_map)
+	_item_selector.title = "Выбор карты"
+	_item_selector.popup_centered()
+
+
+func _on_change_skin_pressed() -> void:
+	_items_grid.list_items(ItemsDB.Item.SKIN, _selected_skin)
+	_item_selector.title = "Выбор скина"
+	_item_selector.popup_centered()
+
+
+func _on_change_light_weapon_pressed() -> void:
+	_items_grid.list_items(ItemsDB.Item.WEAPON_LIGHT, _selected_light_weapon)
+	_item_selector.title = "Выбор лёгкого оружия"
+	_item_selector.popup_centered()
+
+
+func _on_change_heavy_weapon_pressed() -> void:
+	_items_grid.list_items(ItemsDB.Item.WEAPON_HEAVY, _selected_heavy_weapon)
+	_item_selector.title = "Выбор тяжёлого оружия"
+	_item_selector.popup_centered()
+
+
+func _on_change_support_weapon_pressed() -> void:
+	_items_grid.list_items(ItemsDB.Item.WEAPON_SUPPORT, _selected_support_weapon)
+	_item_selector.title = "Выбор оружия поддержки"
+	_item_selector.popup_centered()
+
+
+func _on_change_melee_weapon_pressed() -> void:
+	_items_grid.list_items(ItemsDB.Item.WEAPON_MELEE, _selected_melee_weapon)
+	_item_selector.title = "Выбор ближнего оружия"
+	_item_selector.popup_centered()
+
+
+func _on_change_skill_pressed() -> void:
+	_items_grid.list_items(ItemsDB.Item.SKILL, _selected_skill)
+	_item_selector.title = "Выберите навык"
+	_item_selector.popup_centered()
+
+
 func _on_item_selected(type: ItemsDB.Item, id: int) -> void:
+	_item_selector.hide()
 	match type:
 		ItemsDB.Item.EVENT:
 			if not multiplayer.is_server():

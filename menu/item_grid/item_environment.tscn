@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://ck5uq0aa1ov56"]
 
-[node name="VariantBig" type="TextureRect"]
+[node name="ItemEnvironment" type="TextureRect"]
 auto_translate_mode = 1
 self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
-custom_minimum_size = Vector2(320, 64)
+custom_minimum_size = Vector2(392, 80)
 expand_mode = 1
 
 [node name="Container" type="VBoxContainer" parent="."]
@@ -21,7 +21,6 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 24
-text = "екукекуе"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -30,9 +29,8 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "екнкенке"
 horizontal_alignment = 1
-vertical_alignment = 1
+vertical_alignment = 2
 
 [node name="Click" type="Button" parent="."]
 auto_translate_mode = 1

@@ -1,11 +1,12 @@
-[gd_resource type="Resource" script_class="SkinConfig" load_steps=2 format=3 uid="uid://dbtrtohutlbyt"]
+[gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://dbtrtohutlbyt"]
 
 [ext_resource type="Script" path="res://game/player/skin_data.gd" id="1_ca7qy"]
 
 [resource]
 script = ExtResource("1_ca7qy")
-skin_name = "Обычный"
-skin_description = "Обычный колобок"
+name = "Колобок"
+brief_description = "Обычный колобок"
 rarity = 0
-skin_path = "uid://c4mcmkcefammv"
+id = "default"
+scene_path = "uid://c4mcmkcefammv"
 image_path = "uid://dw1607atagdix"

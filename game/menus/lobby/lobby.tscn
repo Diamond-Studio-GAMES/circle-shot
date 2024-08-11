@@ -2,8 +2,7 @@
 
 [ext_resource type="Script" path="res://game/menus/lobby/lobby.gd" id="1_jtfrr"]
 [ext_resource type="Texture2D" uid="uid://cp68q5xemqd01" path="res://game/theme/icons/play.png" id="2_6xr3g"]
-[ext_resource type="PackedScene" uid="uid://sm5vc72d2aw1" path="res://game/menus/lobby/item_selector.tscn" id="2_14jqc"]
-[ext_resource type="Texture2D" uid="uid://brcdsp82d82se" path="res://game/theme/background.png" id="2_ew2vj"]
+[ext_resource type="Texture2D" uid="uid://nyuii0fx273c" path="res://game/menus/lobby/background.png" id="2_8bvc3"]
 [ext_resource type="Texture2D" uid="uid://d14nbphg5o3a" path="res://game/theme/icons/chat.png" id="2_wjeu5"]
 [ext_resource type="Script" path="res://game/theme/chat.gd" id="3_amd3n"]
 [ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="3_cwg7d"]
@@ -12,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/theme/icons/chat_send.png" id="4_6keib"]
 [ext_resource type="Script" path="res://game/menus/lobby/view_ip_dialog.gd" id="5_jyb4t"]
 [ext_resource type="Texture2D" uid="uid://c3r13t5eig25e" path="res://game/theme/icons/view_ips.png" id="7_f0cv5"]
+[ext_resource type="Script" path="res://menu/item_grid/items_grid.gd" id="11_ncktp"]
 
 [node name="Lobby" type="Control"]
 layout_mode = 3
@@ -44,7 +44,7 @@ offset_right = 800.0
 offset_bottom = 360.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_ew2vj")
+texture = ExtResource("2_8bvc3")
 
 [node name="Panels" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -604,7 +604,44 @@ texture_normal = ExtResource("4_6keib")
 ignore_texture_size = true
 stretch_mode = 4
 
-[node name="ItemSelector" parent="." instance=ExtResource("2_14jqc")]
+[node name="ItemSelector" type="Window" parent="."]
+auto_translate_mode = 1
+initial_position = 2
+size = Vector2i(408, 440)
+visible = false
+unresizable = true
+popup_window = true
+min_size = Vector2i(360, 360)
+
+[node name="Background" type="ColorRect" parent="ItemSelector"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ItemSelector"]
+auto_translate_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="ItemSelector/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ItemsGrid" type="GridContainer" parent="ItemSelector/ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 3
+script = ExtResource("11_ncktp")
 
 [node name="ViewIPDialog" type="AcceptDialog" parent="."]
 title = "Ваши IP-адреса"
@@ -621,22 +658,27 @@ timeout = 5.0
 
 [node name="UDPTimer" type="Timer" parent="."]
 
+[node name="UpdateIPSTimer" type="Timer" parent="."]
+wait_time = 10.0
+
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/Player/Skin/ChangeSkin" to="." method="_on_change_skin_pressed"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/Player/LightWeapon/ChangeLightWeapon" to="." method="_on_change_light_weapon_pressed"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/Player/HeavyWeapon/ChangeHeavyWeapon" to="." method="_on_change_heavy_weapon_pressed"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/Player/SupportWeapon/ChangeSupportWeapon" to="." method="_on_change_support_weapon_pressed"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/Player/MeleeWeapon/ChangeMeleeWeapon" to="." method="_on_change_melee_weapon_pressed"]
-[connection signal="pressed" from="Panels/Lobby/VBoxContainer/Player/Skill/ChangeSkin" to="." method="_on_change_skin_pressed"]
+[connection signal="pressed" from="Panels/Lobby/VBoxContainer/Player/Skill/ChangeSkin" to="." method="_on_change_skill_pressed"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/AdminPanel/StartEvent" to="." method="_on_start_game_pressed"]
-[connection signal="pressed" from="Panels/Lobby/VBoxContainer/AdminPanel/ChangeEvent" to="." method="_on_change_game_pressed"]
+[connection signal="pressed" from="Panels/Lobby/VBoxContainer/AdminPanel/ChangeEvent" to="." method="_on_change_event_pressed"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/AdminPanel/ChangeMap" to="." method="_on_change_map_pressed"]
 [connection signal="toggled" from="Panels/Lobby/VBoxContainer/ControlButtons/Chat" to="Panels/Chat" method="_on_chat_toggled"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/ControlButtons/ConnectedToIP" to="." method="_on_connected_to_ip_pressed"]
-[connection signal="pressed" from="Panels/Lobby/VBoxContainer/ControlButtons/ViewIPs" to="ViewIPDialog" method="popup_centered"]
+[connection signal="pressed" from="Panels/Lobby/VBoxContainer/ControlButtons/ViewIPs" to="ViewIPDialog" method="_show"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/ControlButtons/Leave" to="." method="_on_leave_pressed"]
 [connection signal="text_submitted" from="Panels/Chat/VBoxContainer/HBoxContainer/LineEdit" to="Panels/Chat" method="send_message" unbinds=1]
 [connection signal="pressed" from="Panels/Chat/VBoxContainer/HBoxContainer/Send" to="Panels/Chat" method="send_message"]
-[connection signal="item_selected" from="ItemSelector" to="." method="_on_item_selected"]
+[connection signal="close_requested" from="ItemSelector" to="ItemSelector" method="hide"]
+[connection signal="item_selected" from="ItemSelector/ScrollContainer/MarginContainer/ItemsGrid" to="." method="_on_item_selected"]
 [connection signal="custom_action" from="ViewIPDialog" to="ViewIPDialog" method="_on_custom_action"]
 [connection signal="request_completed" from="ViewIPDialog/HTTPRequest" to="ViewIPDialog" method="_on_request_completed"]
-[connection signal="timeout" from="UDPTimer" to="." method="_on_udp_timer_timeout"]
+[connection signal="timeout" from="UDPTimer" to="." method="_do_broadcast"]
+[connection signal="timeout" from="UpdateIPSTimer" to="." method="_find_ips_for_broadcast"]

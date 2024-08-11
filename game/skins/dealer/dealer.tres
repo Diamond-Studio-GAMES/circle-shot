@@ -1,11 +1,12 @@
-[gd_resource type="Resource" script_class="SkinConfig" load_steps=2 format=3 uid="uid://dk5cbfv04bbfs"]
+[gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://dk5cbfv04bbfs"]
 
 [ext_resource type="Script" path="res://game/player/skin_data.gd" id="1_6ulw4"]
 
 [resource]
 script = ExtResource("1_6ulw4")
-skin_name = "Дилер"
-skin_description = "Я вставлю патроны в неизвестном порядке..."
+name = "Дилер"
+brief_description = "Я вставлю патроны в неизвестном порядке..."
 rarity = 3
-skin_path = "uid://lvofe70e7tx7"
+id = "dealer"
+scene_path = "uid://lvofe70e7tx7"
 image_path = "uid://c8np7n73fe7q3"

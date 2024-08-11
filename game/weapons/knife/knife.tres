@@ -1,13 +1,16 @@
-[gd_resource type="Resource" script_class="WeaponConfig" load_steps=2 format=3 uid="uid://bqt35gylr4la"]
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://bqt35gylr4la"]
 
 [ext_resource type="Script" path="res://game/player/weapon_data.gd" id="1_2u2my"]
 
 [resource]
 script = ExtResource("1_2u2my")
-weapon_name = "Нож"
-weapon_type = 3
+name = "Нож"
+type = 3
 rarity = 0
 damage_text = "Урон: 50"
 ammo_text = "Не ограничено"
-weapon_path = "uid://bynopfeo8pgxf"
+description = ""
+id = "knife"
+scene_path = "uid://bynopfeo8pgxf"
 image_path = "uid://c6hbriu7of77e"
+spawnable_scenes_paths = Array[String]([])

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dw1607atagdix"
-path="res://.godot/imported/player_evil.png-b25497aca2900f1eaff82b117628cdbf.ctex"
+uid="uid://nyuii0fx273c"
+path="res://.godot/imported/background.png-aa96ef54a6ddc46b6a5d696a8a6f9c12.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/skins/default/player_evil.png"
-dest_files=["res://.godot/imported/player_evil.png-b25497aca2900f1eaff82b117628cdbf.ctex"]
+source_file="res://game/menus/lobby/background.png"
+dest_files=["res://.godot/imported/background.png-aa96ef54a6ddc46b6a5d696a8a6f9c12.ctex"]
 
 [params]
 

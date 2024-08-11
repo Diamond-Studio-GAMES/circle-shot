@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="MapConfig" load_steps=2 format=3 uid="uid://b6lbtimr5h2h4"]
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://b6lbtimr5h2h4"]
 
 [ext_resource type="Script" path="res://game/events/common/map_data.gd" id="1_s8q2e"]
 
 [resource]
 script = ExtResource("1_s8q2e")
-map_name = "Классика"
-map_description = "Как в старые добрые времена..."
-map_path = "uid://dtui0y2krx3gd"
+name = "Классика"
+brief_description = "Как в старые добрые времена..."
+scene_path = "uid://dtui0y2krx3gd"
 image_path = "uid://c40q3nwga77jn"

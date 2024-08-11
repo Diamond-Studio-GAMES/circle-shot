@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://4q0rrm6arbyx"]
 
-[ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/base/gun.tscn" id="1_57777"]
+[ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_57777"]
 [ext_resource type="Texture2D" uid="uid://0vtm3lrt8183" path="res://game/weapons/guns/sniper_rifle/sniper_rifle.png" id="2_4kyvs"]
 [ext_resource type="Script" path="res://game/weapons/guns/sniper_rifle/sniper_rifle.gd" id="2_ir31q"]
 [ext_resource type="PackedScene" uid="uid://cm0sqwulviy72" path="res://game/weapons/guns/sniper_rifle/sniper_bullet.tscn" id="2_stbvt"]

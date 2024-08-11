@@ -1,11 +1,12 @@
-[gd_resource type="Resource" script_class="SkinConfig" load_steps=2 format=3 uid="uid://dvnh4idsj61sj"]
+[gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://dvnh4idsj61sj"]
 
 [ext_resource type="Script" path="res://game/player/skin_data.gd" id="1_el00n"]
 
 [resource]
 script = ExtResource("1_el00n")
-skin_name = "Apple"
-skin_description = "Гнилое яблоко"
+name = "Apple"
+brief_description = "Гнилое яблоко"
 rarity = 1
-skin_path = "uid://hu5r8bfwm35u"
+id = "ios"
+scene_path = "uid://hu5r8bfwm35u"
 image_path = "uid://du5ppe5qo0scu"

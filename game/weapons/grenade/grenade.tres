@@ -4,13 +4,13 @@
 
 [resource]
 script = ExtResource("1_25gnn")
-name = ""
-type = 0
+name = "Граната"
+type = 2
 rarity = 0
 damage_text = "Урон: 25-80"
 ammo_text = "3 штуки"
 description = ""
-id = ""
-scene_path = ""
+id = "he_grenade"
+scene_path = "uid://b5t5tgu043bm"
 image_path = "uid://jyvb0oir1emy"
-spawnable_scenes_paths = Array[String]([])
+spawnable_scenes_paths = Array[String](["uid://8yrjqan0dqfx"])

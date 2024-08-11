@@ -36,6 +36,7 @@ func open_menu() -> void:
 	var menu: Menu = menu_scene.instantiate()
 	add_child(menu)
 	_menu = menu
+	print_verbose("Opened menu.")
 
 
 func open_local_game() -> void:
@@ -49,6 +50,7 @@ func open_local_game() -> void:
 	add_child(game)
 	game.init_connect_local_menu()
 	_game = game
+	print_verbose("Opened game with local menu.")
 
 
 ## Выдаёт критическую ошибку, которая останавливает всю игру. Использовать только в безвыходных
@@ -91,6 +93,7 @@ func _start_load() -> void:
 
 
 func _load_check_server() -> void:
+	print_verbose("Checking connection to server...")
 	_load_status_label.text = "Проверка соединения с сервером..."
 	_load_progress_bar.value = 0
 	await get_tree().process_frame
@@ -118,9 +121,11 @@ func _on_check_http_request_completed(result: HTTPRequest.Result, response_code:
 		loading_stage_finished.emit(false)
 		return
 	loading_stage_finished.emit(true)
+	print_verbose("Connection success.")
 
 
 func _load_open_menu() -> void:
+	print_verbose("Opening menu...")
 	_load_status_label.text = "Загрузка меню..."
 	_load_progress_bar.value = 100
 	await get_tree().process_frame
@@ -141,3 +146,4 @@ func _clear_screens() -> void:
 	for i: Node in _other_screens:
 		i.queue_free()
 	_other_screens.clear()
+	print_verbose("Screens cleared.")

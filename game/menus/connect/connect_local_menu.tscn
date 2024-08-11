@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://game/menus/connect/connect_local_menu.gd" id="1_f4u3n"]
 [ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="1_xj6us"]
-[ext_resource type="Texture2D" uid="uid://brcdsp82d82se" path="res://game/theme/background.png" id="2_4da87"]
+[ext_resource type="Texture2D" uid="uid://b4yw2ehtx4wqf" path="res://game/menus/connect/background.png" id="2_5kfp0"]
 [ext_resource type="Texture2D" uid="uid://h6smixikm521" path="res://game/theme/icons/create.png" id="2_rk7v2"]
 [ext_resource type="Texture2D" uid="uid://cuig0ueedrpys" path="res://game/theme/icons/join.png" id="3_ug3n1"]
 
@@ -37,7 +37,7 @@ offset_right = 800.0
 offset_bottom = 360.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_4da87")
+texture = ExtResource("2_5kfp0")
 
 [node name="Base" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -125,7 +125,7 @@ size_flags_vertical = 3
 [node name="NoGamesLabel" type="Label" parent="Base/Margin/VBox/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Игр не найдено"
+text = "Поиск игр..."
 horizontal_alignment = 1
 vertical_alignment = 1
 

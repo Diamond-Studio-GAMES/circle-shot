@@ -27,3 +27,4 @@ func _on_name_dialog_confirmed() -> void:
 	_name_accepted = true
 	Globals.set_string("player_name", player_name)
 	($NameDialog as Window).hide()
+	print_verbose("Name set: %s." % player_name)

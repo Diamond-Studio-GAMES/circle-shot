@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://bsgtxdfb2n4u3"]
 
-[ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/base/gun.tscn" id="1_ff8sd"]
+[ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_ff8sd"]
 [ext_resource type="PackedScene" uid="uid://c4cr4b5wn24yt" path="res://game/weapons/guns/p_350/p_350_bullet.tscn" id="2_0jvki"]
 [ext_resource type="Texture2D" uid="uid://ocg6jebfprnx" path="res://game/weapons/guns/p_350/clip.png" id="2_l1i5r"]
 [ext_resource type="Texture2D" uid="uid://b74jcdw45c73w" path="res://game/weapons/guns/p_350/p_350.png" id="2_nnulw"]
