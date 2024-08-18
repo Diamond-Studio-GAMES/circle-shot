@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://game/menus/connect/connect_local_menu.gd" id="1_f4u3n"]
 [ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="1_xj6us"]
 [ext_resource type="Texture2D" uid="uid://b4yw2ehtx4wqf" path="res://game/menus/connect/background.png" id="2_5kfp0"]
-[ext_resource type="Texture2D" uid="uid://h6smixikm521" path="res://game/theme/icons/create.png" id="2_rk7v2"]
-[ext_resource type="Texture2D" uid="uid://cuig0ueedrpys" path="res://game/theme/icons/join.png" id="3_ug3n1"]
+[ext_resource type="Texture2D" uid="uid://h6smixikm521" path="res://game/ui/icons/create.png" id="2_rk7v2"]
+[ext_resource type="Texture2D" uid="uid://cuig0ueedrpys" path="res://game/ui/icons/join.png" id="3_ug3n1"]
 
 [node name="ConnectLocalMenu" type="Control"]
 layout_mode = 3
@@ -141,7 +141,6 @@ placeholder_text = "Введи IP сервера..."
 alignment = 1
 max_length = 39
 expand_to_text_length = true
-virtual_keyboard_type = 3
 clear_button_enabled = true
 
 [node name="Join" type="Button" parent="Base/Margin/VBox/ConnectIP"]

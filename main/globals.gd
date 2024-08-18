@@ -21,10 +21,7 @@ var items_db: ItemsDB = load("uid://pwq1e7l2ckos")
 var save_file: ConfigFile
 
 
-func _ready() -> void:
-	# Чтобы убрать OfflineMultiplayerPeer
-	multiplayer.multiplayer_peer = null
-	
+func _ready() -> void:	
 	save_file = ConfigFile.new()
 	save_file.load(SAVE_FILE_PATH)
 

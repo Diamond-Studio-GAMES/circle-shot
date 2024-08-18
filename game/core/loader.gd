@@ -1,83 +1,132 @@
 class_name Loader
 extends CanvasLayer
 
-signal loaded
-signal load_failed
+## Класс, который занимается загрузкой.
+##
+## В комбинации с [Game], загружает события и прочее.
+
+## Внутренний сигнал, издаётся при завершении части общей загрузки.
 signal loaded_part(success: bool)
-var _loading := false
 var _loaded_part := false
-var _loaded_part_node: Node
 var _loading_path: String
 @onready var _anim: AnimationPlayer = $AnimationPlayer
-@onready var _bar: ProgressBar = $Background/ProgressBar
-@onready var _status_text: Label = $Background/ProgressBar/Label
+@onready var _bar: ProgressBar = $CanvasGroup/ProgressBar
+@onready var _status_text: Label = $CanvasGroup/ProgressBar/Label
+
+
+func _ready() -> void:
+	set_process(false)
+	set_physics_process(false)
 
 
 func _process(_delta: float) -> void:
-	if _loading:
-		var progress: Array[float] = []
-		var status := ResourceLoader.load_threaded_get_status(_loading_path, progress)
-		match status:
-			ResourceLoader.THREAD_LOAD_LOADED:
-				loaded_part.emit(true)
-			ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-				_bar.value = roundf(progress[0] * 50) + 50 * int(_loaded_part)
-			_:
-				loaded_part.emit(false)
+	var progress: Array[float]
+	var status: ResourceLoader.ThreadLoadStatus = \
+			ResourceLoader.load_threaded_get_status(_loading_path, progress)
+	print_verbose("Status for loading %s: progress - %f, status - %d." % [
+		_loading_path,
+		progress[0],
+		status,
+	])
+	match status:
+		ResourceLoader.THREAD_LOAD_LOADED:
+			loaded_part.emit(true)
+		ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+			_bar.value = roundf(progress[0] * 50) + 50 * int(_loaded_part)
+		ResourceLoader.THREAD_LOAD_FAILED, ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
+			loaded_part.emit(false)
 
 
-func load_event(event: int, map: int) -> void:
+func _physics_process(_delta: float) -> void:
+	# Чтобы не отключаться.
+	multiplayer.poll()
+
+
+## Загружает события и карту по [param event_id] и [param map_id] соответственно. Возвращает [Event],
+## если загрузка прошла удачно, иначе возвращает [code]null[/code].[br]
+## [b]Внимание[/b]: этот метод - [b]корутина[/b], так что вам необходимо подождать его с помощью
+## [code]await[/code].
+func load_event(event_id: int, map_id: int) -> Event:
 	_anim.play("StartLoad")
-	_status_text.text = "Загрузка игры..."
-	_loading_path = Globals.items_db.events[event].scene_path
-	var err: int = ResourceLoader.load_threaded_request(_loading_path)
-	if err:
+	_status_text.text = "Загрузка события..."
+	
+	_loading_path = Globals.items_db.events[event_id].scene_path
+	print_verbose("Requesting load for path %s." % _loading_path)
+	var err: Error = ResourceLoader.load_threaded_request(_loading_path)
+	if err != OK:
+		push_error("Request failed with error: %s." % error_string(err))
 		_fail_load()
-		return
-	_loading = true
+		return null
+	set_process(true)
+	set_physics_process(true)
 	_loaded_part = false
+	
 	var success: bool = await loaded_part
 	if not success:
+		push_error("Loading of %s failed!" % _loading_path)
 		_fail_load()
-		return
+		return null
 	var event_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
-	var event_node: Event = event_scene.instantiate()
+	if not is_instance_valid(event_scene):
+		push_error("Loading of %s failed!" % _loading_path)
+		_fail_load()
+		return null
+	print_verbose("Done loading %s." % _loading_path)
+	var event: Event = event_scene.instantiate()
 	_loaded_part = true
+	
 	_bar.value = 50
 	_status_text.text = "Загрузка карты..."
-	_loading_path = Globals.items_db.events[event].maps[map].scene_path
+	
+	_loading_path = Globals.items_db.events[event_id].maps[map_id].scene_path
+	print_verbose("Requesting load for path %s." % _loading_path)
 	err = ResourceLoader.load_threaded_request(_loading_path)
-	if err:
+	if err != OK:
+		push_error("Request failed with error: %s." % error_string(err))
+		event.free()
 		_fail_load()
-		return
-	success = await _loaded_part
+		return null
+	
+	success = await loaded_part
 	if not success:
+		push_error("Loading of %s failed!" % _loading_path)
+		event.free()
 		_fail_load()
-		return
+		return null
 	var map_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
-	var map_node: Node2D = map_scene.instantiate()
-	event_node.add_child(map_node)
-	_loading = false
+	if not is_instance_valid(map_scene):
+		push_error("Loading of %s failed!" % _loading_path)
+		event.free()
+		_fail_load()
+		return null
+	print_verbose("Done loading %s." % _loading_path)
+	var map: Node2D = map_scene.instantiate()
+	event.add_child(map)
+	
+	set_process(false)
+	set_physics_process(false)
 	_bar.value = 100
 	_status_text.text = "Ожидание других игроков..."
-	loaded.emit()
+	print_verbose("Done loading event. Waiting for players.")
+	return event
 
 
+## Завершает загрузку, а именно анимацию.
 func finish_load() -> void:
 	_status_text.text = "Готово!"
 	_anim.play("EndLoad")
+	print_verbose("Load finished.")
 
 
 func _fail_load() -> void:
-	load_failed.emit()
-	var game_node: Game = get_node_or_null("../Game")
-	if game_node:
-		game_node.queue_free()
-	_loading = false
+	set_process(false)
+	set_physics_process(false)
 	_anim.play("EndLoad")
 	_status_text.text = "Ошибка загрузки!"
+	print_verbose("Load failed.")
 
 
-func _on_connection_closed() -> void:
-	if _loading:
-		_fail_load()
+func _on_game_closed() -> void:
+	if is_processing():
+		print_verbose("Game closed, aborting load.")
+		loaded_part.emit(false)

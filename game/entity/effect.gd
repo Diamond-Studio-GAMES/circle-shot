@@ -5,7 +5,7 @@ const SPEED_CHANGE := "uid://dkyu57ilvneen"
 @export var can_stack := true
 var duration: float = 1.0
 var data: Array
-var player: Player
+var entity: Entity
 
 
 func _ready() -> void:

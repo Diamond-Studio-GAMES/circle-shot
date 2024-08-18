@@ -1,13 +1,180 @@
-[gd_scene load_steps=4 format=3 uid="uid://scqgxynxowrb"]
+[gd_scene load_steps=10 format=3 uid="uid://scqgxynxowrb"]
 
 [ext_resource type="Script" path="res://game/core/game.gd" id="1_j8au2"]
-[ext_resource type="PackedScene" uid="uid://cv8in67ldnddu" path="res://game/core/loader.tscn" id="2_5mtye"]
+[ext_resource type="Script" path="res://game/core/loader.gd" id="2_p5b8s"]
 [ext_resource type="Script" path="res://game/core/debug_data.gd" id="3_0xkxq"]
+[ext_resource type="Texture2D" uid="uid://tgykndvggm2o" path="res://main/loading_splash.png" id="3_512x5"]
+[ext_resource type="Texture2D" uid="uid://drssc5o2ehjq" path="res://main/logo.png" id="4_yi0ok"]
+
+[sub_resource type="Animation" id="Animation_sprsr"]
+resource_name = "EndLoad"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasGroup:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_oievw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasGroup:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xk7kp"]
+resource_name = "StartLoad"
+length = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasGroup:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.133333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_a1c02"]
+_data = {
+"EndLoad": SubResource("Animation_sprsr"),
+"RESET": SubResource("Animation_oievw"),
+"StartLoad": SubResource("Animation_xk7kp")
+}
 
 [node name="Game" type="Node"]
 script = ExtResource("1_j8au2")
 
-[node name="Loader" parent="." instance=ExtResource("2_5mtye")]
+[node name="Loader" type="CanvasLayer" parent="."]
+layer = 5
+visible = false
+script = ExtResource("2_p5b8s")
+
+[node name="CanvasGroup" type="CanvasGroup" parent="Loader"]
+self_modulate = Color(1, 1, 1, 0)
+
+[node name="Background" type="ColorRect" parent="Loader/CanvasGroup"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[node name="Image" type="TextureRect" parent="Loader/CanvasGroup"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_right = 1440.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_512x5")
+
+[node name="Logo" type="TextureRect" parent="Loader/CanvasGroup"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 240.0
+offset_top = 192.0
+offset_right = 1040.0
+offset_bottom = 352.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_yi0ok")
+
+[node name="ProgressBar" type="ProgressBar" parent="Loader/CanvasGroup"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 400.0
+offset_top = 504.0
+offset_right = 880.0
+offset_bottom = 552.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Loader/CanvasGroup/ProgressBar"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 8.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Загрузка..."
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Loader"]
+libraries = {
+"": SubResource("AnimationLibrary_a1c02")
+}
 
 [node name="DebugData" type="CanvasLayer" parent="."]
 layer = 6
@@ -61,6 +228,8 @@ unresizable = true
 ok_button_text = "Отмена"
 dialog_text = "Подключение к 192.168.100.1..."
 
+[connection signal="closed" from="." to="DebugData" method="_on_game_closed"]
+[connection signal="joined" from="." to="DebugData" method="_on_game_joined"]
 [connection signal="timeout" from="DebugData/PingLabel/PingTimer" to="DebugData" method="_on_ping_timer_timeout"]
 [connection signal="canceled" from="ConnectingDialog" to="." method="close"]
 [connection signal="confirmed" from="ConnectingDialog" to="." method="close"]

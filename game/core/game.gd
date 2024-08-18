@@ -5,27 +5,41 @@ extends Node
 ##
 ## Управляет сетью и переходами между состояниями игры. 
 
+## Издаётся, когда создаётся игра.
 signal created
+## Издаётся при успешном подключении к игре.
 signal joined
+## Издаётся при закрытии игры.
 signal closed
+## Издаётся при успешном старте игры.
 signal started
+## Издаётся при окончании игры.
 signal ended
+## Перечисление причин отклонения подключения.
 enum FailReason {
+	## Разные версии.
 	DIFFERENT_VERSION = 1,
+	## Полная комната.
 	FULL_ROOM = 2,
+	## Уже в игре.
 	IN_GAME = 3,
 }
+## Порт для подключения.
 const PORT: int = 7415
+## Порт, через который ищутся игры по локальной сети.
 const LISTEN_PORT: int = 7414
+## Максимальное число клиентов. Используется при создании сервера.
 const MAX_CLIENTS: int = 11 # Ещё один чтобы успешно отклонять.
 
 ## Максимальное число игроков, превысив которое, сервер начнёт отклонять соединения.
-## Задаётся [Lobby] на основе выбранного события. Не имеет эффекта на клиентах.
+## Задаётся лобби на основе выбранного события. Не имеет эффекта на клиентах.
 var max_players: int = 10
-var game: Game
+## Событие.
+var event: Event
 var _scene_multiplayer: SceneMultiplayer
-var _players_data := {}
-var _players_not_ready: Array[int] = []
+var _players_names := {}
+var _players_equip_data := {}
+var _players_not_ready: Array[int]
 @onready var _loader: Loader = $Loader
 
 
@@ -40,14 +54,16 @@ func _exit_tree() -> void:
 		close()
 
 
-func init_connect_local_menu() -> void:
-	var menu_scene: PackedScene = load("uid://wgln4clkkuuk")
+## Инициализирует меню подключения к локальной игре и лобби.
+func init_connect_local() -> void:
+	var menu_scene: PackedScene = Globals.main.get_cached_or_load_scene("uid://wgln4clkkuuk")
 	var menu: Control = menu_scene.instantiate()
 	add_child(menu)
 	print_verbose("Created connect_local_menu.")
 	_init_lobby()
 
 
+## Создаёт сервер.
 func create() -> void:
 	var peer := ENetMultiplayerPeer.new()
 	var error: Error = peer.create_server(PORT, MAX_CLIENTS)
@@ -61,6 +77,7 @@ func create() -> void:
 	print_verbose("Created server at port %d." % PORT)
 
 
+## Пытается подключиться к серверу по [param ip].
 func join(ip: String) -> void:
 	if not ip.is_valid_ip_address():
 		show_error("Введён некорректный IP-адрес!")
@@ -88,9 +105,10 @@ func join(ip: String) -> void:
 	print_verbose("Connecting to %s..." % ip)
 
 
+## Закрывает игру.
 func close() -> void:
 	if not multiplayer.multiplayer_peer:
-		push_warning("Can't close because game is already closed!")
+		push_error("Can't close because game is already closed!")
 		return
 	
 	if (
@@ -116,77 +134,84 @@ func close() -> void:
 	multiplayer.multiplayer_peer.close()
 	multiplayer.set_deferred(&"multiplayer_peer", null)
 	print_verbose("Closed.")
-	# Добавить игры очистку при закрытии
+	if is_instance_valid(event):
+		# Чтобы _process не вызывались
+		event.process_mode = Node.PROCESS_MODE_DISABLED
+		event.queue_free()
+		print_verbose("Event deleted.")
 
 
-func load_event(event_id: int, map_id: int) -> void:
+## Загружает событие по данным [param event_id] и [param map_id]. Если вызвано сервером без игрока,
+## [param player_name] и [param equip_data] можно не указывать.
+func load_event(event_id: int, map_id: int, player_name := "", equip_data: Array[int] = []) -> void:
 	if multiplayer.is_server():
-		_players_not_ready = multiplayer.get_peers()
+		# Конвертация xD
+		_players_not_ready = Array(multiplayer.get_peers() as Array, TYPE_INT, StringName(), null)
 		_players_not_ready.append(1)
-		_players_data.clear()
-	_loader.load_event(event_id, map_id)
-	var success: bool = await _loader.loaded
-	if not success:
+		_players_equip_data.clear()
+		_players_names.clear()
+	var loaded_event: Event = await _loader.load_event(event_id, map_id)
+	if not is_instance_valid(loaded_event):
+		show_error("Ошибка при загрузке события! Отключаюсь.")
+		push_error("Loading of event failed. Disconnecting.")
 		close()
-		started.emit()
 		return
+	event = loaded_event
 	closed.connect(_loader.finish_load, CONNECT_ONE_SHOT)
 	if multiplayer.is_server():
-		if Globals.HEADLESS:
+		if Globals.headless:
 			_players_not_ready.erase(1)
 			_check_players_ready()
 		else:
-			_send_player_data(($Lobby as Lobby).get_player_data())
+			_send_player_data(player_name, equip_data)
 	else:
-		_send_player_data.rpc_id(1, ($Lobby as Lobby).get_player_data())
+		_send_player_data.rpc_id(1, player_name, equip_data)
 
 
-func end_game() -> void:
-	if is_instance_valid(game):
-		game.queue_free()
-		game = null
-	ended.emit()
-
-
+## Показывает диалог с ошибкой.
 func show_error(error_text: String) -> void:
 	($ErrorDialog as AcceptDialog).dialog_text = error_text
 	($ErrorDialog as AcceptDialog).popup_centered()
 
 
 @rpc("any_peer", "reliable")
-func _send_player_data(data: Array) -> void:
+func _send_player_data(player_name: String, equip_data: Array[int]) -> void:
 	if not multiplayer.is_server():
+		push_error("Unexpected call on client!")
 		return
-	var id := multiplayer.get_remote_sender_id()
-	if not id:
+	var id: int = multiplayer.get_remote_sender_id()
+	if id == 0:
 		id = 1
-	_players_data[id] = data
+	_players_names[id] = player_name
+	_players_equip_data[id] = equip_data
 	_players_not_ready.erase(id)
 	_check_players_ready()
 
 
 @rpc("call_local", "reliable")
-func _start_game() -> void:
-	started.emit()
-	game = $Game as Game
-	game.game_ended.connect(end_game)
+func _start_event() -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
+	event.ended.connect(ended.emit)
 	closed.disconnect(_loader.finish_load)
 	if multiplayer.is_server():
-		game.init_game(_players_data)
-	else:
-		game.init_game()
+		event.set_players_data(_players_names, _players_equip_data)
+	add_child(event)
 	_loader.finish_load()
+	started.emit()
 
 
 func _check_players_ready() -> void:
 	if not multiplayer.is_server():
 		return
 	if _players_not_ready.is_empty():
-		_start_game.rpc()
+		_start_event.rpc()
 
 
 func _init_lobby() -> void:
-	var lobby_scene: PackedScene = load("uid://cmwb81du1kbtm")
+	var lobby_scene: PackedScene = Globals.main.get_cached_or_load_scene("uid://cmwb81du1kbtm")
 	var lobby: Control = lobby_scene.instantiate()
 	add_child(lobby)
 	print_verbose("Created lobby.")
@@ -246,7 +271,9 @@ func _authenticate_callback(peer: int, data: PackedByteArray) -> void:
 		_scene_multiplayer.send_auth(peer, PackedByteArray([FailReason.FULL_ROOM]))
 		print_verbose("Rejecting %d: full room." % peer)
 		return
-	# In Game
+	if _loader.is_processing() or is_instance_valid(event):
+		_scene_multiplayer.send_auth(peer, PackedByteArray([FailReason.IN_GAME]))
+		print_verbose("Rejecting %d: already in game." % peer)
 	
 	_scene_multiplayer.send_auth(peer, PackedByteArray([OK]))
 	_scene_multiplayer.complete_auth(peer)
@@ -297,7 +324,8 @@ func _on_connection_failed() -> void:
 func _on_peer_disconnected(id: int) -> void:
 	if id in _players_not_ready:
 		_players_not_ready.erase(id)
-		_players_data.erase(id)
+		_players_names.erase(id)
+		_players_equip_data.erase(id)
 		_check_players_ready()
 	print_verbose("Peer disconnected: %d." % id)
 

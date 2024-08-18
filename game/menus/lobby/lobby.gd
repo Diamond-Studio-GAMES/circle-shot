@@ -1,6 +1,12 @@
-class_name Lobby
 extends Control
 
+
+enum StartRejectReason {
+	OK = 0,
+	TOO_FEW_PLAYERS = 1,
+	TOO_MANY_PLAYERS = 2,
+	INDIVISIBLE_NUMBER_OF_PLAYERS = 3,
+}
 
 var _selected_event: int = 0
 var _selected_map: int = 0
@@ -15,16 +21,20 @@ var _admin_id: int = -1
 var _game_id: int = 0
 var _udp_peers: Array[PacketPeerUDP]
 var _player_entry_scene: PackedScene = preload("uid://dj0mx5ui2wu4n")
+
 @onready var _game: Game = get_parent()
 @onready var _players_container: GridContainer = %PlayersContainer
 @onready var _items_grid: ItemsGrid = %ItemsGrid
 @onready var _item_selector: Window = $ItemSelector
+@onready var _chat: Chat = $Panels/Chat
 
 
 func _ready() -> void:
 	_game.created.connect(_on_game_created)
 	_game.joined.connect(_on_game_joined)
 	_game.closed.connect(_on_game_closed)
+	_game.started.connect(_on_game_started)
+	_game.ended.connect(_on_game_ended)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	hide()
 	
@@ -42,6 +52,10 @@ func _ready() -> void:
 
 @rpc("reliable", "call_local")
 func _add_player_entry(id: int, player_name: String) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
 	var player_entry: Node = _player_entry_scene.instantiate()
 	player_entry.name = str(id)
 	if id == multiplayer.get_unique_id():
@@ -57,6 +71,10 @@ func _add_player_entry(id: int, player_name: String) -> void:
 
 @rpc("reliable", "call_local")
 func _delete_player_entry(id: int) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
 	_players_container.get_node(str(id)).queue_free()
 	print_verbose("Deleted player %d entry." % id)
 
@@ -64,8 +82,9 @@ func _delete_player_entry(id: int) -> void:
 @rpc("any_peer", "reliable")
 func _register_new_player(player_name: String) -> void:
 	if not multiplayer.is_server():
-		push_warning("Unexpected call on client!")
+		push_error("Unexpected call on client!")
 		return
+	
 	var id: int = multiplayer.get_remote_sender_id()
 	if id == 0:
 		id = 1 # Локально от сервера
@@ -73,9 +92,8 @@ func _register_new_player(player_name: String) -> void:
 		_add_player_entry.rpc_id(id, i, _players[i])
 	_set_environment.rpc_id(id, _selected_event, _selected_map)
 	_players[id] = player_name
-	($Panels/Chat as Chat).post_message.rpc(
-			"Игра: Игрок [color=green]%s[/color] подключился!" % player_name
-	)
+	_chat.post_message.rpc("Игра: Игрок [color=green]%s[/color] подключился!" % player_name)
+	_chat.players_names[id] = player_name
 	if _players.size() == 1:
 		_admin_id = id
 		if id == 1:
@@ -90,6 +108,10 @@ func _register_new_player(player_name: String) -> void:
 
 @rpc("reliable")
 func _set_admin(admin: bool) -> void:
+	if multiplayer.get_remote_sender_id() != 1 and not multiplayer.is_server():
+		push_error("This method must be called only by server!")
+		return
+	
 	(%AdminPanel as HBoxContainer).visible = admin
 	(%ClientHint as Label).visible = not admin
 	for i: Node in _players_container.get_children():
@@ -105,7 +127,7 @@ func _set_admin(admin: bool) -> void:
 @rpc("any_peer", "reliable")
 func _request_set_environment(event_id: int, map_id: int) -> void:
 	if not multiplayer.is_server():
-		push_warning("Unexpected call on client!")
+		push_error("Unexpected call on client!")
 		return
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id == 0:
@@ -123,6 +145,10 @@ func _request_set_environment(event_id: int, map_id: int) -> void:
 
 @rpc("call_local", "reliable")
 func _set_environment(event_id: int, map_id: int) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
 	_selected_event = event_id
 	_selected_map = map_id
 	print_verbose("Environment set: Event ID - %d, Map ID - %d." % [event_id, map_id])
@@ -132,7 +158,7 @@ func _set_environment(event_id: int, map_id: int) -> void:
 @rpc("any_peer", "reliable")
 func _request_kick_player(id: int) -> void:
 	if not multiplayer.is_server():
-		push_warning("Unexpected call on client!")
+		push_error("Unexpected call on client!")
 		return
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id == 0:
@@ -147,7 +173,7 @@ func _request_kick_player(id: int) -> void:
 @rpc("any_peer", "reliable")
 func _request_start_event() -> void:
 	if not multiplayer.is_server():
-		push_warning("Unexpected call on client!")
+		push_error("Unexpected call on client!")
 		return
 	var id: int = multiplayer.get_remote_sender_id()
 	if id == 0:
@@ -155,13 +181,105 @@ func _request_start_event() -> void:
 	if id != _admin_id:
 		push_warning("Request rejected: player %d is not admin!" % id)
 		return
+	
+	var start_reject_reason := StartRejectReason.OK
+	if _players.size() < Globals.items_db.events[_selected_event].min_players:
+		start_reject_reason = StartRejectReason.TOO_FEW_PLAYERS
+		print_verbose("Rejecting start: too few players (%d), need %d." % [
+			_players.size(),
+			Globals.items_db.events[_selected_event].min_players,
+		])
+	elif _players.size() > Globals.items_db.events[_selected_event].max_players:
+		start_reject_reason = StartRejectReason.TOO_MANY_PLAYERS
+		print_verbose("Rejecting start: too many players (%d), max %d." % [
+			_players.size(),
+			Globals.items_db.events[_selected_event].max_players,
+		])
+	elif _players.size() % Globals.items_db.events[_selected_event].players_divider != 0:
+		start_reject_reason = StartRejectReason.INDIVISIBLE_NUMBER_OF_PLAYERS
+		print_verbose("Rejecting start: indivisible number of players (%d), must divide on %d." % [
+			_players.size(),
+			Globals.items_db.events[_selected_event].players_divider,
+		])
+	if start_reject_reason != StartRejectReason.OK:
+		if id == 1:
+			_reject_start_event(start_reject_reason, _players.size())
+		else:
+			_reject_start_event.rpc_id(id, start_reject_reason, _players.size())
+		return
+	
 	print_verbose("Accepted start event request. Starting...")
-	_start_game.rpc(_selected_event, _selected_map)
+	_start_event.rpc(_selected_event, _selected_map)
+
+
+@rpc("reliable")
+func _reject_start_event(reason: StartRejectReason, players_count: int) -> void:
+	if multiplayer.get_remote_sender_id() != 1 and not multiplayer.is_server():
+		push_error("This method must be called only by server!")
+		return
+	
+	match reason:
+		StartRejectReason.OK:
+			push_warning("This method can't be called with OK reject reason!")
+		StartRejectReason.TOO_FEW_PLAYERS:
+			_game.show_error(
+					"Невозможно начать игру: слишком мало игроков (%d) при минимуме в %d!" % [
+						players_count,
+						Globals.items_db.events[_selected_event].min_players,
+					]
+			)
+			print_verbose("Start rejected: too few players (%d) with minimum %d." % [
+				players_count,
+				Globals.items_db.events[_selected_event].min_players,
+			])
+		StartRejectReason.TOO_MANY_PLAYERS:
+			_game.show_error(
+					"Невозможно начать игру: слишком много игроков (%d) при максимуме в %d!" % [
+						players_count,
+						Globals.items_db.events[_selected_event].max_players,
+					]
+			)
+			print_verbose("Start rejected: too many players (%d) with maximum %d." % [
+				players_count,
+				Globals.items_db.events[_selected_event].max_players,
+			])
+		StartRejectReason.INDIVISIBLE_NUMBER_OF_PLAYERS:
+			_game.show_error(
+					"Невозможно начать игру: количество игрков (%d) не делится на %d!" % [
+						players_count,
+						Globals.items_db.events[_selected_event].players_divider,
+					]
+			)
+			print_verbose("Start rejected: number of players (%d) doesn't divide on %d." % [
+				players_count,
+				Globals.items_db.events[_selected_event].players_divider,
+			])
+		_:
+			push_warning("Received invalid reject reason!")
 
 
 @rpc("call_local", "reliable")
-func _start_game(event_id: int, map_id: int) -> void:
-	_game.load_event(event_id, map_id)
+func _start_event(event_id: int, map_id: int) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
+	if not ($UDPTimer as Timer).is_stopped():
+		($UDPTimer as Timer).stop()
+	if not ($UpdateIPSTimer as Timer).is_stopped():
+		($UpdateIPSTimer as Timer).stop()
+	if multiplayer.is_server() and Globals.headless:
+		_game.load_event(event_id, map_id)
+		return
+	_item_selector.hide()
+	_game.load_event(event_id, map_id, Globals.get_string("player_name"), [
+		_selected_skin,
+		_selected_light_weapon,
+		_selected_heavy_weapon,
+		_selected_support_weapon,
+		_selected_melee_weapon,
+		_selected_skill,
+	])
 
 
 func _update_environment() -> void:
@@ -254,10 +372,9 @@ func _on_game_created() -> void:
 	($UDPTimer as Timer).start()
 	($UpdateIPSTimer as Timer).start()
 	_game_id = randi() % 256
-	_do_broadcast()
 	if not Globals.headless:
-		($Panels/Chat as Chat).create_prefix_from_name(Globals.get_string("player_name"))
 		_register_new_player(Globals.get_string("player_name"))
+	_do_broadcast()
 
 
 func _on_game_joined() -> void:
@@ -271,7 +388,6 @@ func _on_game_joined() -> void:
 			peers[0].get_remote_address()
 	(%ControlButtons/ViewIPs as Control).hide()
 	(%ClientHint as Label).text = "Ожидание сервера..."
-	($Panels/Chat as Chat).create_prefix_from_name(Globals.get_string("player_name"))
 	_register_new_player.rpc_id(1, Globals.get_string("player_name"))
 
 
@@ -284,17 +400,12 @@ func _on_game_closed() -> void:
 		($UpdateIPSTimer as Timer).stop()
 	for i: Node in _players_container.get_children():
 		i.queue_free()
-	($Panels/Chat as Chat).clear_chat()
+	_chat.clear_chat()
 	(%ControlButtons/Chat as Button).button_pressed = false
 
 
 func _on_game_started() -> void:
 	hide()
-	_item_selector.hide()
-	if not ($UDPTimer as Timer).is_stopped():
-		($UDPTimer as Timer).stop()
-	if not ($UpdateIPSTimer as Timer).is_stopped():
-		($UpdateIPSTimer as Timer).stop()
 
 
 func _on_game_ended() -> void:
@@ -307,9 +418,8 @@ func _on_game_ended() -> void:
 func _on_peer_disconnected(id: int) -> void:
 	if not multiplayer.is_server():
 		return
-	($Panels/Chat as Chat).post_message.rpc(
-			"Игра: Игрок [color=green]%s[/color] отключился!" % _players[id]
-	)
+	_chat.post_message.rpc("Игра: Игрок [color=green]%s[/color] отключился!" % _players[id])
+	_chat.players_names.erase(id)
 	_players.erase(id)
 	if id == _admin_id:
 		if _players.size() > 0:

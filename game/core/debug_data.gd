@@ -28,14 +28,13 @@ func _do_ping() -> void:
 	_process_ping.rpc_id(1)
 
 
-func _on_game_joined(error: int) -> void:
-	if error == OK:
-		_ping_timer.start()
-		_ping_label.text = ""
-		_ping_label.show()
+func _on_game_joined() -> void:
+	_ping_timer.start()
+	_ping_label.text = ""
+	_ping_label.show()
 
 
-func _on_connection_closed() -> void:
+func _on_game_closed() -> void:
 	_ping_timer.stop()
 	_ping_label.hide()
 

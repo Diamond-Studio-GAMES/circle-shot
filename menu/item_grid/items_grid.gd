@@ -160,6 +160,8 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 				)
 				add_child(item)
 				counter += 1
+		_:
+			push_error("Invalid type specified: %d!" % type)
 
 
 func _on_item_pressed(type: ItemsDB.Item, id: int) -> void:

@@ -70,7 +70,7 @@ func _find_ips() -> void:
 		return
 	var error: Error = _http_request.request("https://icanhazip.com/")
 	if error != OK:
-		push_error("Can't connect to server! Error: %s" % error_string(error))
+		push_warning("Can't connect to server! Error: %s" % error_string(error))
 		dialog_text += '\n'
 		dialog_text += "Невозможно создать запрос для получения глобального IP-адреса! \
 Код ошибки: %d" % error
@@ -78,12 +78,12 @@ func _find_ips() -> void:
 
 func _on_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result != HTTPRequest.RESULT_SUCCESS:
-		push_error("Connect to server: result is not Success! Result: %d" % result)
+		push_warning("Connect to server: result is not Success! Result: %d" % result)
 		dialog_text += '\n'
 		dialog_text += "Ошибка запроса глобального IP-адреса! Код ошибки: %d" % result
 		return
 	if response_code != HTTPClient.RESPONSE_OK:
-		push_error("Connect to server: response code is not 200! Response code: %d" % response_code)
+		push_warning("Connect to server: response code is not 200! Response code: %d" % response_code)
 		dialog_text += '\n'
 		dialog_text += "Ошибка получения глобального IP-адреса! Код ошибки: %d" % response_code
 		return

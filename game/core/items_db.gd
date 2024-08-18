@@ -73,7 +73,10 @@ var spawnable_projectiles_paths: Array[String]
 var spawnable_other_paths: Array[String]
 
 
-func _init() -> void:
+func set_spawnable_paths() -> void:
+	spawnable_projectiles_paths.clear()
+	spawnable_other_paths.clear()
+	
 	for i: EventData in events:
 		spawnable_other_paths.append_array(i.spawnable_scenes_paths)
 	

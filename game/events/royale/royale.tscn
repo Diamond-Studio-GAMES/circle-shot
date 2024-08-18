@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://d3nsak46hbo2c" path="res://game/events/common/event.tscn" id="1_5uf7s"]
 [ext_resource type="Script" path="res://game/events/royale/royale.gd" id="2_d2r5a"]
-[ext_resource type="PackedScene" uid="uid://bysyaaj2r7stt" path="res://game/events/royale/heal_box.tscn" id="3_gkp8k"]
+[ext_resource type="PackedScene" uid="uid://bysyaaj2r7stt" path="res://game/events/royale/heal_box.tscn" id="3_x8ahy"]
 [ext_resource type="PackedScene" uid="uid://b4h27swncrquh" path="res://game/events/royale/poison_smoke.tscn" id="5_mf48w"]
 
 [sub_resource type="Animation" id="Animation_ty3n7"]
@@ -133,13 +133,24 @@ _data = {
 "Victory": SubResource("Animation_knbec")
 }
 
-[node name="Game" instance=ExtResource("1_5uf7s")]
+[node name="Event" instance=ExtResource("1_5uf7s")]
 script = ExtResource("2_d2r5a")
-heal_box = ExtResource("3_gkp8k")
+heal_box_scene = ExtResource("3_x8ahy")
 heal_box_spawn_interval = 15.0
 metadata/_edit_horizontal_guides_ = []
 
-[node name="GameEnd" type="Label" parent="GameUI/Main" index="5"]
+[node name="PlayerCounter" type="Label" parent="EventUI/Main" index="6"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 190.0
+offset_bottom = 42.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "Осталось игроков: "
+
+[node name="GameEnd" type="Label" parent="EventUI/Main" index="7"]
 self_modulate = Color(1, 0, 0, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -166,30 +177,20 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="GameUI/Main/GameEnd" index="0"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EventUI/Main/GameEnd" index="0"]
 libraries = {
 "": SubResource("AnimationLibrary_n8n4b")
 }
 
-[node name="PlayerCounter" type="Label" parent="GameUI/Main" index="6"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 171.0
-offset_bottom = 39.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 18
-text = "Осталось игроков: "
-
-[node name="Title" parent="GameUI/Intro" index="1"]
+[node name="Title" parent="EventUI/Intro" index="1"]
 text = "КОРОЛЕВСКАЯ БИТВА"
 
-[node name="Description" parent="GameUI/Intro/Title" index="0"]
+[node name="Description" parent="EventUI/Intro/Title" index="0"]
 text = "Побеждает последний выживший!"
 
-[node name="Text" parent="GameUI/Intro" index="2"]
-text = "Каждый сам за себя!"
+[node name="Text" parent="EventUI/Intro" index="2"]
+text = "Каждый сам
+за себя!"
 
 [node name="PoisonSmoke" type="Node2D" parent="." index="9"]
 

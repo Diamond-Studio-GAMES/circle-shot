@@ -163,6 +163,7 @@ _data = {
 
 [node name="Main" type="Node"]
 script = ExtResource("1_hy7wi")
+scenes_to_preload_paths = Array[String](["uid://4wb77emq8t5p", "uid://scqgxynxowrb", "uid://wgln4clkkuuk", "uid://cmwb81du1kbtm"])
 
 [node name="LoadingScreen" type="Control" parent="."]
 layout_mode = 3

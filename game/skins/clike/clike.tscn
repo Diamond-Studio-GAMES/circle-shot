@@ -1,20 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://cw5ms0gp35p0b"]
+[gd_scene load_steps=6 format=3 uid="uid://cw5ms0gp35p0b"]
 
-[ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://game/player/player.tscn" id="1_4ldsx"]
 [ext_resource type="Texture2D" uid="uid://bljt8bxcqypuu" path="res://game/skins/clike/c.png" id="2_a4era"]
 [ext_resource type="Texture2D" uid="uid://dhjcnsb15sgl1" path="res://game/skins/clike/cpp.png" id="2_clteu"]
-[ext_resource type="Script" path="res://game/skins/clike/weapon_changer.gd" id="3_ijpx6"]
+[ext_resource type="Script" path="res://game/skins/clike/clike.gd" id="3_ijpx6"]
 [ext_resource type="Texture2D" uid="uid://b5idw4yrhjwpj" path="res://game/skins/clike/csharp.png" id="5_wmgll"]
 [ext_resource type="Texture2D" uid="uid://b4k1uqu3g3bnr" path="res://game/skins/clike/holyc.png" id="6_xrx04"]
 
-[node name="Player" instance=ExtResource("1_4ldsx")]
-
-[node name="Language" type="Sprite2D" parent="Visual" index="0"]
+[node name="Clike" type="Sprite2D"]
 texture = ExtResource("2_a4era")
-
-[node name="WeaponChanger" type="Node" parent="." index="9"]
 script = ExtResource("3_ijpx6")
 textures = Array[Texture2D]([ExtResource("2_a4era"), ExtResource("2_clteu"), ExtResource("5_wmgll"), ExtResource("6_xrx04")])
-sprite_path = NodePath("../Visual/Language")
-
-[connection signal="weapon_changed" from="." to="WeaponChanger" method="_on_player_weapon_changed"]
