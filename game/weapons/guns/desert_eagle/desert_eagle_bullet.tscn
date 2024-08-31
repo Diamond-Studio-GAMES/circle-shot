@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ddnugomhhv0df"]
 
-[ext_resource type="PackedScene" uid="uid://1durulsrwk7o" path="res://game/weapons/common/bullet.tscn" id="1_vbv8p"]
+[ext_resource type="PackedScene" uid="uid://1durulsrwk7o" path="res://game/weapons/guns/common/bullet.tscn" id="1_vbv8p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gg48r"]
 size = Vector2(96, 8)

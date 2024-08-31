@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://3l0k1cn63ahd"]
+[gd_scene load_steps=12 format=3 uid="uid://3l0k1cn63ahd"]
 
 [ext_resource type="Script" path="res://game/player/player.gd" id="1_d5iul"]
 [ext_resource type="PackedScene" uid="uid://dtvo18gjrm7my" path="res://game/entity/entity.tscn" id="1_r625f"]
@@ -11,20 +11,11 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_i6vnq"]
 radius = 76.0
 
-[sub_resource type="Curve" id="Curve_xt56u"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.134328, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.75, 0.0100001), 0.0, 0.0, 0, 0]
-point_count = 4
-
-[sub_resource type="CurveTexture" id="CurveTexture_33cen"]
-curve = SubResource("Curve_xt56u")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_lmfl5"]
-particle_flag_disable_z = true
-emission_shape_offset = Vector3(0, -32, 0)
-emission_shape = 1
-emission_sphere_radius = 64.0
-gravity = Vector3(0, 98, 0)
-alpha_curve = SubResource("CurveTexture_33cen")
+[sub_resource type="Gradient" id="Gradient_bfbq1"]
+offsets = PackedFloat32Array(0, 0.125, 0.5, 0.75)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+metadata/_snap_count = 40
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1t0v5"]
 properties/0/path = NodePath(".:direction")
@@ -61,7 +52,6 @@ properties/5/spawn = true
 properties/5/replication_mode = 0
 
 [node name="Player" groups=["Player"] instance=ExtResource("1_r625f")]
-collision_layer = 2
 script = ExtResource("1_d5iul")
 magic = 200.0
 hurt_vfx_scene = ExtResource("3_tk865")
@@ -94,17 +84,29 @@ horizontal_alignment = 1
 
 [node name="Skin" type="Node2D" parent="Visual" index="0"]
 
-[node name="Blood" type="GPUParticles2D" parent="Visual" index="1"]
+[node name="Blood" type="CPUParticles2D" parent="Visual" index="1"]
+position = Vector2(0, -32)
 emitting = false
 amount = 6
-process_material = SubResource("ParticleProcessMaterial_lmfl5")
-texture = ExtResource("3_8a6xh")
 lifetime = 2.0
-visibility_rect = Rect2(-640, -640, 1280, 1280)
+draw_order = 1
+texture = ExtResource("3_8a6xh")
+emission_shape = 1
+emission_sphere_radius = 64.0
+gravity = Vector2(0, 98)
+color_ramp = SubResource("Gradient_bfbq1")
 
 [node name="Weapons" type="Marker2D" parent="Visual" index="2"]
 position = Vector2(32, 32)
 gizmo_extents = 32.0
+
+[node name="Light" type="Node" parent="Visual/Weapons" index="0"]
+
+[node name="Heavy" type="Node" parent="Visual/Weapons" index="1"]
+
+[node name="Support" type="Node" parent="Visual/Weapons" index="2"]
+
+[node name="Melee" type="Node" parent="Visual/Weapons" index="3"]
 
 [node name="ControlIndicator" type="Sprite2D" parent="." index="4"]
 visible = false

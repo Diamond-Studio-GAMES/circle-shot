@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://1durulsrwk7o"]
 
-[ext_resource type="Script" path="res://game/weapons/common/bullet.gd" id="1_fc6k8"]
+[ext_resource type="Script" path="res://game/weapons/guns/common/bullet.gd" id="1_fc6k8"]
 [ext_resource type="PackedScene" uid="uid://d5ag68upkkaq" path="res://game/vfx/bullet_hit/bullet_hit.tscn" id="2_jsg66"]
-[ext_resource type="Texture2D" uid="uid://cyro3oroia5l6" path="res://game/weapons/common/bullet.png" id="2_u82m3"]
+[ext_resource type="Texture2D" uid="uid://cyro3oroia5l6" path="res://game/weapons/guns/common/bullet.png" id="2_u82m3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5au6r"]
 size = Vector2(96, 16)

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://7fxjvg1x0b2s"
-path="res://.godot/imported/light_sword.png-98c4ef0e1e279d31aca54bb245090a64.ctex"
+path="res://.godot/imported/light_sword.png-cb4a622663d00139f8d6f5f5da1a2cbb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/weapons/light_sword/light_sword.png"
-dest_files=["res://.godot/imported/light_sword.png-98c4ef0e1e279d31aca54bb245090a64.ctex"]
+source_file="res://game/weapons/melee/light_sword/light_sword.png"
+dest_files=["res://.godot/imported/light_sword.png-cb4a622663d00139f8d6f5f5da1a2cbb.ctex"]
 
 [params]
 

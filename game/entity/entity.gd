@@ -25,6 +25,7 @@ const TEAM_COLORS: Array[Color] = [
 @export var hurt_vfx_scene: PackedScene
 @export var death_vfx_scene: PackedScene
 @export var heal_vfx_scene: PackedScene
+
 var id: int = -1:
 	set(value):
 		id = value
@@ -34,11 +35,12 @@ var team: int = 0
 var speed_multiplier := 1.0
 var damage_multiplier := 1.0
 var defense_multiplier := 1.0
-var immune_counter: int = 0
-var immobile_counter: int = 0
-var disarmed_counter: int = 0
 var knockback := Vector2.ZERO
 var server_position := Vector2.ZERO
+var _immune_counter: int = 0
+var _immobile_counter: int = 0
+var _disarmed_counter: int = 0
+
 @onready var entity_input: EntityInput = $Input
 @onready var _effects: Node2D = $Effects
 @onready var _visual: Node2D = $Visual
@@ -53,7 +55,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	velocity = knockback
 	if not is_immobile():
-		if entity_input.direction.length_squared() < 1.0:
+		if entity_input.direction.length_squared() <= 1.0:
 			velocity += entity_input.direction * speed * speed_multiplier
 		else:
 			velocity += entity_input.direction.normalized() * speed * speed_multiplier
@@ -70,6 +72,86 @@ func _physics_process(delta: float) -> void:
 		_visual.scale.x = -1 if velocity.x < 0 else 1
 
 
+#region Методы эффектов
+@rpc("authority", "reliable", "call_local", 3)
+func add_effect(effect_id: String, duration := 1.0, data := [], should_stack := true) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
+	var effect: Effect = (load(effect_id) as PackedScene).instantiate()
+	if not effect.stackable or not should_stack:
+		for i: Effect in _effects.get_children():
+			if i.id == effect_id:
+				i.add_duration(duration)
+				effect.free()
+				print_verbose("Added duration (%f) to effect '%s' on entity '%s' with ID %d." % [
+					duration, effect_id, name, id
+				])
+				return
+	
+	_effects.add_child(effect)
+	effect.initialize(self, data, false, duration)
+	print_verbose("Added effect '%s' with duration %f to entity '%s' with ID %d." % [
+		effect_id, duration, name, id
+	])
+
+
+@rpc("authority", "reliable", "call_local", 3)
+func add_timeless_effect(effect_id: String, data := [], should_stack := true) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
+	var effect: Effect = (load(effect_id) as PackedScene).instantiate()
+	if not effect.stackable or not should_stack:
+		for i: Effect in _effects.get_children():
+			if i.id == effect_id:
+				i.timeless_counter += 1
+				effect.free()
+				print_verbose("Increased counter of effect '%s' on entity '%s' with ID %d." % [
+					effect_id, name, id
+				])
+				return
+	
+	_effects.add_child(effect)
+	effect.initialize(self, data, true)
+	print_verbose("Added timeless effect '%s' to entity '%s' with ID %d." % [
+		effect_id, name, id
+	])
+
+
+@rpc("authority", "reliable", "call_local", 3)
+func remove_timeless_effect(effect_id: String) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
+	for i: Effect in _effects.get_children():
+		if i.id == effect_id:
+			i.timeless_counter -= 1
+			print_verbose("Removed timeless effect '%s' on entity '%s' with ID %d." % [
+				effect_id, name, id
+			])
+			return
+
+
+@rpc("authority", "reliable", "call_local", 3)
+func clear_effects(negative := true, positive := false) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
+	for i: Effect in _effects.get_children():
+		if i.negative == negative or i.negative != positive:
+			i.clear()
+			print_verbose("Cleared %s effect '%s' on entity '%s' with ID %d." % [
+				"negative" if i.negative else "positive", i.id, name, id
+			])
+#endregion
+
+
+#region Методы здоровья
 @rpc("call_local", "reliable", "authority", 1)
 func set_health(health: int) -> void:
 	if current_health <= 0:
@@ -85,6 +167,7 @@ func set_health(health: int) -> void:
 			var death_vfx: Node2D = death_vfx_scene.instantiate()
 			death_vfx.position = position
 			_vfx_parent.add_child(death_vfx)
+		print_verbose("Entity '%s' with ID %d died." % [name, id])
 		return
 	health_changed.emit(current_health, health)
 	if health < current_health:
@@ -100,14 +183,21 @@ func set_health(health: int) -> void:
 	current_health = health
 	if current_health > max_health:
 		max_health = current_health
+	print_verbose("Entity '%s' with ID %d changed health: %d/%d." % [
+		name, id, current_health, max_health
+	])
 
 
 func damage(amount: int, by: int) -> void:
 	if not multiplayer.is_server():
+		push_error("This method must be called only on server!")
 		return
 	if current_health <= 0:
 		return
-	var new_health := clampi(current_health - amount, 0, max_health)
+	var new_health: int = clampi(
+			current_health - roundi(amount * defense_multiplier),
+			0, max_health
+	)
 	if new_health <= 0:
 		killed.emit(id, by)
 	set_health.rpc(new_health)
@@ -115,61 +205,46 @@ func damage(amount: int, by: int) -> void:
 
 func heal(amount: int) -> void:
 	if not multiplayer.is_server():
+		push_error("This method must be called only on server!")
 		return
-	var new_health := clampi(current_health + amount, 0, max_health)
+	var new_health: int = clampi(current_health + amount, 0, max_health)
 	set_health.rpc(new_health)
-
-
-@rpc("authority", "reliable", "call_local", 3)
-func add_effect(effect_path: String, duration := 1.0, data := [], should_stack := true) -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		return
-	var effect: Effect = (load(effect_path) as PackedScene).instantiate()
-	if not effect.can_stack or not should_stack:
-		var path_to_exist_effect := NodePath(effect.name)
-		if _effects.has_node(path_to_exist_effect):
-			(_effects.get_node(path_to_exist_effect) as Effect).duration += duration
-			effect.free()
-			return
-	effect.entity = self
-	effect.duration = duration
-	effect.data = data
-	_effects.add_child(effect)
+#endregion
 
 
 #region Функции для изменения состояний сущности
 func make_immune() -> void:
-	immune_counter += 1
+	_immune_counter += 1
 
 
 func unmake_immune() -> void:
-	immune_counter -= 1
+	_immune_counter -= 1
 
 
 func is_immune() -> bool:
-	return immune_counter > 0
+	return _immune_counter > 0
 
 
 func make_immobile() -> void:
-	immobile_counter += 1
+	_immobile_counter += 1
 
 
 func unmake_immobile() -> void:
-	immobile_counter -= 1
+	_immobile_counter -= 1
 
 
 func is_immobile() -> bool:
-	return immobile_counter > 0
+	return _immobile_counter > 0
 
 
 func make_disarmed() -> void:
-	disarmed_counter += 1
+	_disarmed_counter += 1
 
 
 func unmake_disarmed() -> void:
-	disarmed_counter -= 1
+	_disarmed_counter -= 1
 
 
 func is_disarmed() -> bool:
-	return disarmed_counter > 0
+	return _disarmed_counter > 0
 #endregion

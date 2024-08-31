@@ -1,0 +1,385 @@
+[gd_scene load_steps=15 format=3 uid="uid://0wc72b0o2o11"]
+
+[ext_resource type="Script" path="res://game/player/controller/player_controller.gd" id="1_5ls6j"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick.tscn" id="2_b1vhp"]
+[ext_resource type="Texture2D" uid="uid://d3dyhqt2lduyi" path="res://game/player/controller/joystick_base.png" id="3_nm302"]
+[ext_resource type="Texture2D" uid="uid://cwx57jlb3j88p" path="res://game/player/controller/joystick_tip_move.png" id="4_pkrqe"]
+[ext_resource type="Texture2D" uid="uid://chfx32osm5nwo" path="res://game/player/controller/joystick_tip_aim.png" id="5_ior64"]
+[ext_resource type="Texture2D" uid="uid://p85ppsyx0g2n" path="res://game/player/controller/weapon_bg.png" id="6_7kfw0"]
+[ext_resource type="Shader" path="res://game/player/controller/solid_color.gdshader" id="7_3hhip"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6sal7"]
+size = Vector2(640, 256)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jse5g"]
+shader = ExtResource("7_3hhip")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/power = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0kb2l"]
+size = Vector2(288, 144)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hii6l"]
+shader = ExtResource("7_3hhip")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/power = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c703a"]
+shader = ExtResource("7_3hhip")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/power = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vprac"]
+shader = ExtResource("7_3hhip")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/power = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fqc3t"]
+shader = ExtResource("7_3hhip")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/power = 1.0
+
+[node name="PlayerController" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_5ls6j")
+
+[node name="TouchControls" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MoveVirtualJoystick" parent="TouchControls" instance=ExtResource("2_b1vhp")]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 128.0
+offset_top = -328.0
+offset_right = 328.0
+offset_bottom = -128.0
+grow_vertical = 0
+joystick_mode = 1
+pressed_color = Color(0, 0.273438, 1, 1)
+base_texture = ExtResource("3_nm302")
+tip_texture = ExtResource("4_pkrqe")
+use_input_actions = false
+
+[node name="AimVirtualJoystick" parent="TouchControls" instance=ExtResource("2_b1vhp")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -328.0
+offset_top = -328.0
+offset_right = -128.0
+offset_bottom = -128.0
+grow_horizontal = 0
+grow_vertical = 0
+joystick_mode = 1
+pressed_color = Color(1, 0, 0, 1)
+base_texture = ExtResource("3_nm302")
+tip_texture = ExtResource("5_ior64")
+use_input_actions = false
+
+[node name="ShootArea" type="TouchScreenButton" parent="TouchControls"]
+position = Vector2(320, 128)
+shape = SubResource("RectangleShape2D_6sal7")
+
+[node name="WeaponSelection" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="LightWeapon" type="TextureRect" parent="WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -232.0
+offset_bottom = -88.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("6_7kfw0")
+
+[node name="Icon" type="TextureRect" parent="WeaponSelection/LightWeapon"]
+auto_translate_mode = 1
+material = SubResource("ShaderMaterial_jse5g")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="WeaponSelection/LightWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="WeaponSelection/LightWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="HeavyWeapon" type="TextureRect" parent="WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -88.0
+offset_bottom = 56.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("6_7kfw0")
+
+[node name="Icon" type="TextureRect" parent="WeaponSelection/HeavyWeapon"]
+auto_translate_mode = 1
+material = SubResource("ShaderMaterial_hii6l")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="WeaponSelection/HeavyWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="WeaponSelection/HeavyWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="SupportWeapon" type="TextureRect" parent="WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = 56.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("6_7kfw0")
+
+[node name="Icon" type="TextureRect" parent="WeaponSelection/SupportWeapon"]
+auto_translate_mode = 1
+material = SubResource("ShaderMaterial_c703a")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="WeaponSelection/SupportWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="WeaponSelection/SupportWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="MeleeWeapon" type="TextureRect" parent="WeaponSelection"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = 200.0
+offset_bottom = 344.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("6_7kfw0")
+
+[node name="Icon" type="TextureRect" parent="WeaponSelection/MeleeWeapon"]
+auto_translate_mode = 1
+material = SubResource("ShaderMaterial_vprac")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="WeaponSelection/MeleeWeapon"]
+auto_translate_mode = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "Оружие"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="WeaponSelection/MeleeWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="CurrentWeapon" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -232.0
+offset_bottom = -88.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("6_7kfw0")
+
+[node name="Icon" type="TextureRect" parent="CurrentWeapon"]
+material = SubResource("ShaderMaterial_fqc3t")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="CurrentWeapon"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "120/60"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="CurrentWeapon"]
+position = Vector2(144, 72)
+shape = SubResource("RectangleShape2D_0kb2l")
+
+[connection signal="pressed" from="WeaponSelection/LightWeapon/TouchScreenButton" to="." method="select_weapon" binds= [0]]
+[connection signal="pressed" from="WeaponSelection/HeavyWeapon/TouchScreenButton" to="." method="select_weapon" binds= [1]]
+[connection signal="pressed" from="WeaponSelection/SupportWeapon/TouchScreenButton" to="." method="select_weapon" binds= [2]]
+[connection signal="pressed" from="WeaponSelection/MeleeWeapon/TouchScreenButton" to="." method="select_weapon" binds= [3]]
+[connection signal="pressed" from="CurrentWeapon/TouchScreenButton" to="." method="open_weapon_selection"]

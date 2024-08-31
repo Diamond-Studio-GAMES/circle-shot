@@ -25,8 +25,8 @@
 [ext_resource type="Resource" uid="uid://ec5r1p2ay37a" path="res://game/weapons/guns/p_350/p_350.tres" id="20_wegr4"]
 [ext_resource type="Resource" uid="uid://d1deru0vmrlc8" path="res://game/weapons/guns/desert_eagle/desert_eagle.tres" id="21_43s3b"]
 [ext_resource type="Resource" uid="uid://bxma7nn66sax2" path="res://game/weapons/snowball/snowball.tres" id="22_lw2ls"]
-[ext_resource type="Resource" uid="uid://bqt35gylr4la" path="res://game/weapons/knife/knife.tres" id="23_50d6n"]
-[ext_resource type="Resource" uid="uid://bsr137cw1pcmq" path="res://game/weapons/sword/sword.tres" id="24_gbbrj"]
+[ext_resource type="Resource" uid="uid://bqt35gylr4la" path="res://game/weapons/melee/knife/knife.tres" id="23_50d6n"]
+[ext_resource type="Resource" uid="uid://bsr137cw1pcmq" path="res://game/weapons/melee/sword/sword.tres" id="24_gbbrj"]
 [ext_resource type="Resource" uid="uid://b6l0sibfxkmx6" path="res://game/weapons/grenade/grenade.tres" id="25_wbuqy"]
 [ext_resource type="Resource" uid="uid://buyl81nl44qfx" path="res://game/weapons/smoke_grenade/smoke_grenade.tres" id="26_xy8s6"]
 

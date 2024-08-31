@@ -498,7 +498,7 @@ func _on_change_melee_weapon_pressed() -> void:
 
 func _on_change_skill_pressed() -> void:
 	_items_grid.list_items(ItemsDB.Item.SKILL, _selected_skill)
-	_item_selector.title = "Выберите навык"
+	_item_selector.title = "Выбор навыка"
 	_item_selector.popup_centered()
 
 

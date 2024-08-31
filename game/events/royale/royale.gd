@@ -86,7 +86,7 @@ func _check_winner() -> void:
 		i.queue_free()
 	for i: Node in get_tree().get_first_node_in_group(&"OtherParent").get_children():
 		i.queue_free()
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(0.5).timeout
 	_end.rpc()
 
 
@@ -104,8 +104,7 @@ func _on_watching_player_died(_who: int, player: Player) -> void:
 		return
 	var next_player: Player = players[0]
 	next_player.died.connect(_on_watching_player_died.bind(next_player))
-	next_player.remote_transform.remote_path = next_player.remote_transform.get_path_to($Camera)
-	next_player.remote_transform.force_update_cache()
+	_camera.target = next_player
 
 
 func _on_local_player_died(_who: int) -> void:

@@ -1,14 +1,24 @@
-[gd_scene load_steps=11 format=3 uid="uid://bsgtxdfb2n4u3"]
+[gd_scene load_steps=13 format=3 uid="uid://bsgtxdfb2n4u3"]
 
 [ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_ff8sd"]
-[ext_resource type="PackedScene" uid="uid://c4cr4b5wn24yt" path="res://game/weapons/guns/p_350/p_350_bullet.tscn" id="2_0jvki"]
 [ext_resource type="Texture2D" uid="uid://ocg6jebfprnx" path="res://game/weapons/guns/p_350/clip.png" id="2_l1i5r"]
 [ext_resource type="Texture2D" uid="uid://b74jcdw45c73w" path="res://game/weapons/guns/p_350/p_350.png" id="2_nnulw"]
-[ext_resource type="Texture2D" uid="uid://rvu643208pjh" path="res://game/weapons/common/shoot_effect.png" id="3_xrh2t"]
+[ext_resource type="Texture2D" uid="uid://rvu643208pjh" path="res://game/weapons/guns/common/shoot_effect.png" id="3_xrh2t"]
+
+[sub_resource type="Curve" id="Curve_mhxuf"]
+max_value = 3.0
+_data = [Vector2(0, 0.292426), 0.0, 0.0, 0, 0, Vector2(0.252595, 0.347125), 0.0, 0.0, 0, 0, Vector2(0.269896, 0.921458), 0.0, 0.0, 0, 0, Vector2(0.49481, 0.921458), 0.0, 0.0, 0, 0, Vector2(0.519031, 1.46844), 0.0, 0.0, 0, 0, Vector2(0.761246, 1.46844), 0.0, 0.0, 0, 0, Vector2(0.771626, 2.23422), 0.0, 0.0, 0, 0, Vector2(0.986159, 2.23422), 0.0, 0.0, 0, 0, Vector2(1, 3), 0.0, 0.0, 0, 0]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_u2hho"]
+min_value = -5.0
+max_value = 5.0
+_data = [Vector2(0.224913, 0), 0.0, 0.0, 0, 0, Vector2(1, -5), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="Animation" id="Animation_7gni2"]
 resource_name = "Equip"
-length = 0.6
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -238,18 +248,51 @@ tracks/2/keys = {
 "values": [Vector2(59, -65), Vector2(35, -65), Vector2(59, -65)]
 }
 
+[sub_resource type="Animation" id="Animation_5imx8"]
+resource_name = "PostEquip"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base:rotation")
+tracks/0/interp = 4
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.153362, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Base:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -8), Vector2(0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tv7o7"]
 _data = {
 "Equip": SubResource("Animation_7gni2"),
+"PostEquip": SubResource("Animation_5imx8"),
 "RESET": SubResource("Animation_mrem2"),
 "Reload": SubResource("Animation_iq16r"),
 "Shoot": SubResource("Animation_llg42")
 }
 
 [node name="P350" instance=ExtResource("1_ff8sd")]
-equip_time = 0.6
-reload_time = 2.35
-projectile = ExtResource("2_0jvki")
+to_aim_time = 0.2
+spread_curve = SubResource("Curve_mhxuf")
+spread_base = 3.0
+spread_walk = 3.0
+spread_walk_reset_time = 0.4
+recoil_curve = SubResource("Curve_u2hho")
+recoil_reset_time = 0.5
 ammo_per_load = 13
 ammo_total = 52
 
@@ -282,12 +325,7 @@ region_rect = Rect2(0, 0, 160, 37)
 [node name="ShootPoint" parent="." index="2"]
 position = Vector2(103, -37)
 
-[node name="Aim" parent="." index="3"]
-position = Vector2(103, -37)
-points = PackedVector2Array(0, 0, 1920, 0)
-width = 8.0
-
-[node name="AnimationPlayer" parent="." index="4"]
+[node name="AnimationPlayer" parent="." index="3"]
 libraries = {
 "": SubResource("AnimationLibrary_tv7o7")
 }

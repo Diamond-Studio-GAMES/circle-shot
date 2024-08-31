@@ -62,14 +62,13 @@ func spawn_player(id: int) -> void:
 	player.player_name = _players_names[id]
 	player.equip_data = _players_equip_data[id]
 	player.name = "Player%d" % id
-	_customize_player_out_of_tree(player)
+	_customize_player(player)
 	_players[id] = player
 	$Entities.add_child(player)
 	player.killed.connect(_on_player_killed)
 	if not _started:
 		player.make_disarmed()
 		player.make_immobile()
-	_customize_player_in_tree(player)
 
 
 func set_local_player(player: Player) -> void:
@@ -127,11 +126,7 @@ func _get_spawn_point(_id: int) -> Vector2:
 	return Vector2()
 
 
-func _customize_player_out_of_tree(_player: Player) -> void:
-	pass
-
-
-func _customize_player_in_tree(_player: Player) -> void:
+func _customize_player(_player: Player) -> void:
 	pass
 
 
@@ -148,12 +143,19 @@ func _player_disconnected(_id: int) -> void:
 
 
 func _on_player_killed(who: int, by: int) -> void:
-	var message_text: String = "[color=#%s]%s[/color] убивает игрока [color=#%s]%s[/color]!" % [
-		Entity.TEAM_COLORS[_players_teams[by]].to_html(false),
-		_players_names[by],
-		Entity.TEAM_COLORS[_players_teams[who]].to_html(false),
-		_players_names[who],
-	]
+	var message_text := ""
+	if by > 0:
+		message_text = "[color=#%s]%s[/color] убивает игрока [color=#%s]%s[/color]!" % [
+			Entity.TEAM_COLORS[_players_teams[by]].to_html(false),
+			_players_names[by],
+			Entity.TEAM_COLORS[_players_teams[who]].to_html(false),
+			_players_names[who],
+		]
+	else:
+		message_text = "Игрок [color=#%s]%s[/color] убит!" % [
+			Entity.TEAM_COLORS[_players_teams[who]].to_html(false),
+			_players_names[who],
+		]
 	_ui.show_status.rpc(message_text, 2.5)
 	_ui.chat.post_message.rpc("Игра: " + message_text)
 	_player_killed(who, by)

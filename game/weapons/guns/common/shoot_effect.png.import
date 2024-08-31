@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://23oj05orcymg"
-path="res://.godot/imported/sword.png-12ee9f69ad27125a3f23742d951891ac.ctex"
+uid="uid://rvu643208pjh"
+path="res://.godot/imported/shoot_effect.png-b3aa6b93d43562da2c10b366f67537be.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/weapons/sword/sword.png"
-dest_files=["res://.godot/imported/sword.png-12ee9f69ad27125a3f23742d951891ac.ctex"]
+source_file="res://game/weapons/guns/common/shoot_effect.png"
+dest_files=["res://.godot/imported/shoot_effect.png-b3aa6b93d43562da2c10b366f67537be.ctex"]
 
 [params]
 

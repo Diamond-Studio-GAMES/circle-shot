@@ -145,9 +145,9 @@ offset_left = 16.0
 offset_top = 16.0
 offset_right = 190.0
 offset_bottom = 42.0
+theme_type_variation = &"HeaderMedium"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 18
 text = "Осталось игроков: "
 
 [node name="GameEnd" type="Label" parent="EventUI/Main" index="7"]

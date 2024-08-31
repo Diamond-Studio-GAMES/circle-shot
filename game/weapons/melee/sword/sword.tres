@@ -12,5 +12,5 @@ ammo_text = "Не ограничено"
 description = ""
 id = "svord"
 scene_path = "uid://coip6hjdsbg57"
-image_path = "uid://23oj05orcymg"
+image_path = "uid://dmd6j30ggojbq"
 spawnable_scenes_paths = Array[String]([])

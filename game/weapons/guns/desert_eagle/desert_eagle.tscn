@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ddnugomhhv0df" path="res://game/weapons/guns/desert_eagle/desert_eagle_bullet.tscn" id="2_7232m"]
 [ext_resource type="Texture2D" uid="uid://gpppt12rk1fl" path="res://game/weapons/guns/desert_eagle/clip.png" id="3_lxdps"]
 [ext_resource type="Texture2D" uid="uid://cfo1rv56h4024" path="res://game/weapons/guns/desert_eagle/desert_eagle.png" id="4_d7c0d"]
-[ext_resource type="Texture2D" uid="uid://rvu643208pjh" path="res://game/weapons/common/shoot_effect.png" id="5_12sp2"]
+[ext_resource type="Texture2D" uid="uid://rvu643208pjh" path="res://game/weapons/guns/common/shoot_effect.png" id="5_12sp2"]
 
 [sub_resource type="Animation" id="Animation_7gni2"]
 resource_name = "Equip"

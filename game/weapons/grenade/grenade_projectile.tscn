@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://game/weapons/grenade/grenade_projectile.gd" id="1_am5bm"]
 [ext_resource type="Texture2D" uid="uid://jyvb0oir1emy" path="res://game/weapons/grenade/grenade.png" id="2_3rtkn"]
 [ext_resource type="Texture2D" uid="uid://bfvwwv1vve166" path="res://game/weapons/grenade/explosion.png" id="3_eocre"]
-[ext_resource type="Script" path="res://game/weapons/common/attack_area.gd" id="4_yl4y2"]
+[ext_resource type="Script" path="res://game/entity/attack/area_detector.gd" id="4_yl4y2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yd8qm"]
 radius = 24.0

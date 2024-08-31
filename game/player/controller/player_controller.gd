@@ -8,6 +8,14 @@ var _moving_left := false
 var _moving_right := false
 var _moving_up := false
 var _moving_down := false
+
+@onready var _current_weapon_icon: TextureRect = $CurrentWeapon/Icon
+@onready var _light_weapon_icon: TextureRect = $WeaponSelection/LightWeapon/Icon
+@onready var _heavy_weapon_icon: TextureRect = $WeaponSelection/HeavyWeapon/Icon
+@onready var _support_weapon_icon: TextureRect = $WeaponSelection/SupportWeapon/Icon
+@onready var _melee_weapon_icon: TextureRect = $WeaponSelection/MeleeWeapon/Icon
+@onready var _ammo_text: Label = $CurrentWeapon/Label
+
 @onready var _move_joystick: VirtualJoystick = $TouchControls/MoveVirtualJoystick
 @onready var _aim_joystick: VirtualJoystick = $TouchControls/AimVirtualJoystick
 @onready var _shoot_area: TouchScreenButton = $TouchControls/ShootArea
@@ -40,21 +48,139 @@ func _process(_delta: float) -> void:
 			_player.entity_input.direction *= SNEAK_MULTIPLIER
 		
 		if _player.player_input.aiming:
+			# Возможность делать прицел поменьше
 			_player.player_input.aim_direction = \
 					_player.global_position.direction_to(_player.get_global_mouse_position())
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_instance_valid(_player):
+		return
+	
+	if not _touch:
+		if event.is_action(&"shoot"):
+			_player.player_input.shooting = event.is_pressed()
+		if event.is_action(&"aim"):
+			_player.player_input.aiming = event.is_pressed()
+
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not _touch:
-		if event.is_action("move_left"):
+		if event.is_action(&"move_left"):
 			_moving_left = event.is_pressed()
-		if event.is_action("move_right"):
+		if event.is_action(&"move_right"):
 			_moving_right = event.is_pressed()
-		if event.is_action("move_up"):
+		if event.is_action(&"move_up"):
 			_moving_up = event.is_pressed()
-		if event.is_action("move_down"):
+		if event.is_action(&"move_down"):
 			_moving_down = event.is_pressed()
+	if event.is_action_pressed(&"select_weapon"):
+		if ($WeaponSelection as Control).visible:
+			_close_weapon_selection()
+		else:
+			open_weapon_selection()
+	elif event.is_action_pressed(&"weapon_light"):
+		select_weapon(Weapon.Type.LIGHT)
+	elif event.is_action_pressed(&"weapon_heavy"):
+		select_weapon(Weapon.Type.HEAVY)
+	elif event.is_action_pressed(&"weapon_support"):
+		select_weapon(Weapon.Type.SUPPORT)
+	elif event.is_action_pressed(&"weapon_melee"):
+		select_weapon(Weapon.Type.MELEE)
+
+
+func select_weapon(type: Weapon.Type) -> void:
+	_close_weapon_selection()
+	if is_instance_valid(_player):
+		_player.try_change_weapon(type)
+
+
+func open_weapon_selection() -> void:
+	($WeaponSelection as Control).show()
+	($CurrentWeapon as Control).hide()
+
+
+func _close_weapon_selection() -> void:
+	($WeaponSelection as Control).hide()
+	($CurrentWeapon as Control).show()
 
 
 func _on_local_player_created(player: Player) -> void:
+	player.ammo_text_updated.connect(_on_ammo_text_updated)
+	player.weapon_changed.connect(_on_weapon_changed)
+	player.weapon_equipped.connect(_on_weapon_equipped)
 	_player = player
+
+
+func _on_weapon_changed(to: Weapon.Type) -> void:
+	match to:
+		Weapon.Type.LIGHT:
+			_current_weapon_icon.texture = _light_weapon_icon.texture
+			(_current_weapon_icon.material as ShaderMaterial).set_shader_parameter(
+					&"color",
+					(_light_weapon_icon.material as ShaderMaterial).get_shader_parameter(&"color")
+			)
+		Weapon.Type.HEAVY:
+			_current_weapon_icon.texture = _heavy_weapon_icon.texture
+			(_current_weapon_icon.material as ShaderMaterial).set_shader_parameter(
+					&"color",
+					(_heavy_weapon_icon.material as ShaderMaterial).get_shader_parameter(&"color")
+			)
+		Weapon.Type.SUPPORT:
+			_current_weapon_icon.texture = _support_weapon_icon.texture
+			(_current_weapon_icon.material as ShaderMaterial).set_shader_parameter(
+					&"color",
+					(_support_weapon_icon.material as ShaderMaterial).get_shader_parameter(&"color")
+			)
+		Weapon.Type.MELEE:
+			_current_weapon_icon.texture = _melee_weapon_icon.texture
+			(_current_weapon_icon.material as ShaderMaterial).set_shader_parameter(
+					&"color",
+					(_melee_weapon_icon.material as ShaderMaterial).get_shader_parameter(&"color")
+			)
+
+
+func _on_weapon_equipped(type: Weapon.Type, weapon_id: int) -> void:
+	var weapon_icon: TextureRect
+	var weapon_text: Label
+	var weapon_data: WeaponData
+	match type:
+		Weapon.Type.LIGHT:
+			weapon_icon = _light_weapon_icon
+			weapon_text = $WeaponSelection/LightWeapon/Label
+			if weapon_id >= 0:
+				weapon_data = Globals.items_db.weapons_light[weapon_id]
+		Weapon.Type.HEAVY:
+			weapon_icon = _heavy_weapon_icon
+			weapon_text = $WeaponSelection/HeavyWeapon/Label
+			if weapon_id >= 0:
+				weapon_data = Globals.items_db.weapons_heavy[weapon_id]
+		Weapon.Type.SUPPORT:
+			weapon_icon = _support_weapon_icon
+			weapon_text = $WeaponSelection/SupportWeapon/Label
+			if weapon_id >= 0:
+				weapon_data = Globals.items_db.weapons_support[weapon_id]
+		Weapon.Type.MELEE:
+			weapon_icon = _melee_weapon_icon
+			weapon_text = $WeaponSelection/MeleeWeapon/Label
+			if weapon_id >= 0:
+				weapon_data = Globals.items_db.weapons_melee[weapon_id]
+	
+	if weapon_id < 0:
+		weapon_icon.texture = null
+		weapon_text.text = "Нет оружия"
+		if type == _player.current_weapon_type:
+			_current_weapon_icon.texture = null
+			_ammo_text.text = "Нет оружия"
+		return
+	
+	weapon_icon.texture = load(weapon_data.image_path)
+	(weapon_icon.material as ShaderMaterial).set_shader_parameter(
+			&"color",
+			ItemsDB.RARITY_COLORS[weapon_data.rarity],
+	)
+	weapon_text.text = weapon_data.name
+
+
+func _on_ammo_text_updated(text: String) -> void:
+	_ammo_text.text = text

@@ -5,7 +5,6 @@ extends Attack
 var direction := Vector2.ZERO
 
 func _ready() -> void:
-	super()
 	direction = Vector2.RIGHT.rotated(rotation)
 	var tween := create_tween()
 	tween.tween_property($Sprite2D as Node2D, ^"scale:x", 1.0, 0.25).from(0.1)
@@ -29,7 +28,7 @@ func _on_body_entered(body: Node2D) -> void:
 	if player:
 		if player.team == team:
 			return
-		_damage_player(player)
+		deal_damage(player)
 	queue_free()
 
 

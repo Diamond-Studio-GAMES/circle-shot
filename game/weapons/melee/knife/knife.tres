@@ -12,5 +12,5 @@ ammo_text = "Не ограничено"
 description = ""
 id = "knife"
 scene_path = "uid://bynopfeo8pgxf"
-image_path = "uid://c6hbriu7of77e"
+image_path = "uid://dq8riqdpmm2vy"
 spawnable_scenes_paths = Array[String]([])

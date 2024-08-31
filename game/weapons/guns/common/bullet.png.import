@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rvu643208pjh"
-path="res://.godot/imported/shoot_effect.png-d7aa19187fb4448c0cce2f347ca71d11.ctex"
+uid="uid://cyro3oroia5l6"
+path="res://.godot/imported/bullet.png-82554ccfe7520f63dd40f06feaf8a4b3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/weapons/common/shoot_effect.png"
-dest_files=["res://.godot/imported/shoot_effect.png-d7aa19187fb4448c0cce2f347ca71d11.ctex"]
+source_file="res://game/weapons/guns/common/bullet.png"
+dest_files=["res://.godot/imported/bullet.png-82554ccfe7520f63dd40f06feaf8a4b3.ctex"]
 
 [params]
 
