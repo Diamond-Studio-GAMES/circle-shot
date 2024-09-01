@@ -21,7 +21,7 @@ var items_db: ItemsDB = load("uid://pwq1e7l2ckos")
 var save_file: ConfigFile
 
 
-func _ready() -> void:	
+func _ready() -> void:
 	save_file = ConfigFile.new()
 	save_file.load(SAVE_FILE_PATH)
 

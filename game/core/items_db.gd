@@ -73,7 +73,7 @@ var spawnable_projectiles_paths: Array[String]
 var spawnable_other_paths: Array[String]
 
 
-func set_spawnable_paths() -> void:
+func generate_spawnable_paths() -> void:
 	spawnable_projectiles_paths.clear()
 	spawnable_other_paths.clear()
 	
