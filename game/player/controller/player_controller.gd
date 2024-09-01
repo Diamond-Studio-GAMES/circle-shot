@@ -74,25 +74,33 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_moving_up = event.is_pressed()
 		if event.is_action(&"move_down"):
 			_moving_down = event.is_pressed()
-	if event.is_action_pressed(&"select_weapon"):
-		if ($WeaponSelection as Control).visible:
-			_close_weapon_selection()
-		else:
-			open_weapon_selection()
-	elif event.is_action_pressed(&"weapon_light"):
-		select_weapon(Weapon.Type.LIGHT)
-	elif event.is_action_pressed(&"weapon_heavy"):
-		select_weapon(Weapon.Type.HEAVY)
-	elif event.is_action_pressed(&"weapon_support"):
-		select_weapon(Weapon.Type.SUPPORT)
-	elif event.is_action_pressed(&"weapon_melee"):
-		select_weapon(Weapon.Type.MELEE)
+		
+		if event.is_action_pressed(&"select_weapon"):
+			if ($WeaponSelection as Control).visible:
+				_close_weapon_selection()
+			else:
+				open_weapon_selection()
+		elif event.is_action_pressed(&"weapon_light"):
+			select_weapon(Weapon.Type.LIGHT)
+		elif event.is_action_pressed(&"weapon_heavy"):
+			select_weapon(Weapon.Type.HEAVY)
+		elif event.is_action_pressed(&"weapon_support"):
+			select_weapon(Weapon.Type.SUPPORT)
+		elif event.is_action_pressed(&"weapon_melee"):
+			select_weapon(Weapon.Type.MELEE)
+		elif event.is_action_pressed(&"reload"):
+			reload()
 
 
 func select_weapon(type: Weapon.Type) -> void:
 	_close_weapon_selection()
 	if is_instance_valid(_player):
 		_player.try_change_weapon(type)
+
+
+func reload() -> void:
+	if is_instance_valid(_player):
+		_player.try_reload_weapon()
 
 
 func open_weapon_selection() -> void:

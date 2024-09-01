@@ -22,7 +22,7 @@
 [ext_resource type="Resource" uid="uid://cico6bxoxthxp" path="res://game/weapons/guns/ak_74/ak_74.tres" id="17_7vx3p"]
 [ext_resource type="Resource" uid="uid://bb4c32cmatk2p" path="res://game/weapons/guns/shotgun/shotgun.tres" id="18_hjrvg"]
 [ext_resource type="Resource" uid="uid://gkuvrx6p0txb" path="res://game/weapons/guns/sniper_rifle/sniper_rifle.tres" id="19_5dl73"]
-[ext_resource type="Resource" uid="uid://ec5r1p2ay37a" path="res://game/weapons/guns/p_350/p_350.tres" id="20_wegr4"]
+[ext_resource type="Resource" uid="uid://ec5r1p2ay37a" path="res://game/weapons/guns/p350/p350.tres" id="20_wegr4"]
 [ext_resource type="Resource" uid="uid://d1deru0vmrlc8" path="res://game/weapons/guns/desert_eagle/desert_eagle.tres" id="21_43s3b"]
 [ext_resource type="Resource" uid="uid://bxma7nn66sax2" path="res://game/weapons/snowball/snowball.tres" id="22_lw2ls"]
 [ext_resource type="Resource" uid="uid://bqt35gylr4la" path="res://game/weapons/melee/knife/knife.tres" id="23_50d6n"]

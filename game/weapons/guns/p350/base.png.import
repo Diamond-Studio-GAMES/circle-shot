@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dicbq6m7yirsq"
-path="res://.godot/imported/bullet_shard.png-3819260ffc724f2f7e29f1f77076503a.ctex"
+uid="uid://btrkyxv6ft11g"
+path="res://.godot/imported/base.png-4cdac70c75c67f7179001dfcc2bab906.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/vfx/bullet_hit/bullet_shard.png"
-dest_files=["res://.godot/imported/bullet_shard.png-3819260ffc724f2f7e29f1f77076503a.ctex"]
+source_file="res://game/weapons/guns/p350/base.png"
+dest_files=["res://.godot/imported/base.png-4cdac70c75c67f7179001dfcc2bab906.ctex"]
 
 [params]
 

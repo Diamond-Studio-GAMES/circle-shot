@@ -1,4 +1,4 @@
-extends "res://weapons/common/bullet.gd"
+extends "res://game/weapons/guns/common/bullet.gd"
 
 @export var effect_duration: float = 1.0
 @export var effect_multiplier: float = 0.5

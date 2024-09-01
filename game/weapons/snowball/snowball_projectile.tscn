@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://1durulsrwk7o" path="res://game/weapons/guns/common/bullet.tscn" id="1_hgbjm"]
 [ext_resource type="Script" path="res://game/weapons/snowball/snowball_projectile.gd" id="2_jresf"]
-[ext_resource type="PackedScene" uid="uid://b0fkg111lqlqs" path="res://game/vfx/snowball_projectile_hit/snowball_projectile_hit.tscn" id="3_iu2pn"]
+[ext_resource type="PackedScene" uid="uid://b0fkg111lqlqs" path="res://game/weapons/snowball/snowball_projectile_hit.tscn" id="3_iu2pn"]
 [ext_resource type="Texture2D" uid="uid://dldqsm5tvmy3m" path="res://game/weapons/snowball/snowball.png" id="3_ss58q"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jwr0w"]

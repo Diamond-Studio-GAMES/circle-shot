@@ -19,12 +19,12 @@ extends Resource
 ## так как 3 не делится нацело на 2.
 @export_range(1, 5, 1) var players_divider: int = 1
 ## Путь до сцены с событием.
-@export_file("*.tscn") var scene_path: String
+@export_file("PackedScene") var scene_path: String
 ## Путь до картинки-обложки события. Рекомендуемое разрешение: 392 на 80.
-@export_file("*.png") var image_path: String
+@export_file("Texture2D") var image_path: String
 ## Массив карт данного события.
 @export var maps: Array[MapData]
 @export_group("Spawnables")
 ## Массив путей к сценам, относящихся конкретно к этому событию, которые должны синхронизироваться
 ## при появлении. Например, сцена коробки исцеления.
-@export_file("*.tscn") var spawnable_scenes_paths: Array[String]
+@export_file("PackedScene") var spawnable_scenes_paths: Array[String]

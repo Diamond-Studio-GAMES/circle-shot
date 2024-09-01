@@ -10,6 +10,6 @@ extends Resource
 ## Краткое описание карты.
 @export var brief_description: String
 ## Путь до сцены с картой.
-@export_file("*.tscn") var scene_path: String
+@export_file("PackedScene") var scene_path: String
 ## Путь до картинки-обложки карты. Рекомендуемое разрешение: 392 на 80.
-@export_file("*.png") var image_path: String
+@export_file("Texture2D") var image_path: String

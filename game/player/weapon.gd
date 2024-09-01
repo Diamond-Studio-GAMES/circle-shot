@@ -73,9 +73,9 @@ func reload() -> void:
 
 
 func get_ammo_text() -> String:
-	if ammo + ammo_total <= 0:
+	if ammo + ammo_in_stock <= 0:
 		return "Нет патронов"
-	return "%d/%d" % [ammo, ammo_total]
+	return "%d/%d" % [ammo, ammo_in_stock]
 
 
 func can_reload() -> bool:

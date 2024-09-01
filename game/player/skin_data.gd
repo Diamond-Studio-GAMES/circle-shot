@@ -15,6 +15,6 @@ extends Resource
 @export var id: String
 @export_group("Paths")
 ## Путь до сцены со скином.
-@export_file("*.tscn") var scene_path: String
+@export_file("PackedScene") var scene_path: String
 ## Путь до картинки скина.
-@export_file("*.png") var image_path: String
+@export_file("Texture2D") var image_path: String

@@ -19,9 +19,9 @@ extends Resource
 @export var id: String
 @export_group("Paths")
 ## Путь до сцены с навыком.
-@export_file("*.tscn") var scene_path: String
+@export_file("PackedScene") var scene_path: String
 ## Путь до картинки навыка.
-@export_file("*.png") var image_path: String
+@export_file("Texture2D") var image_path: String
 ## Массив путей к сценам, относящихся конкретно к этому навыка, которые должны синхронизироваться
 ## при появлении. Например, сцена удара об землю.
-@export_file("*.tscn") var spawnable_scenes_paths: Array[String]
+@export_file("PackedScene") var spawnable_scenes_paths: Array[String]

@@ -137,6 +137,7 @@ offset_right = 120.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="WeaponSelection/LightWeapon"]
@@ -192,6 +193,7 @@ offset_right = 120.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="WeaponSelection/HeavyWeapon"]
@@ -247,6 +249,7 @@ offset_right = 120.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="WeaponSelection/SupportWeapon"]
@@ -302,6 +305,7 @@ offset_right = 120.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="WeaponSelection/MeleeWeapon"]
@@ -355,6 +359,7 @@ offset_right = 120.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Label" type="Label" parent="CurrentWeapon"]

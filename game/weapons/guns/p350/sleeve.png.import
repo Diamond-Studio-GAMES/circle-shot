@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgesfo7e4s3ua"
-path="res://.godot/imported/gun.png-9e7f5ed2f98a8213d7334b27b0065420.ctex"
+uid="uid://p7lc2resallt"
+path="res://.godot/imported/sleeve.png-1b87641167f54c80cdd690784b399e1f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/weapons/i_need_more_bullets/gun.png"
-dest_files=["res://.godot/imported/gun.png-9e7f5ed2f98a8213d7334b27b0065420.ctex"]
+source_file="res://game/weapons/guns/p350/sleeve.png"
+dest_files=["res://.godot/imported/sleeve.png-1b87641167f54c80cdd690784b399e1f.ctex"]
 
 [params]
 

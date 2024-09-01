@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://ec5r1p2ay37a"]
 
-[ext_resource type="Script" path="res://game/player/weapon_data.gd" id="1_ekvke"]
+[ext_resource type="Script" path="res://game/player/weapon_data.gd" id="1_cx1jm"]
 
 [resource]
-script = ExtResource("1_ekvke")
+script = ExtResource("1_cx1jm")
 name = "P350"
 type = 0
 rarity = 0
@@ -12,5 +12,5 @@ ammo_text = "13/52"
 description = ""
 id = "p350"
 scene_path = "uid://bsgtxdfb2n4u3"
-image_path = "uid://b74jcdw45c73w"
+image_path = "uid://bxroqwsevr022"
 spawnable_scenes_paths = Array[String](["uid://c4cr4b5wn24yt"])

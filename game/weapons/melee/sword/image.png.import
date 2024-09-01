@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ocg6jebfprnx"
-path="res://.godot/imported/clip.png-1be436c69411dfc9f064f5bbf23c1af1.ctex"
+uid="uid://dmd6j30ggojbq"
+path="res://.godot/imported/image.png-2b7dd6afb555dc86b11f2c24b02e20dd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/weapons/guns/p_350/clip.png"
-dest_files=["res://.godot/imported/clip.png-1be436c69411dfc9f064f5bbf23c1af1.ctex"]
+source_file="res://game/weapons/melee/sword/image.png"
+dest_files=["res://.godot/imported/image.png-2b7dd6afb555dc86b11f2c24b02e20dd.ctex"]
 
 [params]
 

@@ -53,8 +53,7 @@ func _process(delta: float) -> void:
 		if _player.player_input.shooting:
 			if ammo >= ammo_per_shot:
 				if multiplayer.is_server() and _shoot_timer <= 0.0:
-					#shoot.rpc()
-					pass
+					shoot.rpc()
 				_shooting_time += delta
 				shooting_time_increased = true
 	
@@ -114,18 +113,14 @@ func _shoot() -> void:
 	_anim.play("Shoot")
 	_anim.seek(0, true)
 	if multiplayer.is_server():
-		var projectile: Attack = projectile_scene.instantiate()
-		projectile.global_position = _shoot_point.global_position
-		projectile.damage = roundi(projectile.damage * _player.damage_multiplier)
-		projectile.rotation = _player.player_input.aim_direction.angle() \
-				+ deg_to_rad(randf_range(-spread_base, spread_base))
-		projectile.team = _player.team
-		projectile.who = _player.id
-		projectile.name += str(randi())
-		_projectiles_parent.add_child(projectile)
+		_create_projectile()
 	if ammo <= 0:
 		await _anim.animation_finished
 		reload()
+
+
+func can_reload() -> bool:
+	return super() and _shoot_timer <= 0.0
 
 
 func reload() -> void:
@@ -142,6 +137,7 @@ func reload() -> void:
 		unlock_shooting()
 		return
 	
+	_anim.play(&"PostReload")
 	tween = create_tween()
 	tween.tween_property(self, ^"rotation", _calculate_aim_direction(), to_aim_time)
 	
@@ -155,10 +151,14 @@ func reload() -> void:
 
 func _calculate_recoil() -> float:
 	if _shooting_time > 0.01:
-		return maxf(
-				recoil_curve.sample_baked(minf(_shooting_time / recoil_curve_time, 1.0)),
-				_recoil_reset
+		var recoil_from_curve: float = \
+				recoil_curve.sample_baked(minf(_shooting_time / recoil_curve_time, 1.0))
+		
+		return maxf(absf(recoil_from_curve), absf(_recoil_reset)) * (
+				signf(recoil_from_curve) if absf(recoil_from_curve) > absf(_recoil_reset)
+				else signf(_recoil_reset)
 		)
+	
 	return _recoil_reset
 
 
@@ -176,3 +176,17 @@ func _calculate_walk_spread() -> float:
 
 func _calculate_spread() -> float:
 	return _calculate_walk_spread() + _calculate_shoot_spread()
+
+
+func _create_projectile() -> void:
+	var projectile: Attack = projectile_scene.instantiate()
+	projectile.global_position = _shoot_point.global_position
+	projectile.damage = roundi(projectile.damage * _player.damage_multiplier)
+	var spread: float = _calculate_spread()
+	projectile.rotation = _player.player_input.aim_direction.angle() \
+			+ deg_to_rad(randf_range(-spread, spread)) \
+			+ deg_to_rad(_calculate_recoil()) * signf(_player.entity_input.direction.x)
+	projectile.team = _player.team
+	projectile.who = _player.id
+	projectile.name += str(randi())
+	_projectiles_parent.add_child(projectile)

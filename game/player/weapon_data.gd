@@ -23,9 +23,9 @@ extends Resource
 @export var id: String
 @export_group("Paths")
 ## Путь к сцене оружия.
-@export_file("*.tscn") var scene_path: String
+@export_file("PackedScene") var scene_path: String
 ## Путь к картинке оружия, желательно с разрешением 256 пикселей по большей стороне. 
-@export_file("*.png") var image_path: String
+@export_file("Texture2D") var image_path: String
 ## Массив путей к сценам, относящихся конкретно к этому оружию, которые должны синхронизироваться
 ## при появлении. Например, сцена пули или гранаты.
-@export_file("*.tscn") var spawnable_scenes_paths: Array[String]
+@export_file("PackedScene") var spawnable_scenes_paths: Array[String]

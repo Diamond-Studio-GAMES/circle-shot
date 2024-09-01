@@ -47,6 +47,10 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=4
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/resource_path/plugin.cfg")
+
 [filesystem]
 
 import/fbx2gltf/enabled=false
@@ -159,4 +163,5 @@ common/enable_object_picking=false
 renderer/rendering_method="gl_compatibility"
 textures/vram_compression/import_s3tc_bptc=true
 textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.757812, 0, 1, 1)
 shader_compiler/shader_cache/enabled.mobile=false
