@@ -4,6 +4,7 @@ extends AcceptDialog
 const PREFFERED_IP_PREFIXES: Array[String] = [
 	"192.168.",
 	"10.42.",
+	"10.22.",
 ]
 const HIDE_IPS: Array[String] = [
 	"127.0.0.1",

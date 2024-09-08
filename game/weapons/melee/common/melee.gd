@@ -41,9 +41,8 @@ func _shoot() -> void:
 
 
 func _make_current() -> void:
-	rotation = 0.0
-	_anim.play(&"Equip")
 	block_shooting()
+	_anim.play(&"Equip")
 	
 	var anim_name: StringName = await _anim.animation_finished
 	if anim_name != &"Equip":
@@ -58,6 +57,7 @@ func _make_current() -> void:
 
 
 func _unmake_current() -> void:
+	rotation = 0.0
 	_anim.play(&"RESET")
 	_anim.advance(0.01)
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bkq8xclhl545i"
-path="res://.godot/imported/ak_clip.png-67475f84107f99c5cdfddb28a1d421b2.ctex"
+uid="uid://b4n307y1frtdk"
+path="res://.godot/imported/shutter_background.png-2b69322e7887f1904f666428e6041af9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/weapons/guns/ak_74/ak_clip.png"
-dest_files=["res://.godot/imported/ak_clip.png-67475f84107f99c5cdfddb28a1d421b2.ctex"]
+source_file="res://game/weapons/guns/ak_74/shutter_background.png"
+dest_files=["res://.godot/imported/shutter_background.png-2b69322e7887f1904f666428e6041af9.ctex"]
 
 [params]
 

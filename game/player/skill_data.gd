@@ -12,7 +12,7 @@ extends Resource
 ## Текст с данными о том, сколько раз можно использовать навык и какой у него откат.
 ## Рекомендуемый формат: "X исп./YY с", где X - кол-во использований, YY - время отката.
 ## Если использование только одно, откат можно не писать.
-@export var using_text: String
+@export var usage_text: String
 ## Редкость навыка. Смотри [enum ItemsDB.Rarity].
 @export var rarity := ItemsDB.Rarity.COMMON
 ## ID навыка. Должно быть уникальным.

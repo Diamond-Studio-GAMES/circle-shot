@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyrjmg8rlcof3"
-path="res://.godot/imported/ak_base.png-f0b2ebabc736f558f14368e9e911038d.ctex"
+uid="uid://c3d0qn8bq5v37"
+path="res://.godot/imported/magazine.png-c0d5792551a793c2657dd142431a4e74.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/weapons/guns/ak_74/ak_base.png"
-dest_files=["res://.godot/imported/ak_base.png-f0b2ebabc736f558f14368e9e911038d.ctex"]
+source_file="res://game/weapons/guns/ak_74/magazine.png"
+dest_files=["res://.godot/imported/magazine.png-c0d5792551a793c2657dd142431a4e74.ctex"]
 
 [params]
 

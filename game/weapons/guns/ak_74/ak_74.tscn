@@ -1,24 +1,52 @@
-[gd_scene load_steps=13 format=3 uid="uid://b2v16qvrswdtd"]
+[gd_scene load_steps=23 format=3 uid="uid://b2v16qvrswdtd"]
 
 [ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_q67hu"]
 [ext_resource type="PackedScene" uid="uid://tbn6kstqx2sj" path="res://game/weapons/guns/ak_74/ak_74_bullet.tscn" id="2_jquc2"]
-[ext_resource type="Texture2D" uid="uid://bkq8xclhl545i" path="res://game/weapons/guns/ak_74/ak_clip.png" id="3_h6j1d"]
-[ext_resource type="Texture2D" uid="uid://dyrjmg8rlcof3" path="res://game/weapons/guns/ak_74/ak_base.png" id="3_li83t"]
+[ext_resource type="Texture2D" uid="uid://c3d0qn8bq5v37" path="res://game/weapons/guns/ak_74/magazine.png" id="3_85qc8"]
+[ext_resource type="Texture2D" uid="uid://b43o2h304pj0x" path="res://game/weapons/guns/ak_74/base.png" id="4_8wye8"]
 [ext_resource type="Texture2D" uid="uid://rvu643208pjh" path="res://game/weapons/guns/common/shoot_effect.png" id="4_dme2e"]
+[ext_resource type="Texture2D" uid="uid://b4n307y1frtdk" path="res://game/weapons/guns/ak_74/shutter_background.png" id="5_4s6gr"]
+[ext_resource type="Texture2D" uid="uid://847hnkshjibu" path="res://game/weapons/guns/ak_74/shutter.png" id="6_ytgcp"]
+[ext_resource type="Texture2D" uid="uid://n0nan1cx7se1" path="res://game/weapons/guns/ak_74/shutter_hand.png" id="7_cdyum"]
+[ext_resource type="Texture2D" uid="uid://djpleqaaaxipo" path="res://game/weapons/guns/common/rifle_sleeve.png" id="9_wphq2"]
 
 [sub_resource type="Curve" id="Curve_ncqml"]
 max_value = 8.0
-_data = [Vector2(0.207612, 0.561009), 0.0, 0.0, 0, 0, Vector2(1, 8), 0.0, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.249135, 0.0879116), 0.0, 10.5373, 0, 1, Vector2(1, 8), 18.6315, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="Curve" id="Curve_mancs"]
-min_value = -6.0
-max_value = 6.0
-_data = [Vector2(0, -0.0168304), 0.0, 0.0, 0, 0, Vector2(0.224913, 0.748948), 0.0, 0.0, 0, 0, Vector2(0.380623, 2.71809), 0.0, 0.0, 0, 0, Vector2(0.435986, -1.32959), 0.0, 0.0, 0, 0, Vector2(0.529412, 1.95231), 0.0, 0.0, 0, 0, Vector2(0.577855, -2.42356), 0.0, 0.0, 0, 0, Vector2(0.647059, 3.04628), 0.0, 0.0, 0, 0, Vector2(0.692042, -3.62693), 0.0, 0.0, 0, 0, Vector2(0.743945, 4.79663), 0.0, 0.0, 0, 0, Vector2(0.785467, -4.93969), 0.0, 0.0, 0, 0, Vector2(0.858131, 6), 0.0, 0.0, 0, 0, Vector2(0.923875, -4.6115), 0.0, 0.0, 0, 0, Vector2(1, 0.201963), 0.0, 0.0, 0, 0]
-point_count = 13
+min_value = -5.0
+max_value = 5.0
+_data = [Vector2(0, -0.0168304), 0.0, 0.0, 0, 0, Vector2(0.16609, -0.0140257), 0.0, 0.0, 0, 0, Vector2(1, 5), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_fskgo"]
+min_value = -5.0
+max_value = 5.0
+_data = [Vector2(0, 5), 0.0, 0.0, 0, 0, Vector2(0.508651, -5), 0.0, 0.0, 0, 0, Vector2(1, 5), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_oe66w"]
+_data = [Vector2(0.501916, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_27f2b"]
+curve = SubResource("Curve_oe66w")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cxdxm"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 256.0
+initial_velocity_max = 256.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+gravity = Vector3(0, 98, 0)
+alpha_curve = SubResource("CurveTexture_27f2b")
 
 [sub_resource type="Animation" id="Animation_ab42h"]
 resource_name = "Equip"
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -29,7 +57,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.5, 0.7, 0.8, 1),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 20), Vector2(0, -8), Vector2(0, 0), Vector2(0, 0), Vector2(-14, 0), Vector2(0, 0)]
+"values": [Vector2(0, 20), Vector2(0, -8), Vector2(0, 0), Vector2(0, 0), Vector2(-4, 0), Vector2(0, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -43,6 +71,39 @@ tracks/1/keys = {
 "update": 0,
 "values": [0.445142, -0.258539, 0.0, 0.0, 0.0]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Weapon/ShutterHand:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.7, 0.8, 0.85, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-16, 0), Vector2(-16, 0), Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Weapon/Shutter:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.7, 0.8, 0.85, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-16, 0), Vector2(-16, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_62xxi"]
+resource_name = "PostEquip"
+length = 0.3
+
+[sub_resource type="Animation" id="Animation_lkq66"]
+resource_name = "PostReload"
+length = 0.3
+step = 0.05
 
 [sub_resource type="Animation" id="Animation_2s20w"]
 length = 0.001
@@ -85,7 +146,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Clip:visible")
+tracks/3/path = NodePath("Magazine:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -97,7 +158,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Weapon/Clip:visible")
+tracks/4/path = NodePath("Weapon/Magazine:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -109,7 +170,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Clip:rotation")
+tracks/5/path = NodePath("Magazine:rotation")
 tracks/5/interp = 3
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -121,7 +182,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Clip:position")
+tracks/6/path = NodePath("Magazine:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -133,7 +194,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Clip:self_modulate")
+tracks/7/path = NodePath("Magazine:self_modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -141,6 +202,30 @@ tracks/7/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Weapon/ShutterHand:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Weapon/Shutter:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_qo7xi"]
@@ -162,7 +247,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Clip:visible")
+tracks/1/path = NodePath("Magazine:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -174,7 +259,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Weapon/Clip:visible")
+tracks/2/path = NodePath("Weapon/Magazine:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -186,7 +271,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Clip:rotation")
+tracks/3/path = NodePath("Magazine:rotation")
 tracks/3/interp = 3
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -198,19 +283,19 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Clip:position")
+tracks/4/path = NodePath("Magazine:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.5, 0.9, 1.3, 1.6, 1.9, 2.1, 2.15),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(85, -12), Vector2(105, -15), Vector2(105, 52), Vector2(-68, 13), Vector2(25, 69), Vector2(112, 30), Vector2(112, 30), Vector2(106, 11)]
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, 48), Vector2(-120, -1), Vector2(-45, 49), Vector2(5, 11), Vector2(5, 11), Vector2(0, 0)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Clip:self_modulate")
+tracks/5/path = NodePath("Magazine:self_modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -226,10 +311,34 @@ tracks/6/path = NodePath("Weapon:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0, 2.9, 3.1, 3.3),
+"times": PackedFloat32Array(0, 2.9, 3.05, 3.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-16, 0), Vector2(0, 0)]
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-6, 0), Vector2(0, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Weapon/ShutterHand:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 2.9, 3, 3.05, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-16, 0), Vector2(-16, 0), Vector2(0, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Weapon/Shutter:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 2.9, 3, 3.05, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-16, 0), Vector2(-16, 0), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_evi84"]
@@ -255,58 +364,125 @@ tracks/1/path = NodePath("Weapon:rotation")
 tracks/1/interp = 4
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.05, 0.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.0, -0.0623164, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Weapon/Shutter:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-16, 0), Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Weapon/ShutterHand:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-16, 0), Vector2(0, 0)]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Weapon/Sleeve")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"restart"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i43ss"]
 _data = {
 "Equip": SubResource("Animation_ab42h"),
+"PostEquip": SubResource("Animation_62xxi"),
+"PostReload": SubResource("Animation_lkq66"),
 "RESET": SubResource("Animation_2s20w"),
 "Reload": SubResource("Animation_qo7xi"),
 "Shoot": SubResource("Animation_evi84")
 }
 
-[node name="AK74" instance=ExtResource("1_q67hu")]
+[node name="AK-74" instance=ExtResource("1_q67hu")]
 shoot_interval = 0.15
+to_aim_time = 0.3
 projectile_scene = ExtResource("2_jquc2")
-spread_curve = SubResource("Curve_ncqml")
-spread_curve_time = 3.0
 spread_base = 2.0
-spread_reset_time = 0.4
-spread_walk = 5.0
+spread_walk = 8.0
+spread_curve = SubResource("Curve_ncqml")
+spread_increasing_time = 0.18
+spread_reset_time = 0.5
 recoil_curve = SubResource("Curve_mancs")
-recoil_curve_time = 10.0
+recoil_curve_time = 2.4
+recoil_cycle_curve = SubResource("Curve_fskgo")
+recoil_cycle_curve_time = 1.0
+recoil_increasing_time = 0.18
+recoil_reset_time = 0.5
 ammo_per_load = 30
 ammo_total = 120
 
-[node name="Clip" type="Sprite2D" parent="." index="0"]
+[node name="Magazine" type="Sprite2D" parent="." index="0"]
 visible = false
 position = Vector2(85, 9)
-scale = Vector2(1.25, 1.25)
-texture = ExtResource("3_h6j1d")
+texture = ExtResource("3_85qc8")
+offset = Vector2(52, -8)
 
 [node name="Weapon" type="Sprite2D" parent="." index="1"]
-scale = Vector2(1.25, 1.25)
-texture = ExtResource("3_li83t")
-offset = Vector2(48, -16)
+texture = ExtResource("4_8wye8")
+offset = Vector2(52, -8)
 
-[node name="Shoot" type="Sprite2D" parent="Weapon" index="0"]
+[node name="ShutterBackground" type="Sprite2D" parent="Weapon" index="0"]
+show_behind_parent = true
+texture = ExtResource("5_4s6gr")
+offset = Vector2(52, -8)
+
+[node name="Shutter" type="Sprite2D" parent="Weapon" index="1"]
+show_behind_parent = true
+texture = ExtResource("6_ytgcp")
+offset = Vector2(52, -8)
+
+[node name="ShutterHand" type="Sprite2D" parent="Weapon" index="2"]
+texture = ExtResource("7_cdyum")
+offset = Vector2(52, -8)
+
+[node name="Shoot" type="Sprite2D" parent="Weapon" index="3"]
 visible = false
 show_behind_parent = true
-position = Vector2(167, -18)
-scale = Vector2(0.75, -0.75)
+position = Vector2(214, -37)
+scale = Vector2(1, -1)
 texture = ExtResource("4_dme2e")
 
-[node name="Clip" type="Sprite2D" parent="Weapon" index="1"]
+[node name="Magazine" type="Sprite2D" parent="Weapon" index="4"]
 show_behind_parent = true
-position = Vector2(85, 9)
-texture = ExtResource("3_h6j1d")
+texture = ExtResource("3_85qc8")
+offset = Vector2(52, -8)
+
+[node name="Sleeve" type="GPUParticles2D" parent="Weapon" index="5"]
+position = Vector2(55, -45)
+emitting = false
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_cxdxm")
+texture = ExtResource("9_wphq2")
+lifetime = 0.15
+one_shot = true
 
 [node name="ShootPoint" parent="." index="2"]
-position = Vector2(190, -22)
+position = Vector2(194, -37)
 
 [node name="AnimationPlayer" parent="." index="3"]
 libraries = {

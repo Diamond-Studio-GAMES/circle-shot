@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://bsm1volyihacl"]
+
+[ext_resource type="Script" path="res://game/player/weapon_data.gd" id="1_n5igo"]
+
+[resource]
+script = ExtResource("1_n5igo")
+name = "M4A1"
+type = 1
+rarity = 1
+damage_text = "Урон/с: 38"
+ammo_text = "25/75"
+description = ""
+id = "m4a1"
+scene_path = "uid://jhqjtl8ewlm5"
+image_path = "uid://bxu6w2rhuxcjg"
+spawnable_scenes_paths = Array[String](["uid://duvq6s4rriwpi"])

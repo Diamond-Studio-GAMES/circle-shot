@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fv4xrpewvqu3"
-path="res://.godot/imported/ak_74.png-47200dafe4a3f979f4e6dfb456af2298.ctex"
+uid="uid://djpleqaaaxipo"
+path="res://.godot/imported/rifle_sleeve.png-6dac60ed79b03bf9bcb536933897f3e2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/weapons/guns/ak_74/ak_74.png"
-dest_files=["res://.godot/imported/ak_74.png-47200dafe4a3f979f4e6dfb456af2298.ctex"]
+source_file="res://game/weapons/guns/common/rifle_sleeve.png"
+dest_files=["res://.godot/imported/rifle_sleeve.png-6dac60ed79b03bf9bcb536933897f3e2.ctex"]
 
 [params]
 

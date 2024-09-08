@@ -6,7 +6,7 @@
 script = ExtResource("1_dkhs1")
 name = "Целебное зелье"
 brief_description = "Исцеляет 60 ОЗ"
-using_text = "1 исп."
+usage_text = ""
 rarity = 0
 id = "potion"
 scene_path = ""

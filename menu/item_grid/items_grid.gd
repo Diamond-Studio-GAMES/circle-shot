@@ -153,7 +153,7 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 							"font_color", Color.GREEN
 					)
 				(item.get_node(^"Description") as Label).text = \
-						i.using_text + '\n' + i.brief_description
+						i.usage_text + '\n' + i.brief_description
 				(item.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(item.get_node(^"Click") as Button).pressed.connect(
 						_on_item_pressed.bind(type, counter)

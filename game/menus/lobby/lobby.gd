@@ -338,7 +338,7 @@ func _find_ips_for_broadcast() -> void:
 	print_verbose("Finding IPs for broadcast...")
 	# Отсылаем пакеты по всем локальным адресам
 	for i: String in IP.get_local_addresses():
-		if i.begins_with("192.168.") or i.begins_with("10.42."):
+		if i.begins_with("192.168.") or i.begins_with("10.42.") or i.begins_with("10.22."):
 			var udp := PacketPeerUDP.new()
 			udp.set_broadcast_enabled(true)
 			# Меняем конец IP на 255

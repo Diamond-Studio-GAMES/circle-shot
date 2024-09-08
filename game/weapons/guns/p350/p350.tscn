@@ -1,29 +1,36 @@
-[gd_scene load_steps=20 format=3 uid="uid://bsgtxdfb2n4u3"]
+[gd_scene load_steps=21 format=3 uid="uid://bsgtxdfb2n4u3"]
 
 [ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_n80e8"]
 [ext_resource type="Texture2D" uid="uid://b20ow4fkfx07c" path="res://game/weapons/guns/p350/clip.png" id="2_lyupo"]
 [ext_resource type="PackedScene" uid="uid://c4cr4b5wn24yt" path="res://game/weapons/guns/p350/p350_bullet.tscn" id="2_tgivs"]
 [ext_resource type="Texture2D" uid="uid://btrkyxv6ft11g" path="res://game/weapons/guns/p350/base.png" id="3_aslq1"]
 [ext_resource type="Texture2D" uid="uid://rvu643208pjh" path="res://game/weapons/guns/common/shoot_effect.png" id="4_qbrad"]
-[ext_resource type="Texture2D" uid="uid://p7lc2resallt" path="res://game/weapons/guns/p350/sleeve.png" id="5_brdiv"]
+[ext_resource type="Texture2D" uid="uid://p7lc2resallt" path="res://game/weapons/guns/common/gun_sleeve.png" id="5_brdiv"]
 [ext_resource type="Texture2D" uid="uid://t7d0mqq0rq2r" path="res://game/weapons/guns/p350/shutter.png" id="6_g8rcj"]
 
 [sub_resource type="Curve" id="Curve_mhxuf"]
-max_value = 6.0
-_data = [Vector2(0, 0.292426), 0.0, 0.0, 0, 0, Vector2(0.252595, 0.347125), 0.0, 0.0, 0, 0, Vector2(0.269896, 2.00701), 0.0, 0.0, 0, 0, Vector2(0.49827, 2.00701), 0.0, 0.0, 0, 0, Vector2(0.508651, 3.15568), 0.0, 0.0, 0, 0, Vector2(0.747405, 3.15568), 0.0, 0.0, 0, 0, Vector2(0.757785, 4.68724), 0.0, 0.0, 0, 0, Vector2(0.986159, 4.63254), 0.0, 0.0, 0, 0, Vector2(1, 6), 0.0, 0.0, 0, 0]
-point_count = 9
+max_value = 8.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 8), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="Curve" id="Curve_u2hho"]
-min_value = -20.0
-max_value = 5.0
-_data = [Vector2(0.224913, 0), 0.0, 0.0, 0, 0, Vector2(1, -20), 0.0, 0.0, 0, 0]
+min_value = -3.5
+max_value = 3.5
+_data = [Vector2(0.224913, 0), 0.0, 0.0, 0, 0, Vector2(1, -3.5), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="Curve" id="Curve_sa1x5"]
+min_value = -3.5
+max_value = 0.0
+_data = [Vector2(0.0103806, -3.5), 0.0, 0.0, 0, 0, Vector2(1, -3.5), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_nd682"]
 _data = [Vector2(0.501916, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_su6ld"]
+[sub_resource type="CurveTexture" id="CurveTexture_q03mf"]
 curve = SubResource("Curve_nd682")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1xniv"]
@@ -34,7 +41,7 @@ initial_velocity_max = 128.0
 angular_velocity_min = -360.0
 angular_velocity_max = 360.0
 gravity = Vector3(0, 98, 0)
-alpha_curve = SubResource("CurveTexture_su6ld")
+alpha_curve = SubResource("CurveTexture_q03mf")
 
 [sub_resource type="Animation" id="Animation_7gni2"]
 resource_name = "Equip"
@@ -162,7 +169,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Clip:rotation")
+tracks/4/path = NodePath("Magazine:rotation")
 tracks/4/interp = 3
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -174,7 +181,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Clip:self_modulate")
+tracks/5/path = NodePath("Magazine:self_modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -186,7 +193,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Clip:position")
+tracks/6/path = NodePath("Magazine:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -203,7 +210,7 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Clip:rotation")
+tracks/0/path = NodePath("Magazine:rotation")
 tracks/0/interp = 3
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -215,7 +222,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Clip:self_modulate")
+tracks/1/path = NodePath("Magazine:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -251,7 +258,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Clip:position")
+tracks/4/path = NodePath("Magazine:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -339,18 +346,22 @@ _data = {
 }
 
 [node name="P350" instance=ExtResource("1_n80e8")]
+shoot_interval = 0.4
 to_aim_time = 0.2
 projectile_scene = ExtResource("2_tgivs")
+spread_base = 2.5
+spread_walk = 3.5
 spread_curve = SubResource("Curve_mhxuf")
-spread_base = 3.0
-spread_walk = 7.0
-spread_walk_reset_time = 0.4
+spread_increasing_time = 0.325
+spread_reset_time = 0.5
 recoil_curve = SubResource("Curve_u2hho")
-recoil_reset_time = 0.5
+recoil_cycle_curve = SubResource("Curve_sa1x5")
+recoil_increasing_time = 0.45
+recoil_reset_time = 0.45
 ammo_per_load = 13
 ammo_total = 65
 
-[node name="Clip" type="Sprite2D" parent="." index="0"]
+[node name="Magazine" type="Sprite2D" parent="." index="0"]
 self_modulate = Color(1, 1, 1, 0)
 position = Vector2(1, -3)
 texture = ExtResource("2_lyupo")
@@ -367,7 +378,11 @@ position = Vector2(111, -31)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("4_qbrad")
 
-[node name="Sleeve" type="GPUParticles2D" parent="Base" index="1"]
+[node name="Shutter" type="Sprite2D" parent="Base" index="1"]
+position = Vector2(36, 0)
+texture = ExtResource("6_g8rcj")
+
+[node name="Sleeve" type="GPUParticles2D" parent="Base" index="2"]
 position = Vector2(40, -32)
 emitting = false
 amount = 1
@@ -375,10 +390,6 @@ process_material = SubResource("ParticleProcessMaterial_1xniv")
 texture = ExtResource("5_brdiv")
 lifetime = 0.4
 one_shot = true
-
-[node name="Shutter" type="Sprite2D" parent="Base" index="2"]
-position = Vector2(36, 0)
-texture = ExtResource("6_g8rcj")
 
 [node name="ShootPoint" parent="." index="2"]
 position = Vector2(95, -31)
