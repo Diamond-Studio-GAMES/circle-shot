@@ -3,6 +3,6 @@
 # Imported translations (automatically generated from CSV files)
 *.translation
 # Android ignores
-android/
+/android/
 # Backup ignores
 *~

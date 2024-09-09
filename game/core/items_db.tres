@@ -10,7 +10,7 @@
 [ext_resource type="Resource" uid="uid://bsorviu43e0b1" path="res://game/skins/classic/classic.tres" id="5_3l44y"]
 [ext_resource type="Resource" uid="uid://c2hjmk44ru68x" path="res://game/skins/telegram/telegram.tres" id="6_etdf3"]
 [ext_resource type="Resource" uid="uid://dvnh4idsj61sj" path="res://game/skins/apple/apple.tres" id="7_7vr63"]
-[ext_resource type="Resource" uid="uid://bqi8cjsnsn84v" path="res://game/skins/android/android.tres" id="8_yhh8f"]
+[ext_resource type="Resource" uid="uid://cpd762mfrmmoc" path="res://game/skins/android/android.tres" id="8_yhh8f"]
 [ext_resource type="Resource" uid="uid://d3i1eoyd4e1n2" path="res://game/skins/sinep/sinep.tres" id="9_jevbu"]
 [ext_resource type="Resource" uid="uid://civajcyxxjsc4" path="res://game/skins/sunflower/sunflower.tres" id="10_2k6xx"]
 [ext_resource type="Resource" uid="uid://sgi4ij07qfbi" path="res://game/skins/piper/piper.tres" id="11_bvpy1"]
