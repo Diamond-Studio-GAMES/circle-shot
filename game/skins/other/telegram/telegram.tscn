@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://x2oithhak41y"]
+
+[ext_resource type="Texture2D" uid="uid://b3x23ajo3vrs7" path="res://game/skins/other/telegram/telegram.png" id="2_bd058"]
+[ext_resource type="Script" path="res://game/player/player_skin.gd" id="2_g5inp"]
+
+[node name="Telegram" type="Sprite2D"]
+texture = ExtResource("2_bd058")
+script = ExtResource("2_g5inp")

@@ -1,14 +1,52 @@
-[gd_scene load_steps=11 format=3 uid="uid://bt2uws44q5uk"]
+[gd_scene load_steps=21 format=3 uid="uid://bt2uws44q5uk"]
 
 [ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_l8sst"]
 [ext_resource type="PackedScene" uid="uid://ddnugomhhv0df" path="res://game/weapons/guns/desert_eagle/desert_eagle_bullet.tscn" id="2_7232m"]
-[ext_resource type="Texture2D" uid="uid://gpppt12rk1fl" path="res://game/weapons/guns/desert_eagle/clip.png" id="3_lxdps"]
-[ext_resource type="Texture2D" uid="uid://cfo1rv56h4024" path="res://game/weapons/guns/desert_eagle/desert_eagle.png" id="4_d7c0d"]
+[ext_resource type="Texture2D" uid="uid://cnvhq3b7cvpp0" path="res://game/weapons/guns/desert_eagle/magazine.png" id="3_6kj51"]
+[ext_resource type="Texture2D" uid="uid://2frquwbosh7u" path="res://game/weapons/guns/desert_eagle/base.png" id="4_4jpqo"]
 [ext_resource type="Texture2D" uid="uid://rvu643208pjh" path="res://game/weapons/guns/common/shoot_effect.png" id="5_12sp2"]
+[ext_resource type="Texture2D" uid="uid://cf6ipnt88aj0r" path="res://game/weapons/guns/desert_eagle/shutter.png" id="6_jyqc7"]
+[ext_resource type="Texture2D" uid="uid://p7lc2resallt" path="res://game/weapons/guns/common/gun_sleeve.png" id="7_2nu1t"]
+
+[sub_resource type="Curve" id="Curve_yn8d0"]
+max_value = 12.0
+_data = [Vector2(0, 0), 0.0, 15.4463, 0, 0, Vector2(1, 12), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_a2ndn"]
+min_value = -14.0
+max_value = 0.0
+_data = [Vector2(0, 0), 0.0, -13.7812, 0, 0, Vector2(1, -14), 0.492184, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_jn5kp"]
+min_value = -14.0
+max_value = 0.0
+_data = [Vector2(0, -14), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="Curve" id="Curve_rlx82"]
+_data = [Vector2(0.501916, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_q03mf"]
+curve = SubResource("Curve_rlx82")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bkidh"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 128.0
+initial_velocity_max = 128.0
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+gravity = Vector3(0, 98, 0)
+scale_min = 2.0
+scale_max = 2.0
+alpha_curve = SubResource("CurveTexture_q03mf")
 
 [sub_resource type="Animation" id="Animation_7gni2"]
 resource_name = "Equip"
-length = 0.7
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -75,7 +113,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Clip:rotation")
+tracks/3/path = NodePath("Magazine:rotation")
 tracks/3/interp = 3
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -87,7 +125,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Clip:self_modulate")
+tracks/4/path = NodePath("Magazine:self_modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -99,27 +137,64 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Clip:position")
+tracks/5/path = NodePath("Magazine:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1, -3)]
+"values": [Vector2(0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Magazine:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Base/Magazine:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Base/Shutter:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_iq16r"]
 resource_name = "Reload"
-length = 2.0
+length = 2.1
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Clip:rotation")
+tracks/0/path = NodePath("Magazine:rotation")
 tracks/0/interp = 3
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.8, 1, 1.4),
+"times": PackedFloat32Array(0, 0.3, 0.7, 1, 1.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [0.0, -0.349066, 5.93412, 0.349066, 0.349066]
@@ -127,14 +202,14 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Clip:self_modulate")
+tracks/1/path = NodePath("Magazine:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.6, 0.8, 1, 1.19, 1.4, 1.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1e-05, 1),
+"times": PackedFloat32Array(0, 0.55, 0.7, 1, 1.19, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1e-05),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -143,10 +218,10 @@ tracks/2/path = NodePath("Base:rotation")
 tracks/2/interp = 3
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.5, 0.8, 1, 1.7982, 1.9982),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.3, 0.45, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [0.0, -0.349066, 5.93412, 5.93412, 0.349066, 0.349066, 0.0]
+"values": [0.0, -0.349066, 5.93412, 5.93412, 0.349066]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -155,22 +230,58 @@ tracks/3/path = NodePath("Base:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.5, 0.8, 1, 1.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.3, 0.45, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-2.38419e-07, 8), Vector2(-2.38419e-07, 8), Vector2(0, 0), Vector2(0, 0)]
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-2.38419e-07, 8), Vector2(-2.38419e-07, 8), Vector2(0, 0)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Clip:position")
+tracks/4/path = NodePath("Magazine:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.8, 1, 1.2, 1.4),
+"times": PackedFloat32Array(0, 0.3, 0.7, 1, 1.2, 1.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(4, -3), Vector2(4, -3), Vector2(4, 93), Vector2(-60, -2), Vector2(-34, 48), Vector2(8, -2)]
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, 80), Vector2(-80, -4), Vector2(-34, 48), Vector2(0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Magazine:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.3, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Base/Magazine:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.3, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Base/Shutter:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1.6, 1.8, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-30, 0), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_llg42"]
@@ -201,10 +312,83 @@ tracks/1/keys = {
 "update": 0,
 "values": [0.0, -0.311802, 0.0]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Base/Shutter:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-30, 0), Vector2(0, 0)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Base/Sleeve")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.05),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"restart"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_x17tu"]
+resource_name = "PostEquip"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base:rotation")
+tracks/0/interp = 4
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2993),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.153362, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Base:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2993),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -8), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hitka"]
+resource_name = "PostReload"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base:rotation")
+tracks/0/interp = 3
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.349066, 0.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tv7o7"]
 _data = {
 "Equip": SubResource("Animation_7gni2"),
+"PostEquip": SubResource("Animation_x17tu"),
+"PostReload": SubResource("Animation_hitka"),
 "RESET": SubResource("Animation_mrem2"),
 "Reload": SubResource("Animation_iq16r"),
 "Shoot": SubResource("Animation_llg42")
@@ -212,28 +396,57 @@ _data = {
 
 [node name="DesertEagle" instance=ExtResource("1_l8sst")]
 shoot_interval = 0.6
+to_aim_time = 0.3
 projectile_scene = ExtResource("2_7232m")
+spread_walk = 3.5
+spread_curve = SubResource("Curve_yn8d0")
+spread_curve_time = 1.6
+spread_increasing_time = 0.5
+spread_reset_time = 0.7
+recoil_curve = SubResource("Curve_a2ndn")
+recoil_curve_time = 3.0
+recoil_cycle_curve = SubResource("Curve_jn5kp")
+recoil_increasing_time = 0.5
+recoil_reset_time = 0.7
 ammo_per_load = 7
 ammo_total = 42
 
-[node name="Clip" type="Sprite2D" parent="." index="0"]
+[node name="Magazine" type="Sprite2D" parent="." index="0"]
+visible = false
 self_modulate = Color(1, 1, 1, 0)
-position = Vector2(1, -3)
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("3_lxdps")
+texture = ExtResource("3_6kj51")
+offset = Vector2(48, -12)
 
 [node name="Base" type="Sprite2D" parent="." index="1"]
-texture = ExtResource("4_d7c0d")
-offset = Vector2(48, -8)
+texture = ExtResource("4_4jpqo")
+offset = Vector2(48, -12)
 
-[node name="Shoot" type="Sprite2D" parent="Base" index="0"]
+[node name="Magazine" type="Sprite2D" parent="Base" index="0"]
+show_behind_parent = true
+texture = ExtResource("3_6kj51")
+offset = Vector2(48, -12)
+
+[node name="Shoot" type="Sprite2D" parent="Base" index="1"]
 visible = false
 show_behind_parent = true
-position = Vector2(155, -40)
+position = Vector2(154, -50)
 texture = ExtResource("5_12sp2")
 
+[node name="Shutter" type="Sprite2D" parent="Base" index="2"]
+texture = ExtResource("6_jyqc7")
+offset = Vector2(48, -12)
+
+[node name="Sleeve" type="GPUParticles2D" parent="Base" index="3"]
+position = Vector2(22, -51)
+emitting = false
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_bkidh")
+texture = ExtResource("7_2nu1t")
+lifetime = 0.6
+one_shot = true
+
 [node name="ShootPoint" parent="." index="2"]
-position = Vector2(109, -32)
+position = Vector2(134, -50)
 
 [node name="AnimationPlayer" parent="." index="3"]
 libraries = {

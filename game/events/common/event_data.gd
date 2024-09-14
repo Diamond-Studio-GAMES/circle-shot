@@ -24,7 +24,3 @@ extends Resource
 @export_file("Texture2D") var image_path: String
 ## Массив карт данного события.
 @export var maps: Array[MapData]
-@export_group("Spawnables")
-## Массив путей к сценам, относящихся конкретно к этому событию, которые должны синхронизироваться
-## при появлении. Например, сцена коробки исцеления.
-@export_file("PackedScene") var spawnable_scenes_paths: Array[String]

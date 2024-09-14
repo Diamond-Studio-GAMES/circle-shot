@@ -1,16 +1,67 @@
-[gd_scene load_steps=13 format=3 uid="uid://vaggbadprpmu"]
+[gd_scene load_steps=23 format=3 uid="uid://vaggbadprpmu"]
 
 [ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_hu422"]
 [ext_resource type="Texture2D" uid="uid://cln1si1eynqrx" path="res://game/weapons/guns/shotgun/base.png" id="2_2dero"]
 [ext_resource type="Script" path="res://game/weapons/guns/shotgun/shotgun.gd" id="2_bxqwq"]
 [ext_resource type="PackedScene" uid="uid://co7528ytx5rvc" path="res://game/weapons/guns/shotgun/buckshot.tscn" id="3_1xtgg"]
 [ext_resource type="Texture2D" uid="uid://rvu643208pjh" path="res://game/weapons/guns/common/shoot_effect.png" id="3_17owv"]
-[ext_resource type="Texture2D" uid="uid://c6nlevhb1cdyu" path="res://game/weapons/guns/shotgun/handle.png" id="4_dkg56"]
 [ext_resource type="Texture2D" uid="uid://bdfqe6qhot1gb" path="res://game/weapons/guns/shotgun/ammo.png" id="5_stexv"]
+[ext_resource type="Texture2D" uid="uid://b4lr212g17v0p" path="res://game/weapons/guns/shotgun/shutter.png" id="6_cukv2"]
+
+[sub_resource type="Curve" id="Curve_mir4r"]
+max_value = 5.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_xfrd5"]
+min_value = -6.0
+max_value = 0.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, -6), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_v8kll"]
+min_value = -6.0
+max_value = 0.0
+_data = [Vector2(0, -6), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="Curve" id="Curve_ccnsu"]
+_data = [Vector2(0.501916, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_it1uq"]
+curve = SubResource("Curve_ccnsu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n6682"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 256.0
+initial_velocity_max = 256.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+gravity = Vector3(0, 98, 0)
+alpha_curve = SubResource("CurveTexture_it1uq")
+
+[sub_resource type="Animation" id="Animation_tx04y"]
+resource_name = "EndReload"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base/Shutter:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.05, 0.15, 0.2, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-20, 0), Vector2(-20, 0), Vector2(0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_0fhwh"]
 resource_name = "Equip"
-length = 0.7
+length = 0.45
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -35,6 +86,52 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.566879, -0.261799, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_42t1q"]
+resource_name = "PostEquip"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -12), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Base:rotation")
+tracks/1/interp = 4
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.261799, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_creb4"]
+resource_name = "PostReload"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base:rotation")
+tracks/0/interp = 4
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.197222, 0.0]
 }
 
 [sub_resource type="Animation" id="Animation_vqatp"]
@@ -66,55 +163,79 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Base/Ammo:position")
+tracks/2/path = NodePath("Base/Shutter:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-70, 35)]
+"values": [Vector2(0, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Base/Ammo:self_modulate")
+tracks/3/path = NodePath("Base/Shoot:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
+"update": 1,
+"values": [false]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Base/Handle:position")
+tracks/4/path = NodePath("Ammo:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(44, 4)]
+"values": [Vector2(-56, 0)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Base/ShootEffect:visible")
+tracks/5/path = NodePath("Ammo:rotation")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [0.20944]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Ammo:self_modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
 }
 
-[sub_resource type="Animation" id="Animation_j74ca"]
+[sub_resource type="Animation" id="Animation_4x8gt"]
 resource_name = "Reload"
-length = 2.5
+length = 0.6
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -123,56 +244,44 @@ tracks/0/path = NodePath("Base:rotation")
 tracks/0/interp = 3
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.15, 1.75, 1.9, 2.35, 2.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0, 0.197768, 0.197768, -0.197222, -0.197222, 0.0]
+"values": [0.197768]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Base/Ammo:position")
+tracks/1/path = NodePath("Ammo:position")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.25, 0.45, 0.6, 0.65, 0.75, 0.95, 1.1, 1.15, 1.25, 1.45, 1.6, 1.65),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.35, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(-70, 35), Vector2(-70, 35), Vector2(0, 36), Vector2(36, -8), Vector2(36, -8), Vector2(-70, 35), Vector2(0, 36), Vector2(36, -8), Vector2(36, -8), Vector2(-70, 35), Vector2(0, 36), Vector2(36, -8), Vector2(36, -8)]
+"values": [Vector2(-56, 0), Vector2(-56, 0), Vector2(-4, 23), Vector2(49, -2)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Base/Ammo:self_modulate")
+tracks/2/path = NodePath("Ammo:self_modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.25, 0.35, 0.6, 0.65, 0.75, 0.85, 1.1, 1.15, 1.25, 1.35, 1.6, 1.65),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Base/Handle:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 2, 2.15, 2.2, 2.35),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.55, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(44, 4), Vector2(44, 4), Vector2(32, 4), Vector2(32, 4), Vector2(44, 4)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_m4vyy"]
 resource_name = "Shoot"
-length = 0.9
+length = 0.8
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Base/ShootEffect:visible")
+tracks/0/path = NodePath("Base/Shoot:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -191,70 +300,127 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.35),
 "transitions": PackedFloat32Array(1, 0.5, 1),
 "update": 0,
-"values": [0.0, -0.174533, 0.0]
+"values": [0.0, -0.296706, 0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Base/Handle:position")
+tracks/2/path = NodePath("Base/Shutter:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.5, 0.65, 0.7, 0.85),
+"times": PackedFloat32Array(0, 0.5, 0.6, 0.65, 0.8),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(44, 4), Vector2(44, 4), Vector2(32, 4), Vector2(32, 4), Vector2(44, 4)]
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-20, 0), Vector2(-20, 0), Vector2(0, 0)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Base/Sleeve")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"restart"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Ammo:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_j74ca"]
+resource_name = "StartReload"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base:rotation")
+tracks/0/interp = 3
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.20944]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nbp2k"]
 _data = {
+"EndReload": SubResource("Animation_tx04y"),
 "Equip": SubResource("Animation_0fhwh"),
+"PostEquip": SubResource("Animation_42t1q"),
+"PostReload": SubResource("Animation_creb4"),
 "RESET": SubResource("Animation_vqatp"),
-"Reload": SubResource("Animation_j74ca"),
-"Shoot": SubResource("Animation_m4vyy")
+"Reload": SubResource("Animation_4x8gt"),
+"Shoot": SubResource("Animation_m4vyy"),
+"StartReload": SubResource("Animation_j74ca")
 }
 
 [node name="Shotgun" instance=ExtResource("1_hu422")]
 script = ExtResource("2_bxqwq")
-buckshot_spread = 30.0
-equip_time = 0.7
-reload_time = 2.5
-shoot_interval = 0.9
-spread = 0.0
-projectile = ExtResource("3_1xtgg")
-ammo_per_load = 3
-ammo_total = 21
+buckshot_in_shot = 6
+shoot_interval = 0.8
+to_aim_time = 0.2
+projectile_scene = ExtResource("3_1xtgg")
+spread_base = 20.0
+spread_walk = 3.0
+spread_curve = SubResource("Curve_mir4r")
+spread_curve_time = 1.0
+spread_reset_time = 0.8
+recoil_curve = SubResource("Curve_xfrd5")
+recoil_curve_time = 1.0
+recoil_cycle_curve = SubResource("Curve_v8kll")
+recoil_reset_time = 0.8
+ammo_per_load = 7
+ammo_total = 42
 
-[node name="Base" type="Sprite2D" parent="." index="0"]
-scale = Vector2(1.25, 1.25)
+[node name="Ammo" type="Sprite2D" parent="." index="0"]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(-56, 0)
+rotation = 0.20944
+texture = ExtResource("5_stexv")
+
+[node name="Base" type="Sprite2D" parent="." index="1"]
 texture = ExtResource("2_2dero")
-offset = Vector2(44, 4)
+offset = Vector2(56, 0)
 
-[node name="ShootEffect" type="Sprite2D" parent="Base" index="0"]
+[node name="Shoot" type="Sprite2D" parent="Base" index="0"]
 visible = false
-position = Vector2(163, -14)
+show_behind_parent = true
+position = Vector2(195, -23)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_17owv")
 offset = Vector2(20, 0)
 
-[node name="Handle" type="Sprite2D" parent="Base" index="1"]
-position = Vector2(44, 4)
-texture = ExtResource("4_dkg56")
+[node name="Shutter" type="Sprite2D" parent="Base" index="1"]
+texture = ExtResource("6_cukv2")
+offset = Vector2(56, 0)
 
-[node name="Ammo" type="Sprite2D" parent="Base" index="2"]
-self_modulate = Color(1, 1, 1, 0)
-show_behind_parent = true
-position = Vector2(-70, 35)
+[node name="Sleeve" type="GPUParticles2D" parent="Base" index="2"]
+position = Vector2(43, -21)
+emitting = false
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_n6682")
 texture = ExtResource("5_stexv")
+lifetime = 0.8
+one_shot = true
 
-[node name="ShootPoint" parent="." index="1"]
-position = Vector2(204, -18)
-
-[node name="Aim" parent="." index="2"]
-visible = false
-position = Vector2(204, -18)
-points = PackedVector2Array(0, 0, 2000, -1150, 2000, 1150)
-closed = true
+[node name="ShootPoint" parent="." index="2"]
+position = Vector2(196, -23)
 
 [node name="AnimationPlayer" parent="." index="3"]
 libraries = {

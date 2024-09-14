@@ -139,6 +139,9 @@ heal_box_scene = ExtResource("3_x8ahy")
 heal_box_spawn_interval = 15.0
 metadata/_edit_horizontal_guides_ = []
 
+[node name="OtherSpawner" parent="." index="6"]
+_spawnable_scenes = PackedStringArray("res://game/events/royale/heal_box.tscn")
+
 [node name="PlayerCounter" type="Label" parent="EventUI/Main" index="6"]
 layout_mode = 0
 offset_left = 16.0

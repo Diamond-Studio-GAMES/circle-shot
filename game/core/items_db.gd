@@ -68,17 +68,13 @@ const RARITY_COLORS := {
 ## Автоматически создаётся из [member WeaponData.spawnable_scenes_paths] у всех оружий.
 var spawnable_projectiles_paths: Array[String]
 ## Массив из путей к сценам, которые должны синхронизироваться при появлении, не связанных
-## с оружием. Автоматически создаётся из [member EventData.spawnable_scenes_paths] у всех событий
-## и из [member SkillData.spawnable_scenes_paths] у всех навыков.
+## с оружием. Автоматически создаётся из [member SkillData.spawnable_scenes_paths] у всех навыков.
 var spawnable_other_paths: Array[String]
 
 
 func generate_spawnable_paths() -> void:
 	spawnable_projectiles_paths.clear()
 	spawnable_other_paths.clear()
-	
-	for i: EventData in events:
-		spawnable_other_paths.append_array(i.spawnable_scenes_paths)
 	
 	for i: WeaponData in weapons_light:
 		spawnable_projectiles_paths.append_array(i.spawnable_scenes_paths)
@@ -88,5 +84,6 @@ func generate_spawnable_paths() -> void:
 		spawnable_projectiles_paths.append_array(i.spawnable_scenes_paths)
 	for i: WeaponData in weapons_melee:
 		spawnable_projectiles_paths.append_array(i.spawnable_scenes_paths)
+	
 	for i: SkillData in skills:
 		spawnable_other_paths.append_array(i.spawnable_scenes_paths)

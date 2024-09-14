@@ -21,6 +21,42 @@ tracks/0/keys = {
 "update": 0,
 "values": [Rect2(0, 2, 4096, 510)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Top2:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(0, 2, 4096, 510)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Top3:region_rect")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(0, 2, 4096, 510)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Top4:region_rect")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(0, 2, 4096, 510)]
+}
 
 [sub_resource type="Animation" id="Animation_3xxqq"]
 resource_name = "move"
@@ -37,7 +73,43 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 20),
 "transitions": PackedFloat32Array(1, 1e-05),
 "update": 0,
-"values": [Rect2(0, 2, 4096, 510), Rect2(512, 2, 4096, 510)]
+"values": [Rect2(0, 2, 4096, 510), Rect2(2048, 2, 4096, 510)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Top2:region_rect")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 20),
+"transitions": PackedFloat32Array(1, 1e-05),
+"update": 0,
+"values": [Rect2(0, 2, 4096, 510), Rect2(2048, 2, 4096, 510)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Top3:region_rect")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 20),
+"transitions": PackedFloat32Array(1, 1e-05),
+"update": 0,
+"values": [Rect2(0, 2, 4096, 510), Rect2(2048, 2, 4096, 510)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Top4:region_rect")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 20),
+"transitions": PackedFloat32Array(1, 1e-05),
+"update": 0,
+"values": [Rect2(0, 2, 4096, 510), Rect2(2048, 2, 4096, 510)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vpitb"]
@@ -62,8 +134,31 @@ shape = SubResource("WorldBoundaryShape2D_k7uj4")
 [node name="Top" type="Sprite2D" parent="."]
 z_index = 4
 texture_repeat = 2
-position = Vector2(0, 768)
-scale = Vector2(4, 4)
+position = Vector2(-6144, 4)
+texture = ExtResource("1_dtg0d")
+region_enabled = true
+region_rect = Rect2(0, 2, 4096, 510)
+
+[node name="Top2" type="Sprite2D" parent="."]
+z_index = 4
+texture_repeat = 2
+position = Vector2(-2048, 4)
+texture = ExtResource("1_dtg0d")
+region_enabled = true
+region_rect = Rect2(0, 2, 4096, 510)
+
+[node name="Top3" type="Sprite2D" parent="."]
+z_index = 4
+texture_repeat = 2
+position = Vector2(2048, 4)
+texture = ExtResource("1_dtg0d")
+region_enabled = true
+region_rect = Rect2(0, 2, 4096, 510)
+
+[node name="Top4" type="Sprite2D" parent="."]
+z_index = 4
+texture_repeat = 2
+position = Vector2(6144, 4)
 texture = ExtResource("1_dtg0d")
 region_enabled = true
 region_rect = Rect2(0, 2, 4096, 510)
@@ -71,11 +166,11 @@ region_rect = Rect2(0, 2, 4096, 510)
 [node name="Base" type="Sprite2D" parent="."]
 z_index = 4
 texture_repeat = 2
-position = Vector2(0, 4856)
+position = Vector2(0, 4344)
 scale = Vector2(4, 4)
 texture = ExtResource("3_j3p5e")
 region_enabled = true
-region_rect = Rect2(0, 0, 4096, 1536)
+region_rect = Rect2(0, 0, 4096, 2048)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

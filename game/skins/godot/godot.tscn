@@ -1,8 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://ds0ff0j1qcmoc"]
-
-[ext_resource type="Texture2D" uid="uid://cyd4ngcmai4cl" path="res://game/skins/godot/godot.png" id="2_661qc"]
-[ext_resource type="Script" path="res://game/player/player_skin.gd" id="2_c2a2l"]
-
-[node name="Godot" type="Sprite2D"]
-texture = ExtResource("2_661qc")
-script = ExtResource("2_c2a2l")

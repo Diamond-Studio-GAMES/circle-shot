@@ -1,8 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://hu5r8bfwm35u"]
-
-[ext_resource type="Script" path="res://game/player/player_skin.gd" id="2_a3ger"]
-[ext_resource type="Texture2D" uid="uid://du5ppe5qo0scu" path="res://game/skins/apple/apple.png" id="2_txhno"]
-
-[node name="Apple" type="Sprite2D"]
-texture = ExtResource("2_txhno")
-script = ExtResource("2_a3ger")

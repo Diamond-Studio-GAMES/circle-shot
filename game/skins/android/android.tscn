@@ -1,8 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://crm68n863viai"]
-
-[ext_resource type="Texture2D" uid="uid://b8o7jvurl4hsb" path="res://game/skins/android/android.png" id="1_bwwa0"]
-[ext_resource type="Script" path="res://game/player/player_skin.gd" id="2_oeuuy"]
-
-[node name="Android" type="Sprite2D"]
-texture = ExtResource("1_bwwa0")
-script = ExtResource("2_oeuuy")
