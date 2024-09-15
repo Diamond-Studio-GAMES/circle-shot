@@ -198,7 +198,7 @@ func _calculate_spread() -> float:
 func _create_projectile() -> void:
 	var projectile: Attack = projectile_scene.instantiate()
 	projectile.global_position = _shoot_point.global_position
-	projectile.damage = roundi(projectile.damage * _player.damage_multiplier)
+	projectile.damage_multiplier = _player.damage_multiplier
 	var spread: float = _calculate_spread()
 	projectile.rotation = _player.player_input.aim_direction.angle() \
 			+ deg_to_rad(randf_range(-spread, spread)) \

@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 
 signal health_changed(old_value: int, new_value: int)
+signal damaged(who: int, by: int)
 signal killed(who: int, by: int)
 signal died(who: int)
 
@@ -154,9 +155,11 @@ func clear_effects(negative := true, positive := false) -> void:
 #region Методы здоровья
 @rpc("call_local", "reliable", "authority", 1)
 func set_health(health: int) -> void:
-	if current_health <= 0:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
 		return
-	if health == current_health:
+	
+	if current_health <= 0:
 		return
 	if health <= 0:
 		current_health = 0
@@ -198,8 +201,13 @@ func damage(amount: int, by: int) -> void:
 			current_health - roundi(amount * defense_multiplier),
 			0, max_health
 	)
+	if new_health == current_health:
+		return
+	
 	if new_health <= 0:
 		killed.emit(id, by)
+	else:
+		damaged.emit(id, by)
 	set_health.rpc(new_health)
 
 
@@ -207,7 +215,10 @@ func heal(amount: int) -> void:
 	if not multiplayer.is_server():
 		push_error("This method must be called only on server!")
 		return
+	
 	var new_health: int = clampi(current_health + amount, 0, max_health)
+	if new_health == current_health:
+		return
 	set_health.rpc(new_health)
 #endregion
 

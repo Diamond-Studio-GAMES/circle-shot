@@ -28,7 +28,7 @@ func _shoot() -> void:
 	block_shooting()
 	
 	if multiplayer.is_server():
-		_attack.damage = roundi(damage * _player.damage_multiplier)
+		_attack.damage_multiplier = _player.damage_multiplier
 		_attack.team = _player.team
 		_attack.who = _player.id
 		if has_node(^"Attack/RayDetector"):
@@ -41,6 +41,8 @@ func _shoot() -> void:
 
 
 func _make_current() -> void:
+	_attack.damage = damage
+	
 	block_shooting()
 	_anim.play(&"Equip")
 	

@@ -3,11 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://1durulsrwk7o" path="res://game/weapons/guns/common/bullet.tscn" id="1_y8mmd"]
 
 [node name="Buckshot" instance=ExtResource("1_y8mmd")]
-speed = 2000.0
-damage = 8
+speed = 1900.0
+damage = 9
 
 [node name="Sprite2D" parent="." index="1"]
 scale = Vector2(1, 0.5)
 
 [node name="Timer" parent="." index="2"]
-wait_time = 1.5
+wait_time = 0.9

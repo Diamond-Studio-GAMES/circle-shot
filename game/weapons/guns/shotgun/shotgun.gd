@@ -1,17 +1,24 @@
 extends "res://game/weapons/guns/common/gun.gd"
 
 @export var buckshot_in_shot: int = 6
+var _reloading := false
+
+func can_reload() -> bool:
+	return super() and not _reloading
+
 
 func reload() -> void:
 	if ammo_in_stock < 1:
 		return
 	
-	var tween: Tween = create_tween()
-	tween.tween_property(self, ^"rotation", 0.0, to_aim_time)
+	_reloading = true
+	block_shooting()
 	_anim.play(&"StartReload")
 	
 	var anim_name: StringName = await _anim.animation_finished
+	unlock_shooting()
 	if anim_name != &"StartReload":
+		_reloading = false
 		return
 	
 	while ammo != ammo_per_load:
@@ -21,27 +28,31 @@ func reload() -> void:
 		_anim.play(&"Reload")
 		anim_name = await _anim.animation_finished
 		if anim_name != &"Reload":
+			_reloading = false
 			return
 		
 		ammo += 1
 		ammo_in_stock -= 1
 		_player.ammo_text_updated.emit(get_ammo_text())
 	
+	block_shooting()
 	_anim.play(&"EndReload")
 	anim_name = await _anim.animation_finished
+	_reloading = false
 	if anim_name != &"EndReload":
+		unlock_shooting()
 		return
 	
 	_anim.play(&"PostReload")
-	tween = create_tween()
-	tween.tween_property(self, ^"rotation", _calculate_aim_direction(), to_aim_time)
+	await _anim.animation_finished
+	unlock_shooting()
 
 
 func _create_projectile() -> void:
 	for i: int in buckshot_in_shot:
 		var projectile: Attack = projectile_scene.instantiate()
 		projectile.global_position = _shoot_point.global_position
-		projectile.damage = roundi(projectile.damage * _player.damage_multiplier)
+		projectile.damage_multiplier = _player.damage_multiplier
 		projectile.rotation = _player.player_input.aim_direction.angle() + deg_to_rad(
 				_calculate_spread() * (-1 + 2.0 / (buckshot_in_shot - 1) * i)
 		)

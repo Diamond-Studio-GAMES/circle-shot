@@ -141,14 +141,14 @@ _data = {
 
 [node name="SniperRifle" instance=ExtResource("1_57777")]
 script = ExtResource("2_ir31q")
+ammo_per_load = 1
+ammo_total = 10
+speed_multiplier_when_current = 0.7
 aim_zoom = Vector2(0.5, 0.5)
 equip_time = 1.0
 reload_time = 1.25
 spread = 0.0
 projectile = ExtResource("2_stbvt")
-ammo_per_load = 1
-ammo_total = 10
-speed_multiplier_when_current = 0.7
 
 [node name="Weapon" type="Sprite2D" parent="." index="0"]
 scale = Vector2(1.5, 1.5)
@@ -163,12 +163,7 @@ texture = ExtResource("3_nfw2e")
 [node name="ShootPoint" parent="." index="1"]
 position = Vector2(273, -30)
 
-[node name="Aim" parent="." index="2"]
-position = Vector2(273, -30)
-points = PackedVector2Array(0, 0, 12000, 0)
-width = 16.0
-
-[node name="AnimationPlayer" parent="." index="3"]
+[node name="AnimationPlayer" parent="." index="2"]
 libraries = {
 "": SubResource("AnimationLibrary_1c0bv")
 }
