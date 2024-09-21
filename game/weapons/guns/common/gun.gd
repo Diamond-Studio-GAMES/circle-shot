@@ -62,7 +62,7 @@ func _initialize() -> void:
 	spread_curve.bake()
 
 
-func _make_current() -> void:	
+func _make_current() -> void:
 	block_shooting()
 	_anim.play(&"Equip")
 	

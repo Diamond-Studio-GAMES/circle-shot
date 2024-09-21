@@ -135,9 +135,9 @@ func set_weapon(type: Weapon.Type, weapon_id: int) -> void:
 			weapon_path = Globals.items_db.weapons_melee[weapon_id].scene_path
 	var weapon_scene: PackedScene = load(weapon_path)
 	var weapon: Weapon = weapon_scene.instantiate()
-	weapon.initialize(self)
 	_weapons.add_child(weapon)
 	_weapons.move_child(weapon, type)
+	weapon.initialize(self)
 	equip_data[1 + type] = weapon_id
 	weapon_equipped.emit(type, weapon_id)
 	print_verbose("Set weapon with ID %d with type %d on player %d" % [weapon_id, type, id])

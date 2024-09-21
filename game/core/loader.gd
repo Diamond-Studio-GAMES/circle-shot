@@ -10,8 +10,8 @@ signal loaded_part(success: bool)
 var _loaded_part := false
 var _loading_path: String
 @onready var _anim: AnimationPlayer = $AnimationPlayer
-@onready var _bar: ProgressBar = $CanvasGroup/ProgressBar
-@onready var _status_text: Label = $CanvasGroup/ProgressBar/Label
+@onready var _bar: ProgressBar = $Screen/ProgressBar
+@onready var _status_text: Label = $Screen/ProgressBar/Label
 
 
 func _ready() -> void:

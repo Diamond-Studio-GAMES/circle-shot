@@ -25,7 +25,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("CanvasGroup:self_modulate")
+tracks/1/path = NodePath("Screen:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -52,7 +52,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("CanvasGroup:self_modulate")
+tracks/1/path = NodePath("Screen:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -80,7 +80,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("CanvasGroup:self_modulate")
+tracks/1/path = NodePath("Screen:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -105,10 +105,18 @@ layer = 5
 visible = false
 script = ExtResource("2_p5b8s")
 
-[node name="CanvasGroup" type="CanvasGroup" parent="Loader"]
+[node name="Screen" type="Control" parent="Loader"]
+modulate = Color(1, 1, 1, 0)
 self_modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Background" type="ColorRect" parent="Loader/CanvasGroup"]
+[node name="Background" type="ColorRect" parent="Loader/Screen"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -116,47 +124,51 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.501961, 0.501961, 0.501961, 1)
 
-[node name="Image" type="TextureRect" parent="Loader/CanvasGroup"]
+[node name="Image" type="TextureRect" parent="Loader/Screen"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -160.0
-offset_right = 1440.0
-offset_bottom = 720.0
+offset_left = -800.0
+offset_top = -360.0
+offset_right = 800.0
+offset_bottom = 360.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_512x5")
 
-[node name="Logo" type="TextureRect" parent="Loader/CanvasGroup"]
+[node name="Logo" type="TextureRect" parent="Loader/Screen"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 240.0
-offset_top = 192.0
-offset_right = 1040.0
-offset_bottom = 352.0
+offset_left = -400.0
+offset_top = -168.0
+offset_right = 400.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_yi0ok")
 
-[node name="ProgressBar" type="ProgressBar" parent="Loader/CanvasGroup"]
+[node name="ProgressBar" type="ProgressBar" parent="Loader/Screen"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 400.0
-offset_top = 504.0
-offset_right = 880.0
-offset_bottom = 552.0
+offset_left = -240.0
+offset_top = 144.0
+offset_right = 240.0
+offset_bottom = 192.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Loader/CanvasGroup/ProgressBar"]
+[node name="Label" type="Label" parent="Loader/Screen/ProgressBar"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0

@@ -1,11 +1,10 @@
-extends "res://weapons/common/gun.gd"
+extends "res://game/weapons/guns/common/gun.gd"
 
 @export var aim_zoom: Vector2
 var _aim_visible_in_previous_frame := false
 var _default_zoom: Vector2
 
-func _ready() -> void:
-	super()
+func _initialize() -> void:
 	_default_zoom = get_viewport().get_camera_2d().zoom
 
 
@@ -19,6 +18,7 @@ func _process(delta: float) -> void:
 
 
 func _unmake_current() -> void:
+	super()
 	_aim_visible_in_previous_frame = false
 	var camera: Camera2D = get_viewport().get_camera_2d()
 	var tween: Tween = camera.create_tween()

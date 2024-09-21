@@ -274,7 +274,7 @@ spawn_path = NodePath("../Other")
 spawn_limit = 50
 
 [node name="Camera" type="Camera2D" parent="."]
-zoom = Vector2(0.6, 0.6)
+zoom = Vector2(0.5, 0.5)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 script = ExtResource("2_mo4dc")
