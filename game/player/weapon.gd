@@ -72,14 +72,22 @@ func reload() -> void:
 	pass
 
 
+func can_reload() -> bool:
+	return ammo != ammo_per_load and (ammo_in_stock > 0 or ammo > 0)
+
+
+func additional_button() -> void:
+	pass
+
+
+func has_additional_button() -> bool:
+	return false
+
+
 func get_ammo_text() -> String:
 	if ammo + ammo_in_stock <= 0:
 		return "Нет патронов"
 	return "%d/%d" % [ammo, ammo_in_stock]
-
-
-func can_reload() -> bool:
-	return ammo != ammo_per_load and (ammo_in_stock > 0 or ammo > 0)
 
 
 func _calculate_aim_direction() -> float:

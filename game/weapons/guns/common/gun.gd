@@ -141,13 +141,10 @@ func _shoot() -> void:
 
 
 func can_reload() -> bool:
-	return super() and _shoot_timer <= 0.0
+	return super() and _shoot_timer <= 0.0 and ammo_in_stock > ammo_per_load
 
 
 func reload() -> void:
-	if ammo_in_stock < ammo_per_load:
-		return
-	
 	var tween: Tween = create_tween()
 	tween.tween_property(self, ^"rotation", 0.0, to_aim_time)
 	_anim.play(&"Reload")

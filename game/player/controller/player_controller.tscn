@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://0wc72b0o2o11"]
+[gd_scene load_steps=16 format=3 uid="uid://0wc72b0o2o11"]
 
 [ext_resource type="Script" path="res://game/player/controller/player_controller.gd" id="1_5ls6j"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick.tscn" id="2_b1vhp"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cwx57jlb3j88p" path="res://game/player/controller/joystick_tip_move.png" id="4_pkrqe"]
 [ext_resource type="Texture2D" uid="uid://chfx32osm5nwo" path="res://game/player/controller/joystick_tip_aim.png" id="5_ior64"]
 [ext_resource type="Texture2D" uid="uid://p85ppsyx0g2n" path="res://game/player/controller/weapon_bg.png" id="6_7kfw0"]
+[ext_resource type="Texture2D" uid="uid://djbso2agyek2p" path="res://game/player/controller/additional_button.png" id="6_dsspw"]
 [ext_resource type="Shader" path="res://game/player/controller/solid_color.gdshader" id="7_3hhip"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6sal7"]
@@ -95,6 +96,17 @@ use_input_actions = false
 [node name="ShootArea" type="TouchScreenButton" parent="TouchControls"]
 position = Vector2(320, 128)
 shape = SubResource("RectangleShape2D_6sal7")
+
+[node name="Anchor" type="Control" parent="TouchControls"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+grow_vertical = 2
+
+[node name="AdditionalButton" type="TouchScreenButton" parent="TouchControls/Anchor"]
+position = Vector2(16, -72)
+texture_normal = ExtResource("6_dsspw")
 
 [node name="WeaponSelection" type="Control" parent="."]
 visible = false
@@ -383,6 +395,17 @@ text = "120/60"
 position = Vector2(144, 72)
 shape = SubResource("RectangleShape2D_0kb2l")
 
+[node name="Center" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="TouchControls/Anchor/AdditionalButton" to="." method="additional_button"]
 [connection signal="pressed" from="WeaponSelection/LightWeapon/TouchScreenButton" to="." method="select_weapon" binds= [0]]
 [connection signal="pressed" from="WeaponSelection/HeavyWeapon/TouchScreenButton" to="." method="select_weapon" binds= [1]]
 [connection signal="pressed" from="WeaponSelection/SupportWeapon/TouchScreenButton" to="." method="select_weapon" binds= [2]]

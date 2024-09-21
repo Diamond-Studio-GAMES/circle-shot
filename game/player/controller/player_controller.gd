@@ -1,13 +1,20 @@
 extends Node
 
 
-const SNEAK_MULTIPLIER := 0.4
+const MIN_AIM_DIRECTION_LENGTH := 0.1
+
+var aim_deadzone := 60.0
+var aim_max_at_distance := 260.0
+var sneak_multiplier := 0.5
+
 var _player: Player
+
 var _touch := true
 var _moving_left := false
 var _moving_right := false
 var _moving_up := false
 var _moving_down := false
+var _aim_zone: float
 
 @onready var _current_weapon_icon: TextureRect = $CurrentWeapon/Icon
 @onready var _light_weapon_icon: TextureRect = $WeaponSelection/LightWeapon/Icon
@@ -20,11 +27,14 @@ var _moving_down := false
 @onready var _aim_joystick: VirtualJoystick = $TouchControls/AimVirtualJoystick
 @onready var _shoot_area: TouchScreenButton = $TouchControls/ShootArea
 
+@onready var _center: Control = $Center
+
 
 func _ready() -> void:
 	if not OS.has_feature("mobile"):
 		$TouchControls.hide()
 		_touch = false
+		_aim_zone = aim_max_at_distance - aim_deadzone
 
 
 func _process(_delta: float) -> void:
@@ -45,12 +55,12 @@ func _process(_delta: float) -> void:
 			+ Vector2.UP * int(_moving_up) + Vector2.DOWN * int(_moving_down)
 		).normalized()
 		if Input.is_action_pressed(&"sneak"):
-			_player.entity_input.direction *= SNEAK_MULTIPLIER
+			_player.entity_input.direction *= sneak_multiplier
 		
-		#if _player.player_input.aiming:
-		# Возможность делать прицел поменьше
-		_player.player_input.aim_direction = \
-				_player.global_position.direction_to(_player.get_global_mouse_position())
+		var mouse_pos: Vector2 = _center.get_local_mouse_position()
+		_player.player_input.aim_direction = mouse_pos.normalized() * ((
+				clampf(mouse_pos.length(), aim_deadzone, aim_max_at_distance) - aim_deadzone
+		) / _aim_zone * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -75,7 +85,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		if event.is_action(&"move_down"):
 			_moving_down = event.is_pressed()
 		
-		if event.is_action_pressed(&"select_weapon"):
+		if event.is_action_pressed(&"show_weapons"):
 			if ($WeaponSelection as Control).visible:
 				_close_weapon_selection()
 			else:
@@ -90,6 +100,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			select_weapon(Weapon.Type.MELEE)
 		elif event.is_action_pressed(&"reload"):
 			reload()
+		elif event.is_action_pressed(&"additional_button"):
+			additional_button()
 
 
 func select_weapon(type: Weapon.Type) -> void:
@@ -101,6 +113,11 @@ func select_weapon(type: Weapon.Type) -> void:
 func reload() -> void:
 	if is_instance_valid(_player):
 		_player.try_reload_weapon()
+
+
+func additional_button() -> void:
+	if is_instance_valid(_player):
+		_player.try_use_additional_button_weapon()
 
 
 func open_weapon_selection() -> void:

@@ -36,7 +36,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	super(delta)
-	_visual.scale.x = -1 if player_input.aim_direction.x < 0 else 1
+	if not is_disarmed():
+		_visual.scale.x = -1 if player_input.aim_direction.x < 0 else 1
 
 
 @rpc("call_local", "reliable", "authority", 2)
@@ -58,6 +59,15 @@ func reload_weapon() -> void:
 		return
 	
 	current_weapon.reload()
+
+
+@rpc("call_local", "reliable", "authority", 2)
+func additional_button_weapon() -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
+	current_weapon.additional_button()
 
 
 func try_change_weapon(to: Weapon.Type) -> void:
@@ -84,6 +94,19 @@ func try_reload_weapon() -> void:
 		if not current_weapon.can_reload():
 			return
 		reload_weapon.rpc()
+
+
+func try_use_additional_button_weapon() -> void:
+	if not multiplayer.is_server():
+		_request_additional_button.rpc_id(1)
+	else:
+		if is_disarmed():
+			return
+		if not is_instance_valid(current_weapon):
+			return
+		if not current_weapon.has_additional_button():
+			return
+		additional_button_weapon.rpc()
 
 
 func set_skin(skin_id: int) -> void:
@@ -181,6 +204,25 @@ func _request_reload() -> void:
 	if not current_weapon.can_reload():
 		return
 	reload_weapon.rpc()
+
+
+@rpc("any_peer", "reliable", "call_remote", 2)
+func _request_additional_button() -> void:
+	if not multiplayer.is_server():
+		push_error("This method must be called only on server!")
+		return
+	if id != multiplayer.get_remote_sender_id():
+		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
+			multiplayer.get_remote_sender_id(), id
+		])
+		return
+	if is_disarmed():
+		return
+	if not is_instance_valid(current_weapon):
+		return
+	if not current_weapon.has_additional_button():
+		return
+	additional_button_weapon.rpc()
 
 
 func _set_current_weapon(to: Weapon.Type) -> void:
