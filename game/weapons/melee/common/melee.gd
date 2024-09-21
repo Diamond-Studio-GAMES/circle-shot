@@ -13,7 +13,7 @@ var _shoot_timer: float = 0.0
 func _process(delta: float) -> void:
 	_aim.hide()
 	if not _player.is_disarmed() and can_shoot():
-		_aim.visible = _player.player_input.aiming and multiplayer.get_unique_id() == _player.id
+		_aim.visible = _player.player_input.showing_aim
 		rotation = _calculate_aim_direction()
 		
 		if multiplayer.is_server():

@@ -42,7 +42,7 @@ func _process(delta: float) -> void:
 	_aim.hide()
 	
 	if not _player.is_disarmed() and can_shoot():
-		_aim.visible = _player.player_input.aiming and multiplayer.get_unique_id() == _player.id 
+		_aim.visible = _player.player_input.showing_aim
 		rotation = _calculate_aim_direction() + deg_to_rad(_calculate_recoil())
 		
 		_aim_spread_left.rotation_degrees = -_calculate_spread()

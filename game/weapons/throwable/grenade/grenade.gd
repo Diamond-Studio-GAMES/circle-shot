@@ -11,7 +11,7 @@ var _can_throw := true
 
 
 func _process(_delta: float) -> void:
-	_aim.visible = _player.player_input.aiming
+	_aim.visible = _player.player_input.showing_aim
 	if _aim.visible:
 		var aim_direction: Vector2 = _player.player_input.aim_direction
 		aim_direction.x = absf(aim_direction.x) 

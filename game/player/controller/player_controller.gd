@@ -35,9 +35,9 @@ func _process(_delta: float) -> void:
 		_player.entity_input.direction = _move_joystick.output
 		if not _aim_joystick.output.is_zero_approx():
 			_player.player_input.aim_direction = _aim_joystick.output
-			_player.player_input.aiming = true
+			_player.player_input.showing_aim = true
 		else:
-			_player.player_input.aiming = false
+			_player.player_input.showing_aim = false
 		_player.player_input.shooting = _shoot_area.is_pressed()
 	else:
 		_player.entity_input.direction = (
@@ -47,10 +47,10 @@ func _process(_delta: float) -> void:
 		if Input.is_action_pressed(&"sneak"):
 			_player.entity_input.direction *= SNEAK_MULTIPLIER
 		
-		if _player.player_input.aiming:
-			# Возможность делать прицел поменьше
-			_player.player_input.aim_direction = \
-					_player.global_position.direction_to(_player.get_global_mouse_position())
+		#if _player.player_input.aiming:
+		# Возможность делать прицел поменьше
+		_player.player_input.aim_direction = \
+				_player.global_position.direction_to(_player.get_global_mouse_position())
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -60,8 +60,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not _touch:
 		if event.is_action(&"shoot"):
 			_player.player_input.shooting = event.is_pressed()
-		if event.is_action(&"aim"):
-			_player.player_input.aiming = event.is_pressed()
+		if event.is_action(&"show_aim"):
+			_player.player_input.showing_aim = event.is_pressed()
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -117,6 +117,7 @@ func _on_local_player_created(player: Player) -> void:
 	player.ammo_text_updated.connect(_on_ammo_text_updated)
 	player.weapon_changed.connect(_on_weapon_changed)
 	player.weapon_equipped.connect(_on_weapon_equipped)
+	player.player_input.turn_with_aim = not _touch
 	_player = player
 
 
