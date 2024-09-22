@@ -120,4 +120,6 @@ script = ExtResource("3_knbu5")
 [node name="Synchronizer" parent="." index="6"]
 replication_config = SubResource("SceneReplicationConfig_r6igu")
 
+[node name="AudioListener2D" type="AudioListener2D" parent="." index="7"]
+
 [connection signal="health_changed" from="." to="." method="_on_health_changed"]

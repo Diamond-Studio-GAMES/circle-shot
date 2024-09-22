@@ -413,6 +413,8 @@ _data = {
 [node name="SniperRifle" instance=ExtResource("1_57777")]
 script = ExtResource("2_ir31q")
 aim_zoom = Vector2(0.7, 0.7)
+aim_slowdown = 0.8
+no_aim_spread = 8.0
 shoot_interval = 1.0
 to_aim_time = 0.3
 projectile_scene = ExtResource("2_stbvt")

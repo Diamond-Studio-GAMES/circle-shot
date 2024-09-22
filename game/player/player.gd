@@ -25,6 +25,7 @@ func _ready() -> void:
 		(get_tree().get_first_node_in_group(&"Event") as Event).set_local_player(self)
 		($ControlIndicator as Node2D).show()
 		($ControlIndicator as Node2D).self_modulate = TEAM_COLORS[team]
+		($AudioListener2D as AudioListener2D).make_current()
 	
 	set_skin(equip_data[0])
 	

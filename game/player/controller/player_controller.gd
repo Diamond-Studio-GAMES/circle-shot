@@ -44,10 +44,14 @@ func _process(_delta: float) -> void:
 	if _touch:
 		_player.entity_input.direction = _move_joystick.output
 		if not _aim_joystick.output.is_zero_approx():
-			_player.player_input.aim_direction = _aim_joystick.output
+			var aim: Vector2 = _aim_joystick.output
+			_player.player_input.aim_direction = aim.normalized() * \
+					(aim.length() * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
 			_player.player_input.showing_aim = true
+			_player.player_input.turn_with_aim = true
 		else:
 			_player.player_input.showing_aim = false
+			_player.player_input.turn_with_aim = false
 		_player.player_input.shooting = _shoot_area.is_pressed()
 	else:
 		_player.entity_input.direction = (
@@ -58,9 +62,11 @@ func _process(_delta: float) -> void:
 			_player.entity_input.direction *= sneak_multiplier
 		
 		var mouse_pos: Vector2 = _center.get_local_mouse_position()
-		_player.player_input.aim_direction = mouse_pos.normalized() * ((
-				clampf(mouse_pos.length(), aim_deadzone, aim_max_at_distance) - aim_deadzone
-		) / _aim_zone * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
+		var mouse_distance: float = mouse_pos.length()
+		if mouse_distance > aim_deadzone:
+			_player.player_input.aim_direction = mouse_pos.normalized() * ((
+					clampf(mouse_distance, aim_deadzone, aim_max_at_distance) - aim_deadzone
+			) / _aim_zone * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -164,6 +170,9 @@ func _on_weapon_changed(to: Weapon.Type) -> void:
 					&"color",
 					(_melee_weapon_icon.material as ShaderMaterial).get_shader_parameter(&"color")
 			)
+	
+	($TouchControls/Anchor/AdditionalButton as Node2D).visible = \
+			_player.current_weapon.has_additional_button()
 
 
 func _on_weapon_equipped(type: Weapon.Type, weapon_id: int) -> void:
