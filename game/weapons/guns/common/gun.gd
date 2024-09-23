@@ -137,6 +137,7 @@ func _shoot() -> void:
 	
 	if ammo <= 0:
 		await _anim.animation_finished
+		_shoot_timer = 0.0
 		if can_reload():
 			reload()
 
