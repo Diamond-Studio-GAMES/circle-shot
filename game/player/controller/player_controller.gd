@@ -45,8 +45,8 @@ func _process(_delta: float) -> void:
 		_player.entity_input.direction = _move_joystick.output
 		if not _aim_joystick.output.is_zero_approx():
 			var aim: Vector2 = _aim_joystick.output
-			_player.player_input.aim_direction = aim.normalized() * \
-					(aim.length() * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
+			_player.player_input.aim_direction = aim.normalized() * MIN_AIM_DIRECTION_LENGTH + \
+					aim * (1.0 - MIN_AIM_DIRECTION_LENGTH)
 			_player.player_input.showing_aim = true
 			_player.player_input.turn_with_aim = true
 		else:

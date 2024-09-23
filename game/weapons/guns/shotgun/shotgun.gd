@@ -4,13 +4,11 @@ extends "res://game/weapons/guns/common/gun.gd"
 var _reloading := false
 
 func can_reload() -> bool:
-	return super() and not _reloading
+	return ammo != ammo_per_load and ammo_in_stock > 0 and can_shoot() \
+			and _shoot_timer <= 0.0 and not _reloading
 
 
 func reload() -> void:
-	if ammo_in_stock < 1:
-		return
-	
 	_reloading = true
 	block_shooting()
 	_anim.play(&"StartReload")

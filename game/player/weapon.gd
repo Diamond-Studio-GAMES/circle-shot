@@ -73,7 +73,7 @@ func reload() -> void:
 
 
 func can_reload() -> bool:
-	return ammo != ammo_per_load and (ammo_in_stock > 0 or ammo > 0)
+	return ammo != ammo_per_load and ammo_in_stock > 0 and can_shoot()
 
 
 func additional_button() -> void:

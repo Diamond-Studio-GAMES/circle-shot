@@ -16,13 +16,7 @@ var _aiming := false
 func _process(delta: float) -> void:
 	super(delta)
 	if _aiming and _player.id == multiplayer.get_unique_id():
-		var ratio: float = (
-				_aim_ray.get_collision_point() - _shoot_point.global_position
-		).length() / _end_aim.position.x if _aim_ray.is_colliding() else 1.0
-		_aim_target.global_position = _shoot_point.global_position.lerp(
-				_end_aim.global_position,
-				minf(_player.player_input.aim_direction.length(), ratio),
-		)
+		_aim_target.global_position = _calculate_aim_target_position()
 
 
 func _exit_tree() -> void:
@@ -74,11 +68,15 @@ func start_aim() -> void:
 	if _player.id != multiplayer.get_unique_id():
 		return
 	
-	(get_viewport().get_camera_2d() as SmartCamera).target = _aim_target
-	get_viewport().get_camera_2d().zoom = aim_zoom
 	_aim_ray.enabled = true
+	_aim_ray.force_raycast_update()
 	($Aim as CanvasLayer).show()
 	($ShootPoint as Node2D).show()
+	var camera: SmartCamera = get_viewport().get_camera_2d()
+	camera.target = _aim_target
+	camera.zoom = aim_zoom
+	camera.global_position = _calculate_aim_target_position()
+	get_viewport().get_camera_2d().reset_smoothing()
 
 
 func end_aim() -> void:
@@ -97,4 +95,16 @@ func end_aim() -> void:
 	
 	if camera.target == _aim_target:
 		camera.target = _player
+		camera.global_position = camera.target.global_position
 	camera.zoom = _default_zoom
+	camera.reset_smoothing()
+
+
+func _calculate_aim_target_position() -> Vector2:
+	var ratio: float = (
+			_aim_ray.get_collision_point() - _shoot_point.global_position
+	).length() / _end_aim.position.x if _aim_ray.is_colliding() else 1.0
+	return _shoot_point.global_position.lerp(
+			_end_aim.global_position,
+			minf(_player.player_input.aim_direction.length(), ratio),
+	)

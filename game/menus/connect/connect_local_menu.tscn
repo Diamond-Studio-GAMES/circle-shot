@@ -115,6 +115,7 @@ layout_mode = 2
 [node name="ScrollContainer" type="ScrollContainer" parent="Base/Margin/VBox/PanelContainer"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
+horizontal_scroll_mode = 0
 
 [node name="GamesContainer" type="VBoxContainer" parent="Base/Margin/VBox/PanelContainer/ScrollContainer"]
 unique_name_in_owner = true

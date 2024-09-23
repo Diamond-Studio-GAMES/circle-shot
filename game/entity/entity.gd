@@ -38,6 +38,7 @@ var damage_multiplier := 1.0
 var defense_multiplier := 1.0
 var knockback := Vector2.ZERO
 var server_position := Vector2.ZERO
+
 var _immune_counter: int = 0
 var _immobile_counter: int = 0
 var _disarmed_counter: int = 0
@@ -56,10 +57,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	velocity = knockback
 	if not is_immobile():
-		if entity_input.direction.length_squared() <= 1.0:
-			velocity += entity_input.direction * speed * speed_multiplier
-		else:
-			velocity += entity_input.direction.normalized() * speed * speed_multiplier
+		velocity += entity_input.direction.limit_length(1.0) * speed * speed_multiplier
 	move_and_slide()
 	if multiplayer.is_server():
 		server_position = position
