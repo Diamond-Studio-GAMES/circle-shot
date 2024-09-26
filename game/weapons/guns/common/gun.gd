@@ -77,8 +77,8 @@ func _make_current() -> void:
 	await tween.finished
 	unlock_shooting()
 	
-	if ammo <= 0 and can_reload():
-			reload()
+	if ammo <= 0:
+		reload()
 
 
 func _unmake_current() -> void:
@@ -137,13 +137,12 @@ func _shoot() -> void:
 	
 	if ammo <= 0:
 		await _anim.animation_finished
-		_shoot_timer = 0.0
 		if can_reload():
 			reload()
 
 
 func can_reload() -> bool:
-	return super() and _shoot_timer <= 0.0 and ammo_in_stock >= ammo_per_load
+	return super() and _shoot_timer <= 0.0
 
 
 func reload() -> void:

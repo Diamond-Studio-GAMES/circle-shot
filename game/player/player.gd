@@ -77,37 +77,21 @@ func try_change_weapon(to: Weapon.Type) -> void:
 	if not multiplayer.is_server():
 		_request_change_weapon.rpc_id(1, to)
 	else:
-		if is_disarmed():
-			return
-		if equip_data[to + 1] < 0:
-			return
-		change_weapon.rpc(to)
+		_request_change_weapon(to)
 
 
 func try_reload_weapon() -> void:
 	if not multiplayer.is_server():
 		_request_reload.rpc_id(1)
 	else:
-		if is_disarmed():
-			return
-		if not is_instance_valid(current_weapon):
-			return
-		if not current_weapon.can_reload():
-			return
-		reload_weapon.rpc()
+		_request_reload()
 
 
 func try_use_additional_button_weapon() -> void:
 	if not multiplayer.is_server():
 		_request_additional_button.rpc_id(1)
 	else:
-		if is_disarmed():
-			return
-		if not is_instance_valid(current_weapon):
-			return
-		if not current_weapon.has_additional_button():
-			return
-		additional_button_weapon.rpc()
+		_request_additional_button()
 
 
 func set_skin(skin_id: int) -> void:
@@ -174,17 +158,23 @@ func _request_change_weapon(to: Weapon.Type) -> void:
 	if not multiplayer.is_server():
 		push_error("This method must be called only on server!")
 		return
-	if id != multiplayer.get_remote_sender_id():
+	
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if sender_id == 0:
+		sender_id = 1
+	if id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
 			multiplayer.get_remote_sender_id(), id
 		])
 		return
+	
 	if to == current_weapon_type:
 		return
 	if is_disarmed():
 		return
 	if equip_data[to + 1] < 0:
 		return
+	
 	change_weapon.rpc(to)
 
 
@@ -193,17 +183,23 @@ func _request_reload() -> void:
 	if not multiplayer.is_server():
 		push_error("This method must be called only on server!")
 		return
-	if id != multiplayer.get_remote_sender_id():
+	
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if sender_id == 0:
+		sender_id = 1
+	if id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
 			multiplayer.get_remote_sender_id(), id
 		])
 		return
+	
 	if is_disarmed():
 		return
 	if not is_instance_valid(current_weapon):
 		return
 	if not current_weapon.can_reload():
 		return
+	
 	reload_weapon.rpc()
 
 
@@ -212,17 +208,23 @@ func _request_additional_button() -> void:
 	if not multiplayer.is_server():
 		push_error("This method must be called only on server!")
 		return
-	if id != multiplayer.get_remote_sender_id():
+	
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if sender_id == 0:
+		sender_id = 1
+	if id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
 			multiplayer.get_remote_sender_id(), id
 		])
 		return
+	
 	if is_disarmed():
 		return
 	if not is_instance_valid(current_weapon):
 		return
 	if not current_weapon.has_additional_button():
 		return
+	
 	additional_button_weapon.rpc()
 
 
