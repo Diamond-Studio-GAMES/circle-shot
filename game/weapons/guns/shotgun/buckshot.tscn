@@ -4,10 +4,10 @@
 
 [node name="Buckshot" instance=ExtResource("1_y8mmd")]
 speed = 1900.0
-damage = 9
+damage = 7
 
 [node name="Sprite2D" parent="." index="1"]
 scale = Vector2(1, 0.5)
 
 [node name="Timer" parent="." index="2"]
-wait_time = 0.9
+wait_time = 0.8

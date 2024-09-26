@@ -77,8 +77,8 @@ func _make_current() -> void:
 	await tween.finished
 	unlock_shooting()
 	
-	if ammo <= 0:
-		reload()
+	if ammo <= 0 and _player.id == multiplayer.get_unique_id():
+		_player.try_reload_weapon()
 
 
 func _unmake_current() -> void:
@@ -89,6 +89,7 @@ func _unmake_current() -> void:
 	
 	_spread_timer = 0.0
 	_recoil_timer = 0.0
+	_shoot_timer = 0.0
 	
 	rotation = 0.0
 	_anim.play(&"RESET")
@@ -137,8 +138,9 @@ func _shoot() -> void:
 	
 	if ammo <= 0:
 		await _anim.animation_finished
-		if can_reload():
-			reload()
+		_shoot_timer = 0.0 # Игнорируем задержку между выстрелами, подождать анимации достаточно
+		if _player.id == multiplayer.get_unique_id():
+			_player.try_reload_weapon()
 
 
 func can_reload() -> bool:
@@ -160,8 +162,9 @@ func reload() -> void:
 	tween = create_tween()
 	tween.tween_property(self, ^"rotation", _calculate_aim_direction(), to_aim_time)
 	
-	ammo = ammo_per_load
-	ammo_in_stock -= ammo_per_load
+	var difference: int = min(ammo_per_load - ammo, ammo_in_stock)
+	ammo += difference
+	ammo_in_stock -= difference
 	_player.ammo_text_updated.emit(get_ammo_text())
 	
 	await tween.finished

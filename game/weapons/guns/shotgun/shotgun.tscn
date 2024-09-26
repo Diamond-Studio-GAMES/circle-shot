@@ -360,7 +360,7 @@ _data = {
 
 [node name="Shotgun" instance=ExtResource("1_hu422")]
 script = ExtResource("2_bxqwq")
-buckshot_in_shot = 6
+buckshot_in_shot = 7
 shoot_interval = 0.8
 to_aim_time = 0.2
 projectile_scene = ExtResource("3_1xtgg")

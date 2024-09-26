@@ -6,7 +6,7 @@
 script = ExtResource("1_k6hg6")
 name = "Android"
 brief_description = "Желейные бобы"
-rarity = 1
+rarity = 2
 id = "droid"
-scene_path = ""
+scene_path = "uid://crm68n863viai"
 image_path = "uid://b8o7jvurl4hsb"

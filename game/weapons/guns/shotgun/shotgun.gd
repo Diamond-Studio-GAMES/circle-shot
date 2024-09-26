@@ -2,24 +2,31 @@ extends "res://game/weapons/guns/common/gun.gd"
 
 @export var buckshot_in_shot: int = 6
 var _reloading := false
+var _interrupt_reload := false
 
-func can_reload() -> bool:
-	return ammo != ammo_per_load and ammo_in_stock > 0 and can_shoot() \
-			and _shoot_timer <= 0.0 and not _reloading
+func _process(delta: float) -> void:
+	super(delta)
+	if _reloading and _player.player_input.shooting:
+		_interrupt_reload = true
 
 
 func reload() -> void:
 	_reloading = true
+	var tween: Tween = create_tween()
+	tween.tween_property(self, ^"rotation", 0.0, to_aim_time)
 	block_shooting()
 	_anim.play(&"StartReload")
 	
 	var anim_name: StringName = await _anim.animation_finished
-	unlock_shooting()
 	if anim_name != &"StartReload":
 		_reloading = false
+		_interrupt_reload = false
+		unlock_shooting()
 		return
 	
 	while ammo != ammo_per_load:
+		if _interrupt_reload:
+			break
 		if ammo_in_stock < 1:
 			break
 		
@@ -27,22 +34,28 @@ func reload() -> void:
 		anim_name = await _anim.animation_finished
 		if anim_name != &"Reload":
 			_reloading = false
+			_interrupt_reload = false
+			unlock_shooting()
 			return
 		
 		ammo += 1
 		ammo_in_stock -= 1
 		_player.ammo_text_updated.emit(get_ammo_text())
 	
-	block_shooting()
 	_anim.play(&"EndReload")
 	anim_name = await _anim.animation_finished
 	_reloading = false
+	_interrupt_reload = false
 	if anim_name != &"EndReload":
 		unlock_shooting()
 		return
 	
 	_anim.play(&"PostReload")
-	await _anim.animation_finished
+	
+	tween = create_tween()
+	tween.tween_property(self, ^"rotation", _calculate_aim_direction(), to_aim_time)
+	await tween.finished
+	
 	unlock_shooting()
 
 

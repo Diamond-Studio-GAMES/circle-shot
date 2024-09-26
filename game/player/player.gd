@@ -164,7 +164,7 @@ func _request_change_weapon(to: Weapon.Type) -> void:
 		sender_id = 1
 	if id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
-			multiplayer.get_remote_sender_id(), id
+			sender_id, id
 		])
 		return
 	
@@ -189,7 +189,7 @@ func _request_reload() -> void:
 		sender_id = 1
 	if id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
-			multiplayer.get_remote_sender_id(), id
+			sender_id, id
 		])
 		return
 	
@@ -214,7 +214,7 @@ func _request_additional_button() -> void:
 		sender_id = 1
 	if id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
-			multiplayer.get_remote_sender_id(), id
+			sender_id, id
 		])
 		return
 	
