@@ -30,6 +30,8 @@ const PORT: int = 7415
 const LISTEN_PORT: int = 7414
 ## Максимальное число клиентов. Используется при создании сервера.
 const MAX_CLIENTS: int = 11 # Ещё один чтобы успешно отклонять.
+## Максимальная длина имени игрока.
+const MAX_PLAYER_NAME_LENGTH: int = 24
 
 ## Максимальное число игроков, превысив которое, сервер начнёт отклонять соединения.
 ## Задаётся лобби на основе выбранного события. Не имеет эффекта на клиентах.
@@ -174,14 +176,55 @@ func show_error(error_text: String) -> void:
 	($ErrorDialog as AcceptDialog).popup_centered()
 
 
+## Проверяет имя игрока и исправляет при необходимости. Если [param id] равен 0, не печатает
+## никаких предупреждений.
+func verify_player_name(player_name: String, id: int = 0) -> String:
+	player_name = player_name.strip_edges().strip_escapes()
+	if player_name.is_empty():
+		return "Игрок%d" % id if id != 0 else "Игрок"
+	elif player_name.length() > MAX_PLAYER_NAME_LENGTH:
+		if id != 0:
+			push_warning("Client's %d player name length (%d) is more than allowed (%d)." % [
+				id,
+				player_name.length(),
+				MAX_PLAYER_NAME_LENGTH,
+			])
+		return player_name.left(MAX_PLAYER_NAME_LENGTH)
+	return player_name
+
+
 @rpc("any_peer", "reliable")
 func _send_player_data(player_name: String, equip_data: Array[int]) -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
+	
 	var id: int = multiplayer.get_remote_sender_id()
 	if id == 0:
 		id = 1
+	
+	player_name = verify_player_name(player_name, id)
+	
+	if equip_data[0] < 0 or equip_data[0] >= Globals.items_db.skins.size():
+		push_warning("Client's %d skin has incorrect ID: %d." % [id, equip_data[0]])
+		equip_data[0] = 0
+	if equip_data[1] < 0 or equip_data[1] >= Globals.items_db.weapons_light.size():
+		push_warning("Client's %d light weapon has incorrect ID: %d." % [id, equip_data[1]])
+		equip_data[1] = 0
+	if equip_data[2] < 0 or equip_data[2] >= Globals.items_db.weapons_heavy.size():
+		push_warning("Client's %d heavy weapon has incorrect ID: %d." % [id, equip_data[2]])
+		equip_data[2] = 0
+	if equip_data[3] < 0 or equip_data[3] >= Globals.items_db.weapons_support.size():
+		push_warning("Client's %d support weapon has incorrect ID: %d." % [id, equip_data[3]])
+		equip_data[3] = 0
+	if equip_data[4] < 0 or equip_data[4] >= Globals.items_db.weapons_melee.size():
+		push_warning("Client's %d melee weapon has incorrect ID: %d." % [id, equip_data[4]])
+		equip_data[4] = 0
+	if equip_data[5] < 0 or equip_data[5] >= Globals.items_db.skills.size():
+		push_warning("Client's %d skill has incorrect ID: %d." % [id, equip_data[5]])
+		equip_data[5] = 0
+	
+	
 	_players_names[id] = player_name
 	_players_equip_data[id] = equip_data
 	_players_not_ready.erase(id)

@@ -38,6 +38,8 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	hide()
 	
+	_selected_event = Globals.get_int("selected_event")
+	_selected_map = Globals.get_int("selected_map")
 	_selected_skin = Globals.get_int("selected_skin")
 	_selected_light_weapon = Globals.get_int("selected_light_weapon")
 	_selected_heavy_weapon = Globals.get_int("selected_heavy_weapon")
@@ -88,12 +90,17 @@ func _register_new_player(player_name: String) -> void:
 	var id: int = multiplayer.get_remote_sender_id()
 	if id == 0:
 		id = 1 # Локально от сервера
+	
 	for i: int in _players:
 		_add_player_entry.rpc_id(id, i, _players[i])
 	_set_environment.rpc_id(id, _selected_event, _selected_map)
+	
+	player_name = _game.verify_player_name(player_name, id)
 	_players[id] = player_name
+	
 	_chat.post_message.rpc("Игра: Игрок [color=green]%s[/color] подключился!" % player_name)
 	_chat.players_names[id] = player_name
+	
 	if _players.size() == 1:
 		_admin_id = id
 		if id == 1:
@@ -102,6 +109,7 @@ func _register_new_player(player_name: String) -> void:
 			_set_admin.rpc_id(id, true)
 	else:
 		_set_admin.rpc_id(id, false)
+	
 	_add_player_entry.rpc(id, player_name)
 	print_verbose("Registered player %d with name %s." % [id, player_name])
 
@@ -117,8 +125,12 @@ func _set_admin(admin: bool) -> void:
 	for i: Node in _players_container.get_children():
 		i.get_node(^"Kick").visible = admin
 	if admin:
-		# Странный код
-		_request_set_environment(Globals.get_int("selected_event"), Globals.get_int("selected_map"))
+		var my_event_id: int = Globals.get_int("selected_event")
+		var my_map_id: int = Globals.get_int("selected_map")
+		if multiplayer.is_server():
+			_request_set_environment(my_event_id, my_map_id)
+		else:
+			_request_set_environment.rpc_id(1, my_event_id, my_map_id)
 	else:
 		(%ClientHint as Label).text = "Начать игру может только хост."
 	print_verbose("Admin set: %s." % str(admin))
@@ -135,6 +147,20 @@ func _request_set_environment(event_id: int, map_id: int) -> void:
 	if sender_id != _admin_id:
 		push_warning("Request rejected: player %d is not admin!" % sender_id)
 		return
+	
+	if event_id < 0 or event_id >= Globals.items_db.events.size():
+		push_warning("Rejected set environment request from %d. Incorrect event ID: %d." % [
+			sender_id,
+			event_id,
+		])
+		return
+	if map_id < 0 or map_id >= Globals.items_db.events[event_id].maps.size():
+		push_warning("Rejected set environment request from %d. Incorrect map ID: %d." % [
+			sender_id,
+			map_id,
+		])
+		return
+	
 	_game.max_players = Globals.items_db.events[event_id].max_players
 	print_verbose("Accepted set environment request. Event ID: %d, Map ID: %d." % [
 		event_id,

@@ -6,6 +6,8 @@ extends Control
 ## Используйте [member players_names] и [member players_teams] (второе необязательно)
 ## для регистрации игроков перед тем, как они начнут отправлять сообщения.
 
+## Максимальная длина сообщения.
+const MAX_MESSAGE_LENGTH: int = 80
 ## Путь к кнопке, которая будет моргать при новом сообщении.
 @export_node_path("Button") var chat_button_path: NodePath
 ## Словарь имён игроков, в формате <ID> - <имя>.
@@ -66,7 +68,14 @@ func _request_post_message(message: String) -> void:
 	
 	message = message.strip_edges().strip_escapes().replace("[", "[lb]")
 	if message.is_empty():
-		pass
+		return
+	if message.length() > MAX_MESSAGE_LENGTH:
+		push_warning("Client %d posted message with length %d, which is more than allowed (%d)." % [
+			sender_id,
+			message.length(),
+			MAX_MESSAGE_LENGTH,
+		])
+		message = message.left(MAX_MESSAGE_LENGTH)
 	if players_teams.has(sender_id):
 		message = "[color=#%s]%s[/color]: %s" % [
 			Entity.TEAM_COLORS[players_teams[sender_id]].to_html(false),

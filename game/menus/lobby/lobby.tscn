@@ -599,7 +599,7 @@ auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Сообщение..."
-max_length = 64
+max_length = 80
 
 [node name="Send" type="TextureButton" parent="Panels/Chat/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(48, 0)
@@ -678,7 +678,6 @@ wait_time = 10.0
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/ControlButtons/ConnectedToIP" to="." method="_on_connected_to_ip_pressed"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/ControlButtons/ViewIPs" to="ViewIPDialog" method="_show"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/ControlButtons/Leave" to="." method="_on_leave_pressed"]
-[connection signal="text_submitted" from="Panels/Chat/VBoxContainer/HBoxContainer/LineEdit" to="Panels/Chat" method="send_message" unbinds=1]
 [connection signal="pressed" from="Panels/Chat/VBoxContainer/HBoxContainer/Send" to="Panels/Chat" method="send_message"]
 [connection signal="close_requested" from="ItemSelector" to="ItemSelector" method="hide"]
 [connection signal="item_selected" from="ItemSelector/ScrollContainer/MarginContainer/ItemsGrid" to="." method="_on_item_selected"]
