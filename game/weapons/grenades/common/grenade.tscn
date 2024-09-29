@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5t5tgu043bm"]
+
+[ext_resource type="Script" path="res://game/weapons/grenades/common/grenade.gd" id="1_34i6u"]
+
+[node name="Grenade" type="Node2D"]
+script = ExtResource("1_34i6u")
+ammo_per_load = 0
+ammo_total = 3
+
+[node name="ThrowPivot" type="Marker2D" parent="."]
+
+[node name="ThrowPoint" type="Marker2D" parent="ThrowPivot"]
+
+[node name="Aim" type="Line2D" parent="ThrowPivot/ThrowPoint"]
+z_index = 4
+points = PackedVector2Array(0, 0, 6500, 0)
+width = 48.0
+default_color = Color(0, 0, 0, 0.25098)
+
+[node name="SpreadLeft" type="Line2D" parent="ThrowPivot/ThrowPoint/Aim"]
+position = Vector2(0, -24)
+points = PackedVector2Array(128, 0, 192, 0)
+width = 4.0
+default_color = Color(0, 0, 0, 0.188235)
+
+[node name="SpreadRight" type="Line2D" parent="ThrowPivot/ThrowPoint/Aim"]
+position = Vector2(0, 24)
+points = PackedVector2Array(128, 0, 192, 0)
+width = 4.0
+default_color = Color(0, 0, 0, 0.188235)
+
+[node name="ThrowTimer" type="Timer" parent="."]
+process_mode = 1
+wait_time = 8.0
+one_shot = true
+
+[connection signal="timeout" from="ThrowTimer" to="." method="_on_throw_timer_timeout"]

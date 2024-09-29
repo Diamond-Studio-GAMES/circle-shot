@@ -44,8 +44,8 @@ var _immobile_counter: int = 0
 var _disarmed_counter: int = 0
 
 @onready var entity_input: EntityInput = $Input
+@onready var visual: Node2D = $Visual
 @onready var _effects: Node2D = $Effects
-@onready var _visual: Node2D = $Visual
 @onready var _vfx_parent: Node2D = get_tree().get_first_node_in_group("VFXParent")
 
 
@@ -68,7 +68,7 @@ func _physics_process(delta: float) -> void:
 		)
 	
 	if not is_zero_approx(velocity.x):
-		_visual.scale.x = -1 if velocity.x < 0 else 1
+		visual.scale.x = -1 if velocity.x < 0 else 1
 
 
 #region Методы эффектов

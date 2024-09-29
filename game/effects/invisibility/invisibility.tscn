@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3 uid="uid://66w5ixijgn51"]
+
+[ext_resource type="PackedScene" uid="uid://baoklmloqoop3" path="res://game/entity/effect.tscn" id="1_fevrb"]
+[ext_resource type="Script" path="res://game/effects/invisibility/invisibility.gd" id="2_3q58r"]
+[ext_resource type="Texture2D" uid="uid://vqoi0oe2gk5d" path="res://game/effects/invisibility/smoke.png" id="4_1kqiw"]
+
+[sub_resource type="Curve" id="Curve_0igrf"]
+_data = [Vector2(0.245211, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qsotu"]
+curve = SubResource("Curve_0igrf")
+
+[sub_resource type="Curve" id="Curve_3rcri"]
+min_value = 1.0
+max_value = 2.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1.70032), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_k78s1"]
+curve = SubResource("Curve_3rcri")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_itww5"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, 80, 0)
+emission_shape = 3
+emission_box_extents = Vector3(40, 1, 1)
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, -1, 0)
+spread = 27.32
+initial_velocity_min = 169.37
+initial_velocity_max = 300.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.8
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_k78s1")
+alpha_curve = SubResource("CurveTexture_qsotu")
+
+[node name="Invisibility" instance=ExtResource("1_fevrb")]
+script = ExtResource("2_3q58r")
+stackable = false
+
+[node name="Smoke" type="GPUParticles2D" parent="." index="1"]
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_itww5")
+texture = ExtResource("4_1kqiw")
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.9
+visibility_rect = Rect2(-160, -160, 320, 320)
+local_coords = true

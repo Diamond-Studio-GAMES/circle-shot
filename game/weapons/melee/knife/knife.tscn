@@ -139,7 +139,7 @@ _data = {
 
 [node name="Knife" type="Node2D"]
 script = ExtResource("1_efdma")
-damage = 50
+damage = 55
 shoot_interval = 0.8
 to_aim_time = 0.2
 ammo_per_load = 1

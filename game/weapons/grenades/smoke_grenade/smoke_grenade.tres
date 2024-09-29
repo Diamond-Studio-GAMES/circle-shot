@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://buyl81nl44qfx"]
+
+[ext_resource type="Script" path="res://game/player/weapon_data.gd" id="1_2etgi"]
+
+[resource]
+script = ExtResource("1_2etgi")
+name = "Дымовая граната"
+type = 2
+rarity = 1
+damage_text = "Создаёт дым"
+ammo_text = "2 штуки"
+description = ""
+id = "smoke"
+scene_path = "uid://c5swv4a3luh8f"
+image_path = "uid://blxo5eej36ufg"
+spawnable_scenes_paths = Array[String](["uid://3cta5u3qtmvj"])

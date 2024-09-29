@@ -41,7 +41,7 @@ var _spread_timer_tween: Tween
 func _process(delta: float) -> void:
 	_aim.hide()
 	
-	if not _player.is_disarmed() and can_shoot():
+	if can_shoot():
 		_aim.visible = _player.player_input.showing_aim
 		rotation = _calculate_aim_direction() + deg_to_rad(_calculate_recoil())
 		
@@ -136,11 +136,9 @@ func _shoot() -> void:
 			(_recoil_timer + shoot_interval)
 	)
 	
-	if ammo <= 0:
-		await _anim.animation_finished
-		_shoot_timer = 0.0 # Игнорируем задержку между выстрелами, подождать анимации достаточно
-		if _player.id == multiplayer.get_unique_id():
-			_player.try_reload_weapon()
+	if ammo <= 0 and _player.id == multiplayer.get_unique_id():
+		await get_tree().create_timer(shoot_interval, false).timeout
+		_player.try_reload_weapon()
 
 
 func can_reload() -> bool:
@@ -181,10 +179,9 @@ func _calculate_recoil() -> float:
 
 
 func _calculate_shoot_spread() -> float:
-	var spread: float = spread_base
 	if _spread_timer > 0.01:
-		spread += spread_curve.sample_baked(minf(_spread_timer / spread_curve_time, 1.0))
-	return spread
+		return spread_curve.sample_baked(minf(_spread_timer / spread_curve_time, 1.0))
+	return 0.0
 
 
 func _calculate_walk_spread() -> float:
@@ -193,7 +190,7 @@ func _calculate_walk_spread() -> float:
 
 
 func _calculate_spread() -> float:
-	return _calculate_walk_spread() + _calculate_shoot_spread()
+	return _calculate_walk_spread() + _calculate_shoot_spread() + spread_base
 
 
 func _create_projectile() -> void:

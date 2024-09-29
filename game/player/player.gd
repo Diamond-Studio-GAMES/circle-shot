@@ -38,7 +38,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	super(delta)
 	if not is_disarmed():
-		_visual.scale.x = -1 if player_input.aim_direction.x < 0 else 1
+		visual.scale.x = -1 if player_input.aim_direction.x < 0 else 1
 
 
 @rpc("call_local", "reliable", "authority", 2)

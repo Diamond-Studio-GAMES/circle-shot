@@ -65,7 +65,7 @@ func unlock_shooting() -> void:
 
 
 func can_shoot() -> bool:
-	return _blocked_shooting_counter <= 0
+	return _blocked_shooting_counter <= 0 and not _player.is_disarmed()
 
 
 func reload() -> void:

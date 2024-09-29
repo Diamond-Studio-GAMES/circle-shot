@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://b6l0sibfxkmx6"]
+
+[ext_resource type="Script" path="res://game/player/weapon_data.gd" id="1_25gnn"]
+
+[resource]
+script = ExtResource("1_25gnn")
+name = "Осколочная граната"
+type = 2
+rarity = 0
+damage_text = "Урон: 25-80"
+ammo_text = "3 штуки"
+description = ""
+id = "he_grenade"
+scene_path = "uid://dkem1fmo3lqym"
+image_path = "uid://ctmye1qbi2nx2"
+spawnable_scenes_paths = Array[String](["uid://dixl482dlx0y5"])

@@ -1,0 +1,207 @@
+[gd_scene load_steps=12 format=3 uid="uid://3cta5u3qtmvj"]
+
+[ext_resource type="PackedScene" uid="uid://8yrjqan0dqfx" path="res://game/weapons/grenades/common/grenade_projectile.tscn" id="1_3kt7o"]
+[ext_resource type="Texture2D" uid="uid://of5a60eh78px" path="res://game/weapons/grenades/smoke_grenade/base.png" id="2_e4wmq"]
+[ext_resource type="Script" path="res://game/weapons/grenades/smoke_grenade/smoke_grenade_projectile.gd" id="2_hk066"]
+[ext_resource type="Texture2D" uid="uid://ckrtcxwael50f" path="res://game/weapons/grenades/smoke_grenade/smoke.png" id="3_qcdsd"]
+[ext_resource type="Script" path="res://game/weapons/grenades/smoke_grenade/invisibility_area.gd" id="4_yvr35"]
+
+[sub_resource type="Curve" id="Curve_povpm"]
+max_value = 24.0
+_data = [Vector2(0, 8.68443), 0.0, 0.0, 0, 0, Vector2(0.0899654, 24), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_iwiwi"]
+offsets = PackedFloat32Array(0, 0.961686, 1)
+colors = PackedColorArray(1, 1, 1, 0.878431, 1, 1, 1, 0.878431, 1, 1, 1, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0x6f5"]
+radius = 1120.0
+
+[sub_resource type="Animation" id="Animation_28i3b"]
+resource_name = "Explode"
+length = 15.0
+step = 0.05
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Smoke")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"restart"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InvisibilityArea/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.05, 1.5, 13),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(15),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"safe_free"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Grenade:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../Grenade:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../CollisionShape2D:disabled")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_p0g7m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InvisibilityArea/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Grenade:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Grenade:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kply2"]
+_data = {
+"Explode": SubResource("Animation_28i3b"),
+"RESET": SubResource("Animation_p0g7m")
+}
+
+[node name="SmokeGrenadeProjectile" instance=ExtResource("1_3kt7o")]
+script = ExtResource("2_hk066")
+speed = 1200.0
+damping = 400.0
+
+[node name="Grenade" parent="." index="0"]
+texture = ExtResource("2_e4wmq")
+
+[node name="ExplosionTimer" parent="." index="2"]
+wait_time = 2.0
+
+[node name="Explosion" type="Node2D" parent="." index="4"]
+
+[node name="Smoke" type="CPUParticles2D" parent="Explosion" index="0"]
+z_index = 3
+emitting = false
+amount = 24
+lifetime = 13.0
+one_shot = true
+explosiveness = 0.9
+texture = ExtResource("3_qcdsd")
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 500.0
+initial_velocity_max = 500.0
+damping_min = 300.0
+damping_max = 300.0
+angle_max = 360.0
+scale_amount_curve = SubResource("Curve_povpm")
+color_ramp = SubResource("Gradient_iwiwi")
+
+[node name="InvisibilityArea" type="Area2D" parent="Explosion" index="1"]
+collision_layer = 4
+collision_mask = 2
+monitorable = false
+script = ExtResource("4_yvr35")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Explosion/InvisibilityArea" index="0"]
+shape = SubResource("CircleShape2D_0x6f5")
+disabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Explosion" index="2"]
+libraries = {
+"": SubResource("AnimationLibrary_kply2")
+}
+
+[connection signal="body_entered" from="Explosion/InvisibilityArea" to="Explosion/InvisibilityArea" method="_on_body_entered"]
+[connection signal="body_exited" from="Explosion/InvisibilityArea" to="Explosion/InvisibilityArea" method="_on_body_exited"]

@@ -12,7 +12,7 @@ var _shoot_timer: float = 0.0
 
 func _process(delta: float) -> void:
 	_aim.hide()
-	if not _player.is_disarmed() and can_shoot():
+	if can_shoot():
 		_aim.visible = _player.player_input.showing_aim
 		rotation = _calculate_aim_direction()
 		

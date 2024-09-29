@@ -12,6 +12,9 @@ properties/0/replication_mode = 0
 properties/1/path = NodePath(".:position")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+properties/2/path = NodePath(".:team")
+properties/2/spawn = true
+properties/2/replication_mode = 0
 
 [node name="Bullet" type="Node2D"]
 script = ExtResource("1_fc6k8")

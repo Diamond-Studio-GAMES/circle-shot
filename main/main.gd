@@ -127,7 +127,7 @@ func _loading_init() -> void:
 	
 	# Чтобы убрать OfflineMultiplayerPeer
 	multiplayer.multiplayer_peer = null
-	Globals.items_db.generate_spawnable_paths()
+	Globals.items_db.initialize()
 	Globals.main = self
 	
 	await get_tree().process_frame

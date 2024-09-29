@@ -1,0 +1,81 @@
+[gd_scene load_steps=7 format=3 uid="uid://8yrjqan0dqfx"]
+
+[ext_resource type="Script" path="res://game/weapons/grenades/common/grenade_projectile.gd" id="1_am5bm"]
+
+[sub_resource type="Animation" id="Animation_ce6xc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_5wrsa"]
+resource_name = "Rotation"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_y41ys"]
+_data = {
+"RESET": SubResource("Animation_ce6xc"),
+"Rotation": SubResource("Animation_5wrsa")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yd8qm"]
+radius = 24.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ltveq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 0
+properties/2/path = NodePath(".:speed")
+properties/2/spawn = true
+properties/2/replication_mode = 0
+
+[node name="GrenadeProjectile" type="AnimatableBody2D"]
+collision_layer = 4
+collision_mask = 27
+sync_to_physics = false
+script = ExtResource("1_am5bm")
+
+[node name="Grenade" type="Sprite2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Grenade"]
+libraries = {
+"": SubResource("AnimationLibrary_y41ys")
+}
+autoplay = "Rotation"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_yd8qm")
+
+[node name="ExplosionTimer" type="Timer" parent="."]
+wait_time = 2.5
+one_shot = true
+autostart = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ltveq")
+
+[connection signal="timeout" from="ExplosionTimer" to="." method="_on_explosion_timer_timeout"]

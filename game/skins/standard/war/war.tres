@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://dsw7rll4x5yvn"]
+
+[ext_resource type="Script" path="res://game/player/skin_data.gd" id="1_c4pxv"]
+
+[resource]
+script = ExtResource("1_c4pxv")
+name = "Военный"
+brief_description = "Гойда"
+rarity = 1
+id = "Z"
+scene_path = "uid://yb112418c25u"
+image_path = "uid://cjwf5ejxymu8c"

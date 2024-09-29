@@ -14,4 +14,3 @@ players_divider = 1
 scene_path = "uid://yfpyfv6boyao"
 image_path = "uid://nk1w1iu0ambu"
 maps = Array[ExtResource("1_4pccw")]([ExtResource("1_j8k4y")])
-spawnable_scenes_paths = Array[String](["uid://bysyaaj2r7stt"])
