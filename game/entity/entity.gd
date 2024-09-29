@@ -90,7 +90,7 @@ func add_effect(effect_id: String, duration := 1.0, data := [], should_stack := 
 				return
 	
 	_effects.add_child(effect)
-	effect.initialize(self, data, false, duration)
+	effect.initialize(self, effect_id, data, false, duration)
 	print_verbose("Added effect '%s' with duration %f to entity '%s' with ID %d." % [
 		effect_id, duration, name, id
 	])
@@ -114,7 +114,7 @@ func add_timeless_effect(effect_id: String, data := [], should_stack := true) ->
 				return
 	
 	_effects.add_child(effect)
-	effect.initialize(self, data, true)
+	effect.initialize(self, effect_id, data, true)
 	print_verbose("Added timeless effect '%s' to entity '%s' with ID %d." % [
 		effect_id, name, id
 	])

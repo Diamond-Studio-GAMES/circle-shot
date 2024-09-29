@@ -18,8 +18,8 @@ var _entity: Entity
 @onready var _timer: Timer = $Timer
 
 
-func initialize(entity: Entity, data := [], timeless := false, duration := 1.0) -> void:
-	id = ResourceUID.id_to_text(ResourceLoader.get_resource_uid(scene_file_path))
+func initialize(entity: Entity, uid: String, data := [], timeless := false, duration := 1.0) -> void:
+	id = uid
 	_entity = entity
 	_data = data
 	if timeless:
