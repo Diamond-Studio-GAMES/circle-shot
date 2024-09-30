@@ -71,6 +71,20 @@ func additional_button_weapon() -> void:
 	current_weapon.additional_button()
 
 
+@rpc("call_local", "reliable", "authority", 2)
+func add_ammo_to_weapon(type: Weapon.Type, percent: float) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
+	var target_weapon: Weapon = _weapons.get_child(type)
+	target_weapon.ammo_in_stock = mini(
+			target_weapon.ammo_in_stock + ceili(target_weapon.ammo_total * percent),
+			target_weapon.ammo_total - target_weapon.ammo_per_load,
+	)
+	ammo_text_updated.emit(current_weapon.get_ammo_text())
+
+
 func try_change_weapon(to: Weapon.Type) -> void:
 	if to == current_weapon_type:
 		return

@@ -4,7 +4,7 @@
 
 [node name="M4A1Bullet" instance=ExtResource("1_xpwh2")]
 speed = 3000.0
-damage = 5
+damage = 6
 
 [node name="Sprite2D" parent="." index="1"]
 scale = Vector2(1, 0.5)

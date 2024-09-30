@@ -371,7 +371,7 @@ _data = {
 }
 
 [node name="M4A1" instance=ExtResource("1_4qhkt")]
-shoot_interval = 0.13
+shoot_interval = 0.14
 to_aim_time = 0.2
 projectile_scene = ExtResource("2_0lskg")
 spread_base = 1.5

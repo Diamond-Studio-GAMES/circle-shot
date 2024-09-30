@@ -119,3 +119,30 @@ position = Vector2(-1435, 3402)
 
 [node name="19" parent="HealPoints" index="19"]
 position = Vector2(-4515, 2315)
+
+[node name="0" parent="AmmoPoints" index="0"]
+position = Vector2(-504, -949)
+
+[node name="1" parent="AmmoPoints" index="1"]
+position = Vector2(1160, 334)
+
+[node name="2" parent="AmmoPoints" index="2"]
+position = Vector2(2924, 87)
+
+[node name="3" parent="AmmoPoints" index="3"]
+position = Vector2(445, 2507)
+
+[node name="4" parent="AmmoPoints" index="4"]
+position = Vector2(4246, 2599)
+
+[node name="5" parent="AmmoPoints" index="5"]
+position = Vector2(4409, -2165)
+
+[node name="6" parent="AmmoPoints" index="6"]
+position = Vector2(-186, -2345)
+
+[node name="7" parent="AmmoPoints" index="7"]
+position = Vector2(-3373, -2218)
+
+[node name="8" parent="AmmoPoints" index="8"]
+position = Vector2(-2697, 2521)

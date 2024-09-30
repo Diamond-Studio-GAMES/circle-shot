@@ -125,3 +125,45 @@ gizmo_extents = 160.0
 [node name="19" type="Marker2D" parent="HealPoints"]
 position = Vector2(-794, 248)
 gizmo_extents = 160.0
+
+[node name="AmmoPoints" type="Node2D" parent="."]
+
+[node name="0" type="Marker2D" parent="AmmoPoints"]
+position = Vector2(-1568, -1821)
+gizmo_extents = 320.0
+
+[node name="1" type="Marker2D" parent="AmmoPoints"]
+position = Vector2(-2824, -1970)
+gizmo_extents = 320.0
+
+[node name="2" type="Marker2D" parent="AmmoPoints"]
+position = Vector2(-108, -2049)
+gizmo_extents = 320.0
+
+[node name="3" type="Marker2D" parent="AmmoPoints"]
+position = Vector2(717, -1533)
+gizmo_extents = 320.0
+
+[node name="4" type="Marker2D" parent="AmmoPoints"]
+position = Vector2(2854, -1441)
+gizmo_extents = 320.0
+
+[node name="5" type="Marker2D" parent="AmmoPoints"]
+position = Vector2(3257, 1451)
+gizmo_extents = 320.0
+
+[node name="6" type="Marker2D" parent="AmmoPoints"]
+position = Vector2(1422, 1919)
+gizmo_extents = 320.0
+
+[node name="7" type="Marker2D" parent="AmmoPoints"]
+position = Vector2(-429, 3142)
+gizmo_extents = 320.0
+
+[node name="8" type="Marker2D" parent="AmmoPoints"]
+position = Vector2(-1753, 2209)
+gizmo_extents = 320.0
+
+[node name="9" type="Marker2D" parent="AmmoPoints"]
+position = Vector2(-3076, 164)
+gizmo_extents = 320.0

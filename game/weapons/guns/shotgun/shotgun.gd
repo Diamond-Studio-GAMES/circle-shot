@@ -24,12 +24,7 @@ func reload() -> void:
 		unlock_shooting()
 		return
 	
-	while ammo != ammo_per_load:
-		if _interrupt_reload:
-			break
-		if ammo_in_stock < 1:
-			break
-		
+	while ammo != ammo_per_load and ammo_in_stock >= 0:
 		_anim.play(&"Reload")
 		anim_name = await _anim.animation_finished
 		if anim_name != &"Reload":
@@ -41,6 +36,9 @@ func reload() -> void:
 		ammo += 1
 		ammo_in_stock -= 1
 		_player.ammo_text_updated.emit(get_ammo_text())
+		
+		if _interrupt_reload:
+			break
 	
 	_anim.play(&"EndReload")
 	anim_name = await _anim.animation_finished

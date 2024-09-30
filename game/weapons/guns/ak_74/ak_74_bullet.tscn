@@ -4,7 +4,7 @@
 
 [node name="AK74Bullet" instance=ExtResource("1_hc0xc")]
 speed = 2600.0
-damage = 6
+damage = 7
 
 [node name="Sprite2D" parent="." index="1"]
 scale = Vector2(1, 0.5)

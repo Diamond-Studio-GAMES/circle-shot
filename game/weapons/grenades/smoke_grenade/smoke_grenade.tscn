@@ -277,7 +277,7 @@ texture = ExtResource("5_3v61a")
 position = Vector2(-32, -32)
 
 [node name="ThrowPoint" parent="ThrowPivot" index="0"]
-position = Vector2(96, 0)
+position = Vector2(144, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
 libraries = {

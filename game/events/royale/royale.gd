@@ -2,19 +2,24 @@ extends Event
 
 
 @export var heal_box_scene: PackedScene
-@export var heal_box_spawn_interval: float = 15.0
+@export var ammo_box_scene: PackedScene
+@export var heal_box_spawn_interval := 15.0
+@export var ammo_box_spawn_interval := 15.0
 var _spawn_counter: int = 0
 var _heal_box_counter: int = 0
+var _ammo_box_counter: int = 0
 var _alive_players: Array
 var _ended := false
 @onready var _spawn_points: Array[Node] = $Map/SpawnPoints.get_children()
 @onready var _heal_box_points: Array[Node] = $Map/HealPoints.get_children()
+@onready var _ammo_box_points: Array[Node] = $Map/AmmoPoints.get_children()
 @onready var _other_parent: Node = get_tree().get_first_node_in_group(&"OtherParent")
 
 
 func _finish_start() -> void:
 	if multiplayer.is_server():
 		($HealBoxSpawnTimer as Timer).start()
+		($AmmoBoxSpawnTimer as Timer).start()
 		_alive_players = _players_names.keys()
 		_set_alive_players.rpc(_alive_players.size())
 		for i: Player in get_tree().get_nodes_in_group(&"Player"):
@@ -28,6 +33,7 @@ func _finish_start() -> void:
 func _make_teams() -> void:
 	_spawn_points.shuffle()
 	_heal_box_points.shuffle()
+	_ammo_box_points.shuffle()
 	var counter: int = 0
 	for i: int in _players_names:
 		_players_teams[i] = counter
@@ -73,6 +79,18 @@ func _spawn_heal_box() -> void:
 		_heal_box_points.shuffle()
 
 
+func _spawn_ammo_box() -> void:
+	var spawn_position: Vector2 = (_ammo_box_points[_ammo_box_counter] as Node2D).global_position
+	var ammo_box: Node2D = ammo_box_scene.instantiate()
+	ammo_box.global_position = spawn_position
+	ammo_box.name += str(randi())
+	_other_parent.add_child(ammo_box)
+	_ammo_box_counter += 1
+	if _ammo_box_counter == _ammo_box_points.size():
+		_ammo_box_counter = 0
+		_ammo_box_points.shuffle()
+
+
 func _check_winner() -> void:
 	if _alive_players.size() != 1:
 		return
@@ -95,6 +113,13 @@ func _on_heal_box_spawn_timer_timeout() -> void:
 	if _players.is_empty():
 		return
 	($HealBoxSpawnTimer as Timer).start(heal_box_spawn_interval / _players.size())
+
+
+func _on_ammo_box_spawn_timer_timeout() -> void:
+	_spawn_ammo_box()
+	if _players.is_empty():
+		return
+	($AmmoBoxSpawnTimer as Timer).start(ammo_box_spawn_interval / _players.size())
 
 
 func _on_watching_player_died(_who: int, player: Player) -> void:
