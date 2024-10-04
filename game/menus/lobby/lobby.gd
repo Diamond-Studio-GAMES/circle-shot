@@ -87,31 +87,31 @@ func _register_new_player(player_name: String) -> void:
 		push_error("Unexpected call on client!")
 		return
 	
-	var id: int = multiplayer.get_remote_sender_id()
-	if id == 0:
-		id = 1 # Локально от сервера
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if sender_id == 0:
+		sender_id = 1 # Локально от сервера
 	
 	for i: int in _players:
-		_add_player_entry.rpc_id(id, i, _players[i])
-	_set_environment.rpc_id(id, _selected_event, _selected_map)
+		_add_player_entry.rpc_id(sender_id, i, _players[i])
+	_set_environment.rpc_id(sender_id, _selected_event, _selected_map)
 	
-	player_name = _game.verify_player_name(player_name, id)
-	_players[id] = player_name
+	player_name = _game.verify_player_name(player_name, sender_id)
+	_players[sender_id] = player_name
 	
 	_chat.post_message.rpc("Игра: Игрок [color=green]%s[/color] подключился!" % player_name)
-	_chat.players_names[id] = player_name
+	_chat.players_names[sender_id] = player_name
 	
 	if _players.size() == 1:
-		_admin_id = id
-		if id == 1:
+		_admin_id = sender_id
+		if sender_id == 1:
 			_set_admin(true)
 		else:
-			_set_admin.rpc_id(id, true)
+			_set_admin.rpc_id(sender_id, true)
 	else:
-		_set_admin.rpc_id(id, false)
+		_set_admin.rpc_id(sender_id, false)
 	
-	_add_player_entry.rpc(id, player_name)
-	print_verbose("Registered player %d with name %s." % [id, player_name])
+	_add_player_entry.rpc(sender_id, player_name)
+	print_verbose("Registered player %d with name %s." % [sender_id, player_name])
 
 
 @rpc("reliable")
@@ -201,11 +201,11 @@ func _request_start_event() -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
-	var id: int = multiplayer.get_remote_sender_id()
-	if id == 0:
-		id = 1
-	if id != _admin_id:
-		push_warning("Request rejected: player %d is not admin!" % id)
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if sender_id == 0:
+		sender_id = 1
+	if sender_id != _admin_id:
+		push_warning("Request rejected: player %d is not admin!" % sender_id)
 		return
 	
 	var start_reject_reason := StartRejectReason.OK
@@ -228,10 +228,10 @@ func _request_start_event() -> void:
 			Globals.items_db.events[_selected_event].players_divider,
 		])
 	if start_reject_reason != StartRejectReason.OK:
-		if id == 1:
+		if sender_id == 1:
 			_reject_start_event(start_reject_reason, _players.size())
 		else:
-			_reject_start_event.rpc_id(id, start_reject_reason, _players.size())
+			_reject_start_event.rpc_id(sender_id, start_reject_reason, _players.size())
 		return
 	
 	print_verbose("Accepted start event request. Starting...")

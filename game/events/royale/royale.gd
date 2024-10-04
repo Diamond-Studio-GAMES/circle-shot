@@ -123,11 +123,11 @@ func _on_ammo_box_spawn_timer_timeout() -> void:
 
 
 func _on_watching_player_died(_who: int, player: Player) -> void:
-	var players: Array[Node] = get_tree().get_nodes_in_group(&"Player")
-	players.erase(player)
-	if players.is_empty():
+	var alive_players: Array[Node] = get_tree().get_nodes_in_group(&"Player")
+	alive_players.erase(player)
+	if alive_players.is_empty():
 		return
-	var next_player: Player = players[0]
+	var next_player: Player = alive_players[0]
 	next_player.died.connect(_on_watching_player_died.bind(next_player))
 	_camera.target = next_player
 

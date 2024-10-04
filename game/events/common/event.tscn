@@ -1,17 +1,18 @@
-[gd_scene load_steps=20 format=3 uid="uid://d3nsak46hbo2c"]
+[gd_scene load_steps=21 format=3 uid="uid://d3nsak46hbo2c"]
 
 [ext_resource type="Script" path="res://game/events/common/event.gd" id="1_kxt6o"]
 [ext_resource type="Script" path="res://game/events/common/event_ui.gd" id="2_82bb5"]
+[ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://game/player/player.tscn" id="2_i4nrm"]
 [ext_resource type="Script" path="res://game/player/smart_camera.gd" id="2_mo4dc"]
-[ext_resource type="Script" path="res://game/events/common/chat.gd" id="3_8d55t"]
-[ext_resource type="Texture2D" uid="uid://d01n7clmawdjx" path="res://game/ui/blood_vignette/vignette.png" id="3_k6kxk"]
-[ext_resource type="Material" uid="uid://cmd5ms7ovbyru" path="res://game/ui/blood_vignette/blood_vignette.tres" id="3_wrcxj"]
-[ext_resource type="Texture2D" uid="uid://d4b1wfymlf7bu" path="res://game/ui/health_bar_empty.png" id="5_os8qt"]
-[ext_resource type="Texture2D" uid="uid://low3v5d2q65l" path="res://game/ui/health_bar.png" id="6_igi7v"]
+[ext_resource type="Script" path="res://game/events/common/chat/chat.gd" id="3_8d55t"]
+[ext_resource type="Texture2D" uid="uid://d01n7clmawdjx" path="res://game/player/ui/blood_vignette/vignette.png" id="3_k6kxk"]
+[ext_resource type="Material" uid="uid://cmd5ms7ovbyru" path="res://game/player/ui/blood_vignette/blood_vignette.tres" id="3_wrcxj"]
+[ext_resource type="Texture2D" uid="uid://d4b1wfymlf7bu" path="res://game/player/ui/health_bar_empty.png" id="5_os8qt"]
+[ext_resource type="Texture2D" uid="uid://low3v5d2q65l" path="res://game/player/ui/health_bar.png" id="6_igi7v"]
 [ext_resource type="PackedScene" uid="uid://0wc72b0o2o11" path="res://game/player/ui/player_controller.tscn" id="8_2up8s"]
-[ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/ui/icons/chat_send.png" id="9_2uw6w"]
+[ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/events/common/chat/chat_send.png" id="9_2uw6w"]
 [ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="13_j0bsh"]
-[ext_resource type="Texture2D" uid="uid://d14nbphg5o3a" path="res://game/ui/icons/chat.png" id="14_05fx8"]
+[ext_resource type="Texture2D" uid="uid://d14nbphg5o3a" path="res://game/events/common/chat/chat.png" id="14_05fx8"]
 
 [sub_resource type="Animation" id="Animation_j6hmo"]
 resource_name = "Death"
@@ -251,6 +252,7 @@ _data = {
 
 [node name="Event" type="Node" groups=["Event"]]
 script = ExtResource("1_kxt6o")
+player_scenes = Array[PackedScene]([ExtResource("2_i4nrm")])
 
 [node name="Entities" type="Node2D" parent="."]
 

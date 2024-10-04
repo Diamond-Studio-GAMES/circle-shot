@@ -4,12 +4,15 @@ extends Node
 signal ended
 signal local_player_created(player: Player)
 
+@export var player_scenes: Array[PackedScene]
+
 var local_player: Player
 var _started := false
 var _players_equip_data := {}
 var _players_names := {}
 var _players_teams := {}
 var _players := {}
+
 @onready var _ui: EventUI = $EventUI
 @onready var _camera: SmartCamera = $Camera
 
@@ -54,7 +57,7 @@ func spawn_player(id: int) -> void:
 		push_error("Unexpected call on client!")
 		return
 	
-	var player_scene: PackedScene = load("uid://3l0k1cn63ahd")
+	var player_scene: PackedScene = _get_player_scene(id)
 	var player: Player = player_scene.instantiate()
 	player.global_position = _get_spawn_point(id)
 	player.team = _players_teams[id]
@@ -120,6 +123,10 @@ func _make_teams() -> void:
 
 func _finish_setup() -> void:
 	pass
+
+
+func _get_player_scene(_id: int) -> PackedScene:
+	return player_scenes[0]
 
 
 func _get_spawn_point(_id: int) -> Vector2:

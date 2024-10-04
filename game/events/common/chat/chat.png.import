@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d01n7clmawdjx"
-path="res://.godot/imported/vignette.png-2412b82bd7cacd948f17c10d2fdb6e7d.ctex"
+uid="uid://d14nbphg5o3a"
+path="res://.godot/imported/chat.png-300777ecd233631ef4260a7f605be70c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/ui/blood_vignette/vignette.png"
-dest_files=["res://.godot/imported/vignette.png-2412b82bd7cacd948f17c10d2fdb6e7d.ctex"]
+source_file="res://game/events/common/chat/chat.png"
+dest_files=["res://.godot/imported/chat.png-300777ecd233631ef4260a7f605be70c.ctex"]
 
 [params]
 

@@ -199,35 +199,40 @@ func _send_player_data(player_name: String, equip_data: Array[int]) -> void:
 		push_error("Unexpected call on client!")
 		return
 	
-	var id: int = multiplayer.get_remote_sender_id()
-	if id == 0:
-		id = 1
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if sender_id == 0:
+		sender_id = 1
 	
-	player_name = verify_player_name(player_name, id)
+	player_name = verify_player_name(player_name, sender_id)
+	if equip_data.size() != 6:
+		push_warning("Client's %d skin has incorrect equip data size: %d." % [
+			sender_id,
+			equip_data.size(),
+		])
+		equip_data = [0, 0, 0, 0, 0, 0]
 	
 	if equip_data[0] < 0 or equip_data[0] >= Globals.items_db.skins.size():
-		push_warning("Client's %d skin has incorrect ID: %d." % [id, equip_data[0]])
+		push_warning("Client's %d skin has incorrect ID: %d." % [sender_id, equip_data[0]])
 		equip_data[0] = 0
 	if equip_data[1] < 0 or equip_data[1] >= Globals.items_db.weapons_light.size():
-		push_warning("Client's %d light weapon has incorrect ID: %d." % [id, equip_data[1]])
+		push_warning("Client's %d light weapon has incorrect ID: %d." % [sender_id, equip_data[1]])
 		equip_data[1] = 0
 	if equip_data[2] < 0 or equip_data[2] >= Globals.items_db.weapons_heavy.size():
-		push_warning("Client's %d heavy weapon has incorrect ID: %d." % [id, equip_data[2]])
+		push_warning("Client's %d heavy weapon has incorrect ID: %d." % [sender_id, equip_data[2]])
 		equip_data[2] = 0
 	if equip_data[3] < 0 or equip_data[3] >= Globals.items_db.weapons_support.size():
-		push_warning("Client's %d support weapon has incorrect ID: %d." % [id, equip_data[3]])
+		push_warning("Client's %d support weapon has incorrect ID: %d." % [sender_id, equip_data[3]])
 		equip_data[3] = 0
 	if equip_data[4] < 0 or equip_data[4] >= Globals.items_db.weapons_melee.size():
-		push_warning("Client's %d melee weapon has incorrect ID: %d." % [id, equip_data[4]])
+		push_warning("Client's %d melee weapon has incorrect ID: %d." % [sender_id, equip_data[4]])
 		equip_data[4] = 0
 	if equip_data[5] < 0 or equip_data[5] >= Globals.items_db.skills.size():
-		push_warning("Client's %d skill has incorrect ID: %d." % [id, equip_data[5]])
+		push_warning("Client's %d skill has incorrect ID: %d." % [sender_id, equip_data[5]])
 		equip_data[5] = 0
 	
-	
-	_players_names[id] = player_name
-	_players_equip_data[id] = equip_data
-	_players_not_ready.erase(id)
+	_players_names[sender_id] = player_name
+	_players_equip_data[sender_id] = equip_data
+	_players_not_ready.erase(sender_id)
 	_check_players_ready()
 
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccyn16fdlha6p"
-path="res://.godot/imported/change_event.png-1bb6fe0f691fb6acaf94cf4eb98692d5.ctex"
+uid="uid://d01n7clmawdjx"
+path="res://.godot/imported/vignette.png-50fb50f493cdc12334ab6904fde6f6aa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/ui/icons/change_event.png"
-dest_files=["res://.godot/imported/change_event.png-1bb6fe0f691fb6acaf94cf4eb98692d5.ctex"]
+source_file="res://game/player/ui/blood_vignette/vignette.png"
+dest_files=["res://.godot/imported/vignette.png-50fb50f493cdc12334ab6904fde6f6aa.ctex"]
 
 [params]
 

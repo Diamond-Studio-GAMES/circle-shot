@@ -3,12 +3,12 @@
 [ext_resource type="PackedScene" uid="uid://1durulsrwk7o" path="res://game/weapons/guns/common/bullet.tscn" id="1_u0vms"]
 
 [node name="SniperBullet" instance=ExtResource("1_u0vms")]
-speed = 4000.0
-damage = 70
+speed = 4800.0
+damage = 65
 
 [node name="RayDetector" parent="." index="0"]
-position = Vector2(-96, 0)
-target_position = Vector2(128, 0)
+position = Vector2(-192, 0)
+target_position = Vector2(192, 0)
 
 [node name="Timer" parent="." index="2"]
 wait_time = 3.0

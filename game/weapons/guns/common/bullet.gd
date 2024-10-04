@@ -1,7 +1,7 @@
 extends Attack
 
 @export var speed := 1280.0
-@export var hit_vfx: PackedScene
+@export var hit_vfx_scene: PackedScene
 var direction := Vector2.ZERO
 
 func _ready() -> void:
@@ -18,7 +18,7 @@ func _create_vfx(pos: Vector2) -> void:
 	var vfx_parent: Node = get_tree().get_first_node_in_group("VFXParent")
 	if not is_instance_valid(vfx_parent):
 		return
-	var vfx: Node2D = hit_vfx.instantiate()
+	var vfx: Node2D = hit_vfx_scene.instantiate()
 	vfx.global_position = pos
 	vfx_parent.add_child(vfx)
 

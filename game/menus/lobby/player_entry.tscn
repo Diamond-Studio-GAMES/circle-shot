@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dj0mx5ui2wu4n"]
 
-[ext_resource type="Texture2D" uid="uid://1hk5pve5cp0m" path="res://game/ui/icons/kick.png" id="1_k7dg0"]
+[ext_resource type="Texture2D" uid="uid://1hk5pve5cp0m" path="res://game/menus/lobby/icons/kick.png" id="1_k7dg0"]
 [ext_resource type="Texture2D" uid="uid://kuiewk52kk1s" path="res://menu/theme/icons/empty.png" id="2_iotav"]
 
 [node name="PlayerEntry" type="HBoxContainer"]

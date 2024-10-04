@@ -8,6 +8,8 @@ extends Node
 const SAVE_FILE_PATH := "user://save.cfg"
 ## Секция файла сохранения.
 const SAVE_FILE_SECTION := "save"
+## Пароль сохранения.
+const SAVE_FILE_PASSWORD := "circle-shot"
 ## Ссылка на [Main]. Сокращение от [code]get_tree().current_scene as Main[/code].
 var main: Main
 ## Версия игры. Извлекается из [ProjectSettings].
@@ -21,17 +23,24 @@ var items_db: ItemsDB = load("uid://pwq1e7l2ckos")
 var save_file: ConfigFile
 
 
-func _ready() -> void:
-	save_file = ConfigFile.new()
-	save_file.load(SAVE_FILE_PATH)
-
-
 func _notification(what: int) -> void:
+	if not save_file:
+		return
 	match what:
 		NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_PREDELETE, \
 		NOTIFICATION_WM_CLOSE_REQUEST, NOTIFICATION_WM_GO_BACK_REQUEST, \
 		NOTIFICATION_WM_WINDOW_FOCUS_OUT, NOTIFICATION_APPLICATION_FOCUS_OUT:
-			save_file.save(SAVE_FILE_PATH)
+			save_file.save_encrypted_pass(SAVE_FILE_PATH, SAVE_FILE_PASSWORD)
+
+
+## Инициализирует глобальный синглтон с объектом [param main] класса [Main].
+func initialize(main_node: Main) -> void:
+	save_file = ConfigFile.new()
+	save_file.load_encrypted_pass(SAVE_FILE_PATH, SAVE_FILE_PASSWORD)
+	
+	items_db.initialize()
+	
+	main = main_node
 
 
 #region Функции задавания и получения значений

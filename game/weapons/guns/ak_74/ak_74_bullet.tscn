@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://1durulsrwk7o" path="res://game/weapons/guns/common/bullet.tscn" id="1_hc0xc"]
 
 [node name="AK74Bullet" instance=ExtResource("1_hc0xc")]
+speed = 3000.0
 damage = 7
-speed = 3500.0
 
 [node name="Sprite2D" parent="." index="1"]
 scale = Vector2(1, 0.5)

@@ -119,6 +119,7 @@ func _loading_init() -> void:
 	_load_progress_bar.value = 0
 	await get_tree().process_frame
 	
+	Globals.initialize(self)
 	if DisplayServer.get_name() == "headless" or OS.has_feature("dedicated_server"):
 		print("Detected headless platform")
 		Globals.headless = true
@@ -127,8 +128,6 @@ func _loading_init() -> void:
 	
 	# Чтобы убрать OfflineMultiplayerPeer
 	multiplayer.multiplayer_peer = null
-	Globals.items_db.initialize()
-	Globals.main = self
 	
 	await get_tree().process_frame
 	print_verbose("Done initializing.")

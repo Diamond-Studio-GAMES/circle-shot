@@ -140,11 +140,11 @@ _data = {
 [node name="Knife" type="Node2D"]
 script = ExtResource("1_efdma")
 damage = 55
-shoot_interval = 0.8
+shoot_interval = 0.7
 to_aim_time = 0.2
 ammo_per_load = 1
 ammo_total = 0
-speed_multiplier_when_current = 1.1
+speed_multiplier_when_current = 1.2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_8am4s")

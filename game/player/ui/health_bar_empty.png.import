@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d14nbphg5o3a"
-path="res://.godot/imported/chat.png-11ee873c591a8ede03e387192166bb70.ctex"
+uid="uid://d4b1wfymlf7bu"
+path="res://.godot/imported/health_bar_empty.png-f4811f1ae6c67671f82443a2d832f152.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/ui/icons/chat.png"
-dest_files=["res://.godot/imported/chat.png-11ee873c591a8ede03e387192166bb70.ctex"]
+source_file="res://game/player/ui/health_bar_empty.png"
+dest_files=["res://.godot/imported/health_bar_empty.png-f4811f1ae6c67671f82443a2d832f152.ctex"]
 
 [params]
 

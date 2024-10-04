@@ -1,8 +1,9 @@
-[gd_scene load_steps=23 format=3 uid="uid://4q0rrm6arbyx"]
+[gd_scene load_steps=24 format=3 uid="uid://4q0rrm6arbyx"]
 
 [ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_57777"]
 [ext_resource type="Script" path="res://game/weapons/guns/sniper_rifle/sniper_rifle.gd" id="2_ir31q"]
 [ext_resource type="PackedScene" uid="uid://cm0sqwulviy72" path="res://game/weapons/guns/sniper_rifle/sniper_bullet.tscn" id="2_stbvt"]
+[ext_resource type="PackedScene" uid="uid://cf6hb3vwyuf4" path="res://game/weapons/guns/sniper_rifle/weak_sniper_bullet.tscn" id="3_1fl78"]
 [ext_resource type="Texture2D" uid="uid://rvu643208pjh" path="res://game/weapons/guns/common/shoot_effect.png" id="3_nfw2e"]
 [ext_resource type="Texture2D" uid="uid://dg0aqjkd64hom" path="res://game/weapons/guns/sniper_rifle/base.png" id="4_5tdas"]
 [ext_resource type="Texture2D" uid="uid://hvi0c3ih0v8d" path="res://game/weapons/guns/sniper_rifle/magazine.png" id="5_i4xf8"]
@@ -412,9 +413,9 @@ _data = {
 
 [node name="SniperRifle" instance=ExtResource("1_57777")]
 script = ExtResource("2_ir31q")
-aim_zoom = Vector2(0.7, 0.7)
 aim_slowdown = 0.8
 no_aim_spread = 8.0
+weak_projectile_scene = ExtResource("3_1fl78")
 shoot_interval = 1.0
 to_aim_time = 0.3
 projectile_scene = ExtResource("2_stbvt")
@@ -474,14 +475,15 @@ width = 8.0
 default_color = Color(0, 0, 0, 0.25098)
 
 [node name="AimRay" type="RayCast2D" parent="ShootPoint" index="2"]
-target_position = Vector2(4000, 0)
+position = Vector2(-160, 0)
+target_position = Vector2(3200, 0)
 collision_mask = 3
 hit_from_inside = true
 
 [node name="AimTarget" type="Marker2D" parent="ShootPoint" index="3"]
 
 [node name="EndAim" type="Marker2D" parent="ShootPoint" index="4"]
-position = Vector2(4000, 0)
+position = Vector2(3040, 0)
 
 [node name="AnimationPlayer" parent="." index="3"]
 libraries = {
@@ -502,33 +504,12 @@ mouse_filter = 2
 
 [node name="Aim" type="TextureRect" parent="Aim/Base" index="0"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("9_cpvii")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Left" type="ColorRect" parent="Aim/Base" index="1"]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 360.0
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
-
-[node name="Right" type="ColorRect" parent="Aim/Base" index="2"]
-layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -360.0
-grow_horizontal = 0
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0, 0, 0, 1)

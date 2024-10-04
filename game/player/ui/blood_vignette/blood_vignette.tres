@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cmd5ms7ovbyru"]
 
-[ext_resource type="Shader" path="res://game/ui/blood_vignette/blood_vignette.gdshader" id="1_8scdv"]
-[ext_resource type="Texture2D" uid="uid://bew6f3wt1larh" path="res://game/ui/blood_vignette/noise.tres" id="2_rbbqx"]
+[ext_resource type="Shader" path="res://game/player/ui/blood_vignette/blood_vignette.gdshader" id="1_8scdv"]
+[ext_resource type="Texture2D" uid="uid://bew6f3wt1larh" path="res://game/player/ui/blood_vignette/noise.tres" id="2_rbbqx"]
 
 [resource]
 shader = ExtResource("1_8scdv")

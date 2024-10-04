@@ -1,13 +1,10 @@
 extends "res://game/weapons/guns/common/gun.gd"
 
 
-@export var aim_zoom: Vector2
 @export var aim_slowdown := 0.8
 @export var no_aim_spread := 8.0
-
-var _default_zoom: Vector2
+@export var weak_projectile_scene: PackedScene
 var _aiming := false
-
 @onready var _aim_ray: RayCast2D = $ShootPoint/AimRay
 @onready var _aim_target: Marker2D = $ShootPoint/AimTarget
 @onready var _end_aim: Marker2D = $ShootPoint/EndAim
@@ -26,7 +23,6 @@ func _exit_tree() -> void:
 
 func _initialize() -> void:
 	super()
-	_default_zoom = get_viewport().get_camera_2d().zoom
 	($ShootPoint as Node2D).hide()
 
 
@@ -34,6 +30,16 @@ func _unmake_current() -> void:
 	super()
 	if _aiming:
 		end_aim()
+
+
+func _create_projectile() -> void:
+	if not _aiming:
+		var default_projectile: PackedScene = projectile_scene
+		projectile_scene = weak_projectile_scene
+		super()
+		projectile_scene = default_projectile
+	else:
+		super()
 
 
 func reload() -> void:
@@ -74,9 +80,8 @@ func start_aim() -> void:
 	($ShootPoint as Node2D).show()
 	var camera: SmartCamera = get_viewport().get_camera_2d()
 	camera.target = _aim_target
-	camera.zoom = aim_zoom
+	camera.position_smoothing_enabled = false
 	camera.global_position = _calculate_aim_target_position()
-	get_viewport().get_camera_2d().reset_smoothing()
 
 
 func end_aim() -> void:
@@ -95,16 +100,16 @@ func end_aim() -> void:
 	
 	if camera.target == _aim_target:
 		camera.target = _player
+		camera.position_smoothing_enabled = true
 		camera.global_position = camera.target.global_position
-	camera.zoom = _default_zoom
 	camera.reset_smoothing()
 
 
 func _calculate_aim_target_position() -> Vector2:
 	var ratio: float = (
-			_aim_ray.get_collision_point() - _shoot_point.global_position
-	).length() / _end_aim.position.x if _aim_ray.is_colliding() else 1.0
-	return _shoot_point.global_position.lerp(
+			_aim_ray.get_collision_point() - _aim_ray.global_position
+	).length() / absf(_aim_ray.position.x - _end_aim.position.x) if _aim_ray.is_colliding() else 1.0
+	return _aim_ray.global_position.lerp(
 			_end_aim.global_position,
 			minf(_player.player_input.aim_direction.length(), ratio),
 	)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cp68q5xemqd01"
-path="res://.godot/imported/play.png-03109fa14968d7d242de6125bca9daaf.ctex"
+uid="uid://ccyn16fdlha6p"
+path="res://.godot/imported/change_event.png-35c87fc6ccccebddc3dbf6d3c3bab2c5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/ui/icons/play.png"
-dest_files=["res://.godot/imported/play.png-03109fa14968d7d242de6125bca9daaf.ctex"]
+source_file="res://game/menus/lobby/icons/change_event.png"
+dest_files=["res://.godot/imported/change_event.png-35c87fc6ccccebddc3dbf6d3c3bab2c5.ctex"]
 
 [params]
 

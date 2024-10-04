@@ -8,8 +8,8 @@ extends GridContainer
 ## Этот сигнал издаётся, когда один из отображённых предметов нажат. Сигнал содержит
 ## тип предмета в [param type] и ID предмета в [param id].
 signal item_selected(type: ItemsDB.Item, id: int)
-var _item_environment: PackedScene = preload("uid://ck5uq0aa1ov56")
-var _item_equip: PackedScene = preload("uid://c07pym82q5utt")
+var _item_environment_scene: PackedScene = preload("uid://ck5uq0aa1ov56")
+var _item_equip_scene: PackedScene = preload("uid://c07pym82q5utt")
 
 
 ## Очищает существующие предметы и отображает новые того типа, который указан в [param type].
@@ -25,7 +25,7 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 		ItemsDB.Item.EVENT:
 			columns = 1
 			for i: EventData in Globals.items_db.events:
-				var item: TextureRect = _item_environment.instantiate()
+				var item: TextureRect = _item_environment_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Container/Name") as Label).text = i.name
 				if selected == counter:
@@ -41,7 +41,7 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 		ItemsDB.Item.MAP:
 			columns = 1
 			for i: MapData in Globals.items_db.events[selected_event].maps:
-				var item: TextureRect = _item_environment.instantiate()
+				var item: TextureRect = _item_environment_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Container/Name") as Label).text = i.name
 				if selected == counter:
@@ -58,7 +58,7 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 		ItemsDB.Item.SKIN:
 			columns = 3
 			for i: SkinData in Globals.items_db.skins:
-				var item: TextureRect = _item_equip.instantiate()
+				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
 				if selected == counter:
@@ -77,7 +77,7 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 		ItemsDB.Item.WEAPON_LIGHT:
 			columns = 3
 			for i: WeaponData in Globals.items_db.weapons_light:
-				var item: TextureRect = _item_equip.instantiate()
+				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
 				if selected == counter:
@@ -94,7 +94,7 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 		ItemsDB.Item.WEAPON_HEAVY:
 			columns = 3
 			for i: WeaponData in Globals.items_db.weapons_heavy:
-				var item: TextureRect = _item_equip.instantiate()
+				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
 				if selected == counter:
@@ -111,7 +111,7 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 		ItemsDB.Item.WEAPON_SUPPORT:
 			columns = 3
 			for i: WeaponData in Globals.items_db.weapons_support:
-				var item: TextureRect = _item_equip.instantiate()
+				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
 				if selected == counter:
@@ -128,7 +128,7 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 		ItemsDB.Item.WEAPON_MELEE:
 			columns = 3
 			for i: WeaponData in Globals.items_db.weapons_melee:
-				var item: TextureRect = _item_equip.instantiate()
+				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
 				if selected == counter:
@@ -145,7 +145,7 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 		ItemsDB.Item.SKILL:
 			columns = 3
 			for i: SkillData in Globals.items_db.skills:
-				var item: TextureRect = _item_equip.instantiate()
+				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
 				if selected == counter:
