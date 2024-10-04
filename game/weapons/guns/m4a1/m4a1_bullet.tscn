@@ -3,8 +3,12 @@
 [ext_resource type="PackedScene" uid="uid://1durulsrwk7o" path="res://game/weapons/guns/common/bullet.tscn" id="1_xpwh2"]
 
 [node name="M4A1Bullet" instance=ExtResource("1_xpwh2")]
-speed = 3000.0
+speed = 3800.0
 damage = 6
+
+[node name="RayDetector" parent="." index="0"]
+position = Vector2(-160, 0)
+target_position = Vector2(160, 0)
 
 [node name="Sprite2D" parent="." index="1"]
 scale = Vector2(1, 0.5)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwx57jlb3j88p"
-path="res://.godot/imported/joystick_tip_move.png-505187b3fb32c8e26c73576cc212f1fd.ctex"
+uid="uid://p85ppsyx0g2n"
+path="res://.godot/imported/weapon_bg.png-f82ef38c32813c9d54242e341bd918ba.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/player/controller/joystick_tip_move.png"
-dest_files=["res://.godot/imported/joystick_tip_move.png-505187b3fb32c8e26c73576cc212f1fd.ctex"]
+source_file="res://game/player/ui/weapon_bg.png"
+dest_files=["res://.godot/imported/weapon_bg.png-f82ef38c32813c9d54242e341bd918ba.ctex"]
 
 [params]
 

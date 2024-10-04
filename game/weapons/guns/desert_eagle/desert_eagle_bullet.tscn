@@ -3,8 +3,12 @@
 [ext_resource type="PackedScene" uid="uid://1durulsrwk7o" path="res://game/weapons/guns/common/bullet.tscn" id="1_vbv8p"]
 
 [node name="DesertEagleBullet" instance=ExtResource("1_vbv8p")]
-speed = 3100.0
+speed = 4200.0
 damage = 24
+
+[node name="RayDetector" parent="." index="0"]
+position = Vector2(-160, 0)
+target_position = Vector2(160, 0)
 
 [node name="Sprite2D" parent="." index="1"]
 scale = Vector2(1, 0.5)

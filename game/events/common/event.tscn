@@ -8,7 +8,7 @@
 [ext_resource type="Material" uid="uid://cmd5ms7ovbyru" path="res://game/ui/blood_vignette/blood_vignette.tres" id="3_wrcxj"]
 [ext_resource type="Texture2D" uid="uid://d4b1wfymlf7bu" path="res://game/ui/health_bar_empty.png" id="5_os8qt"]
 [ext_resource type="Texture2D" uid="uid://low3v5d2q65l" path="res://game/ui/health_bar.png" id="6_igi7v"]
-[ext_resource type="PackedScene" uid="uid://0wc72b0o2o11" path="res://game/player/controller/player_controller.tscn" id="8_2up8s"]
+[ext_resource type="PackedScene" uid="uid://0wc72b0o2o11" path="res://game/player/ui/player_controller.tscn" id="8_2up8s"]
 [ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/ui/icons/chat_send.png" id="9_2uw6w"]
 [ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="13_j0bsh"]
 [ext_resource type="Texture2D" uid="uid://d14nbphg5o3a" path="res://game/ui/icons/chat.png" id="14_05fx8"]

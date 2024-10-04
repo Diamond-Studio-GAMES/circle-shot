@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djbso2agyek2p"
-path="res://.godot/imported/additional_button.png-3f00785e37c58d38eeabc489a07b67db.ctex"
+uid="uid://d3dyhqt2lduyi"
+path="res://.godot/imported/joystick_base.png-767072d4fccaefc2b3c3eb1dbdcef587.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/player/controller/additional_button.png"
-dest_files=["res://.godot/imported/additional_button.png-3f00785e37c58d38eeabc489a07b67db.ctex"]
+source_file="res://game/player/ui/joystick_base.png"
+dest_files=["res://.godot/imported/joystick_base.png-767072d4fccaefc2b3c3eb1dbdcef587.ctex"]
 
 [params]
 

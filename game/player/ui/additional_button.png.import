@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://p85ppsyx0g2n"
-path="res://.godot/imported/weapon_bg.png-7b93130be926219ed84f2454f8214b37.ctex"
+uid="uid://djbso2agyek2p"
+path="res://.godot/imported/additional_button.png-6c8ae0a7dafeefdbce13a45a714808f7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/player/controller/weapon_bg.png"
-dest_files=["res://.godot/imported/weapon_bg.png-7b93130be926219ed84f2454f8214b37.ctex"]
+source_file="res://game/player/ui/additional_button.png"
+dest_files=["res://.godot/imported/additional_button.png-6c8ae0a7dafeefdbce13a45a714808f7.ctex"]
 
 [params]
 

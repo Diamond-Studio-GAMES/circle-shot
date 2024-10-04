@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://chfx32osm5nwo"
-path="res://.godot/imported/joystick_tip_aim.png-0fd027ea0161564c750a562d95124df9.ctex"
+path="res://.godot/imported/joystick_tip_aim.png-612172bec0fae3acde217872923d9a37.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/player/controller/joystick_tip_aim.png"
-dest_files=["res://.godot/imported/joystick_tip_aim.png-0fd027ea0161564c750a562d95124df9.ctex"]
+source_file="res://game/player/ui/joystick_tip_aim.png"
+dest_files=["res://.godot/imported/joystick_tip_aim.png-612172bec0fae3acde217872923d9a37.ctex"]
 
 [params]
 

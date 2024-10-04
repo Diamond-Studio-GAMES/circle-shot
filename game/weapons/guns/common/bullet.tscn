@@ -18,11 +18,12 @@ properties/2/replication_mode = 0
 
 [node name="Bullet" type="Node2D"]
 script = ExtResource("1_fc6k8")
+speed = 2000.0
 hit_vfx = ExtResource("2_jsg66")
 
 [node name="RayDetector" type="RayCast2D" parent="."]
-position = Vector2(-64, 0)
-target_position = Vector2(96, 0)
+position = Vector2(-128, 0)
+target_position = Vector2(128, 0)
 collision_mask = 11
 hit_from_inside = true
 script = ExtResource("3_gkcmb")
