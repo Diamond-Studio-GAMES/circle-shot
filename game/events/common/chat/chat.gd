@@ -6,6 +6,8 @@ extends Control
 ## Используйте [member players_names] и [member players_teams] (второе необязательно)
 ## для регистрации игроков перед тем, как они начнут отправлять сообщения.
 
+## Издаётся когда в чате появляется новое сообщение с текстом [param message].
+signal message_posted(message: String)
 ## Максимальная длина сообщения.
 const MAX_MESSAGE_LENGTH: int = 80
 ## Путь к кнопке, которая будет моргать при новом сообщении.
@@ -27,6 +29,7 @@ func post_message(message: String) -> void:
 		return
 	
 	_messages.append_text(message + '\n')
+	message_posted.emit(message)
 	print_verbose("Posted message: %s" % message)
 	if not visible:
 		var tween: Tween = create_tween()

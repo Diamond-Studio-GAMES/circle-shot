@@ -1,72 +1,14 @@
-[gd_scene load_steps=21 format=3 uid="uid://d3nsak46hbo2c"]
+[gd_scene load_steps=13 format=3 uid="uid://d3nsak46hbo2c"]
 
 [ext_resource type="Script" path="res://game/events/common/event.gd" id="1_kxt6o"]
-[ext_resource type="Script" path="res://game/events/common/event_ui.gd" id="2_82bb5"]
 [ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://game/player/player.tscn" id="2_i4nrm"]
 [ext_resource type="Script" path="res://game/player/smart_camera.gd" id="2_mo4dc"]
 [ext_resource type="Script" path="res://game/events/common/chat/chat.gd" id="3_8d55t"]
-[ext_resource type="Texture2D" uid="uid://d01n7clmawdjx" path="res://game/player/ui/blood_vignette/vignette.png" id="3_k6kxk"]
-[ext_resource type="Material" uid="uid://cmd5ms7ovbyru" path="res://game/player/ui/blood_vignette/blood_vignette.tres" id="3_wrcxj"]
-[ext_resource type="Texture2D" uid="uid://d4b1wfymlf7bu" path="res://game/player/ui/health_bar_empty.png" id="5_os8qt"]
-[ext_resource type="Texture2D" uid="uid://low3v5d2q65l" path="res://game/player/ui/health_bar.png" id="6_igi7v"]
-[ext_resource type="PackedScene" uid="uid://0wc72b0o2o11" path="res://game/player/ui/player_controller.tscn" id="8_2up8s"]
+[ext_resource type="PackedScene" uid="uid://0wc72b0o2o11" path="res://game/player/ui/player_ui.tscn" id="8_2up8s"]
 [ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/events/common/chat/chat_send.png" id="9_2uw6w"]
+[ext_resource type="Script" path="res://game/events/common/chat_controller.gd" id="9_ko2fk"]
 [ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="13_j0bsh"]
 [ext_resource type="Texture2D" uid="uid://d14nbphg5o3a" path="res://game/events/common/chat/chat.png" id="14_05fx8"]
-
-[sub_resource type="Animation" id="Animation_j6hmo"]
-resource_name = "Death"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 1, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Color(1, 0, 0, 0), Color(1, 0, 0, 1), Color(1, 0, 0, 0.25098), Color(0, 0, 0, 0.25098)]
-}
-
-[sub_resource type="Animation" id="Animation_42oh0"]
-resource_name = "Hurt"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 0, 0, 0), Color(1, 0, 0, 0.188235), Color(1, 0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_koxqv"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 0, 0, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_e0ahq"]
-_data = {
-"Death": SubResource("Animation_j6hmo"),
-"Hurt": SubResource("Animation_42oh0"),
-"RESET": SubResource("Animation_koxqv")
-}
 
 [sub_resource type="Animation" id="Animation_4bxhi"]
 resource_name = "Intro"
@@ -281,11 +223,10 @@ position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 script = ExtResource("2_mo4dc")
 
-[node name="EventUI" type="CanvasLayer" parent="."]
-layer = 2
-script = ExtResource("2_82bb5")
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 5
 
-[node name="Main" type="Control" parent="EventUI"]
+[node name="Main" type="Control" parent="UI"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -294,92 +235,10 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Player" type="Control" parent="EventUI/Main"]
-auto_translate_mode = 1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="BloodVignette" type="TextureRect" parent="EventUI/Main/Player"]
-visible = false
-material = ExtResource("3_wrcxj")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("3_k6kxk")
-
-[node name="HealthBar" type="TextureProgressBar" parent="EventUI/Main/Player"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -288.0
-offset_top = 24.0
-offset_right = 288.0
-offset_bottom = 88.0
-grow_horizontal = 2
-mouse_filter = 2
-value = 100.0
-texture_under = ExtResource("5_os8qt")
-texture_progress = ExtResource("6_igi7v")
-
-[node name="Label" type="Label" parent="EventUI/Main/Player/HealthBar"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 24
-text = "100/100"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="PlayerController" parent="EventUI/Main/Player" instance=ExtResource("8_2up8s")]
+[node name="PlayerUI" parent="UI/Main" instance=ExtResource("8_2up8s")]
 layout_mode = 1
 
-[node name="PlayerTint" type="ColorRect" parent="EventUI/Main"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0, 0, 0)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="EventUI/Main/PlayerTint"]
-libraries = {
-"": SubResource("AnimationLibrary_e0ahq")
-}
-
-[node name="StatusLabel" type="RichTextLabel" parent="EventUI/Main"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -320.0
-offset_top = 96.0
-offset_right = 320.0
-offset_bottom = 119.0
-grow_horizontal = 2
-mouse_filter = 2
-theme_override_constants/outline_size = 4
-bbcode_enabled = true
-fit_content = true
-scroll_active = false
-shortcut_keys_enabled = false
-
-[node name="Leave" type="Button" parent="EventUI/Main"]
+[node name="Leave" type="Button" parent="UI/Main"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -391,44 +250,55 @@ offset_bottom = 72.0
 grow_horizontal = 0
 icon = ExtResource("13_j0bsh")
 
-[node name="Chat" type="Button" parent="EventUI/Main"]
+[node name="Chat" type="Button" parent="UI/Main"]
 auto_translate_mode = 1
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -136.0
-offset_top = 16.0
-offset_right = -80.0
-offset_bottom = 72.0
-grow_horizontal = 0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -72.0
+offset_right = 72.0
+offset_bottom = -16.0
+grow_vertical = 0
 toggle_mode = true
 icon = ExtResource("14_05fx8")
 
-[node name="ChatPanel" type="PanelContainer" parent="EventUI/Main"]
+[node name="ChatController" type="VBoxContainer" parent="UI/Main"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -368.0
+offset_right = 496.0
+offset_bottom = -80.0
+grow_vertical = 0
+mouse_filter = 2
+alignment = 2
+script = ExtResource("9_ko2fk")
+
+[node name="ChatPanel" type="PanelContainer" parent="UI/Main"]
 auto_translate_mode = 2
 visible = false
 self_modulate = Color(1, 1, 1, 0.878431)
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = -200.0
-offset_right = 240.0
-offset_bottom = 200.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -480.0
+offset_right = 496.0
+offset_bottom = -80.0
+grow_vertical = 0
 script = ExtResource("3_8d55t")
 chat_button_path = NodePath("../Chat")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EventUI/Main/ChatPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Main/ChatPanel"]
 auto_translate_mode = 1
 layout_mode = 2
 
-[node name="Messages" type="RichTextLabel" parent="EventUI/Main/ChatPanel/VBoxContainer"]
+[node name="Messages" type="RichTextLabel" parent="UI/Main/ChatPanel/VBoxContainer"]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -439,24 +309,24 @@ shortcut_keys_enabled = false
 meta_underlined = false
 hint_underlined = false
 
-[node name="HBoxContainer" type="HBoxContainer" parent="EventUI/Main/ChatPanel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Main/ChatPanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="EventUI/Main/ChatPanel/VBoxContainer/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="UI/Main/ChatPanel/VBoxContainer/HBoxContainer"]
 auto_translate_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Сообщение..."
 max_length = 80
 
-[node name="Send" type="TextureButton" parent="EventUI/Main/ChatPanel/VBoxContainer/HBoxContainer"]
+[node name="Send" type="TextureButton" parent="UI/Main/ChatPanel/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 texture_normal = ExtResource("9_2uw6w")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="Intro" type="Control" parent="EventUI"]
+[node name="Intro" type="Control" parent="UI"]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -466,7 +336,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Tint" type="ColorRect" parent="EventUI/Intro"]
+[node name="Tint" type="ColorRect" parent="UI/Intro"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -475,7 +345,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)
 
-[node name="Title" type="Label" parent="EventUI/Intro"]
+[node name="Title" type="Label" parent="UI/Intro"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -500,7 +370,7 @@ text = "ИГРА"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="Label" parent="EventUI/Intro/Title"]
+[node name="Description" type="Label" parent="UI/Intro/Title"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
@@ -518,7 +388,7 @@ theme_override_constants/outline_size = 4
 text = "Описание"
 horizontal_alignment = 1
 
-[node name="Text" type="Label" parent="EventUI/Intro"]
+[node name="Text" type="Label" parent="UI/Intro"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -544,7 +414,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="GO" type="Label" parent="EventUI/Intro"]
+[node name="GO" type="Label" parent="UI/Intro"]
 auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 8
@@ -570,14 +440,15 @@ text = "ВПЕРЁД!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="EventUI/Intro"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Intro"]
 libraries = {
 "": SubResource("AnimationLibrary_ctugk")
 }
 
-[connection signal="local_player_created" from="." to="EventUI" method="_on_local_player_created"]
-[connection signal="local_player_created" from="." to="EventUI/Main/Player/PlayerController" method="_on_local_player_created"]
-[connection signal="pressed" from="EventUI/Main/Leave" to="EventUI" method="_on_leave_game_pressed"]
-[connection signal="toggled" from="EventUI/Main/Chat" to="EventUI/Main/ChatPanel" method="_on_chat_toggled"]
-[connection signal="text_submitted" from="EventUI/Main/ChatPanel/VBoxContainer/HBoxContainer/LineEdit" to="EventUI/Main/ChatPanel" method="send_message" unbinds=1]
-[connection signal="pressed" from="EventUI/Main/ChatPanel/VBoxContainer/HBoxContainer/Send" to="EventUI/Main/ChatPanel" method="send_message"]
+[connection signal="local_player_created" from="." to="UI/Main/PlayerUI" method="_on_local_player_created"]
+[connection signal="pressed" from="UI/Main/Leave" to="." method="_on_leave_game_pressed"]
+[connection signal="toggled" from="UI/Main/Chat" to="UI/Main/ChatPanel" method="_on_chat_toggled"]
+[connection signal="toggled" from="UI/Main/Chat" to="UI/Main/ChatController" method="_on_chat_toggled"]
+[connection signal="message_posted" from="UI/Main/ChatPanel" to="UI/Main/ChatController" method="_on_message_posted"]
+[connection signal="text_submitted" from="UI/Main/ChatPanel/VBoxContainer/HBoxContainer/LineEdit" to="UI/Main/ChatPanel" method="send_message" unbinds=1]
+[connection signal="pressed" from="UI/Main/ChatPanel/VBoxContainer/HBoxContainer/Send" to="UI/Main/ChatPanel" method="send_message"]

@@ -56,15 +56,15 @@ func _player_disconnected(id: int) -> void:
 func _show_winner(winner: int, winner_name: String) -> void:
 	_ended = true
 	if winner == multiplayer.get_unique_id():
-		($EventUI/Main/GameEnd as Label).text = "ТЫ ПОБЕДИЛ!!!"
+		($UI/Main/GameEnd as Label).text = "ТЫ ПОБЕДИЛ!!!"
 	else:
-		($EventUI/Main/GameEnd as Label).text = "ПОБЕДИТЕЛЬ: %s" % winner_name
-	($EventUI/Main/GameEnd/AnimationPlayer as AnimationPlayer).play(&"Victory")
+		($UI/Main/GameEnd as Label).text = "ПОБЕДИТЕЛЬ: %s" % winner_name
+	($UI/Main/GameEnd/AnimationPlayer as AnimationPlayer).play(&"Victory")
 
 
 @rpc("call_local", "reliable")
 func _set_alive_players(count: int) -> void:
-	($EventUI/Main/PlayerCounter as Label).text = "Осталось игроков: %d" % count
+	($UI/Main/PlayerCounter as Label).text = str(count)
 
 
 func _spawn_heal_box() -> void:
@@ -135,8 +135,8 @@ func _on_watching_player_died(_who: int, player: Player) -> void:
 func _on_local_player_died(_who: int) -> void:
 	if _ended:
 		return
-	($EventUI/Main/GameEnd as Label).text = "ПОРАЖЕНИЕ!"
-	($EventUI/Main/GameEnd/AnimationPlayer as AnimationPlayer).play(&"Defeat")
+	($UI/Main/GameEnd as Label).text = "ПОРАЖЕНИЕ!"
+	($UI/Main/GameEnd/AnimationPlayer as AnimationPlayer).play(&"Defeat")
 
 
 func _on_player_died(who: int) -> void:

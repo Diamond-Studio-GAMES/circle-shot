@@ -1,19 +1,23 @@
-[gd_scene load_steps=16 format=3 uid="uid://0wc72b0o2o11"]
+[gd_scene load_steps=24 format=3 uid="uid://0wc72b0o2o11"]
 
-[ext_resource type="Script" path="res://game/player/ui/player_controller.gd" id="1_5ls6j"]
-[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick.tscn" id="2_b1vhp"]
-[ext_resource type="Texture2D" uid="uid://d3dyhqt2lduyi" path="res://game/player/ui/joystick_base.png" id="3_nm302"]
-[ext_resource type="Texture2D" uid="uid://cwx57jlb3j88p" path="res://game/player/ui/joystick_tip_move.png" id="4_pkrqe"]
-[ext_resource type="Texture2D" uid="uid://chfx32osm5nwo" path="res://game/player/ui/joystick_tip_aim.png" id="5_ior64"]
-[ext_resource type="Texture2D" uid="uid://p85ppsyx0g2n" path="res://game/player/ui/weapon_bg.png" id="6_7kfw0"]
-[ext_resource type="Texture2D" uid="uid://djbso2agyek2p" path="res://game/player/ui/additional_button.png" id="6_dsspw"]
-[ext_resource type="Shader" path="res://game/player/ui/solid_color.gdshader" id="7_3hhip"]
+[ext_resource type="Script" path="res://game/player/ui/player_ui.gd" id="1_2pprn"]
+[ext_resource type="Material" uid="uid://cmd5ms7ovbyru" path="res://game/player/ui/blood_vignette/blood_vignette.tres" id="2_k62wa"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick.tscn" id="2_x7k0l"]
+[ext_resource type="Texture2D" uid="uid://d3dyhqt2lduyi" path="res://game/player/ui/joystick_base.png" id="3_svvw5"]
+[ext_resource type="Texture2D" uid="uid://d01n7clmawdjx" path="res://game/player/ui/blood_vignette/vignette.png" id="3_tfa7a"]
+[ext_resource type="Texture2D" uid="uid://d4b1wfymlf7bu" path="res://game/player/ui/health_bar_empty.png" id="4_425vn"]
+[ext_resource type="Texture2D" uid="uid://cwx57jlb3j88p" path="res://game/player/ui/joystick_tip_move.png" id="4_opsbs"]
+[ext_resource type="Texture2D" uid="uid://low3v5d2q65l" path="res://game/player/ui/health_bar.png" id="5_3xbtg"]
+[ext_resource type="Texture2D" uid="uid://chfx32osm5nwo" path="res://game/player/ui/joystick_tip_aim.png" id="5_5uxix"]
+[ext_resource type="Texture2D" uid="uid://djbso2agyek2p" path="res://game/player/ui/additional_button.png" id="6_10yoo"]
+[ext_resource type="Texture2D" uid="uid://p85ppsyx0g2n" path="res://game/player/ui/weapon_bg.png" id="7_6c3s8"]
+[ext_resource type="Shader" path="res://game/player/ui/solid_color.gdshader" id="8_iqift"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6sal7"]
 size = Vector2(640, 256)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jse5g"]
-shader = ExtResource("7_3hhip")
+shader = ExtResource("8_iqift")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/power = 1.0
 
@@ -21,26 +25,80 @@ shader_parameter/power = 1.0
 size = Vector2(288, 144)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hii6l"]
-shader = ExtResource("7_3hhip")
+shader = ExtResource("8_iqift")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/power = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c703a"]
-shader = ExtResource("7_3hhip")
+shader = ExtResource("8_iqift")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/power = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vprac"]
-shader = ExtResource("7_3hhip")
+shader = ExtResource("8_iqift")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/power = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fqc3t"]
-shader = ExtResource("7_3hhip")
+shader = ExtResource("8_iqift")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/power = 1.0
 
-[node name="PlayerController" type="Control"]
+[sub_resource type="Animation" id="Animation_j6hmo"]
+resource_name = "Death"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 0), Color(1, 0, 0, 1), Color(1, 0, 0, 0.25098), Color(0, 0, 0, 0.25098)]
+}
+
+[sub_resource type="Animation" id="Animation_42oh0"]
+resource_name = "Hurt"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 0), Color(1, 0, 0, 0.188235), Color(1, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_koxqv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_e0ahq"]
+_data = {
+"Death": SubResource("Animation_j6hmo"),
+"Hurt": SubResource("Animation_42oh0"),
+"RESET": SubResource("Animation_koxqv")
+}
+
+[node name="PlayerUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,7 +106,50 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("1_5ls6j")
+script = ExtResource("1_2pprn")
+
+[node name="BloodVignette" type="TextureRect" parent="."]
+visible = false
+material = ExtResource("2_k62wa")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_tfa7a")
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -240.0
+offset_top = -64.0
+offset_right = 240.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+value = 100.0
+texture_under = ExtResource("4_425vn")
+texture_progress = ExtResource("5_3xbtg")
+
+[node name="Label" type="Label" parent="HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="TouchControls" type="Control" parent="."]
 layout_mode = 1
@@ -58,7 +159,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MoveVirtualJoystick" parent="TouchControls" instance=ExtResource("2_b1vhp")]
+[node name="MoveVirtualJoystick" parent="TouchControls" instance=ExtResource("2_x7k0l")]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -70,11 +171,11 @@ offset_bottom = -128.0
 grow_vertical = 0
 joystick_mode = 1
 pressed_color = Color(0, 0.273438, 1, 1)
-base_texture = ExtResource("3_nm302")
-tip_texture = ExtResource("4_pkrqe")
+base_texture = ExtResource("3_svvw5")
+tip_texture = ExtResource("4_opsbs")
 use_input_actions = false
 
-[node name="AimVirtualJoystick" parent="TouchControls" instance=ExtResource("2_b1vhp")]
+[node name="AimVirtualJoystick" parent="TouchControls" instance=ExtResource("2_x7k0l")]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -89,8 +190,8 @@ grow_horizontal = 0
 grow_vertical = 0
 joystick_mode = 1
 pressed_color = Color(1, 0, 0, 1)
-base_texture = ExtResource("3_nm302")
-tip_texture = ExtResource("5_ior64")
+base_texture = ExtResource("3_svvw5")
+tip_texture = ExtResource("5_5uxix")
 use_input_actions = false
 
 [node name="ShootArea" type="TouchScreenButton" parent="TouchControls"]
@@ -99,14 +200,17 @@ shape = SubResource("RectangleShape2D_6sal7")
 
 [node name="Anchor" type="Control" parent="TouchControls"]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-grow_vertical = 2
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
 
 [node name="AdditionalButton" type="TouchScreenButton" parent="TouchControls/Anchor"]
-position = Vector2(16, -72)
-texture_normal = ExtResource("6_dsspw")
+position = Vector2(-160, -160)
+texture_normal = ExtResource("6_10yoo")
 
 [node name="WeaponSelection" type="Control" parent="."]
 visible = false
@@ -132,7 +236,7 @@ offset_bottom = -88.0
 grow_horizontal = 0
 grow_vertical = 2
 mouse_filter = 0
-texture = ExtResource("6_7kfw0")
+texture = ExtResource("7_6c3s8")
 
 [node name="Icon" type="TextureRect" parent="WeaponSelection/LightWeapon"]
 auto_translate_mode = 1
@@ -188,7 +292,7 @@ offset_bottom = 56.0
 grow_horizontal = 0
 grow_vertical = 2
 mouse_filter = 0
-texture = ExtResource("6_7kfw0")
+texture = ExtResource("7_6c3s8")
 
 [node name="Icon" type="TextureRect" parent="WeaponSelection/HeavyWeapon"]
 auto_translate_mode = 1
@@ -244,7 +348,7 @@ offset_bottom = 200.0
 grow_horizontal = 0
 grow_vertical = 2
 mouse_filter = 0
-texture = ExtResource("6_7kfw0")
+texture = ExtResource("7_6c3s8")
 
 [node name="Icon" type="TextureRect" parent="WeaponSelection/SupportWeapon"]
 auto_translate_mode = 1
@@ -300,7 +404,7 @@ offset_bottom = 344.0
 grow_horizontal = 0
 grow_vertical = 2
 mouse_filter = 0
-texture = ExtResource("6_7kfw0")
+texture = ExtResource("7_6c3s8")
 
 [node name="Icon" type="TextureRect" parent="WeaponSelection/MeleeWeapon"]
 auto_translate_mode = 1
@@ -355,7 +459,7 @@ offset_bottom = -88.0
 grow_horizontal = 0
 grow_vertical = 2
 mouse_filter = 0
-texture = ExtResource("6_7kfw0")
+texture = ExtResource("7_6c3s8")
 
 [node name="Icon" type="TextureRect" parent="CurrentWeapon"]
 material = SubResource("ShaderMaterial_fqc3t")
@@ -394,6 +498,21 @@ text = "120/60"
 [node name="TouchScreenButton" type="TouchScreenButton" parent="CurrentWeapon"]
 position = Vector2(144, 72)
 shape = SubResource("RectangleShape2D_0kb2l")
+
+[node name="PlayerTint" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerTint"]
+libraries = {
+"": SubResource("AnimationLibrary_e0ahq")
+}
 
 [node name="Center" type="Control" parent="."]
 layout_mode = 1

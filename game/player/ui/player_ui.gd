@@ -1,4 +1,4 @@
-extends Node
+extends Control
 
 
 const MIN_AIM_DIRECTION_LENGTH := 0.1
@@ -15,6 +15,11 @@ var _moving_right := false
 var _moving_up := false
 var _moving_down := false
 var _aim_zone: float
+
+@onready var _health_bar: TextureProgressBar = $HealthBar
+@onready var _health_text: Label = $HealthBar/Label
+@onready var _blood_vignette: TextureRect = $BloodVignette
+@onready var _tint_anim: AnimationPlayer = $PlayerTint/AnimationPlayer
 
 @onready var _current_weapon_icon: TextureRect = $CurrentWeapon/Icon
 @onready var _light_weapon_icon: TextureRect = $WeaponSelection/LightWeapon/Icon
@@ -137,11 +142,34 @@ func _close_weapon_selection() -> void:
 
 
 func _on_local_player_created(player: Player) -> void:
+	show()
+	
+	_on_player_health_changed(player.max_health, player.max_health)
+	_tint_anim.play(&"RESET")
+	
+	player.health_changed.connect(_on_player_health_changed)
+	player.died.connect(_on_player_died)
+	
 	player.ammo_text_updated.connect(_on_ammo_text_updated)
 	player.weapon_changed.connect(_on_weapon_changed)
 	player.weapon_equipped.connect(_on_weapon_equipped)
 	player.player_input.turn_with_aim = not _touch
 	_player = player
+
+
+func _on_player_health_changed(old_value: int, new_value: int) -> void:
+	if new_value > _health_bar.max_value:
+		_health_bar.max_value = new_value
+	_health_bar.value = new_value
+	_health_text.text = "%d/%d" % [_health_bar.value, _health_bar.max_value]
+	if new_value < old_value:
+		_tint_anim.play(&"Hurt")
+	_blood_vignette.visible = new_value < _health_bar.max_value * 0.34
+
+
+func _on_player_died(_who: int) -> void:
+	hide()
+	_tint_anim.play(&"Death")
 
 
 func _on_weapon_changed(to: Weapon.Type) -> void:

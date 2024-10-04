@@ -142,21 +142,68 @@ heal_box_spawn_interval = 15.0
 ammo_box_spawn_interval = 25.0
 metadata/_edit_horizontal_guides_ = []
 
-[node name="OtherSpawner" parent="." index="6"]
+[node name="PoisonSmoke" type="Node2D" parent="." index="6"]
+
+[node name="PoisonSmoke" parent="PoisonSmoke" index="0" instance=ExtResource("5_mf48w")]
+position = Vector2(0, 6400)
+
+[node name="PoisonSmoke2" parent="PoisonSmoke" index="1" instance=ExtResource("5_mf48w")]
+position = Vector2(-6400, 0)
+rotation = 1.5708
+
+[node name="PoisonSmoke3" parent="PoisonSmoke" index="2" instance=ExtResource("5_mf48w")]
+position = Vector2(6400, 0)
+rotation = -1.5708
+
+[node name="PoisonSmoke4" parent="PoisonSmoke" index="3" instance=ExtResource("5_mf48w")]
+position = Vector2(0, -6400)
+rotation = -3.14159
+
+[node name="HealBoxSpawnTimer" type="Timer" parent="." index="7"]
+wait_time = 15.0
+one_shot = true
+
+[node name="AmmoBoxSpawnTimer" type="Timer" parent="." index="8"]
+wait_time = 15.0
+one_shot = true
+
+[node name="OtherSpawner" parent="." index="9"]
 _spawnable_scenes = PackedStringArray("res://game/events/royale/heal_box.tscn", "res://game/events/royale/ammo_box.tscn")
 
-[node name="PlayerCounter" type="Label" parent="EventUI/Main" index="6"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 190.0
+[node name="PlayerCounterTitle" type="Label" parent="UI/Main" index="5"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -116.0
+offset_top = 8.0
+offset_right = 116.0
 offset_bottom = 42.0
+grow_horizontal = 2
 theme_type_variation = &"HeaderMedium"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
 text = "Осталось игроков: "
 
-[node name="GameEnd" type="Label" parent="EventUI/Main" index="7"]
+[node name="PlayerCounter" type="Label" parent="UI/Main" index="6"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -40.0
+offset_top = 32.0
+offset_right = 40.0
+offset_bottom = 112.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 48
+text = "2
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameEnd" type="Label" parent="UI/Main" index="7"]
 self_modulate = Color(1, 0, 0, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -183,45 +230,20 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="EventUI/Main/GameEnd" index="0"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Main/GameEnd" index="0"]
 libraries = {
 "": SubResource("AnimationLibrary_n8n4b")
 }
 
-[node name="Title" parent="EventUI/Intro" index="1"]
+[node name="Title" parent="UI/Intro" index="1"]
 text = "КОРОЛЕВСКАЯ БИТВА"
 
-[node name="Description" parent="EventUI/Intro/Title" index="0"]
+[node name="Description" parent="UI/Intro/Title" index="0"]
 text = "Побеждает последний выживший!"
 
-[node name="Text" parent="EventUI/Intro" index="2"]
+[node name="Text" parent="UI/Intro" index="2"]
 text = "Каждый сам
 за себя!"
-
-[node name="PoisonSmoke" type="Node2D" parent="." index="9"]
-
-[node name="PoisonSmoke" parent="PoisonSmoke" index="0" instance=ExtResource("5_mf48w")]
-position = Vector2(0, 6400)
-
-[node name="PoisonSmoke2" parent="PoisonSmoke" index="1" instance=ExtResource("5_mf48w")]
-position = Vector2(-6400, 0)
-rotation = 1.5708
-
-[node name="PoisonSmoke3" parent="PoisonSmoke" index="2" instance=ExtResource("5_mf48w")]
-position = Vector2(6400, 0)
-rotation = -1.5708
-
-[node name="PoisonSmoke4" parent="PoisonSmoke" index="3" instance=ExtResource("5_mf48w")]
-position = Vector2(0, -6400)
-rotation = -3.14159
-
-[node name="HealBoxSpawnTimer" type="Timer" parent="." index="10"]
-wait_time = 15.0
-one_shot = true
-
-[node name="AmmoBoxSpawnTimer" type="Timer" parent="." index="11"]
-wait_time = 15.0
-one_shot = true
 
 [connection signal="local_player_created" from="." to="." method="_on_local_player_created"]
 [connection signal="timeout" from="HealBoxSpawnTimer" to="." method="_on_heal_box_spawn_timer_timeout"]

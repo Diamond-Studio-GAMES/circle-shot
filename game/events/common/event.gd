@@ -13,7 +13,7 @@ var _players_names := {}
 var _players_teams := {}
 var _players := {}
 
-@onready var _ui: EventUI = $EventUI
+@onready var _chat: Chat = $UI/Main/ChatPanel
 @onready var _camera: SmartCamera = $Camera
 
 
@@ -30,15 +30,15 @@ func _ready() -> void:
 	
 	if multiplayer.is_server():
 		_setup()
-	($EventUI/Intro/AnimationPlayer as AnimationPlayer).play("Intro")
+	($UI/Intro/AnimationPlayer as AnimationPlayer).play(&"Intro")
 
 
 func _setup() -> void:
 	if not multiplayer.is_server():
 		return
 	_make_teams()
-	_ui.chat.players_names = _players_names
-	_ui.chat.players_teams = _players_teams
+	_chat.players_names = _players_names
+	_chat.players_teams = _players_teams
 	for i: int in _players_names:
 		spawn_player(i)
 	_finish_setup()
@@ -163,8 +163,7 @@ func _on_player_killed(who: int, by: int) -> void:
 			Entity.TEAM_COLORS[_players_teams[who]].to_html(false),
 			_players_names[who],
 		]
-	_ui.show_status.rpc(message_text, 2.5)
-	_ui.chat.post_message.rpc("Игра: " + message_text)
+	_chat.post_message.rpc("> " + message_text)
 	_player_killed(who, by)
 	_players.erase(who)
 
@@ -174,8 +173,7 @@ func _on_peer_disconnected(id: int) -> void:
 		Entity.TEAM_COLORS[_players_teams[id]].to_html(false),
 		_players_names[id],
 	]
-	_ui.show_status.rpc(message_text, 1.5)
-	_ui.chat.post_message.rpc("Игра: " + message_text)
+	_chat.post_message.rpc("> " + message_text)
 	if id in _players:
 		if is_instance_valid(_players[id]):
 			_players[id].queue_free()
@@ -187,3 +185,7 @@ func _on_peer_disconnected(id: int) -> void:
 		_end.rpc()
 		return
 	_player_disconnected(id)
+
+
+func _on_leave_game_pressed() -> void:
+	Globals.main.game.close()
