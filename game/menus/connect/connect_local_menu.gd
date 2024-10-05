@@ -31,7 +31,7 @@ func _process(_delta: float) -> void:
 		var peer: PacketPeerUDP = _udp.take_connection()
 		var data: PackedByteArray = peer.get_packet()
 		var id_nodepath := NodePath("Game%d" % data[0])
-		var player_name: String = _game.verify_player_name(data.slice(3).get_string_from_utf8())
+		var player_name: String = _game.validate_player_name(data.slice(3).get_string_from_utf8())
 		var players: int = data[1]
 		var max_players: int = data[2]
 		print_verbose("Found game: %s (%d/%d) with ID %d from IP: %s" % [

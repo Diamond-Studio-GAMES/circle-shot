@@ -1,6 +1,7 @@
 class_name Event
 extends Node
 
+
 signal ended
 signal local_player_created(player: Player)
 
@@ -12,8 +13,8 @@ var _players_equip_data := {}
 var _players_names := {}
 var _players_teams := {}
 var _players := {}
-var _hit_marker_scene: PackedScene = load("uid://cmwb81du1kbtm")
-var _death_marker_scene: PackedScene = load("uid://cmwb81du1kbtm")
+var _hit_marker_scene: PackedScene = load("uid://c2f0n1b5sfpdh")
+var _death_marker_scene: PackedScene = load("uid://blhm6uka1p287")
 
 @onready var _chat: Chat = $UI/Main/ChatPanel
 @onready var _camera: SmartCamera = $Camera

@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="EventData" load_steps=4 format=3 uid="uid://i4s2m4jgbyvc"]
+[gd_resource type="Resource" script_class="EventData" load_steps=5 format=3 uid="uid://i4s2m4jgbyvc"]
 
 [ext_resource type="Script" path="res://game/events/common/map_data.gd" id="1_4pccw"]
 [ext_resource type="Resource" uid="uid://b6lbtimr5h2h4" path="res://game/maps/royale/classic/classic.tres" id="1_j8k4y"]
 [ext_resource type="Script" path="res://game/events/common/event_data.gd" id="1_x4pw4"]
+[ext_resource type="Resource" uid="uid://y3ysureg1s5c" path="res://game/maps/royale/war/war.tres" id="3_28sfs"]
 
 [resource]
 script = ExtResource("1_x4pw4")
@@ -13,4 +14,4 @@ max_players = 10
 players_divider = 1
 scene_path = "uid://yfpyfv6boyao"
 image_path = "uid://nk1w1iu0ambu"
-maps = Array[ExtResource("1_4pccw")]([ExtResource("1_j8k4y")])
+maps = Array[ExtResource("1_4pccw")]([ExtResource("1_j8k4y"), ExtResource("3_28sfs")])

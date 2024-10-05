@@ -99,7 +99,7 @@ func _register_new_player(player_name: String) -> void:
 		_add_player_entry.rpc_id(sender_id, i, _players[i])
 	_set_environment.rpc_id(sender_id, _selected_event, _selected_map)
 	
-	player_name = _game.verify_player_name(player_name, sender_id)
+	player_name = _game.validate_player_name(player_name, sender_id)
 	_players[sender_id] = player_name
 	
 	_chat.post_message.rpc("Игра: Игрок [color=green]%s[/color] подключился!" % player_name)

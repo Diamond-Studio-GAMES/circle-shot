@@ -178,7 +178,7 @@ func show_error(error_text: String) -> void:
 
 ## Проверяет имя игрока и исправляет при необходимости. Если [param id] равен 0, не печатает
 ## никаких предупреждений.
-func verify_player_name(player_name: String, id: int = 0) -> String:
+func validate_player_name(player_name: String, id: int = 0) -> String:
 	player_name = player_name.strip_edges().strip_escapes()
 	if player_name.is_empty():
 		return "Игрок%d" % id if id != 0 else "Игрок"
@@ -203,7 +203,7 @@ func _send_player_data(player_name: String, equip_data: Array[int]) -> void:
 	if sender_id == 0:
 		sender_id = 1
 	
-	player_name = verify_player_name(player_name, sender_id)
+	player_name = validate_player_name(player_name, sender_id)
 	if equip_data.size() != 6:
 		push_warning("Client's %d skin has incorrect equip data size: %d." % [
 			sender_id,
