@@ -128,6 +128,7 @@ func _loading_init() -> void:
 	
 	# Чтобы убрать OfflineMultiplayerPeer
 	multiplayer.multiplayer_peer = null
+	get_viewport().set_canvas_cull_mask_bit(1, false)
 	
 	await get_tree().process_frame
 	print_verbose("Done initializing.")

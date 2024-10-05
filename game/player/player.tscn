@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://3l0k1cn63ahd"]
+[gd_scene load_steps=13 format=3 uid="uid://3l0k1cn63ahd"]
 
 [ext_resource type="Script" path="res://game/player/player.gd" id="1_d5iul"]
 [ext_resource type="PackedScene" uid="uid://dtvo18gjrm7my" path="res://game/entity/entity.tscn" id="1_r625f"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://game/player/player_input.gd" id="3_knbu5"]
 [ext_resource type="PackedScene" uid="uid://bp6v2plelkof8" path="res://game/player/vfx/blood_shards.tscn" id="3_tk865"]
 [ext_resource type="PackedScene" uid="uid://ctqgs3w1llfuf" path="res://game/player/vfx/death_blood.tscn" id="4_nsvnj"]
+[ext_resource type="Texture2D" uid="uid://bk76lmnl8rml0" path="res://game/events/common/minimap/marker.png" id="8_05q0u"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i6vnq"]
 radius = 76.0
@@ -122,4 +123,25 @@ replication_config = SubResource("SceneReplicationConfig_r6igu")
 
 [node name="AudioListener2D" type="AudioListener2D" parent="." index="7"]
 
+[node name="Minimap" type="Node2D" parent="." index="8"]
+
+[node name="MinimapNotifier" type="VisibleOnScreenNotifier2D" parent="Minimap" index="0"]
+rect = Rect2(-100, -100, 200, 200)
+
+[node name="MinimapRemote" type="RemoteTransform2D" parent="Minimap" index="1"]
+remote_path = NodePath("../MinimapMarker/Visual")
+update_rotation = false
+update_scale = false
+
+[node name="MinimapMarker" type="Node" parent="Minimap" index="2"]
+
+[node name="Visual" type="Sprite2D" parent="Minimap/MinimapMarker" index="0"]
+visible = false
+visibility_layer = 2
+z_index = -1
+scale = Vector2(20, 20)
+texture = ExtResource("8_05q0u")
+
 [connection signal="health_changed" from="." to="." method="_on_health_changed"]
+[connection signal="screen_entered" from="Minimap/MinimapNotifier" to="Minimap/MinimapMarker/Visual" method="show"]
+[connection signal="screen_exited" from="Minimap/MinimapNotifier" to="Minimap/MinimapMarker/Visual" method="hide"]

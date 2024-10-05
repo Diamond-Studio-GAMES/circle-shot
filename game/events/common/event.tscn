@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d3nsak46hbo2c"]
+[gd_scene load_steps=14 format=3 uid="uid://d3nsak46hbo2c"]
 
 [ext_resource type="Script" path="res://game/events/common/event.gd" id="1_kxt6o"]
 [ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://game/player/player.tscn" id="2_i4nrm"]
@@ -9,6 +9,9 @@
 [ext_resource type="Script" path="res://game/events/common/event_chat.gd" id="9_ko2fk"]
 [ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="13_j0bsh"]
 [ext_resource type="Texture2D" uid="uid://d14nbphg5o3a" path="res://game/events/common/chat/chat.png" id="14_05fx8"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_u8vru"]
+viewport_path = NodePath("MinimapViewport")
 
 [sub_resource type="Animation" id="Animation_4bxhi"]
 resource_name = "Intro"
@@ -222,6 +225,11 @@ position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 script = ExtResource("2_mo4dc")
 
+[node name="MinimapRemote" type="RemoteTransform2D" parent="Camera"]
+remote_path = NodePath("../../MinimapViewport/Camera")
+update_rotation = false
+update_scale = false
+
 [node name="UI" type="CanvasLayer" parent="."]
 layer = 5
 
@@ -233,6 +241,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="Minimap" type="TextureRect" parent="UI/Main"]
+self_modulate = Color(1, 1, 1, 0.564706)
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 272.0
+offset_bottom = 272.0
+texture = SubResource("ViewportTexture_u8vru")
 
 [node name="PlayerUI" parent="UI/Main" instance=ExtResource("8_2up8s")]
 layout_mode = 1
@@ -443,6 +460,15 @@ vertical_alignment = 1
 libraries = {
 "": SubResource("AnimationLibrary_ctugk")
 }
+
+[node name="MinimapViewport" type="SubViewport" parent="."]
+disable_3d = true
+gui_disable_input = true
+canvas_cull_mask = 4293918722
+size = Vector2i(256, 256)
+
+[node name="Camera" type="Camera2D" parent="MinimapViewport"]
+zoom = Vector2(0.05, 0.05)
 
 [connection signal="local_player_created" from="." to="UI/Main/PlayerUI" method="_on_local_player_created"]
 [connection signal="pressed" from="UI/Main/Leave" to="." method="_on_leave_game_pressed"]

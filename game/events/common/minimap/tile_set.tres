@@ -1,0 +1,13 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://ci04ocvnien3"]
+
+[ext_resource type="Texture2D" uid="uid://c0mubs3obmux4" path="res://game/events/common/minimap/tiles.png" id="1_6v7tf"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xwcku"]
+texture = ExtResource("1_6v7tf")
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_xwcku")

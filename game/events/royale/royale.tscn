@@ -1,10 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://yfpyfv6boyao"]
+[gd_scene load_steps=11 format=3 uid="uid://yfpyfv6boyao"]
 
 [ext_resource type="PackedScene" uid="uid://d3nsak46hbo2c" path="res://game/events/common/event.tscn" id="1_5uf7s"]
 [ext_resource type="Script" path="res://game/events/royale/royale.gd" id="2_d2r5a"]
 [ext_resource type="PackedScene" uid="uid://bysyaaj2r7stt" path="res://game/events/royale/heal_box.tscn" id="3_x8ahy"]
 [ext_resource type="PackedScene" path="res://game/events/royale/ammo_box.tscn" id="4_01fjj"]
 [ext_resource type="PackedScene" uid="uid://b4h27swncrquh" path="res://game/events/royale/poison_smoke.tscn" id="5_mf48w"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_qsiou"]
+viewport_path = NodePath("MinimapViewport")
 
 [sub_resource type="Animation" id="Animation_ty3n7"]
 resource_name = "Defeat"
@@ -169,6 +172,9 @@ one_shot = true
 
 [node name="OtherSpawner" parent="." index="9"]
 _spawnable_scenes = PackedStringArray("res://game/events/royale/heal_box.tscn", "res://game/events/royale/ammo_box.tscn")
+
+[node name="Minimap" parent="UI/Main" index="0"]
+texture = SubResource("ViewportTexture_qsiou")
 
 [node name="PlayerCounterTitle" type="Label" parent="UI/Main" index="5"]
 layout_mode = 1

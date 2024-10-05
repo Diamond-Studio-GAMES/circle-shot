@@ -33,6 +33,11 @@ func _ready() -> void:
 	set_weapon(Weapon.Type.HEAVY, equip_data[2])
 	set_weapon(Weapon.Type.SUPPORT, equip_data[3])
 	set_weapon(Weapon.Type.MELEE, equip_data[4])
+	
+	($Minimap/MinimapMarker/Visual as Node2D).self_modulate = TEAM_COLORS[team]
+	await get_tree().process_frame
+	($Minimap/MinimapMarker/Visual as Node2D).visible = \
+			($Minimap/MinimapNotifier as VisibleOnScreenNotifier2D).is_on_screen()
 
 
 func _physics_process(delta: float) -> void:

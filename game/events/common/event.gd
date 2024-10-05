@@ -12,14 +12,16 @@ var _players_equip_data := {}
 var _players_names := {}
 var _players_teams := {}
 var _players := {}
-var _hit_marker_scene: PackedScene = preload("uid://c2f0n1b5sfpdh")
-var _death_marker_scene: PackedScene = preload("uid://blhm6uka1p287")
+var _hit_marker_scene: PackedScene = load("uid://cmwb81du1kbtm")
+var _death_marker_scene: PackedScene = load("uid://cmwb81du1kbtm")
 
 @onready var _chat: Chat = $UI/Main/ChatPanel
 @onready var _camera: SmartCamera = $Camera
 
 
 func _ready() -> void:
+	$MinimapViewport.world_2d = get_viewport().find_world_2d()
+	
 	if multiplayer.is_server():
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	

@@ -16,7 +16,6 @@ var _loading_path: String
 
 func _ready() -> void:
 	set_process(false)
-	set_physics_process(false)
 
 
 func _process(_delta: float) -> void:
@@ -37,11 +36,6 @@ func _process(_delta: float) -> void:
 			loaded_part.emit(false)
 
 
-func _physics_process(_delta: float) -> void:
-	# Чтобы не отключаться.
-	multiplayer.poll()
-
-
 ## Загружает события и карту по [param event_id] и [param map_id] соответственно. Возвращает [Event],
 ## если загрузка прошла удачно, иначе возвращает [code]null[/code].[br]
 ## [b]Внимание[/b]: этот метод - [b]корутина[/b], так что вам необходимо подождать его с помощью
@@ -58,7 +52,6 @@ func load_event(event_id: int, map_id: int) -> Event:
 		_fail_load()
 		return null
 	set_process(true)
-	set_physics_process(true)
 	_loaded_part = false
 	
 	var success: bool = await loaded_part
@@ -100,11 +93,10 @@ func load_event(event_id: int, map_id: int) -> Event:
 		_fail_load()
 		return null
 	print_verbose("Done loading %s." % _loading_path)
-	var map: Node2D = map_scene.instantiate()
+	var map: Node = map_scene.instantiate()
 	event.add_child(map)
 	
 	set_process(false)
-	set_physics_process(false)
 	_bar.value = 100
 	_status_text.text = "Ожидание других игроков..."
 	print_verbose("Done loading event. Waiting for players.")
@@ -120,7 +112,6 @@ func finish_load() -> void:
 
 func _fail_load() -> void:
 	set_process(false)
-	set_physics_process(false)
 	_anim.play("EndLoad")
 	_status_text.text = "Ошибка загрузки!"
 	print_verbose("Load failed.")
