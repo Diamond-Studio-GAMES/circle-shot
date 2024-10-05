@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://game/events/common/chat/chat.gd" id="3_8d55t"]
 [ext_resource type="PackedScene" uid="uid://0wc72b0o2o11" path="res://game/player/ui/player_ui.tscn" id="8_2up8s"]
 [ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/events/common/chat/chat_send.png" id="9_2uw6w"]
-[ext_resource type="Script" path="res://game/events/common/chat_controller.gd" id="9_ko2fk"]
+[ext_resource type="Script" path="res://game/events/common/event_chat.gd" id="9_ko2fk"]
 [ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="13_j0bsh"]
 [ext_resource type="Texture2D" uid="uid://d14nbphg5o3a" path="res://game/events/common/chat/chat.png" id="14_05fx8"]
 
@@ -205,7 +205,6 @@ player_scenes = Array[PackedScene]([ExtResource("2_i4nrm")])
 [node name="VFX" type="Node2D" parent="." groups=["VFXParent"]]
 
 [node name="EntitiesSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://game/player/player.tscn")
 spawn_path = NodePath("../Entities")
 spawn_limit = 10
 
@@ -264,7 +263,7 @@ grow_vertical = 0
 toggle_mode = true
 icon = ExtResource("14_05fx8")
 
-[node name="ChatController" type="VBoxContainer" parent="UI/Main"]
+[node name="ChatPreview" type="VBoxContainer" parent="UI/Main"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -447,8 +446,8 @@ libraries = {
 
 [connection signal="local_player_created" from="." to="UI/Main/PlayerUI" method="_on_local_player_created"]
 [connection signal="pressed" from="UI/Main/Leave" to="." method="_on_leave_game_pressed"]
+[connection signal="toggled" from="UI/Main/Chat" to="UI/Main/ChatPreview" method="_on_chat_toggled"]
 [connection signal="toggled" from="UI/Main/Chat" to="UI/Main/ChatPanel" method="_on_chat_toggled"]
-[connection signal="toggled" from="UI/Main/Chat" to="UI/Main/ChatController" method="_on_chat_toggled"]
-[connection signal="message_posted" from="UI/Main/ChatPanel" to="UI/Main/ChatController" method="_on_message_posted"]
+[connection signal="message_posted" from="UI/Main/ChatPanel" to="UI/Main/ChatPreview" method="_on_message_posted"]
 [connection signal="text_submitted" from="UI/Main/ChatPanel/VBoxContainer/HBoxContainer/LineEdit" to="UI/Main/ChatPanel" method="send_message" unbinds=1]
 [connection signal="pressed" from="UI/Main/ChatPanel/VBoxContainer/HBoxContainer/Send" to="UI/Main/ChatPanel" method="send_message"]

@@ -182,7 +182,7 @@ offset_bottom = 42.0
 grow_horizontal = 2
 theme_type_variation = &"HeaderMedium"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 6
 text = "Осталось игроков: "
 
 [node name="PlayerCounter" type="Label" parent="UI/Main" index="6"]
@@ -196,7 +196,7 @@ offset_right = 40.0
 offset_bottom = 112.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 48
 text = "2
 "

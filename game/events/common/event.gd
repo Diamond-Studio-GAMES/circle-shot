@@ -12,6 +12,8 @@ var _players_equip_data := {}
 var _players_names := {}
 var _players_teams := {}
 var _players := {}
+var _hit_marker_scene: PackedScene = preload("uid://c2f0n1b5sfpdh")
+var _death_marker_scene: PackedScene = preload("uid://blhm6uka1p287")
 
 @onready var _chat: Chat = $UI/Main/ChatPanel
 @onready var _camera: SmartCamera = $Camera
@@ -21,6 +23,9 @@ func _ready() -> void:
 	if multiplayer.is_server():
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
+	var entities_spawner: MultiplayerSpawner = $EntitiesSpawner
+	for i: PackedScene in player_scenes:
+		entities_spawner.add_spawnable_scene(i.resource_path)
 	var projectiles_spawner: MultiplayerSpawner = $ProjectilesSpawner
 	for i: String in Globals.items_db.spawnable_projectiles_paths:
 		projectiles_spawner.add_spawnable_scene(ResourceUID.get_id_path(ResourceUID.text_to_id(i)))
@@ -31,6 +36,28 @@ func _ready() -> void:
 	if multiplayer.is_server():
 		_setup()
 	($UI/Intro/AnimationPlayer as AnimationPlayer).play(&"Intro")
+
+
+@rpc("reliable", "call_remote", "authority", 1)
+func _create_hit_marker(where: Vector2) -> void:
+	if multiplayer.get_remote_sender_id() != 1 and not multiplayer.is_server():
+		push_error("This method must be called only by server!")
+		return
+	
+	var marker: Node2D = _hit_marker_scene.instantiate()
+	marker.global_position = where
+	$VFX.add_child(marker)
+
+
+@rpc("reliable", "call_remote", "authority", 1)
+func _create_kill_marker(where: Vector2) -> void:
+	if multiplayer.get_remote_sender_id() != 1 and not multiplayer.is_server():
+		push_error("This method must be called only by server!")
+		return
+	
+	var marker: Node2D = _death_marker_scene.instantiate()
+	marker.global_position = where
+	$VFX.add_child(marker)
 
 
 func _setup() -> void:
@@ -68,6 +95,7 @@ func spawn_player(id: int) -> void:
 	_customize_player(player)
 	_players[id] = player
 	$Entities.add_child(player)
+	player.damaged.connect(_on_player_damaged)
 	player.killed.connect(_on_player_killed)
 	if not _started:
 		player.make_disarmed()
@@ -149,6 +177,15 @@ func _player_disconnected(_id: int) -> void:
 	pass
 
 
+func _on_player_damaged(who: int, by: int) -> void:
+	if by in _players:
+		var target: Player = _players[who]
+		if by == 1:
+			_create_hit_marker(target.global_position)
+		else:
+			_create_hit_marker.rpc_id(by, target.global_position)
+
+
 func _on_player_killed(who: int, by: int) -> void:
 	var message_text := ""
 	if by > 0:
@@ -164,6 +201,14 @@ func _on_player_killed(who: int, by: int) -> void:
 			_players_names[who],
 		]
 	_chat.post_message.rpc("> " + message_text)
+	
+	if by in _players:
+		var target: Player = _players[who]
+		if by == 1:
+			_create_kill_marker(target.global_position)
+		else:
+			_create_kill_marker.rpc_id(by, target.global_position)
+	
 	_player_killed(who, by)
 	_players.erase(who)
 

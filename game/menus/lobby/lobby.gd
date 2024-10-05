@@ -91,6 +91,10 @@ func _register_new_player(player_name: String) -> void:
 	if sender_id == 0:
 		sender_id = 1 # Локально от сервера
 	
+	if sender_id in _players:
+		push_warning("Player %d is already registered!")
+		return
+	
 	for i: int in _players:
 		_add_player_entry.rpc_id(sender_id, i, _players[i])
 	_set_environment.rpc_id(sender_id, _selected_event, _selected_map)
