@@ -108,9 +108,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_2pprn")
 
-[node name="BloodVignette" type="TextureRect" parent="."]
-visible = false
-material = ExtResource("2_k62wa")
+[node name="Controller" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -118,9 +116,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="BloodVignette" type="TextureRect" parent="Controller"]
+visible = false
+material = ExtResource("2_k62wa")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 920.0
+offset_bottom = 500.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("3_tfa7a")
 
-[node name="HealthBar" type="TextureProgressBar" parent="."]
+[node name="HealthBar" type="TextureProgressBar" parent="Controller"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -138,7 +149,7 @@ value = 100.0
 texture_under = ExtResource("4_425vn")
 texture_progress = ExtResource("5_3xbtg")
 
-[node name="Label" type="Label" parent="HealthBar"]
+[node name="Label" type="Label" parent="Controller/HealthBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -151,7 +162,7 @@ text = "100/100"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TouchControls" type="Control" parent="."]
+[node name="TouchControls" type="Control" parent="Controller"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -159,7 +170,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MoveVirtualJoystick" parent="TouchControls" instance=ExtResource("2_x7k0l")]
+[node name="MoveVirtualJoystick" parent="Controller/TouchControls" instance=ExtResource("2_x7k0l")]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -175,7 +186,7 @@ base_texture = ExtResource("3_svvw5")
 tip_texture = ExtResource("4_opsbs")
 use_input_actions = false
 
-[node name="AimVirtualJoystick" parent="TouchControls" instance=ExtResource("2_x7k0l")]
+[node name="AimVirtualJoystick" parent="Controller/TouchControls" instance=ExtResource("2_x7k0l")]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -194,11 +205,11 @@ base_texture = ExtResource("3_svvw5")
 tip_texture = ExtResource("5_5uxix")
 use_input_actions = false
 
-[node name="ShootArea" type="TouchScreenButton" parent="TouchControls"]
+[node name="ShootArea" type="TouchScreenButton" parent="Controller/TouchControls"]
 position = Vector2(320, 128)
 shape = SubResource("RectangleShape2D_6sal7")
 
-[node name="Anchor" type="Control" parent="TouchControls"]
+[node name="Anchor" type="Control" parent="Controller/TouchControls"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -208,11 +219,11 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="AdditionalButton" type="TouchScreenButton" parent="TouchControls/Anchor"]
+[node name="AdditionalButton" type="TouchScreenButton" parent="Controller/TouchControls/Anchor"]
 position = Vector2(-160, -160)
 texture_normal = ExtResource("6_10yoo")
 
-[node name="WeaponSelection" type="Control" parent="."]
+[node name="WeaponSelection" type="Control" parent="Controller"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -222,7 +233,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="LightWeapon" type="TextureRect" parent="WeaponSelection"]
+[node name="LightWeapon" type="TextureRect" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 6
@@ -238,7 +249,7 @@ grow_vertical = 2
 mouse_filter = 0
 texture = ExtResource("7_6c3s8")
 
-[node name="Icon" type="TextureRect" parent="WeaponSelection/LightWeapon"]
+[node name="Icon" type="TextureRect" parent="Controller/WeaponSelection/LightWeapon"]
 auto_translate_mode = 1
 material = SubResource("ShaderMaterial_jse5g")
 layout_mode = 1
@@ -256,7 +267,7 @@ grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="WeaponSelection/LightWeapon"]
+[node name="Label" type="Label" parent="Controller/WeaponSelection/LightWeapon"]
 auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 3
@@ -274,11 +285,11 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
 text = "Оружие"
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="WeaponSelection/LightWeapon"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/WeaponSelection/LightWeapon"]
 position = Vector2(144, 72)
 shape = SubResource("RectangleShape2D_0kb2l")
 
-[node name="HeavyWeapon" type="TextureRect" parent="WeaponSelection"]
+[node name="HeavyWeapon" type="TextureRect" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 6
@@ -294,7 +305,7 @@ grow_vertical = 2
 mouse_filter = 0
 texture = ExtResource("7_6c3s8")
 
-[node name="Icon" type="TextureRect" parent="WeaponSelection/HeavyWeapon"]
+[node name="Icon" type="TextureRect" parent="Controller/WeaponSelection/HeavyWeapon"]
 auto_translate_mode = 1
 material = SubResource("ShaderMaterial_hii6l")
 layout_mode = 1
@@ -312,7 +323,7 @@ grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="WeaponSelection/HeavyWeapon"]
+[node name="Label" type="Label" parent="Controller/WeaponSelection/HeavyWeapon"]
 auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 3
@@ -330,11 +341,11 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
 text = "Оружие"
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="WeaponSelection/HeavyWeapon"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/WeaponSelection/HeavyWeapon"]
 position = Vector2(144, 72)
 shape = SubResource("RectangleShape2D_0kb2l")
 
-[node name="SupportWeapon" type="TextureRect" parent="WeaponSelection"]
+[node name="SupportWeapon" type="TextureRect" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 6
@@ -350,7 +361,7 @@ grow_vertical = 2
 mouse_filter = 0
 texture = ExtResource("7_6c3s8")
 
-[node name="Icon" type="TextureRect" parent="WeaponSelection/SupportWeapon"]
+[node name="Icon" type="TextureRect" parent="Controller/WeaponSelection/SupportWeapon"]
 auto_translate_mode = 1
 material = SubResource("ShaderMaterial_c703a")
 layout_mode = 1
@@ -368,7 +379,7 @@ grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="WeaponSelection/SupportWeapon"]
+[node name="Label" type="Label" parent="Controller/WeaponSelection/SupportWeapon"]
 auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 3
@@ -386,11 +397,11 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
 text = "Оружие"
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="WeaponSelection/SupportWeapon"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/WeaponSelection/SupportWeapon"]
 position = Vector2(144, 72)
 shape = SubResource("RectangleShape2D_0kb2l")
 
-[node name="MeleeWeapon" type="TextureRect" parent="WeaponSelection"]
+[node name="MeleeWeapon" type="TextureRect" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 6
@@ -406,7 +417,7 @@ grow_vertical = 2
 mouse_filter = 0
 texture = ExtResource("7_6c3s8")
 
-[node name="Icon" type="TextureRect" parent="WeaponSelection/MeleeWeapon"]
+[node name="Icon" type="TextureRect" parent="Controller/WeaponSelection/MeleeWeapon"]
 auto_translate_mode = 1
 material = SubResource("ShaderMaterial_vprac")
 layout_mode = 1
@@ -424,7 +435,7 @@ grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="WeaponSelection/MeleeWeapon"]
+[node name="Label" type="Label" parent="Controller/WeaponSelection/MeleeWeapon"]
 auto_translate_mode = 1
 layout_mode = 1
 anchors_preset = 3
@@ -442,11 +453,11 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
 text = "Оружие"
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="WeaponSelection/MeleeWeapon"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/WeaponSelection/MeleeWeapon"]
 position = Vector2(144, 72)
 shape = SubResource("RectangleShape2D_0kb2l")
 
-[node name="CurrentWeapon" type="TextureRect" parent="."]
+[node name="CurrentWeapon" type="TextureRect" parent="Controller"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -461,7 +472,7 @@ grow_vertical = 2
 mouse_filter = 0
 texture = ExtResource("7_6c3s8")
 
-[node name="Icon" type="TextureRect" parent="CurrentWeapon"]
+[node name="Icon" type="TextureRect" parent="Controller/CurrentWeapon"]
 material = SubResource("ShaderMaterial_fqc3t")
 layout_mode = 1
 anchors_preset = 8
@@ -478,7 +489,7 @@ grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="CurrentWeapon"]
+[node name="Label" type="Label" parent="Controller/CurrentWeapon"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -495,7 +506,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
 text = "120/60"
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="CurrentWeapon"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/CurrentWeapon"]
 position = Vector2(144, 72)
 shape = SubResource("RectangleShape2D_0kb2l")
 
@@ -525,9 +536,9 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[connection signal="pressed" from="TouchControls/Anchor/AdditionalButton" to="." method="additional_button"]
-[connection signal="pressed" from="WeaponSelection/LightWeapon/TouchScreenButton" to="." method="select_weapon" binds= [0]]
-[connection signal="pressed" from="WeaponSelection/HeavyWeapon/TouchScreenButton" to="." method="select_weapon" binds= [1]]
-[connection signal="pressed" from="WeaponSelection/SupportWeapon/TouchScreenButton" to="." method="select_weapon" binds= [2]]
-[connection signal="pressed" from="WeaponSelection/MeleeWeapon/TouchScreenButton" to="." method="select_weapon" binds= [3]]
-[connection signal="pressed" from="CurrentWeapon/TouchScreenButton" to="." method="open_weapon_selection"]
+[connection signal="pressed" from="Controller/TouchControls/Anchor/AdditionalButton" to="." method="additional_button"]
+[connection signal="pressed" from="Controller/WeaponSelection/LightWeapon/TouchScreenButton" to="." method="select_weapon" binds= [0]]
+[connection signal="pressed" from="Controller/WeaponSelection/HeavyWeapon/TouchScreenButton" to="." method="select_weapon" binds= [1]]
+[connection signal="pressed" from="Controller/WeaponSelection/SupportWeapon/TouchScreenButton" to="." method="select_weapon" binds= [2]]
+[connection signal="pressed" from="Controller/WeaponSelection/MeleeWeapon/TouchScreenButton" to="." method="select_weapon" binds= [3]]
+[connection signal="pressed" from="Controller/CurrentWeapon/TouchScreenButton" to="." method="open_weapon_selection"]

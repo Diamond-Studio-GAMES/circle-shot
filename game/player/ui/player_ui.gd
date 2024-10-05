@@ -16,28 +16,28 @@ var _moving_up := false
 var _moving_down := false
 var _aim_zone: float
 
-@onready var _health_bar: TextureProgressBar = $HealthBar
-@onready var _health_text: Label = $HealthBar/Label
-@onready var _blood_vignette: TextureRect = $BloodVignette
+@onready var _health_bar: TextureProgressBar = $Controller/HealthBar
+@onready var _health_text: Label = $Controller/HealthBar/Label
+@onready var _blood_vignette: TextureRect = $Controller/BloodVignette
 @onready var _tint_anim: AnimationPlayer = $PlayerTint/AnimationPlayer
 
-@onready var _current_weapon_icon: TextureRect = $CurrentWeapon/Icon
-@onready var _light_weapon_icon: TextureRect = $WeaponSelection/LightWeapon/Icon
-@onready var _heavy_weapon_icon: TextureRect = $WeaponSelection/HeavyWeapon/Icon
-@onready var _support_weapon_icon: TextureRect = $WeaponSelection/SupportWeapon/Icon
-@onready var _melee_weapon_icon: TextureRect = $WeaponSelection/MeleeWeapon/Icon
-@onready var _ammo_text: Label = $CurrentWeapon/Label
+@onready var _current_weapon_icon: TextureRect = $Controller/CurrentWeapon/Icon
+@onready var _light_weapon_icon: TextureRect = $Controller/WeaponSelection/LightWeapon/Icon
+@onready var _heavy_weapon_icon: TextureRect = $Controller/WeaponSelection/HeavyWeapon/Icon
+@onready var _support_weapon_icon: TextureRect = $Controller/WeaponSelection/SupportWeapon/Icon
+@onready var _melee_weapon_icon: TextureRect = $Controller/WeaponSelection/MeleeWeapon/Icon
+@onready var _ammo_text: Label = $Controller/CurrentWeapon/Label
 
-@onready var _move_joystick: VirtualJoystick = $TouchControls/MoveVirtualJoystick
-@onready var _aim_joystick: VirtualJoystick = $TouchControls/AimVirtualJoystick
-@onready var _shoot_area: TouchScreenButton = $TouchControls/ShootArea
+@onready var _move_joystick: VirtualJoystick = $Controller/TouchControls/MoveVirtualJoystick
+@onready var _aim_joystick: VirtualJoystick = $Controller/TouchControls/AimVirtualJoystick
+@onready var _shoot_area: TouchScreenButton = $Controller/TouchControls/ShootArea
 
 @onready var _center: Control = $Center
 
 
 func _ready() -> void:
 	if not OS.has_feature("mobile"):
-		$TouchControls.hide()
+		($Controller/TouchControls as Control).hide()
 		_touch = false
 		_aim_zone = aim_max_at_distance - aim_deadzone
 
@@ -97,7 +97,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_moving_down = event.is_pressed()
 		
 		if event.is_action_pressed(&"show_weapons"):
-			if ($WeaponSelection as Control).visible:
+			if ($Controller/WeaponSelection as Control).visible:
 				_close_weapon_selection()
 			else:
 				open_weapon_selection()
@@ -132,20 +132,19 @@ func additional_button() -> void:
 
 
 func open_weapon_selection() -> void:
-	($WeaponSelection as Control).show()
-	($CurrentWeapon as Control).hide()
+	($Controller/WeaponSelection as Control).show()
+	($Controller/CurrentWeapon as Control).hide()
 
 
 func _close_weapon_selection() -> void:
-	($WeaponSelection as Control).hide()
-	($CurrentWeapon as Control).show()
+	($Controller/WeaponSelection as Control).hide()
+	($Controller/CurrentWeapon as Control).show()
 
 
-func _on_local_player_created(player: Player) -> void:
-	show()
-	
+func _on_local_player_created(player: Player) -> void:	
 	_on_player_health_changed(player.max_health, player.max_health)
 	_tint_anim.play(&"RESET")
+	($Controller as Control).show()
 	
 	player.health_changed.connect(_on_player_health_changed)
 	player.died.connect(_on_player_died)
@@ -168,7 +167,7 @@ func _on_player_health_changed(old_value: int, new_value: int) -> void:
 
 
 func _on_player_died(_who: int) -> void:
-	hide()
+	($Controller as Control).hide()
 	_tint_anim.play(&"Death")
 
 
@@ -199,7 +198,7 @@ func _on_weapon_changed(to: Weapon.Type) -> void:
 					(_melee_weapon_icon.material as ShaderMaterial).get_shader_parameter(&"color")
 			)
 	
-	($TouchControls/Anchor/AdditionalButton as Node2D).visible = \
+	($Controller/TouchControls/Anchor/AdditionalButton as Node2D).visible = \
 			_player.current_weapon.has_additional_button()
 
 
@@ -210,22 +209,22 @@ func _on_weapon_equipped(type: Weapon.Type, weapon_id: int) -> void:
 	match type:
 		Weapon.Type.LIGHT:
 			weapon_icon = _light_weapon_icon
-			weapon_text = $WeaponSelection/LightWeapon/Label
+			weapon_text = $Controller/WeaponSelection/LightWeapon/Label
 			if weapon_id >= 0:
 				weapon_data = Globals.items_db.weapons_light[weapon_id]
 		Weapon.Type.HEAVY:
 			weapon_icon = _heavy_weapon_icon
-			weapon_text = $WeaponSelection/HeavyWeapon/Label
+			weapon_text = $Controller/WeaponSelection/HeavyWeapon/Label
 			if weapon_id >= 0:
 				weapon_data = Globals.items_db.weapons_heavy[weapon_id]
 		Weapon.Type.SUPPORT:
 			weapon_icon = _support_weapon_icon
-			weapon_text = $WeaponSelection/SupportWeapon/Label
+			weapon_text = $Controller/WeaponSelection/SupportWeapon/Label
 			if weapon_id >= 0:
 				weapon_data = Globals.items_db.weapons_support[weapon_id]
 		Weapon.Type.MELEE:
 			weapon_icon = _melee_weapon_icon
-			weapon_text = $WeaponSelection/MeleeWeapon/Label
+			weapon_text = $Controller/WeaponSelection/MeleeWeapon/Label
 			if weapon_id >= 0:
 				weapon_data = Globals.items_db.weapons_melee[weapon_id]
 	
