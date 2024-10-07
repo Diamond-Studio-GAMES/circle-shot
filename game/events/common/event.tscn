@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://game/events/common/chat/chat.gd" id="3_8d55t"]
 [ext_resource type="PackedScene" uid="uid://0wc72b0o2o11" path="res://game/player/ui/player_ui.tscn" id="8_2up8s"]
 [ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/events/common/chat/chat_send.png" id="9_2uw6w"]
-[ext_resource type="Script" path="res://game/events/common/event_chat.gd" id="9_ko2fk"]
+[ext_resource type="Script" path="res://game/events/common/chat/event_chat.gd" id="9_ko2fk"]
 [ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="13_j0bsh"]
 [ext_resource type="Texture2D" uid="uid://d14nbphg5o3a" path="res://game/events/common/chat/chat.png" id="14_05fx8"]
 

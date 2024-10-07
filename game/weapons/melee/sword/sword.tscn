@@ -196,7 +196,7 @@ damage = 70
 shoot_interval = 1.1
 ammo_per_load = 1
 ammo_total = 0
-speed_multiplier_when_current = 1.1
+speed_multiplier_when_current = 1.08
 
 [node name="AttackPolygon" type="Polygon2D" parent="."]
 visible = false

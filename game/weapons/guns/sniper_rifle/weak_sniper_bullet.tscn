@@ -4,7 +4,7 @@
 
 [node name="WeakSniperBullet" instance=ExtResource("1_2q147")]
 speed = 3200.0
-damage = 45
+damage = 40
 
 [node name="Timer" parent="." index="2"]
 wait_time = 3.0

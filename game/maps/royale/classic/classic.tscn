@@ -7,6 +7,9 @@
 metadata/_edit_vertical_guides_ = [-6400.0, 6400.0]
 metadata/_edit_horizontal_guides_ = [-6400.0, 6400.0]
 
+[node name="0" parent="SpawnPoints" index="0"]
+position = Vector2(-5295, -3950)
+
 [node name="1" parent="SpawnPoints" index="1"]
 position = Vector2(-1865, -3923)
 

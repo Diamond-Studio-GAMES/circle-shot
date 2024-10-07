@@ -28,6 +28,7 @@ func _on_message_posted(message: String) -> void:
 	rtl.shortcut_keys_enabled = false
 	rtl.fit_content = true
 	rtl.text = message
+	rtl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	rtl.add_theme_constant_override(&"outline_size", 4)
 	add_child(rtl)
 	var tween: Tween = rtl.create_tween()
