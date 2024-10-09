@@ -41,7 +41,7 @@ func _process(_delta: float) -> void:
 ## [b]Внимание[/b]: этот метод - [b]корутина[/b], так что вам необходимо подождать его с помощью
 ## [code]await[/code].
 func load_event(event_id: int, map_id: int) -> Event:
-	_anim.play("StartLoad")
+	_anim.play(&"StartLoad")
 	_status_text.text = "Загрузка события..."
 	
 	_loading_path = Globals.items_db.events[event_id].scene_path
@@ -106,13 +106,13 @@ func load_event(event_id: int, map_id: int) -> Event:
 ## Завершает загрузку, а именно анимацию.
 func finish_load() -> void:
 	_status_text.text = "Готово!"
-	_anim.play("EndLoad")
+	_anim.play(&"EndLoad")
 	print_verbose("Load finished.")
 
 
 func _fail_load() -> void:
 	set_process(false)
-	_anim.play("EndLoad")
+	_anim.play(&"EndLoad")
 	_status_text.text = "Ошибка загрузки!"
 	print_verbose("Load failed.")
 

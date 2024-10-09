@@ -334,6 +334,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Сообщение..."
 max_length = 80
+context_menu_enabled = false
 
 [node name="Send" type="TextureButton" parent="UI/Main/ChatPanel/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(48, 0)

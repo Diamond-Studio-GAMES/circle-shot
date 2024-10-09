@@ -133,6 +133,7 @@ placeholder_text = "Твоё имя..."
 alignment = 1
 max_length = 24
 expand_to_text_length = true
+context_menu_enabled = false
 
 [connection signal="pressed" from="ButtonsContainer/PlayOnline" to="." method="_on_play_online_pressed"]
 [connection signal="confirmed" from="NameDialog" to="." method="_on_name_dialog_confirmed"]

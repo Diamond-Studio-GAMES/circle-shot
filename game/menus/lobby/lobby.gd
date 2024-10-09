@@ -102,7 +102,7 @@ func _register_new_player(player_name: String) -> void:
 	player_name = _game.validate_player_name(player_name, sender_id)
 	_players[sender_id] = player_name
 	
-	_chat.post_message.rpc("Игра: Игрок [color=green]%s[/color] подключился!" % player_name)
+	_chat.post_message.rpc("> Игрок [color=green]%s[/color] подключился!" % player_name)
 	_chat.players_names[sender_id] = player_name
 	
 	if _players.size() == 1:
@@ -448,7 +448,7 @@ func _on_game_ended() -> void:
 func _on_peer_disconnected(id: int) -> void:
 	if not multiplayer.is_server():
 		return
-	_chat.post_message.rpc("Игра: Игрок [color=green]%s[/color] отключился!" % _players[id])
+	_chat.post_message.rpc("> Игрок [color=green]%s[/color] отключился!" % _players[id])
 	_chat.players_names.erase(id)
 	_players.erase(id)
 	if id == _admin_id:

@@ -257,3 +257,7 @@ func unmake_disarmed() -> void:
 func is_disarmed() -> bool:
 	return _disarmed_counter > 0
 #endregion
+
+
+func is_local() -> bool:
+	return entity_input.is_multiplayer_authority()

@@ -39,6 +39,7 @@ func _ready() -> void:
 	if multiplayer.is_server():
 		_setup()
 	($UI/Intro/AnimationPlayer as AnimationPlayer).play(&"Intro")
+	($UI/Intro/AnimationPlayer as AnimationPlayer).advance(0.0) # костыль
 
 
 @rpc("reliable", "call_remote", "authority", 1)
