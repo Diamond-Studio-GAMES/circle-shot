@@ -177,3 +177,16 @@ libraries = {
 "": SubResource("AnimationLibrary_vpitb")
 }
 autoplay = "move"
+
+[node name="MinimapRemote" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../MinimapMarker/Line")
+update_scale = false
+
+[node name="MinimapMarker" type="Node" parent="."]
+
+[node name="Line" type="Line2D" parent="MinimapMarker"]
+visibility_layer = 2
+z_index = -9
+points = PackedVector2Array(-6400, 0, 6400, 0)
+width = 160.0
+default_color = Color(0, 0, 0, 1)

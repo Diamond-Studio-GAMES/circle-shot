@@ -53,6 +53,10 @@ func _ready() -> void:
 	_scene_multiplayer.auth_callback = _authenticate_callback
 
 
+func _physics_process(_delta: float) -> void:
+	multiplayer.poll()
+
+
 func _exit_tree() -> void:
 	# Очистка на всякий случай
 	if multiplayer.multiplayer_peer:

@@ -3,8 +3,10 @@ extends Event
 
 @export var heal_box_scene: PackedScene
 @export var ammo_box_scene: PackedScene
-@export var heal_box_spawn_interval := 15.0
-@export var ammo_box_spawn_interval := 15.0
+@export var heal_box_spawn_interval_base := 30.0
+@export var heal_box_spawn_interval_per_player := 2.0
+@export var ammo_box_spawn_interval_base := 40.0
+@export var ammo_box_spawn_interval_per_player := 2.5
 var _spawn_counter: int = 0
 var _heal_box_counter: int = 0
 var _ammo_box_counter: int = 0
@@ -18,9 +20,11 @@ var _ended := false
 
 func _finish_start() -> void:
 	if multiplayer.is_server():
-		($HealBoxSpawnTimer as Timer).start()
-		($AmmoBoxSpawnTimer as Timer).start()
 		_alive_players = _players_names.keys()
+		($HealBoxSpawnTimer as Timer).start(heal_box_spawn_interval_base \
+				+ heal_box_spawn_interval_per_player * _alive_players.size())
+		($AmmoBoxSpawnTimer as Timer).start(ammo_box_spawn_interval_base \
+				+ ammo_box_spawn_interval_per_player * _alive_players.size())
 		_set_alive_players.rpc(_alive_players.size())
 		for i: Player in get_tree().get_nodes_in_group(&"Player"):
 			i.died.connect(_on_player_died)
@@ -112,14 +116,16 @@ func _on_heal_box_spawn_timer_timeout() -> void:
 	_spawn_heal_box()
 	if _players.is_empty():
 		return
-	($HealBoxSpawnTimer as Timer).start(heal_box_spawn_interval / _players.size())
+	($HealBoxSpawnTimer as Timer).start(heal_box_spawn_interval_base \
+			+ heal_box_spawn_interval_per_player * _alive_players.size())
 
 
 func _on_ammo_box_spawn_timer_timeout() -> void:
 	_spawn_ammo_box()
 	if _players.is_empty():
 		return
-	($AmmoBoxSpawnTimer as Timer).start(ammo_box_spawn_interval / _players.size())
+	($AmmoBoxSpawnTimer as Timer).start(ammo_box_spawn_interval_base \
+				+ ammo_box_spawn_interval_per_player * _alive_players.size())
 
 
 func _on_watching_player_died(_who: int, player: Player) -> void:
