@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbmeo164q20gn"]
+
+[ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="1_r85lp"]
+[ext_resource type="Texture2D" uid="uid://dfgk18v3cneri" path="res://game/skins/programming/arch/arch.png" id="1_va53v"]
+
+[node name="Arch" type="Sprite2D"]
+texture = ExtResource("1_va53v")
+script = ExtResource("1_r85lp")

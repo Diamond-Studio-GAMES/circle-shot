@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://c3r86qgxy0nrq"]
+
+[ext_resource type="Script" path="res://game/player/equip/skin_data.gd" id="1_3fmcj"]
+
+[resource]
+script = ExtResource("1_3fmcj")
+name = "Arch Linux"
+brief_description = "I use Arch btw UwU"
+rarity = 2
+id = "femboy_distro"
+scene_path = "uid://bbmeo164q20gn"
+image_path = "uid://dfgk18v3cneri"

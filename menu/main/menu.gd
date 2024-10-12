@@ -4,6 +4,7 @@ extends Control
 var _name_accepted := false
 
 func _ready() -> void:
+	($Version as Label).text = 'v' + Globals.version
 	if Globals.get_string("player_name").is_empty():
 		($NameDialog as AcceptDialog).register_text_enter($NameDialog/LineEdit as LineEdit)
 		($NameDialog as Window).popup_centered()
