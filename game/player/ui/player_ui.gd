@@ -113,6 +113,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			reload()
 		elif event.is_action_pressed(&"additional_button"):
 			additional_button()
+		elif event.is_action_pressed(&"skill"):
+			skill()
 
 
 func select_weapon(type: Weapon.Type) -> void:
@@ -129,6 +131,11 @@ func reload() -> void:
 func additional_button() -> void:
 	if is_instance_valid(_player):
 		_player.try_use_additional_button_weapon()
+
+
+func skill() -> void:
+	if is_instance_valid(_player):
+		_player.try_use_skill()
 
 
 func open_weapon_selection() -> void:

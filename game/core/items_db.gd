@@ -51,9 +51,9 @@ const RARITY_COLORS := {
 }
 ## Массив событий.
 @export var events: Array[EventData]
+@export_group("Equip")
 ## Массив скинов.
 @export var skins: Array[SkinData]
-@export_group("Equip")
 ## Массив лёгких оружий.
 @export var weapons_light: Array[WeaponData]
 ## Массив тяжёлых оружий.
