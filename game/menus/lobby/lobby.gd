@@ -294,6 +294,7 @@ func _start_event(event_id: int, map_id: int) -> void:
 		push_error("This method must be called only by server!")
 		return
 	
+	_chat.clear_chat()
 	if not ($UDPTimer as Timer).is_stopped():
 		($UDPTimer as Timer).stop()
 	if not ($UpdateIPSTimer as Timer).is_stopped():
@@ -457,6 +458,7 @@ func _on_peer_disconnected(id: int) -> void:
 			_set_admin.rpc_id(_admin_id, true)
 		else:
 			_admin_id = -1
+			_chat.clear_chat()
 	_delete_player_entry.rpc(id)
 
 
