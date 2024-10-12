@@ -126,8 +126,8 @@ func _loading_init() -> void:
 	if OS.has_feature("pc"):
 		get_tree().root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
 	
-	# Чтобы убрать OfflineMultiplayerPeer
-	multiplayer.multiplayer_peer = null
+	#get_tree().multiplayer_poll = false
+	multiplayer.multiplayer_peer = null # Чтобы убрать OfflineMultiplayerPeer
 	get_viewport().set_canvas_cull_mask_bit(1, false)
 	
 	await get_tree().process_frame

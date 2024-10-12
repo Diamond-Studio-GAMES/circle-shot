@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://c5avhdvv4xovn"]
 
-[ext_resource type="Script" path="res://game/player/skin_data.gd" id="1_levmi"]
+[ext_resource type="Script" path="res://game/player/equip/skin_data.gd" id="1_levmi"]
 
 [resource]
 script = ExtResource("1_levmi")

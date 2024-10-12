@@ -24,8 +24,11 @@ enum FailReason {
 	## Уже в игре.
 	IN_GAME = 3,
 }
-## Порт для подключения.
-const PORT: int = 7415
+## Порт для подключения по умолчанию.
+const DEFAULT_PORT: int = 7415
+## Базовое время, определяющее через сколько соединение должно быть прервано (в мс).
+## За подробностями смотри [method ENetPacketPeer.set_timeout].
+const BASE_TIMEOUT: int = 1500
 ## Порт, через который ищутся игры по локальной сети.
 const LISTEN_PORT: int = 7414
 ## Максимальное число клиентов. Используется при создании сервера.
@@ -50,6 +53,11 @@ func _ready() -> void:
 	_scene_multiplayer.auth_callback = _authenticate_callback
 
 
+func _physics_process(_delta: float) -> void:
+	#multiplayer.poll()
+	pass
+
+
 func _exit_tree() -> void:
 	# Очистка на всякий случай
 	if multiplayer.multiplayer_peer:
@@ -66,26 +74,29 @@ func init_connect_local() -> void:
 
 
 ## Создаёт сервер.
-func create() -> void:
+func create(port: int = DEFAULT_PORT) -> void:
 	var peer := ENetMultiplayerPeer.new()
-	var error: Error = peer.create_server(PORT, MAX_CLIENTS)
+	var error: Error = peer.create_server(port, MAX_CLIENTS)
 	if error != OK:
 		show_error("Невозможно создать сервер! Ошибка: %s" % error_string(error))
 		print_verbose("Can't create server with error: %s." % error_string(error))
 		return
+	# Уменьшаем время тайм-аута
+	for i: ENetPacketPeer in peer.host.get_peers():
+		i.set_timeout(BASE_TIMEOUT, BASE_TIMEOUT * 2, BASE_TIMEOUT * 3)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	created.emit()
-	print_verbose("Created server at port %d." % PORT)
+	print_verbose("Created server at port %d." % port)
 
 
 ## Пытается подключиться к серверу по [param ip].
-func join(ip: String) -> void:
+func join(ip: String, port: int = DEFAULT_PORT) -> void:
 	if not ip.is_valid_ip_address():
 		show_error("Введён некорректный IP-адрес!")
 		return
 	var peer := ENetMultiplayerPeer.new()
-	var error: Error = peer.create_client(ip, PORT)
+	var error: Error = peer.create_client(ip, port)
 	if error != OK:
 		show_error("Невозможно начать подключение! Ошибка: %s" % error_string(error))
 		push_warning("Can't initiate connection with error: %s." % error_string(error))
@@ -96,7 +107,7 @@ func join(ip: String) -> void:
 		return
 	# Уменьшаем время тайм-аута
 	for i: ENetPacketPeer in peer.host.get_peers():
-		i.set_timeout(1500, 3000, 6000)
+		i.set_timeout(BASE_TIMEOUT, BASE_TIMEOUT * 2, BASE_TIMEOUT * 3)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)

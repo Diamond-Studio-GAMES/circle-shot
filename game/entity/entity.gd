@@ -122,6 +122,9 @@ func add_timeless_effect(effect_id: String, data := [], should_stack := true) ->
 
 @rpc("authority", "reliable", "call_local", 3)
 func remove_timeless_effect(effect_id: String) -> void:
+	if is_queued_for_deletion():
+		return
+	
 	if multiplayer.get_remote_sender_id() != 1:
 		push_error("This method must be called only by server!")
 		return
@@ -162,13 +165,13 @@ func set_health(health: int) -> void:
 	if health <= 0:
 		current_health = 0
 		died.emit(id)
-		if multiplayer.is_server():
-			queue_free()
 		if death_vfx_scene:
 			var death_vfx: Node2D = death_vfx_scene.instantiate()
 			death_vfx.position = position
 			_vfx_parent.add_child(death_vfx)
 		print_verbose("Entity '%s' with ID %d died." % [name, id])
+		if multiplayer.is_server():
+			queue_free()
 		return
 	health_changed.emit(current_health, health)
 	if health < current_health:

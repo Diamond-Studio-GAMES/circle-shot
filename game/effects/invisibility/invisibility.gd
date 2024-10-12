@@ -24,7 +24,7 @@ func _end_effect() -> void:
 	var tween: Tween = _entity.create_tween()
 	tween.tween_property(
 			_entity,
-			^"visual:modulate" if multiplayer.get_unique_id() == _entity.id else ^":modulate", 
+			^"visual:modulate" if _entity.is_local() else ^":modulate", 
 			Color.WHITE,
 			0.3
 	)

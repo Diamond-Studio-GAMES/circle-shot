@@ -38,21 +38,24 @@ var _spread_timer_tween: Tween
 @onready var _aim_spread_right: Line2D = $ShootPoint/Aim/SpreadRight
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	_aim.hide()
 	
 	if can_shoot():
 		_aim.visible = _player.player_input.showing_aim
 		rotation = _calculate_aim_direction() + deg_to_rad(_calculate_recoil())
 		
-		_aim_spread_left.rotation_degrees = -_calculate_spread()
-		_aim_spread_right.rotation_degrees = _calculate_spread()
-		
+		var spread: float = _calculate_spread()
+		_aim_spread_left.rotation_degrees = -spread
+		_aim_spread_right.rotation_degrees = spread
+
+
+func _physics_process(delta: float) -> void:
+	if can_shoot():
 		if _player.player_input.shooting:
 			if ammo >= ammo_per_shot:
 				if multiplayer.is_server() and _shoot_timer <= 0.0:
 					shoot.rpc()
-	
 	_shoot_timer -= delta
 
 

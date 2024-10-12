@@ -51,6 +51,7 @@ properties/5/replication_mode = 0
 
 [node name="Player" groups=["Player"] instance=ExtResource("1_r625f")]
 script = ExtResource("1_d5iul")
+speed = 1600.0
 magic = 200.0
 hurt_vfx_scene = ExtResource("3_tk865")
 death_vfx_scene = ExtResource("4_nsvnj")

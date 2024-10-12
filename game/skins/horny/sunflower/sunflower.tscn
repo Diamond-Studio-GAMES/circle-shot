@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bpjnm762i7c78"]
 
 [ext_resource type="Texture2D" uid="uid://cpdges6wbihy0" path="res://game/skins/horny/sunflower/sunflower.png" id="2_nm6ld"]
-[ext_resource type="Script" path="res://game/player/player_skin.gd" id="2_ra5tm"]
+[ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="2_ra5tm"]
 
 [node name="Sunflower" type="Sprite2D"]
 texture = ExtResource("2_nm6ld")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c80v57cmun6n5"]
 
 [ext_resource type="PackedScene" uid="uid://cio2wgh4fglo4" path="res://game/skins/programming/kabakova/death_kabakova.tscn" id="2_fr12t"]
-[ext_resource type="Script" path="res://game/player/player_skin.gd" id="2_lsj16"]
+[ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="2_lsj16"]
 [ext_resource type="Texture2D" uid="uid://cqmt55f6clp6c" path="res://game/skins/programming/kabakova/kabakova.png" id="2_wnbls"]
 
 [node name="Kabakova" type="Sprite2D"]

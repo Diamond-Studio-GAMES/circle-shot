@@ -11,7 +11,6 @@ const HIDE_IPS: Array[String] = [
 	"0:0:0:0:0:0:0:1",
 ]
 
-var _global_ip_fetched := false
 var _preffered_ips: Array[String]
 var _other_ips: Array[String]
 var _global_ip: String
@@ -19,8 +18,10 @@ var _global_ip: String
 
 
 func _ready() -> void:
-	add_button("Обновить IP-адреса", false, "update_ips")
-	add_button("Копировать IP-адреса", true, "copy_ips")
+	var update_button: Button = add_button("Обновить IP-адреса", false, "update_ips")
+	update_button.icon = load("uid://dmuffb51jxdkm")
+	var copy_button: Button = add_button("Копировать IP-адреса", true, "copy_ips")
+	copy_button.icon = load("uid://cp3wl6wn8h07v")
 
 
 func _show() -> void:
@@ -32,7 +33,6 @@ func _find_ips() -> void:
 	_preffered_ips.clear()
 	_other_ips.clear()
 	_global_ip = ""
-	_global_ip_fetched = false
 	
 	var ip_addresses: PackedStringArray = IP.get_local_addresses()
 	for ip: String in ip_addresses:
@@ -67,8 +67,6 @@ func _find_ips() -> void:
 			dialog_text += ip
 			first = false
 	
-	if _global_ip_fetched:
-		return
 	var error: Error = _http_request.request("https://icanhazip.com/")
 	if error != OK:
 		push_warning("Can't connect to server! Error: %s" % error_string(error))
@@ -93,8 +91,7 @@ func _on_request_completed(result: int, response_code: int, _headers: PackedStri
 	dialog_text += "Глобальный IP-адрес: %s" % _global_ip
 	dialog_text += '\n'
 	dialog_text += "Чтобы игроки могли подключиться по глобальному IP-адресу, \
-необходимо открыть порт: %d" % Game.PORT
-	_global_ip_fetched = true
+необходимо открыть порт: %d" % Game.DEFAULT_PORT
 
 
 func _on_custom_action(action: StringName) -> void:

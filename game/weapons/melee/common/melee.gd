@@ -10,12 +10,15 @@ var _shoot_timer: float = 0.0
 @onready var _attack: Attack = $Attack
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	_aim.hide()
 	if can_shoot():
 		_aim.visible = _player.player_input.showing_aim
 		rotation = _calculate_aim_direction()
-		
+
+
+func _physics_process(delta: float) -> void:
+	if can_shoot():
 		if multiplayer.is_server():
 			if _player.player_input.shooting and _shoot_timer <= 0.0:
 				shoot.rpc()
