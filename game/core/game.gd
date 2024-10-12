@@ -53,11 +53,6 @@ func _ready() -> void:
 	_scene_multiplayer.auth_callback = _authenticate_callback
 
 
-func _physics_process(_delta: float) -> void:
-	#multiplayer.poll()
-	pass
-
-
 func _exit_tree() -> void:
 	# Очистка на всякий случай
 	if multiplayer.multiplayer_peer:
@@ -189,7 +184,7 @@ func show_error(error_text: String) -> void:
 
 ## Проверяет имя игрока и исправляет при необходимости. Если [param id] равен 0, не печатает
 ## никаких предупреждений.
-func validate_player_name(player_name: String, id: int = 0) -> String:
+static func validate_player_name(player_name: String, id: int = 0) -> String:
 	player_name = player_name.strip_edges().strip_escapes()
 	if player_name.is_empty():
 		return "Игрок%d" % id if id != 0 else "Игрок"

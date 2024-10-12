@@ -242,6 +242,9 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="PlayerUI" parent="UI/Main" instance=ExtResource("8_2up8s")]
+layout_mode = 1
+
 [node name="Minimap" type="TextureRect" parent="UI/Main"]
 self_modulate = Color(1, 1, 1, 0.564706)
 layout_mode = 0
@@ -250,9 +253,6 @@ offset_top = 16.0
 offset_right = 272.0
 offset_bottom = 272.0
 texture = SubResource("ViewportTexture_u8vru")
-
-[node name="PlayerUI" parent="UI/Main" instance=ExtResource("8_2up8s")]
-layout_mode = 1
 
 [node name="Leave" type="Button" parent="UI/Main"]
 layout_mode = 1

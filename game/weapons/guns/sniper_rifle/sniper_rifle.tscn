@@ -415,6 +415,7 @@ _data = {
 script = ExtResource("2_ir31q")
 aim_slowdown = 0.8
 no_aim_spread = 8.0
+aim_zoom = Vector2(0.6, 0.6)
 weak_projectile_scene = ExtResource("3_1fl78")
 shoot_interval = 1.0
 to_aim_time = 0.3
@@ -470,20 +471,20 @@ modulate = Color(1, 1, 1, 0)
 
 [node name="AimLine" type="Line2D" parent="ShootPoint" index="1"]
 z_index = 4
-points = PackedVector2Array(0, 0, 3600, 0)
+points = PackedVector2Array(0, 0, 2800, 0)
 width = 8.0
 default_color = Color(0, 0, 0, 0.25098)
 
 [node name="AimRay" type="RayCast2D" parent="ShootPoint" index="2"]
 position = Vector2(-160, 0)
-target_position = Vector2(2400, 0)
+target_position = Vector2(1600, 0)
 collision_mask = 3
 hit_from_inside = true
 
 [node name="AimTarget" type="Marker2D" parent="ShootPoint" index="3"]
 
 [node name="EndAim" type="Marker2D" parent="ShootPoint" index="4"]
-position = Vector2(2240, 0)
+position = Vector2(1440, 0)
 
 [node name="AnimationPlayer" parent="." index="3"]
 libraries = {

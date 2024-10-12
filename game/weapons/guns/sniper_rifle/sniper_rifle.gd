@@ -12,7 +12,7 @@ var _aiming := false
 
 func _process(delta: float) -> void:
 	super(delta)
-	if _aiming and _player.id == multiplayer.get_unique_id():
+	if _aiming and _player.is_local():
 		_aim_target.global_position = _calculate_aim_target_position()
 
 
@@ -98,11 +98,11 @@ func end_aim() -> void:
 	if not is_instance_valid(camera):
 		return
 	
+	camera.position_smoothing_enabled = true
 	if camera.target == _aim_target:
 		camera.target = _player
-		camera.position_smoothing_enabled = true
 		camera.global_position = camera.target.global_position
-	camera.reset_smoothing()
+		camera.reset_smoothing()
 
 
 func _calculate_aim_target_position() -> Vector2:

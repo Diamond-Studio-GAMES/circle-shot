@@ -86,7 +86,7 @@ func _shoot() -> void:
 		var projectile: GrenadeProjectile = projectile_scene.instantiate()
 		projectile.global_position = _throw_point.global_position
 		var spread: float = deg_to_rad(_calculate_spread())
-		projectile.rotation = throw_direction.angle() + randf_range(-spread, spread)
+		projectile.direction = throw_direction.rotated(randf_range(-spread, spread))
 		projectile.speed *= minf(throw_direction.length(), 1.0)
 		_customize_projectile(projectile)
 		projectile.name += str(randi())

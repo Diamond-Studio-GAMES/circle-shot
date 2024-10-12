@@ -21,7 +21,7 @@ func _ready() -> void:
 	
 	($Name/Label as Label).text = player_name
 	($Name/Label as Label).self_modulate = TEAM_COLORS[team]
-	if id == multiplayer.get_unique_id():
+	if is_local():
 		(get_tree().get_first_node_in_group(&"Event") as Event).set_local_player(self)
 		($ControlIndicator as Node2D).show()
 		($ControlIndicator as Node2D).self_modulate = TEAM_COLORS[team]

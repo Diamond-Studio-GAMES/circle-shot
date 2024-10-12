@@ -57,6 +57,8 @@ func _physics_process(delta: float) -> void:
 				if multiplayer.is_server() and _shoot_timer <= 0.0:
 					shoot.rpc()
 	_shoot_timer -= delta
+	if _player.is_local() and can_reload() and ammo <= 0:
+		_player.try_reload_weapon()
 
 
 func _initialize() -> void:
@@ -79,9 +81,6 @@ func _make_current() -> void:
 	tween.tween_property(self, ^"rotation", _calculate_aim_direction(), to_aim_time)
 	await tween.finished
 	unlock_shooting()
-	
-	if ammo <= 0 and _player.id == multiplayer.get_unique_id():
-		_player.try_reload_weapon()
 
 
 func _unmake_current() -> void:
@@ -138,10 +137,6 @@ func _shoot() -> void:
 			if _recoil_timer + shoot_interval > recoil_curve_time + recoil_cycle_curve_time else
 			(_recoil_timer + shoot_interval)
 	)
-	
-	if ammo <= 0 and _player.id == multiplayer.get_unique_id():
-		await get_tree().create_timer(shoot_interval, false).timeout
-		_player.try_reload_weapon()
 
 
 func can_reload() -> bool:

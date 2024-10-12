@@ -11,8 +11,6 @@ var _exploded := false
 
 
 func _ready() -> void:
-	direction = Vector2.RIGHT.rotated(rotation)
-	rotation = 0.0
 	current_speed = speed
 
 

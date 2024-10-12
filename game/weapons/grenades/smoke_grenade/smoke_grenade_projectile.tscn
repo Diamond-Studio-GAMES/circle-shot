@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dk7jbfktf8rtx" path="res://game/weapons/grenades/smoke_grenade/smoke_big.png" id="5_xbloa"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0x6f5"]
-radius = 1120.0
+radius = 1040.0
 
 [sub_resource type="Animation" id="Animation_28i3b"]
 resource_name = "Explode"
@@ -21,7 +21,7 @@ tracks/0/path = NodePath("InvisibilityArea/CollisionShape2D:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 13),
+"times": PackedFloat32Array(0, 0.8, 13),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, false, true]
@@ -119,10 +119,10 @@ tracks/8/path = NodePath("Smokes/Smoke3:rotation")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0, 0.7),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.7, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [0.721578, 1.59596]
+"values": [0.721578, 1.59596, 0.609367]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
@@ -155,10 +155,10 @@ tracks/11/path = NodePath("Smokes/Smoke0:rotation")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0, 0.7),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.7, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [-0.357852, 0.236728]
+"values": [-0.357852, 0.236728, 0.0361977]
 }
 tracks/12/type = "value"
 tracks/12/imported = false
@@ -191,10 +191,10 @@ tracks/14/path = NodePath("Smokes/Smoke1:rotation")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
-"times": PackedFloat32Array(0, 0.7),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.7, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [1.79954, 0.316123]
+"values": [1.79954, 0.316123, 0.670701]
 }
 tracks/15/type = "value"
 tracks/15/imported = false
@@ -227,10 +227,10 @@ tracks/17/path = NodePath("Smokes/Smoke2:rotation")
 tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/keys = {
-"times": PackedFloat32Array(0, 0.7),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.7, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [-0.79221, 0.128475]
+"values": [-0.79221, 0.128475, 0.610295]
 }
 tracks/18/type = "value"
 tracks/18/imported = false
@@ -251,7 +251,7 @@ tracks/19/path = NodePath("Smokes:modulate")
 tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/keys = {
-"times": PackedFloat32Array(0, 0.5, 0.9),
+"times": PackedFloat32Array(0, 0.7, 1.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]

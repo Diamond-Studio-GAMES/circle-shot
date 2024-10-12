@@ -30,7 +30,7 @@ const TEAM_COLORS: Array[Color] = [
 var id: int = -1:
 	set(value):
 		id = value
-		$Input.set_multiplayer_authority(value)
+		$Input.set_multiplayer_authority(value if id > 0 else 1)
 var current_health: int = 100
 var team: int = 0
 var speed_multiplier := 1.0
@@ -85,14 +85,20 @@ func add_effect(effect_id: String, duration := 1.0, data := [], should_stack := 
 				i.add_duration(duration)
 				effect.free()
 				print_verbose("Added duration (%f) to effect '%s' on entity '%s' with ID %d." % [
-					duration, effect_id, name, id
+					duration,
+					effect_id,
+					name,
+					id,
 				])
 				return
 	
 	_effects.add_child(effect)
 	effect.initialize(self, effect_id, data, false, duration)
 	print_verbose("Added effect '%s' with duration %f to entity '%s' with ID %d." % [
-		effect_id, duration, name, id
+		effect_id,
+		duration,
+		name,
+		id,
 	])
 
 
@@ -116,13 +122,19 @@ func add_timeless_effect(effect_id: String, data := [], should_stack := true) ->
 	_effects.add_child(effect)
 	effect.initialize(self, effect_id, data, true)
 	print_verbose("Added timeless effect '%s' to entity '%s' with ID %d." % [
-		effect_id, name, id
+		effect_id,
+		name,
+		id,
 	])
 
 
 @rpc("authority", "reliable", "call_local", 3)
 func remove_timeless_effect(effect_id: String) -> void:
 	if is_queued_for_deletion():
+		print_verbose("Entity '%s' is going to be deleted. Effect with ID %d is not removed." % [
+			id,
+			effect_id,
+		])
 		return
 	
 	if multiplayer.get_remote_sender_id() != 1:
@@ -133,7 +145,9 @@ func remove_timeless_effect(effect_id: String) -> void:
 		if i.id == effect_id:
 			i.timeless_counter -= 1
 			print_verbose("Removed timeless effect '%s' on entity '%s' with ID %d." % [
-				effect_id, name, id
+				effect_id,
+				name,
+				id,
 			])
 			return
 
@@ -148,7 +162,10 @@ func clear_effects(negative := true, positive := false) -> void:
 		if i.negative == negative or i.negative != positive:
 			i.clear()
 			print_verbose("Cleared %s effect '%s' on entity '%s' with ID %d." % [
-				"negative" if i.negative else "positive", i.id, name, id
+				"negative" if i.negative else "positive",
+				i.id,
+				name,
+				id,
 			])
 #endregion
 

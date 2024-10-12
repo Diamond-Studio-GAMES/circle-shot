@@ -4,7 +4,7 @@
 
 [node name="WeakSniperBullet" instance=ExtResource("1_2q147")]
 speed = 3200.0
-damage = 40
+damage = 45
 
 [node name="RayDetector" parent="." index="0"]
 position = Vector2(-180, 0)

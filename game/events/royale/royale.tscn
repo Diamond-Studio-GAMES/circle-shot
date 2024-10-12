@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" path="res://game/events/royale/ammo_box.tscn" id="4_01fjj"]
 [ext_resource type="PackedScene" uid="uid://b4h27swncrquh" path="res://game/events/royale/poison_smoke.tscn" id="5_mf48w"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_qsiou"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_e038x"]
 viewport_path = NodePath("MinimapViewport")
 
 [sub_resource type="Animation" id="Animation_ty3n7"]
@@ -173,8 +173,8 @@ one_shot = true
 [node name="OtherSpawner" parent="." index="9"]
 _spawnable_scenes = PackedStringArray("res://game/events/royale/heal_box.tscn", "res://game/events/royale/ammo_box.tscn")
 
-[node name="Minimap" parent="UI/Main" index="0"]
-texture = SubResource("ViewportTexture_qsiou")
+[node name="Minimap" parent="UI/Main" index="1"]
+texture = SubResource("ViewportTexture_e038x")
 
 [node name="PlayerCounterTitle" type="Label" parent="UI/Main" index="5"]
 layout_mode = 1

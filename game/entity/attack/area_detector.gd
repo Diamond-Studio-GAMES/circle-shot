@@ -1,8 +1,11 @@
 extends Area2D
 
+
 @export var damage_interval := 1.0
-var _entities := {}
+var _entities: Array[Entity]
+var _exceptions := {}
 @onready var _attack: Attack = get_parent()
+
 
 func _ready() -> void:
 	if multiplayer.is_server():
@@ -12,17 +15,21 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	for i: Entity in _entities:
-		_entities[i] -= delta
-		if _entities[i] <= 0:
+		if not i.name in _exceptions:
 			_attack.deal_damage(i)
-			_entities[i] = damage_interval
+			_exceptions[i.name] = damage_interval
+	
+	for i: StringName in _exceptions.keys():
+		_exceptions[i] -= delta
+		if _exceptions[i] <= 0.0:
+			_exceptions.erase(i)
 
 
 func _on_body_entered(body: Node2D) -> void:
 	var entity := body as Entity
 	if not entity:
 		return
-	_entities[entity] = 0.01
+	_entities.append(entity)
 
 
 func _on_body_exited(body: Node2D) -> void:
