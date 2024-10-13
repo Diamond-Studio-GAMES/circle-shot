@@ -14,4 +14,4 @@ var aim_direction := Vector2.RIGHT:
 var shooting := false
 
 var showing_aim := false
-var turn_with_aim := false
+var turn_with_aim := true

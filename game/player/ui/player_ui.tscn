@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://0wc72b0o2o11"]
+[gd_scene load_steps=26 format=3 uid="uid://0wc72b0o2o11"]
 
 [ext_resource type="Script" path="res://game/player/ui/player_ui.gd" id="1_2pprn"]
 [ext_resource type="Material" uid="uid://cmd5ms7ovbyru" path="res://game/player/ui/blood_vignette/blood_vignette.tres" id="2_k62wa"]
@@ -42,6 +42,9 @@ shader_parameter/power = 1.0
 shader = ExtResource("8_iqift")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/power = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x4djl"]
+size = Vector2(120, 120)
 
 [sub_resource type="Animation" id="Animation_j6hmo"]
 resource_name = "Death"
@@ -222,6 +225,7 @@ texture_normal = ExtResource("6_10yoo")
 
 [node name="WeaponSelection" type="Control" parent="Controller"]
 visible = false
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -234,7 +238,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="BG0" type="TextureRect" parent="Controller/WeaponSelection"]
+[node name="BGLight" type="TextureRect" parent="Controller/WeaponSelection"]
 self_modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 6
@@ -252,7 +256,7 @@ pivot_offset = Vector2(220, 220)
 mouse_filter = 2
 texture = ExtResource("11_kgyyy")
 
-[node name="BG1" type="TextureRect" parent="Controller/WeaponSelection"]
+[node name="BGHeavy" type="TextureRect" parent="Controller/WeaponSelection"]
 self_modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 6
@@ -270,7 +274,7 @@ pivot_offset = Vector2(220, 220)
 mouse_filter = 2
 texture = ExtResource("11_kgyyy")
 
-[node name="BG2" type="TextureRect" parent="Controller/WeaponSelection"]
+[node name="BGSupport" type="TextureRect" parent="Controller/WeaponSelection"]
 self_modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 6
@@ -287,7 +291,7 @@ pivot_offset = Vector2(220, 220)
 mouse_filter = 2
 texture = ExtResource("11_kgyyy")
 
-[node name="BG3" type="TextureRect" parent="Controller/WeaponSelection"]
+[node name="BGMelee" type="TextureRect" parent="Controller/WeaponSelection"]
 self_modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 6
@@ -557,6 +561,10 @@ theme_override_font_sizes/font_size = 40
 horizontal_alignment = 2
 vertical_alignment = 2
 
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/Skill"]
+position = Vector2(60, 60)
+shape = SubResource("RectangleShape2D_x4djl")
+
 [node name="PCSkill" type="ReferenceRect" parent="Controller"]
 layout_mode = 1
 anchors_preset = 6
@@ -598,3 +606,4 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [connection signal="pressed" from="Controller/TouchControls/Anchor/AdditionalButton" to="." method="additional_button"]
+[connection signal="pressed" from="Controller/Skill/TouchScreenButton" to="." method="use_skill"]

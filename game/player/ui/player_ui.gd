@@ -1,32 +1,52 @@
 extends Control
 
 
+enum InputMethod {
+	KEYBOARD_AND_MOUSE = 0,
+	TOUCH = 1,
+}
 const MIN_AIM_DIRECTION_LENGTH := 0.1
+const DEFAULT_WEAPON_BG_COLOR := Color(1.0, 1.0, 1.0, 0.5)
+const SELECTED_WEAPON_BG_COLOR := Color.WHITE
 
 var aim_deadzone := 60.0
 var aim_max_at_distance := 260.0
 var sneak_multiplier := 0.5
+var change_weapon_deadzone := 32.0
+var show_weapons_time := 0.4
+var input_method: InputMethod
 
 var _player: Player
 
-var _touch := true
 var _moving_left := false
 var _moving_right := false
 var _moving_up := false
 var _moving_down := false
 var _aim_zone: float
 
+var _touch_index: int = -1
+var _touch_timer := 0.0
+var _touch_start_position: Vector2
+var _weapon_selection_tween: Tween
+
 @onready var _health_bar: TextureProgressBar = $Controller/HealthBar
 @onready var _health_text: Label = $Controller/HealthBar/Label
 @onready var _blood_vignette: TextureRect = $Controller/BloodVignette
 @onready var _tint_anim: AnimationPlayer = $PlayerTint/AnimationPlayer
 
+@onready var _current_weapon: TextureRect = $Controller/CurrentWeapon
 @onready var _current_weapon_icon: TextureRect = $Controller/CurrentWeapon/Icon
 @onready var _light_weapon_icon: TextureRect = $Controller/WeaponSelection/LightWeaponIcon
 @onready var _heavy_weapon_icon: TextureRect = $Controller/WeaponSelection/HeavyWeaponIcon
 @onready var _support_weapon_icon: TextureRect = $Controller/WeaponSelection/SupportWeaponIcon
 @onready var _melee_weapon_icon: TextureRect = $Controller/WeaponSelection/MeleeWeaponIcon
 @onready var _ammo_text: Label = $Controller/CurrentWeapon/Label
+
+@onready var _weapon_selection: Control = $Controller/WeaponSelection
+@onready var _weapon_selection_bg_light: TextureRect = $Controller/WeaponSelection/BGLight
+@onready var _weapon_selection_bg_heavy: TextureRect = $Controller/WeaponSelection/BGHeavy
+@onready var _weapon_selection_bg_support: TextureRect = $Controller/WeaponSelection/BGSupport
+@onready var _weapon_selection_bg_melee: TextureRect = $Controller/WeaponSelection/BGMelee
 
 @onready var _skill: TextureProgressBar = $Controller/Skill
 @onready var _skill_count: Label = $Controller/Skill/Count
@@ -40,92 +60,60 @@ var _aim_zone: float
 
 func _ready() -> void:
 	if not OS.has_feature("mobile"):
-		($Controller/TouchControls as Control).hide()
-		_touch = false
-		_aim_zone = aim_max_at_distance - aim_deadzone
-		($Controller/Skill as Control).position = ($Controller/PCSkill as Control).position
-		($Controller/CurrentWeapon as Control).position = \
-				($Controller/PCCurrentWeapon as Control).position
+		input_method = InputMethod.KEYBOARD_AND_MOUSE
+	else:
+		input_method = InputMethod.TOUCH
+	
+	match input_method:
+		InputMethod.KEYBOARD_AND_MOUSE:
+			_aim_zone = aim_max_at_distance - aim_deadzone
+			($Controller/TouchControls as Control).hide()
+			($Controller/Skill as Control).position = ($Controller/PCSkill as Control).position
+			($Controller/CurrentWeapon as Control).position = \
+					($Controller/PCCurrentWeapon as Control).position
+			($Controller/Skill/TouchScreenButton as Node2D).hide()
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if not is_instance_valid(_player):
 		return
 	
 	_update_skill()
-	if _touch:
-		_player.entity_input.direction = _move_joystick.output
-		if not _aim_joystick.output.is_zero_approx():
-			var aim: Vector2 = _aim_joystick.output
-			_player.player_input.aim_direction = aim.normalized() * MIN_AIM_DIRECTION_LENGTH + \
-					aim * (1.0 - MIN_AIM_DIRECTION_LENGTH)
-			_player.player_input.showing_aim = true
-			_player.player_input.turn_with_aim = true
-		else:
-			_player.player_input.showing_aim = false
-			_player.player_input.turn_with_aim = false
-		_player.player_input.shooting = _shoot_area.is_pressed()
-	else:
-		_player.entity_input.direction = (
-			Vector2.LEFT * int(_moving_left) + Vector2.RIGHT * int(_moving_right)
-			+ Vector2.UP * int(_moving_up) + Vector2.DOWN * int(_moving_down)
-		).normalized()
-		if Input.is_action_pressed(&"sneak"):
-			_player.entity_input.direction *= sneak_multiplier
-		
-		var mouse_pos: Vector2 = _center.get_local_mouse_position()
-		var mouse_distance: float = mouse_pos.length()
-		if mouse_distance > aim_deadzone:
-			_player.player_input.aim_direction = mouse_pos.normalized() * ((
-					clampf(mouse_distance, aim_deadzone, aim_max_at_distance) - aim_deadzone
-			) / _aim_zone * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
+	match input_method:
+		InputMethod.TOUCH:
+			_process_touch_input_method(delta)
+		InputMethod.KEYBOARD_AND_MOUSE:
+			_process_keyboard_and_mouse_input_method()
+
+
+func _input(event: InputEvent) -> void:
+	if not is_instance_valid(_player):
+		return
+	
+	match input_method:
+		InputMethod.TOUCH:
+			_touch_input(event)
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_instance_valid(_player):
 		return
 	
-	if not _touch:
-		if event.is_action(&"shoot"):
-			_player.player_input.shooting = event.is_pressed()
-		if event.is_action(&"show_aim"):
-			_player.player_input.showing_aim = event.is_pressed()
+	match input_method:
+		InputMethod.KEYBOARD_AND_MOUSE:
+			_unhandled_keyboard_and_mouse_input(event)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if not _touch:
-		if event.is_action(&"move_left"):
-			_moving_left = event.is_pressed()
-		if event.is_action(&"move_right"):
-			_moving_right = event.is_pressed()
-		if event.is_action(&"move_up"):
-			_moving_up = event.is_pressed()
-		if event.is_action(&"move_down"):
-			_moving_down = event.is_pressed()
-		
-		if event.is_action_pressed(&"show_weapons"):
-			if ($Controller/WeaponSelection as Control).visible:
-				_close_weapon_selection()
-			else:
-				open_weapon_selection()
-		elif event.is_action_pressed(&"weapon_light"):
-			select_weapon(Weapon.Type.LIGHT)
-		elif event.is_action_pressed(&"weapon_heavy"):
-			select_weapon(Weapon.Type.HEAVY)
-		elif event.is_action_pressed(&"weapon_support"):
-			select_weapon(Weapon.Type.SUPPORT)
-		elif event.is_action_pressed(&"weapon_melee"):
-			select_weapon(Weapon.Type.MELEE)
-		elif event.is_action_pressed(&"reload"):
-			reload()
-		elif event.is_action_pressed(&"additional_button"):
-			additional_button()
-		elif event.is_action_pressed(&"skill"):
-			skill()
+	if not is_instance_valid(_player):
+		return
+	
+	match input_method:
+		InputMethod.KEYBOARD_AND_MOUSE:
+			_unhandled_key_keyboard_and_mouse_input(event)
 
 
 func select_weapon(type: Weapon.Type) -> void:
-	_close_weapon_selection()
 	if is_instance_valid(_player):
 		_player.try_change_weapon(type)
 
@@ -140,17 +128,150 @@ func additional_button() -> void:
 		_player.try_use_additional_button_weapon()
 
 
-func skill() -> void:
+func use_skill() -> void:
 	if is_instance_valid(_player):
 		_player.try_use_skill()
 
 
 func open_weapon_selection() -> void:
-	($Controller/WeaponSelection as Control).show()
+	_weapon_selection.show()
+	if is_instance_valid(_weapon_selection_tween):
+		_weapon_selection_tween.kill()
+	_weapon_selection_tween = create_tween()
+	_weapon_selection_tween.tween_property(_weapon_selection, ^":modulate", Color.WHITE, 0.3)
 
 
-func _close_weapon_selection() -> void:
-	($Controller/WeaponSelection as Control).hide()
+func close_weapon_selection() -> void:
+	if is_instance_valid(_weapon_selection_tween):
+		_weapon_selection_tween.kill()
+	_weapon_selection_tween = create_tween()
+	_weapon_selection_tween.tween_property(_weapon_selection, ^":modulate", Color.TRANSPARENT, 0.2)
+	_weapon_selection_tween.tween_callback(_weapon_selection.hide)
+
+
+func _touch_input(event: InputEvent) -> void:
+	var touch_event := event as InputEventScreenTouch
+	if touch_event:
+		if touch_event.pressed:
+			if _touch_index >= 0:
+				return
+			if not _is_point_inside_of_control(touch_event.position, _current_weapon):
+				return
+			_touch_index = touch_event.index
+			_touch_start_position = touch_event.position
+			_touch_timer = 0.0
+		else:
+			if touch_event.index != _touch_index:
+				return
+			_touch_index = -1
+			var new_type: Weapon.Type = \
+					_get_weapon_type_from_vector(touch_event.position - _touch_start_position)
+			match new_type:
+				Weapon.Type.INVALID:
+					reload()
+				Weapon.Type.LIGHT:
+					select_weapon(Weapon.Type.LIGHT)
+				Weapon.Type.HEAVY:
+					select_weapon(Weapon.Type.HEAVY)
+				Weapon.Type.SUPPORT:
+					select_weapon(Weapon.Type.SUPPORT)
+				Weapon.Type.MELEE:
+					select_weapon(Weapon.Type.MELEE)
+			
+			if _weapon_selection.visible:
+				close_weapon_selection()
+		return
+	
+	var drag_event := event as InputEventScreenDrag
+	if drag_event:
+		if drag_event.index != _touch_index:
+			return
+		_weapon_selection_bg_light.self_modulate = DEFAULT_WEAPON_BG_COLOR
+		_weapon_selection_bg_heavy.self_modulate = DEFAULT_WEAPON_BG_COLOR
+		_weapon_selection_bg_support.self_modulate = DEFAULT_WEAPON_BG_COLOR
+		_weapon_selection_bg_melee.self_modulate = DEFAULT_WEAPON_BG_COLOR
+		match _get_weapon_type_from_vector(drag_event.position - _touch_start_position):
+			Weapon.Type.LIGHT:
+				_weapon_selection_bg_light.self_modulate = SELECTED_WEAPON_BG_COLOR
+			Weapon.Type.HEAVY:
+				_weapon_selection_bg_heavy.self_modulate = SELECTED_WEAPON_BG_COLOR
+			Weapon.Type.SUPPORT:
+				_weapon_selection_bg_support.self_modulate = SELECTED_WEAPON_BG_COLOR
+			Weapon.Type.MELEE:
+				_weapon_selection_bg_melee.self_modulate = SELECTED_WEAPON_BG_COLOR
+
+
+func _unhandled_keyboard_and_mouse_input(event: InputEvent) -> void:
+	if event.is_action(&"shoot"):
+		_player.player_input.shooting = event.is_pressed()
+	if event.is_action(&"show_aim"):
+		_player.player_input.showing_aim = event.is_pressed()
+
+
+func _unhandled_key_keyboard_and_mouse_input(event: InputEvent) -> void:
+	if event.is_action(&"move_left"):
+		_moving_left = event.is_pressed()
+	if event.is_action(&"move_right"):
+		_moving_right = event.is_pressed()
+	if event.is_action(&"move_up"):
+		_moving_up = event.is_pressed()
+	if event.is_action(&"move_down"):
+		_moving_down = event.is_pressed()
+	
+	if event.is_action_pressed(&"show_weapons"):
+		if ($Controller/WeaponSelection as Control).visible:
+			close_weapon_selection()
+		else:
+			open_weapon_selection()
+	elif event.is_action_pressed(&"weapon_light"):
+		select_weapon(Weapon.Type.LIGHT)
+	elif event.is_action_pressed(&"weapon_heavy"):
+		select_weapon(Weapon.Type.HEAVY)
+	elif event.is_action_pressed(&"weapon_support"):
+		select_weapon(Weapon.Type.SUPPORT)
+	elif event.is_action_pressed(&"weapon_melee"):
+		select_weapon(Weapon.Type.MELEE)
+	elif event.is_action_pressed(&"reload"):
+		reload()
+	elif event.is_action_pressed(&"additional_button"):
+		additional_button()
+	elif event.is_action_pressed(&"use_skill"):
+		use_skill()
+
+
+func _process_touch_input_method(delta: float) -> void:
+	_player.entity_input.direction = _move_joystick.output
+	if not _aim_joystick.output.is_zero_approx():
+		var aim: Vector2 = _aim_joystick.output
+		_player.player_input.aim_direction = aim.normalized() * MIN_AIM_DIRECTION_LENGTH + \
+				aim * (1.0 - MIN_AIM_DIRECTION_LENGTH)
+		_player.player_input.showing_aim = true
+		_player.player_input.turn_with_aim = true
+	else:
+		_player.player_input.showing_aim = false
+		_player.player_input.turn_with_aim = false
+	_player.player_input.shooting = _shoot_area.is_pressed()
+	
+	if _touch_index >= 0:
+		_touch_timer += delta
+		if _touch_timer > show_weapons_time and not _weapon_selection.visible:
+			open_weapon_selection()
+
+
+func _process_keyboard_and_mouse_input_method() -> void:
+	_player.entity_input.direction = (
+			Vector2.LEFT * int(_moving_left) + Vector2.RIGHT * int(_moving_right)
+			+ Vector2.UP * int(_moving_up) + Vector2.DOWN * int(_moving_down)
+		).normalized()
+	if Input.is_action_pressed(&"sneak"):
+		_player.entity_input.direction *= sneak_multiplier
+	
+	var mouse_pos: Vector2 = _center.get_local_mouse_position()
+	var mouse_distance: float = mouse_pos.length()
+	if mouse_distance > aim_deadzone:
+		_player.player_input.aim_direction = mouse_pos.normalized() * ((
+				clampf(mouse_distance, aim_deadzone, aim_max_at_distance) - aim_deadzone
+		) / _aim_zone * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
 
 
 func _update_skill() -> void:
@@ -169,6 +290,35 @@ func _update_skill() -> void:
 	_skill_count.text = str(_player.skill_vars[0])
 
 
+func _is_point_inside_of_control(point: Vector2, control: Control) -> bool:
+	var x: bool = point.x >= control.global_position.x \
+			and point.x <= control.global_position.x \
+			+ (control.size.x * control.get_global_transform_with_canvas().get_scale().x)
+	var y: bool = point.y >= control.global_position.y \
+			and point.y <= control.global_position.y \
+			+ (control.size.y * control.get_global_transform_with_canvas().get_scale().y)
+	return x and y
+
+
+func _get_weapon_type_from_vector(vector: Vector2) -> Weapon.Type:
+	if vector.length() < change_weapon_deadzone:
+		return Weapon.Type.INVALID
+	
+	var angle: float = vector.angle()
+	if angle <= PI / 4 and angle >= -PI / 4:
+		# Смотрит вправо
+		return Weapon.Type.LIGHT
+	elif angle > PI / 4 and angle < PI / 4 * 3:
+		# Смотрит вниз
+		return Weapon.Type.HEAVY
+	elif angle < -PI / 4 and angle > -PI / 4 * 3:
+		# Смотрит вверх
+		return Weapon.Type.SUPPORT
+	else:
+		# Смотрит влево
+		return Weapon.Type.MELEE
+
+
 func _on_local_player_created(player: Player) -> void:
 	_on_player_health_changed(player.max_health, player.max_health)
 	_tint_anim.play(&"RESET")
@@ -181,7 +331,6 @@ func _on_local_player_created(player: Player) -> void:
 	player.weapon_changed.connect(_on_weapon_changed)
 	player.weapon_equipped.connect(_on_weapon_equipped)
 	player.skill_equipped.connect(_on_skill_equipped)
-	player.player_input.turn_with_aim = not _touch
 	_player = player
 
 
