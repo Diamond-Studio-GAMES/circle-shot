@@ -9,7 +9,7 @@ signal skill_equipped(id: int)
 
 var player_name := "Колобок"
 var equip_data: Array[int]
-var skill_data: Array[int]
+var skill_vars: Array[int]
 var current_weapon: Weapon
 var current_weapon_type := Weapon.Type.LIGHT
 var skill: Skill
@@ -194,9 +194,9 @@ func set_weapon(type: Weapon.Type, weapon_id: int) -> void:
 		_set_current_weapon(type)
 
 
-func set_skill(skill_id: int, reset_skill_data := false) -> void:
-	if reset_skill_data:
-		skill_data.clear()
+func set_skill(skill_id: int, reset_skill_vars := false) -> void:
+	if reset_skill_vars:
+		skill_vars.clear()
 	
 	if is_instance_valid(skill):
 		remove_child(skill)

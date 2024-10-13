@@ -12,6 +12,7 @@ var _started := false
 var _players_equip_data := {}
 var _players_names := {}
 var _players_teams := {}
+var _players_skill_vars := {}
 var _players := {}
 var _hit_marker_scene: PackedScene = load("uid://c2f0n1b5sfpdh")
 var _death_marker_scene: PackedScene = load("uid://blhm6uka1p287")
@@ -95,6 +96,8 @@ func spawn_player(id: int) -> void:
 	player.id = id
 	player.player_name = _players_names[id]
 	player.equip_data = _players_equip_data[id]
+	if id in _players_skill_vars:
+		player.skill_vars = _players_skill_vars[id]
 	player.name = "Player%d" % id
 	_customize_player(player)
 	_players[id] = player
@@ -213,6 +216,7 @@ func _on_player_killed(who: int, by: int) -> void:
 		else:
 			_create_kill_marker.rpc_id(by, target.global_position)
 	
+	_players_skill_vars[who] = _players[who].skill_vars
 	_player_killed(who, by)
 	_players.erase(who)
 
@@ -230,6 +234,7 @@ func _on_peer_disconnected(id: int) -> void:
 	_players_names.erase(id)
 	_players_equip_data.erase(id)
 	_players_teams.erase(id)
+	_players_skill_vars.erase(id)
 	if _players_names.is_empty():
 		_end.rpc()
 		return

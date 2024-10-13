@@ -22,11 +22,14 @@ var _aim_zone: float
 @onready var _tint_anim: AnimationPlayer = $PlayerTint/AnimationPlayer
 
 @onready var _current_weapon_icon: TextureRect = $Controller/CurrentWeapon/Icon
-@onready var _light_weapon_icon: TextureRect = $Controller/WeaponSelection/LightWeapon/Icon
-@onready var _heavy_weapon_icon: TextureRect = $Controller/WeaponSelection/HeavyWeapon/Icon
-@onready var _support_weapon_icon: TextureRect = $Controller/WeaponSelection/SupportWeapon/Icon
-@onready var _melee_weapon_icon: TextureRect = $Controller/WeaponSelection/MeleeWeapon/Icon
+@onready var _light_weapon_icon: TextureRect = $Controller/WeaponSelection/LightWeaponIcon
+@onready var _heavy_weapon_icon: TextureRect = $Controller/WeaponSelection/HeavyWeaponIcon
+@onready var _support_weapon_icon: TextureRect = $Controller/WeaponSelection/SupportWeaponIcon
+@onready var _melee_weapon_icon: TextureRect = $Controller/WeaponSelection/MeleeWeaponIcon
 @onready var _ammo_text: Label = $Controller/CurrentWeapon/Label
+
+@onready var _skill: TextureProgressBar = $Controller/Skill
+@onready var _skill_count: Label = $Controller/Skill/Count
 
 @onready var _move_joystick: VirtualJoystick = $Controller/TouchControls/MoveVirtualJoystick
 @onready var _aim_joystick: VirtualJoystick = $Controller/TouchControls/AimVirtualJoystick
@@ -40,12 +43,16 @@ func _ready() -> void:
 		($Controller/TouchControls as Control).hide()
 		_touch = false
 		_aim_zone = aim_max_at_distance - aim_deadzone
+		($Controller/Skill as Control).position = ($Controller/PCSkill as Control).position
+		($Controller/CurrentWeapon as Control).position = \
+				($Controller/PCCurrentWeapon as Control).position
 
 
 func _process(_delta: float) -> void:
 	if not is_instance_valid(_player):
 		return
 	
+	_update_skill()
 	if _touch:
 		_player.entity_input.direction = _move_joystick.output
 		if not _aim_joystick.output.is_zero_approx():
@@ -140,15 +147,29 @@ func skill() -> void:
 
 func open_weapon_selection() -> void:
 	($Controller/WeaponSelection as Control).show()
-	($Controller/CurrentWeapon as Control).hide()
 
 
 func _close_weapon_selection() -> void:
 	($Controller/WeaponSelection as Control).hide()
-	($Controller/CurrentWeapon as Control).show()
 
 
-func _on_local_player_created(player: Player) -> void:	
+func _update_skill() -> void:
+	if not is_instance_valid(_player):
+		return
+	if not is_instance_valid(_player.skill):
+		return
+	
+	if _player.skill_vars[0] > 0:
+		if _player.skill_vars[1] > 0:
+			_skill.value = 1.0 - _player.skill_vars[1] * 1.0 / _player.skill.use_cooldown
+		else:
+			_skill.value = 1
+	else:
+		_skill.value = 0
+	_skill_count.text = str(_player.skill_vars[0])
+
+
+func _on_local_player_created(player: Player) -> void:
 	_on_player_health_changed(player.max_health, player.max_health)
 	_tint_anim.play(&"RESET")
 	($Controller as Control).show()
@@ -159,6 +180,7 @@ func _on_local_player_created(player: Player) -> void:
 	player.ammo_text_updated.connect(_on_ammo_text_updated)
 	player.weapon_changed.connect(_on_weapon_changed)
 	player.weapon_equipped.connect(_on_weapon_equipped)
+	player.skill_equipped.connect(_on_skill_equipped)
 	player.player_input.turn_with_aim = not _touch
 	_player = player
 
@@ -216,22 +238,22 @@ func _on_weapon_equipped(type: Weapon.Type, weapon_id: int) -> void:
 	match type:
 		Weapon.Type.LIGHT:
 			weapon_icon = _light_weapon_icon
-			weapon_text = $Controller/WeaponSelection/LightWeapon/Label
+			weapon_text = $Controller/WeaponSelection/LightWeaponName
 			if weapon_id >= 0:
 				weapon_data = Globals.items_db.weapons_light[weapon_id]
 		Weapon.Type.HEAVY:
 			weapon_icon = _heavy_weapon_icon
-			weapon_text = $Controller/WeaponSelection/HeavyWeapon/Label
+			weapon_text = $Controller/WeaponSelection/HeavyWeaponName
 			if weapon_id >= 0:
 				weapon_data = Globals.items_db.weapons_heavy[weapon_id]
 		Weapon.Type.SUPPORT:
 			weapon_icon = _support_weapon_icon
-			weapon_text = $Controller/WeaponSelection/SupportWeapon/Label
+			weapon_text = $Controller/WeaponSelection/SupportWeaponName
 			if weapon_id >= 0:
 				weapon_data = Globals.items_db.weapons_support[weapon_id]
 		Weapon.Type.MELEE:
 			weapon_icon = _melee_weapon_icon
-			weapon_text = $Controller/WeaponSelection/MeleeWeapon/Label
+			weapon_text = $Controller/WeaponSelection/MeleeWeaponName
 			if weapon_id >= 0:
 				weapon_data = Globals.items_db.weapons_melee[weapon_id]
 	
@@ -249,6 +271,17 @@ func _on_weapon_equipped(type: Weapon.Type, weapon_id: int) -> void:
 			ItemsDB.RARITY_COLORS[weapon_data.rarity],
 	)
 	weapon_text.text = weapon_data.name
+
+
+func _on_skill_equipped(skill_id: int) -> void:
+	if skill_id < 0:
+		_skill.hide()
+		return
+	_skill.show()
+	
+	($Controller/Skill/Icon as TextureRect).texture = \
+			load(Globals.items_db.skills[skill_id].image_path)
+	_update_skill()
 
 
 func _on_ammo_text_updated(text: String) -> void:

@@ -48,7 +48,7 @@ properties/4/replication_mode = 0
 properties/5/path = NodePath(".:player_name")
 properties/5/spawn = true
 properties/5/replication_mode = 0
-properties/6/path = NodePath(".:skill_data")
+properties/6/path = NodePath(".:skill_vars")
 properties/6/spawn = true
 properties/6/replication_mode = 0
 

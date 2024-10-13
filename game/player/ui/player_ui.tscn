@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://0wc72b0o2o11"]
+[gd_scene load_steps=25 format=3 uid="uid://0wc72b0o2o11"]
 
 [ext_resource type="Script" path="res://game/player/ui/player_ui.gd" id="1_2pprn"]
 [ext_resource type="Material" uid="uid://cmd5ms7ovbyru" path="res://game/player/ui/blood_vignette/blood_vignette.tres" id="2_k62wa"]
@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://djbso2agyek2p" path="res://game/player/ui/additional_button.png" id="6_10yoo"]
 [ext_resource type="Texture2D" uid="uid://p85ppsyx0g2n" path="res://game/player/ui/weapon_bg.png" id="7_6c3s8"]
 [ext_resource type="Shader" path="res://game/player/ui/solid_color.gdshader" id="8_iqift"]
+[ext_resource type="Texture2D" uid="uid://dhhiaodkovkws" path="res://game/player/ui/weapon_selection_bg.png" id="11_kgyyy"]
+[ext_resource type="Texture2D" uid="uid://cqlo1boor0w4t" path="res://game/player/ui/skill_button.png" id="14_nojcu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6sal7"]
 size = Vector2(640, 256)
@@ -20,9 +22,6 @@ size = Vector2(640, 256)
 shader = ExtResource("8_iqift")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/power = 1.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0kb2l"]
-size = Vector2(288, 144)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hii6l"]
 shader = ExtResource("8_iqift")
@@ -218,242 +217,226 @@ grow_horizontal = 0
 grow_vertical = 0
 
 [node name="AdditionalButton" type="TouchScreenButton" parent="Controller/TouchControls/Anchor"]
-position = Vector2(-160, -160)
+position = Vector2(-128, -128)
 texture_normal = ExtResource("6_10yoo")
 
 [node name="WeaponSelection" type="Control" parent="Controller"]
 visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -32.0
+offset_bottom = -32.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="LightWeapon" type="TextureRect" parent="Controller/WeaponSelection"]
-auto_translate_mode = 1
+[node name="BG0" type="TextureRect" parent="Controller/WeaponSelection"]
+self_modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -288.0
-offset_top = -232.0
-offset_bottom = -88.0
+offset_left = -220.0
+offset_top = -220.0
+offset_right = 220.0
 grow_horizontal = 0
 grow_vertical = 2
-mouse_filter = 0
-texture = ExtResource("7_6c3s8")
+rotation = 1.5708
+pivot_offset = Vector2(220, 220)
+mouse_filter = 2
+texture = ExtResource("11_kgyyy")
 
-[node name="Icon" type="TextureRect" parent="Controller/WeaponSelection/LightWeapon"]
+[node name="BG1" type="TextureRect" parent="Controller/WeaponSelection"]
+self_modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -220.0
+offset_right = 220.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(1, -1)
+pivot_offset = Vector2(220, 220)
+mouse_filter = 2
+texture = ExtResource("11_kgyyy")
+
+[node name="BG2" type="TextureRect" parent="Controller/WeaponSelection"]
+self_modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -220.0
+offset_right = 220.0
+grow_horizontal = 0
+grow_vertical = 2
+pivot_offset = Vector2(220, 220)
+mouse_filter = 2
+texture = ExtResource("11_kgyyy")
+
+[node name="BG3" type="TextureRect" parent="Controller/WeaponSelection"]
+self_modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -220.0
+offset_right = 220.0
+grow_horizontal = 0
+grow_vertical = 2
+rotation = 1.5708
+scale = Vector2(1, -1)
+pivot_offset = Vector2(220, 220)
+mouse_filter = 2
+texture = ExtResource("11_kgyyy")
+
+[node name="LightWeaponIcon" type="TextureRect" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
 material = SubResource("ShaderMaterial_jse5g")
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
+anchors_preset = 4
 anchor_top = 0.5
-anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = -60.0
-offset_right = 120.0
-offset_bottom = 60.0
-grow_horizontal = 2
+offset_left = 64.0
+offset_top = -64.0
+offset_right = 192.0
+offset_bottom = 64.0
 grow_vertical = 2
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Controller/WeaponSelection/LightWeapon"]
+[node name="LightWeaponName" type="Label" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -60.0
-offset_top = -31.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 0
-grow_vertical = 0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 48.0
+offset_top = 56.0
+offset_right = 208.0
+offset_bottom = 79.0
+grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
-text = "Оружие"
+horizontal_alignment = 1
+autowrap_mode = 2
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/WeaponSelection/LightWeapon"]
-position = Vector2(144, 72)
-shape = SubResource("RectangleShape2D_0kb2l")
-
-[node name="HeavyWeapon" type="TextureRect" parent="Controller/WeaponSelection"]
-auto_translate_mode = 1
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -288.0
-offset_top = -88.0
-offset_bottom = 56.0
-grow_horizontal = 0
-grow_vertical = 2
-mouse_filter = 0
-texture = ExtResource("7_6c3s8")
-
-[node name="Icon" type="TextureRect" parent="Controller/WeaponSelection/HeavyWeapon"]
+[node name="HeavyWeaponIcon" type="TextureRect" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
 material = SubResource("ShaderMaterial_hii6l")
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = -60.0
-offset_right = 120.0
-offset_bottom = 60.0
+offset_left = -64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 192.0
 grow_horizontal = 2
-grow_vertical = 2
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Controller/WeaponSelection/HeavyWeapon"]
+[node name="HeavyWeaponName" type="Label" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -60.0
-offset_top = -31.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 0
-grow_vertical = 0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -93.0
+offset_top = 184.0
+offset_right = 94.0
+offset_bottom = 207.0
+grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
-text = "Оружие"
+horizontal_alignment = 1
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/WeaponSelection/HeavyWeapon"]
-position = Vector2(144, 72)
-shape = SubResource("RectangleShape2D_0kb2l")
-
-[node name="SupportWeapon" type="TextureRect" parent="Controller/WeaponSelection"]
-auto_translate_mode = 1
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -288.0
-offset_top = 56.0
-offset_bottom = 200.0
-grow_horizontal = 0
-grow_vertical = 2
-mouse_filter = 0
-texture = ExtResource("7_6c3s8")
-
-[node name="Icon" type="TextureRect" parent="Controller/WeaponSelection/SupportWeapon"]
+[node name="SupportWeaponIcon" type="TextureRect" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
 material = SubResource("ShaderMaterial_c703a")
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 7
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = -60.0
-offset_right = 120.0
-offset_bottom = 60.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -192.0
+offset_right = 64.0
+offset_bottom = -64.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Controller/WeaponSelection/SupportWeapon"]
+[node name="SupportWeaponName" type="Label" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -60.0
-offset_top = -31.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 0
-grow_vertical = 0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -93.0
+offset_top = -72.0
+offset_right = 94.0
+offset_bottom = -48.0
+grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
-text = "Оружие"
+horizontal_alignment = 1
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/WeaponSelection/SupportWeapon"]
-position = Vector2(144, 72)
-shape = SubResource("RectangleShape2D_0kb2l")
-
-[node name="MeleeWeapon" type="TextureRect" parent="Controller/WeaponSelection"]
+[node name="MeleeWeaponIcon" type="TextureRect" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
+material = SubResource("ShaderMaterial_vprac")
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -288.0
-offset_top = 200.0
-offset_bottom = 344.0
+offset_left = -192.0
+offset_top = -64.0
+offset_right = -64.0
+offset_bottom = 64.0
 grow_horizontal = 0
 grow_vertical = 2
-mouse_filter = 0
-texture = ExtResource("7_6c3s8")
-
-[node name="Icon" type="TextureRect" parent="Controller/WeaponSelection/MeleeWeapon"]
-auto_translate_mode = 1
-material = SubResource("ShaderMaterial_vprac")
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = -60.0
-offset_right = 120.0
-offset_bottom = 60.0
-grow_horizontal = 2
-grow_vertical = 2
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Controller/WeaponSelection/MeleeWeapon"]
+[node name="MeleeWeaponName" type="Label" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -60.0
-offset_top = -31.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 0
-grow_vertical = 0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -208.0
+offset_top = 56.0
+offset_right = -48.0
+offset_bottom = 79.0
+grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
-text = "Оружие"
-
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/WeaponSelection/MeleeWeapon"]
-position = Vector2(144, 72)
-shape = SubResource("RectangleShape2D_0kb2l")
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="CurrentWeapon" type="TextureRect" parent="Controller"]
 layout_mode = 1
@@ -504,9 +487,90 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
 text = "120/60"
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/CurrentWeapon"]
-position = Vector2(144, 72)
-shape = SubResource("RectangleShape2D_0kb2l")
+[node name="PCCurrentWeapon" type="ReferenceRect" parent="Controller"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = 200.0
+offset_bottom = 344.0
+grow_horizontal = 0
+grow_vertical = 2
+border_width = 4.0
+
+[node name="Skill" type="TextureProgressBar" parent="Controller"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -80.0
+offset_right = -8.0
+offset_bottom = 40.0
+grow_horizontal = 0
+grow_vertical = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+fill_mode = 4
+texture_under = ExtResource("14_nojcu")
+texture_progress = ExtResource("14_nojcu")
+tint_under = Color(1, 1, 1, 0.501961)
+tint_progress = Color(1, 1, 1, 0.752941)
+
+[node name="Icon" type="TextureRect" parent="Controller/Skill"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="Count" type="Label" parent="Controller/Skill"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -65.0
+offset_right = -20.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="PCSkill" type="ReferenceRect" parent="Controller"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = 71.0
+offset_right = -8.0
+offset_bottom = 191.0
+grow_horizontal = 0
+grow_vertical = 2
+border_width = 4.0
 
 [node name="PlayerTint" type="ColorRect" parent="."]
 layout_mode = 1
@@ -534,8 +598,3 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [connection signal="pressed" from="Controller/TouchControls/Anchor/AdditionalButton" to="." method="additional_button"]
-[connection signal="pressed" from="Controller/WeaponSelection/LightWeapon/TouchScreenButton" to="." method="select_weapon" binds= [0]]
-[connection signal="pressed" from="Controller/WeaponSelection/HeavyWeapon/TouchScreenButton" to="." method="select_weapon" binds= [1]]
-[connection signal="pressed" from="Controller/WeaponSelection/SupportWeapon/TouchScreenButton" to="." method="select_weapon" binds= [2]]
-[connection signal="pressed" from="Controller/WeaponSelection/MeleeWeapon/TouchScreenButton" to="." method="select_weapon" binds= [3]]
-[connection signal="pressed" from="Controller/CurrentWeapon/TouchScreenButton" to="." method="open_weapon_selection"]
