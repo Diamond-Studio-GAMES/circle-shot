@@ -76,6 +76,8 @@ func _shoot() -> void:
 	if anim_name != &"PostThrow":
 		unlock_shooting()
 		return
+	if _player.is_disarmed():
+		return
 	
 	ammo_in_stock -= 1
 	_player.ammo_text_updated.emit(get_ammo_text())

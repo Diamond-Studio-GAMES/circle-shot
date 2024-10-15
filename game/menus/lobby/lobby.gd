@@ -568,3 +568,6 @@ func _on_item_selected(type: ItemsDB.Item, id: int) -> void:
 		ItemsDB.Item.WEAPON_MELEE:
 			_selected_melee_weapon = id
 			_update_equip()
+		ItemsDB.Item.SKILL:
+			_selected_skill = id
+			_update_equip()

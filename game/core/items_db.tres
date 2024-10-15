@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ItemsDB" load_steps=32 format=3 uid="uid://pwq1e7l2ckos"]
+[gd_resource type="Resource" script_class="ItemsDB" load_steps=33 format=3 uid="uid://pwq1e7l2ckos"]
 
 [ext_resource type="Script" path="res://game/events/common/event_data.gd" id="1_yrpvj"]
 [ext_resource type="Resource" uid="uid://i4s2m4jgbyvc" path="res://game/events/royale/royale.tres" id="2_8tgde"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://ccsednjhd5m3o" path="res://game/skills/potion/potion.tres" id="4_hfvvw"]
 [ext_resource type="Resource" uid="uid://dbtrtohutlbyt" path="res://game/skins/standard/default/default.tres" id="4_kr1x8"]
 [ext_resource type="Resource" uid="uid://bsorviu43e0b1" path="res://game/skins/standard/classic/classic.tres" id="5_3l44y"]
+[ext_resource type="Resource" uid="uid://kjcrf01t8c2l" path="res://game/skills/dodge/dodge.tres" id="6_2wp4d"]
 [ext_resource type="Resource" uid="uid://c2hjmk44ru68x" path="res://game/skins/other/telegram/telegram.tres" id="6_etdf3"]
 [ext_resource type="Resource" uid="uid://dvnh4idsj61sj" path="res://game/skins/programming/apple/apple.tres" id="7_7vr63"]
 [ext_resource type="Resource" uid="uid://cpd762mfrmmoc" path="res://game/skins/programming/android/android.tres" id="8_yhh8f"]
@@ -40,4 +41,4 @@ weapons_light = Array[ExtResource("16_uslwp")]([ExtResource("20_wegr4"), ExtReso
 weapons_heavy = Array[ExtResource("16_uslwp")]([ExtResource("17_7vx3p"), ExtResource("21_qy8k3"), ExtResource("18_hjrvg"), ExtResource("19_5dl73")])
 weapons_support = Array[ExtResource("16_uslwp")]([ExtResource("25_wbuqy"), ExtResource("26_xy8s6")])
 weapons_melee = Array[ExtResource("16_uslwp")]([ExtResource("23_50d6n"), ExtResource("24_gbbrj")])
-skills = Array[ExtResource("3_x8mha")]([ExtResource("4_hfvvw")])
+skills = Array[ExtResource("3_x8mha")]([ExtResource("4_hfvvw"), ExtResource("6_2wp4d")])
