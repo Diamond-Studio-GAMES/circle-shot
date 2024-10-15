@@ -141,10 +141,10 @@ _data = {
 script = ExtResource("2_d2r5a")
 heal_box_scene = ExtResource("3_x8ahy")
 ammo_box_scene = ExtResource("4_01fjj")
-heal_box_spawn_interval_base = 30.0
-heal_box_spawn_interval_per_player = 2.0
-ammo_box_spawn_interval_base = 40.0
-ammo_box_spawn_interval_per_player = 2.5
+heal_box_spawn_interval_base = 10.0
+heal_box_spawn_interval_per_player = 1.0
+ammo_box_spawn_interval_base = 15.0
+ammo_box_spawn_interval_per_player = 1.5
 metadata/_edit_horizontal_guides_ = []
 
 [node name="PoisonSmoke" type="Node2D" parent="." index="6"]

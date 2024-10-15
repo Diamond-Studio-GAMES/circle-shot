@@ -4,9 +4,10 @@
 
 [node name="Dodge" type="Node2D"]
 script = ExtResource("1_366lt")
-roll_duration = 0.35
-use_times = 10
-use_cooldown = 5
+roll_speed = 1180.0
+roll_duration = 0.45
+use_times = 15
+use_cooldown = 3
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true

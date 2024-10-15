@@ -431,7 +431,7 @@ spread_reset_time = 1.8
 recoil_curve = SubResource("Curve_dynjt")
 recoil_cycle_curve = SubResource("Curve_2s46s")
 ammo_per_load = 5
-ammo_total = 15
+ammo_total = 20
 speed_multiplier_when_current = 0.9
 
 [node name="Magazine" type="Sprite2D" parent="." index="0"]
