@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bs4vk7wdu27eo"]
 
-[ext_resource type="Texture2D" uid="uid://o4866y8apitp" path="res://game/menus/connect/icons/lobby.png" id="1_3cwtp"]
+[ext_resource type="Texture2D" uid="uid://o4866y8apitp" path="res://game/menus/connect_local/icons/lobby.png" id="1_3cwtp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7eyut"]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cuig0ueedrpys"
-path="res://.godot/imported/join.png-ea2d39b0fdce4937941bd576c3b19892.ctex"
+uid="uid://o4866y8apitp"
+path="res://.godot/imported/lobby.png-fdd2640601444ca7e21583ee742de711.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/menus/connect/icons/join.png"
-dest_files=["res://.godot/imported/join.png-ea2d39b0fdce4937941bd576c3b19892.ctex"]
+source_file="res://game/menus/connect_local/icons/lobby.png"
+dest_files=["res://.godot/imported/lobby.png-fdd2640601444ca7e21583ee742de711.ctex"]
 
 [params]
 

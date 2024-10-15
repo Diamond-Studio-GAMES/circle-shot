@@ -61,6 +61,12 @@ func _process(_delta: float) -> void:
 	_no_games_label.visible = _games_container.get_child_count() == 0
 
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_WM_GO_BACK_REQUEST:
+			_on_exit_pressed()
+
+
 func _on_create_pressed() -> void:
 	_game.create()
 

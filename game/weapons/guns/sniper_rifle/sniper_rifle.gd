@@ -1,19 +1,21 @@
 extends "res://game/weapons/guns/common/gun.gd"
 
 
+const BLUR_SPREAD_MULTIPLIER := 0.2
 @export var aim_slowdown := 0.8
 @export var no_aim_spread := 8.0
-@export var weak_projectile_scene: PackedScene
 var _aiming := false
 @onready var _aim_ray: RayCast2D = $ShootPoint/AimRay
 @onready var _aim_target: Marker2D = $ShootPoint/AimTarget
 @onready var _end_aim: Marker2D = $ShootPoint/EndAim
+@onready var _aim_texture_material: ShaderMaterial = ($Aim/Base/Aim as Control).material
 
 
 func _process(delta: float) -> void:
 	super(delta)
 	if _aiming and _player.is_local():
 		_aim_target.global_position = _calculate_aim_target_position()
+		_aim_texture_material.set_shader_parameter(&"radius", _calculate_spread() * BLUR_SPREAD_MULTIPLIER)
 
 
 func _exit_tree() -> void:
@@ -30,16 +32,6 @@ func _unmake_current() -> void:
 	super()
 	if _aiming:
 		end_aim()
-
-
-func _create_projectile() -> void:
-	if not _aiming:
-		var default_projectile: PackedScene = projectile_scene
-		projectile_scene = weak_projectile_scene
-		super()
-		projectile_scene = default_projectile
-	else:
-		super()
 
 
 func reload() -> void:

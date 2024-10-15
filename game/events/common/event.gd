@@ -22,6 +22,11 @@ var _death_marker_scene: PackedScene = load("uid://blhm6uka1p287")
 
 
 func _ready() -> void:
+	($QuitDialog as AcceptDialog).dialog_text = "Ты действительно хочешь покинуть игру?"
+	if multiplayer.is_server():
+		($QuitDialog as AcceptDialog).dialog_text += "\nВнимание: ты являешься ХОСТОМ! \
+В случае твоего выхода игра прервётся у ВСЕХ!"
+	
 	$MinimapViewport.world_2d = get_viewport().find_world_2d()
 	
 	if multiplayer.is_server():
@@ -241,5 +246,5 @@ func _on_peer_disconnected(id: int) -> void:
 	_player_disconnected(id)
 
 
-func _on_leave_game_pressed() -> void:
+func _on_quit_dialog_confirmed() -> void:
 	Globals.main.game.close()

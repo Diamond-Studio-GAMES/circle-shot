@@ -52,6 +52,12 @@ func _ready() -> void:
 	_find_ips_for_broadcast()
 
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_WM_GO_BACK_REQUEST:
+			_on_leave_pressed()
+
+
 @rpc("reliable", "call_local")
 func _add_player_entry(id: int, player_name: String) -> void:
 	if multiplayer.get_remote_sender_id() != 1:

@@ -454,7 +454,6 @@ offset_top = -232.0
 offset_bottom = -88.0
 grow_horizontal = 0
 grow_vertical = 2
-mouse_filter = 0
 texture = ExtResource("7_6c3s8")
 
 [node name="Icon" type="TextureRect" parent="Controller/CurrentWeapon"]
@@ -503,6 +502,7 @@ offset_top = 200.0
 offset_bottom = 344.0
 grow_horizontal = 0
 grow_vertical = 2
+mouse_filter = 2
 border_width = 4.0
 
 [node name="Skill" type="TextureProgressBar" parent="Controller"]
@@ -578,6 +578,7 @@ offset_right = -8.0
 offset_bottom = 191.0
 grow_horizontal = 0
 grow_vertical = 2
+mouse_filter = 2
 border_width = 4.0
 
 [node name="PlayerTint" type="ColorRect" parent="."]

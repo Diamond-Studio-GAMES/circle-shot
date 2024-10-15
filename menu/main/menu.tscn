@@ -82,7 +82,7 @@ icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
 
-[node name="PlayOnline" type="Button" parent="ButtonsContainer"]
+[node name="PlayNetwork" type="Button" parent="ButtonsContainer"]
 custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 theme_override_constants/icon_max_width = 0
@@ -149,6 +149,6 @@ grow_vertical = 0
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[connection signal="pressed" from="ButtonsContainer/PlayOnline" to="." method="_on_play_online_pressed"]
+[connection signal="pressed" from="ButtonsContainer/PlayNetwork" to="." method="_on_play_network_pressed"]
 [connection signal="confirmed" from="NameDialog" to="." method="_on_name_dialog_confirmed"]
 [connection signal="visibility_changed" from="NameDialog" to="." method="_on_name_dialog_visibility_changed"]

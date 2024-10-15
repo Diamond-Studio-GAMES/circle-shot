@@ -27,3 +27,7 @@ func _use() -> void:
 		_timer.start(2.5)
 		await _timer.timeout
 	_player.unmake_disarmed()
+
+
+func can_use() -> bool:
+	return super() and _player.current_health != _player.max_health

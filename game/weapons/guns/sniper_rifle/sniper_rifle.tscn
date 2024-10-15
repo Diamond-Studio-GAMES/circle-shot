@@ -1,14 +1,14 @@
-[gd_scene load_steps=24 format=3 uid="uid://4q0rrm6arbyx"]
+[gd_scene load_steps=25 format=3 uid="uid://4q0rrm6arbyx"]
 
 [ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_57777"]
 [ext_resource type="Script" path="res://game/weapons/guns/sniper_rifle/sniper_rifle.gd" id="2_ir31q"]
 [ext_resource type="PackedScene" uid="uid://cm0sqwulviy72" path="res://game/weapons/guns/sniper_rifle/sniper_bullet.tscn" id="2_stbvt"]
-[ext_resource type="PackedScene" uid="uid://cf6hb3vwyuf4" path="res://game/weapons/guns/sniper_rifle/weak_sniper_bullet.tscn" id="3_1fl78"]
 [ext_resource type="Texture2D" uid="uid://rvu643208pjh" path="res://game/weapons/guns/common/shoot_effect.png" id="3_nfw2e"]
 [ext_resource type="Texture2D" uid="uid://dg0aqjkd64hom" path="res://game/weapons/guns/sniper_rifle/base.png" id="4_5tdas"]
 [ext_resource type="Texture2D" uid="uid://hvi0c3ih0v8d" path="res://game/weapons/guns/sniper_rifle/magazine.png" id="5_i4xf8"]
 [ext_resource type="Texture2D" uid="uid://0rsk8vwsw5pp" path="res://game/weapons/guns/sniper_rifle/shutter.png" id="6_jds1y"]
 [ext_resource type="Texture2D" uid="uid://djpleqaaaxipo" path="res://game/weapons/guns/common/rifle_sleeve.png" id="8_y68u3"]
+[ext_resource type="Shader" path="res://game/weapons/guns/sniper_rifle/blur.gdshader" id="9_8tnl3"]
 [ext_resource type="Texture2D" uid="uid://baoopah0qlhcl" path="res://game/weapons/guns/sniper_rifle/aim.png" id="9_cpvii"]
 
 [sub_resource type="Curve" id="Curve_uvvkn"]
@@ -411,17 +411,21 @@ _data = {
 "Shoot": SubResource("Animation_pwqt3")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e4bfp"]
+shader = ExtResource("9_8tnl3")
+shader_parameter/unit = Vector2(1, 1)
+shader_parameter/radius = 0.0
+
 [node name="SniperRifle" instance=ExtResource("1_57777")]
 script = ExtResource("2_ir31q")
 aim_slowdown = 0.8
 no_aim_spread = 8.0
-aim_zoom = Vector2(0.6, 0.6)
-weak_projectile_scene = ExtResource("3_1fl78")
 shoot_interval = 1.0
 to_aim_time = 0.3
 projectile_scene = ExtResource("2_stbvt")
 spread_base = 0.0
 spread_walk = 20.0
+spread_walk_ratio = 0.2
 spread_curve = SubResource("Curve_uvvkn")
 spread_reset_time = 1.8
 recoil_curve = SubResource("Curve_dynjt")
@@ -471,7 +475,7 @@ modulate = Color(1, 1, 1, 0)
 
 [node name="AimLine" type="Line2D" parent="ShootPoint" index="1"]
 z_index = 4
-points = PackedVector2Array(0, 0, 2800, 0)
+points = PackedVector2Array(0, 0, 3600, 0)
 width = 8.0
 default_color = Color(0, 0, 0, 0.25098)
 
@@ -504,6 +508,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Aim" type="TextureRect" parent="Aim/Base" index="0"]
+material = SubResource("ShaderMaterial_e4bfp")
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
