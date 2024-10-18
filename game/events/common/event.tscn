@@ -191,8 +191,8 @@ tracks/6/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ctugk"]
 _data = {
-"Intro": SubResource("Animation_4bxhi"),
-"RESET": SubResource("Animation_atj0b")
+&"RESET": SubResource("Animation_atj0b"),
+&"Intro": SubResource("Animation_4bxhi")
 }
 
 [node name="Event" type="Node" groups=["Event"]]
@@ -461,7 +461,7 @@ vertical_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Intro"]
 libraries = {
-"": SubResource("AnimationLibrary_ctugk")
+&"": SubResource("AnimationLibrary_ctugk")
 }
 
 [node name="MinimapViewport" type="SubViewport" parent="."]

@@ -3,7 +3,7 @@ extends Area2D
 
 @export var damage_interval := 1.0
 var _entities: Array[Entity]
-var _exceptions := {}
+var _exceptions: Dictionary[StringName, float]
 @onready var _attack: Attack = get_parent()
 
 

@@ -41,7 +41,7 @@ enum Rarity {
 }
 
 ## Цвета редкостей.
-const RARITY_COLORS := {
+const RARITY_COLORS: Dictionary[Rarity, Color] = {
 	Rarity.COMMON: Color(0.675, 1, 1),
 	Rarity.RARE: Color(0, 0.9, 0.225),
 	Rarity.EPIC: Color(0.625, 0, 0.825),

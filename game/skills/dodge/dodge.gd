@@ -3,6 +3,7 @@ extends Skill
 
 @export var roll_speed := 1280.0
 @export var roll_duration := 0.5
+@export var additional_invincibility := 0.1
 
 var _last_movement_direction := Vector2.RIGHT
 @onready var _roll_timer: Timer = $Timer
@@ -31,4 +32,8 @@ func _use() -> void:
 	_player.unmake_disarmed()
 	_player.unmake_immobile()
 	_player.knockback = Vector2.ZERO
+	
+	_roll_timer.start(additional_invincibility)
+	await _roll_timer.timeout
+	
 	_player.collision_layer = previous_collision_layer

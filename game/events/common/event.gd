@@ -9,11 +9,11 @@ signal local_player_created(player: Player)
 
 var local_player: Player
 var _started := false
-var _players_equip_data := {}
-var _players_names := {}
-var _players_teams := {}
-var _players_skill_vars := {}
-var _players := {}
+var _players_equip_data: Dictionary[int, Array]
+var _players_names: Dictionary[int, String]
+var _players_teams: Dictionary[int, int]
+var _players_skill_vars: Dictionary[int, Array]
+var _players: Dictionary[int, Player]
 var _hit_marker_scene: PackedScene = load("uid://c2f0n1b5sfpdh")
 var _death_marker_scene: PackedScene = load("uid://blhm6uka1p287")
 
@@ -84,7 +84,8 @@ func _setup() -> void:
 	_start.rpc()
 
 
-func set_players_data(players_names := {}, players_equip_data := {}) -> void:
+func set_players_data(players_names: Dictionary[int, String],
+		players_equip_data: Dictionary[int, Array]) -> void:
 	_players_names = players_names
 	_players_equip_data = players_equip_data
 

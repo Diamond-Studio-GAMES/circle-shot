@@ -14,7 +14,7 @@ signal loading_stage_finished(success: bool)
 var game: Game
 var _menu: Menu
 var _other_screens: Array[Node] = []
-var _preloaded_scenes := {}
+var _preloaded_scenes: Dictionary[String, PackedScene]
 @onready var _load_status_label: Label = $LoadingScreen/StatusLabel
 @onready var _load_progress_bar: ProgressBar = $LoadingScreen/ProgressBar
 

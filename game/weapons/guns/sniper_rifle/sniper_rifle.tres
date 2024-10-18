@@ -13,4 +13,4 @@ description = ""
 id = "fuck_snipers"
 scene_path = "uid://4q0rrm6arbyx"
 image_path = "uid://8k4hqd6lxca1"
-spawnable_scenes_paths = Array[String](["uid://cm0sqwulviy72", "uid://cf6hb3vwyuf4"])
+spawnable_scenes_paths = Array[String](["uid://cm0sqwulviy72"])

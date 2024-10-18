@@ -42,8 +42,8 @@ var max_players: int = 10
 ## Событие.
 var event: Event
 var _scene_multiplayer: SceneMultiplayer
-var _players_names := {}
-var _players_equip_data := {}
+var _players_names: Dictionary[int, String]
+var _players_equip_data: Dictionary[int, Array]
 var _players_not_ready: Array[int]
 @onready var _loader: Loader = $Loader
 

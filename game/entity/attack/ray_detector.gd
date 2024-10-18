@@ -3,7 +3,7 @@ extends RayCast2D
 
 signal hit(where: Vector2)
 @export var damage_interval := 0.3
-var _exceptions := {}
+var _exceptions: Dictionary[StringName, float]
 @onready var _attack: Attack = get_parent()
 
 

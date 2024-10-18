@@ -1,7 +1,7 @@
 extends ShapeCast2D
 
 @export var damage_interval := 0.3
-var _exceptions := {}
+var _exceptions: Dictionary[StringName, float]
 @onready var _attack: Attack = get_parent()
 
 func _physics_process(delta: float) -> void:

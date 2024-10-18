@@ -16,7 +16,7 @@ var _selected_heavy_weapon: int = 0
 var _selected_support_weapon: int = 0
 var _selected_melee_weapon: int = 0
 var _selected_skill: int = 0
-var _players := {}
+var _players: Dictionary[int, String]
 var _admin_id: int = -1
 var _local_game_id: int = 0
 var _udp_peers: Array[PacketPeerUDP]
