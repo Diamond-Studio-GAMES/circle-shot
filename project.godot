@@ -39,6 +39,7 @@ settings/crash_handler/message.editor="Game crashed! This can be an engine bug o
 gdscript/warnings/untyped_declaration=2
 gdscript/warnings/unsafe_cast=1
 gdscript/warnings/unsafe_call_argument=1
+settings/rendering_method="forward_plus"
 
 [display]
 
@@ -171,7 +172,7 @@ common/enable_object_picking=false
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
+renderer/rendering_method="mobile"
 textures/vram_compression/import_s3tc_bptc=true
 textures/vram_compression/import_etc2_astc=true
 shader_compiler/shader_cache/enabled.mobile=false

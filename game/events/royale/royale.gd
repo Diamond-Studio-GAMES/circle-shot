@@ -1,3 +1,4 @@
+class_name Royale
 extends Event
 
 
@@ -7,15 +8,17 @@ extends Event
 @export var heal_box_spawn_interval_per_player := 2.0
 @export var ammo_box_spawn_interval_base := 40.0
 @export var ammo_box_spawn_interval_per_player := 2.5
+
 var _spawn_counter: int = 0
 var _heal_box_counter: int = 0
 var _ammo_box_counter: int = 0
-var _alive_players: Array
-var _ended := false
+var _alive_players: Array[int]
+
 @onready var _spawn_points: Array[Node] = $Map/SpawnPoints.get_children()
 @onready var _heal_box_points: Array[Node] = $Map/HealPoints.get_children()
 @onready var _ammo_box_points: Array[Node] = $Map/AmmoPoints.get_children()
 @onready var _other_parent: Node = get_tree().get_first_node_in_group(&"OtherParent")
+@onready var _royale_ui: RoyaleUI = $UI
 
 
 func _finish_start() -> void:
@@ -25,9 +28,7 @@ func _finish_start() -> void:
 				+ heal_box_spawn_interval_per_player * _alive_players.size())
 		($AmmoBoxSpawnTimer as Timer).start(ammo_box_spawn_interval_base \
 				+ ammo_box_spawn_interval_per_player * _alive_players.size())
-		_set_alive_players.rpc(_alive_players.size())
-		for i: Player in get_tree().get_nodes_in_group(&"Player"):
-			i.died.connect(_on_player_died)
+		_royale_ui.set_alive_players.rpc(_alive_players.size())
 		_check_winner()
 	for smoke: Node2D in $PoisonSmoke.get_children():
 		var tween: Tween = smoke.create_tween()
@@ -50,25 +51,17 @@ func _get_spawn_point(_id: int) -> Vector2:
 	return pos
 
 
-func _player_disconnected(id: int) -> void:
-	_alive_players.erase(id)
-	_set_alive_players.rpc(_alive_players.size())
+func _player_killed(who: int, by: int) -> void:
+	_alive_players.erase(who)
+	_royale_ui.set_alive_players.rpc(_alive_players.size())
+	_royale_ui.kill_player.rpc(who, by)
 	_check_winner()
 
 
-@rpc("reliable", "call_local")
-func _show_winner(winner: int, winner_name: String) -> void:
-	_ended = true
-	if winner == multiplayer.get_unique_id():
-		($UI/Main/GameEnd as Label).text = "ТЫ ПОБЕДИЛ!!!"
-	else:
-		($UI/Main/GameEnd as Label).text = "ПОБЕДИТЕЛЬ: %s" % winner_name
-	($UI/Main/GameEnd/AnimationPlayer as AnimationPlayer).play(&"Victory")
-
-
-@rpc("call_local", "reliable")
-func _set_alive_players(count: int) -> void:
-	($UI/Main/PlayerCounter as Label).text = str(count)
+func _player_disconnected(id: int) -> void:
+	_alive_players.erase(id)
+	_royale_ui.set_alive_players.rpc(_alive_players.size())
+	_check_winner()
 
 
 func _spawn_heal_box() -> void:
@@ -100,7 +93,7 @@ func _check_winner() -> void:
 		return
 	var winner_id: int = _alive_players[0]
 	var winner_name: String = _players_names[winner_id]
-	_show_winner.rpc(winner_id, winner_name)
+	_royale_ui.show_winner.rpc(winner_id, winner_name)
 	($HealBoxSpawnTimer as Timer).stop()
 	await get_tree().create_timer(6.5).timeout
 	get_tree().call_group(&"Player", &"queue_free")
@@ -125,32 +118,12 @@ func _on_ammo_box_spawn_timer_timeout() -> void:
 	if _players.is_empty():
 		return
 	($AmmoBoxSpawnTimer as Timer).start(ammo_box_spawn_interval_base \
-				+ ammo_box_spawn_interval_per_player * _alive_players.size())
-
-
-func _on_watching_player_died(_who: int, player: Player) -> void:
-	var alive_players: Array[Node] = get_tree().get_nodes_in_group(&"Player")
-	alive_players.erase(player)
-	if alive_players.is_empty():
-		return
-	var next_player: Player = alive_players[0]
-	next_player.died.connect(_on_watching_player_died.bind(next_player))
-	_camera.target = next_player
-
-
-func _on_local_player_died(_who: int) -> void:
-	if _ended:
-		return
-	($UI/Main/GameEnd as Label).text = "ПОРАЖЕНИЕ!"
-	($UI/Main/GameEnd/AnimationPlayer as AnimationPlayer).play(&"Defeat")
-
-
-func _on_player_died(who: int) -> void:
-	_alive_players.erase(who)
-	_set_alive_players.rpc(_alive_players.size())
-	_check_winner()
+			+ ammo_box_spawn_interval_per_player * _alive_players.size())
 
 
 func _on_local_player_created(player: Player) -> void:
-	player.died.connect(_on_watching_player_died.bind(player))
 	player.died.connect(_on_local_player_died)
+
+
+func _on_local_player_died(_who: int) -> void:
+	_royale_ui.show_defeat()

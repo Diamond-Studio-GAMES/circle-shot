@@ -246,8 +246,8 @@ tracks/8/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yppsx"]
 _data = {
-"Explode": SubResource("Animation_l1xfq"),
-"RESET": SubResource("Animation_ljxxu")
+&"RESET": SubResource("Animation_ljxxu"),
+&"Explode": SubResource("Animation_l1xfq")
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a28q2"]
@@ -261,6 +261,9 @@ radius = 896.0
 
 [node name="HEGrenadeProjectile" instance=ExtResource("1_kb8wh")]
 script = ExtResource("2_7qike")
+shake_max_amplitude = 32.0
+shake_max_duration = 1.0
+shake_max_distance = 3200.0
 speed = 1600.0
 damping = 600.0
 
@@ -277,7 +280,7 @@ texture = ExtResource("2_u3kfh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Explosion" index="1"]
 libraries = {
-"": SubResource("AnimationLibrary_yppsx")
+&"": SubResource("AnimationLibrary_yppsx")
 }
 
 [node name="Attacks" type="Node2D" parent="Explosion" index="2"]

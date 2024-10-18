@@ -324,7 +324,7 @@ func _set_current_weapon(to: Weapon.Type) -> void:
 	current_weapon_type = to
 	weapon_changed.emit(to)
 	ammo_text_updated.emit(current_weapon.get_ammo_text())
-	print_verbose("Current weapon set to type %d." % to)
+	print_verbose("Player %d changed current weapon to type %d." % [id, to])
 
 
 func _on_health_changed(_old_value: int, new_value: int) -> void:

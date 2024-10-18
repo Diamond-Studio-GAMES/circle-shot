@@ -8,7 +8,7 @@ signal local_player_created(player: Player)
 @export var player_scenes: Array[PackedScene]
 
 var local_player: Player
-var _started := false
+var started := false
 var _players_equip_data: Dictionary[int, Array]
 var _players_names: Dictionary[int, String]
 var _players_teams: Dictionary[int, int]
@@ -17,18 +17,11 @@ var _players: Dictionary[int, Player]
 var _hit_marker_scene: PackedScene = load("uid://c2f0n1b5sfpdh")
 var _death_marker_scene: PackedScene = load("uid://blhm6uka1p287")
 
-@onready var _chat: Chat = $UI/Main/ChatPanel
-@onready var _camera: SmartCamera = $Camera
+@onready var camera: SmartCamera = $Camera
+@onready var _event_ui: EventUI = $UI
 
 
 func _ready() -> void:
-	($QuitDialog as AcceptDialog).dialog_text = "Ты действительно хочешь покинуть игру?"
-	if multiplayer.is_server():
-		($QuitDialog as AcceptDialog).dialog_text += "\nВнимание: ты являешься ХОСТОМ! \
-В случае твоего выхода игра прервётся у ВСЕХ!"
-	
-	$MinimapViewport.world_2d = get_viewport().find_world_2d()
-	
 	if multiplayer.is_server():
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
@@ -44,8 +37,8 @@ func _ready() -> void:
 	
 	if multiplayer.is_server():
 		_setup()
-	($UI/Intro/AnimationPlayer as AnimationPlayer).play(&"Intro")
-	($UI/Intro/AnimationPlayer as AnimationPlayer).advance(0.0) # костыль
+	
+	_event_ui.show_intro()
 
 
 @rpc("reliable", "call_remote", "authority", 1)
@@ -74,8 +67,8 @@ func _setup() -> void:
 	if not multiplayer.is_server():
 		return
 	_make_teams()
-	_chat.players_names = _players_names
-	_chat.players_teams = _players_teams
+	_event_ui.chat.players_names = _players_names
+	_event_ui.chat.players_teams = _players_teams
 	for i: int in _players_names:
 		spawn_player(i)
 	_finish_setup()
@@ -110,7 +103,7 @@ func spawn_player(id: int) -> void:
 	$Entities.add_child(player)
 	player.damaged.connect(_on_player_damaged)
 	player.killed.connect(_on_player_killed)
-	if not _started:
+	if not started:
 		player.make_disarmed()
 		player.make_immobile()
 
@@ -118,8 +111,8 @@ func spawn_player(id: int) -> void:
 func set_local_player(player: Player) -> void:
 	local_player = player
 	local_player_created.emit(player)
-	if _started:
-		_camera.target = player
+	if started:
+		camera.target = player
 	else:
 		if not multiplayer.is_server():
 			local_player.make_disarmed()
@@ -129,7 +122,7 @@ func set_local_player(player: Player) -> void:
 		tween.set_trans(Tween.TRANS_SINE)
 		tween.tween_property($Camera as Node2D, ^"position", player.position, 4.0)
 		await tween.finished
-		_camera.target = player
+		camera.target = player
 
 
 @rpc("call_local", "reliable")
@@ -138,7 +131,7 @@ func _start() -> void:
 		push_error("This method must be called by server!")
 		return
 	
-	_started = true
+	started = true
 	_finish_start()
 	if multiplayer.is_server():
 		get_tree().call_group(&"Player", &"unmake_disarmed")
@@ -213,7 +206,7 @@ func _on_player_killed(who: int, by: int) -> void:
 			Entity.TEAM_COLORS[_players_teams[who]].to_html(false),
 			_players_names[who],
 		]
-	_chat.post_message.rpc("> " + message_text)
+	_event_ui.chat.post_message.rpc("> " + message_text)
 	
 	if by in _players:
 		var target: Player = _players[who]
@@ -232,7 +225,7 @@ func _on_peer_disconnected(id: int) -> void:
 		Entity.TEAM_COLORS[_players_teams[id]].to_html(false),
 		_players_names[id],
 	]
-	_chat.post_message.rpc("> " + message_text)
+	_event_ui.chat.post_message.rpc("> " + message_text)
 	if id in _players:
 		if is_instance_valid(_players[id]):
 			_players[id].queue_free()
@@ -245,7 +238,3 @@ func _on_peer_disconnected(id: int) -> void:
 		_end.rpc()
 		return
 	_player_disconnected(id)
-
-
-func _on_quit_dialog_confirmed() -> void:
-	Globals.main.game.close()

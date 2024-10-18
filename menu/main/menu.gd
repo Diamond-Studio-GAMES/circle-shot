@@ -10,12 +10,6 @@ func _ready() -> void:
 		($NameDialog as Window).popup_centered()
 
 
-func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_WM_GO_BACK_REQUEST:
-			get_tree().quit()
-
-
 func _on_play_network_pressed() -> void:
 	Globals.main.open_local_game()
 

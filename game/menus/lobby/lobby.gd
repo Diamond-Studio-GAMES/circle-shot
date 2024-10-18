@@ -54,7 +54,7 @@ func _ready() -> void:
 
 func _notification(what: int) -> void:
 	match what:
-		NOTIFICATION_WM_GO_BACK_REQUEST:
+		NOTIFICATION_WM_GO_BACK_REQUEST when multiplayer.has_multiplayer_peer():
 			_on_leave_pressed()
 
 

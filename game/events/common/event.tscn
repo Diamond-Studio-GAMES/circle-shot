@@ -4,14 +4,101 @@
 [ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://game/player/player.tscn" id="2_i4nrm"]
 [ext_resource type="Script" path="res://game/player/smart_camera.gd" id="2_mo4dc"]
 [ext_resource type="Script" path="res://game/events/common/chat/chat.gd" id="3_8d55t"]
+[ext_resource type="Script" path="res://game/events/common/event_ui.gd" id="4_10cmx"]
 [ext_resource type="PackedScene" uid="uid://0wc72b0o2o11" path="res://game/player/ui/player_ui.tscn" id="8_2up8s"]
 [ext_resource type="Texture2D" uid="uid://dwtddg0cmagg1" path="res://game/events/common/chat/chat_send.png" id="9_2uw6w"]
-[ext_resource type="Script" path="res://game/events/common/chat/event_chat.gd" id="9_ko2fk"]
 [ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="13_j0bsh"]
 [ext_resource type="Texture2D" uid="uid://d14nbphg5o3a" path="res://game/events/common/chat/chat.png" id="14_05fx8"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_u8vru"]
-viewport_path = NodePath("MinimapViewport")
+viewport_path = NodePath("UI/MinimapViewport")
+
+[sub_resource type="Animation" id="Animation_atj0b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tint:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Title:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Text:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GO:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Main:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Main:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_4bxhi"]
 resource_name = "Intro"
@@ -102,93 +189,6 @@ tracks/6/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_atj0b"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Tint:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0, 0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Title:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Text:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1e-05, 1e-05)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("GO:scale")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1e-05, 1e-05)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("../Main:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("../Main:modulate")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ctugk"]
 _data = {
 &"RESET": SubResource("Animation_atj0b"),
@@ -226,12 +226,13 @@ position_smoothing_speed = 10.0
 script = ExtResource("2_mo4dc")
 
 [node name="MinimapRemote" type="RemoteTransform2D" parent="Camera"]
-remote_path = NodePath("../../MinimapViewport/Camera")
+remote_path = NodePath("../../UI/MinimapViewport/Camera")
 update_rotation = false
 update_scale = false
 
 [node name="UI" type="CanvasLayer" parent="."]
 layer = 5
+script = ExtResource("4_10cmx")
 
 [node name="Main" type="Control" parent="UI"]
 layout_mode = 3
@@ -294,7 +295,6 @@ offset_bottom = -80.0
 grow_vertical = 0
 mouse_filter = 2
 alignment = 2
-script = ExtResource("9_ko2fk")
 
 [node name="ChatPanel" type="PanelContainer" parent="UI/Main"]
 auto_translate_mode = 2
@@ -464,16 +464,16 @@ libraries = {
 &"": SubResource("AnimationLibrary_ctugk")
 }
 
-[node name="MinimapViewport" type="SubViewport" parent="."]
+[node name="MinimapViewport" type="SubViewport" parent="UI"]
 disable_3d = true
 gui_disable_input = true
 canvas_cull_mask = 4293918722
 size = Vector2i(256, 256)
 
-[node name="Camera" type="Camera2D" parent="MinimapViewport"]
+[node name="Camera" type="Camera2D" parent="UI/MinimapViewport"]
 zoom = Vector2(0.05, 0.05)
 
-[node name="QuitDialog" type="ConfirmationDialog" parent="."]
+[node name="QuitDialog" type="ConfirmationDialog" parent="UI"]
 auto_translate_mode = 1
 title = "Покинуть игру?"
 size = Vector2i(280, 112)
@@ -482,10 +482,8 @@ ok_button_text = "Покинуть"
 cancel_button_text = "Остаться"
 
 [connection signal="local_player_created" from="." to="UI/Main/PlayerUI" method="_on_local_player_created"]
-[connection signal="pressed" from="UI/Main/Leave" to="QuitDialog" method="popup_centered"]
+[connection signal="pressed" from="UI/Main/Leave" to="UI/QuitDialog" method="popup_centered"]
 [connection signal="toggled" from="UI/Main/Chat" to="UI/Main/ChatPreview" method="_on_chat_toggled"]
-[connection signal="toggled" from="UI/Main/Chat" to="UI/Main/ChatPanel" method="_on_chat_toggled"]
-[connection signal="message_posted" from="UI/Main/ChatPanel" to="UI/Main/ChatPreview" method="_on_message_posted"]
 [connection signal="text_submitted" from="UI/Main/ChatPanel/VBoxContainer/HBoxContainer/LineEdit" to="UI/Main/ChatPanel" method="send_message" unbinds=1]
 [connection signal="pressed" from="UI/Main/ChatPanel/VBoxContainer/HBoxContainer/Send" to="UI/Main/ChatPanel" method="send_message"]
-[connection signal="confirmed" from="QuitDialog" to="." method="_on_quit_dialog_confirmed"]
+[connection signal="confirmed" from="UI/QuitDialog" to="UI" method="_on_quit_dialog_confirmed"]
