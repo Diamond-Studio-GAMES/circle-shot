@@ -27,6 +27,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		_chat_button.button_pressed = true
 
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_WM_GO_BACK_REQUEST:
+			($QuitDialog as Window).popup_centered()
+
+
 func show_intro() -> void:
 	($Intro/AnimationPlayer as AnimationPlayer).play(&"Intro")
 	($Intro/AnimationPlayer as AnimationPlayer).advance(0.0) # костыль
