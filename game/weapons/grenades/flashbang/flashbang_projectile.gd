@@ -2,6 +2,7 @@ extends GrenadeProjectile
 
 
 @export var unmute_duration := 1.0
+@export var stun_duration := 3.0
 var _previous_sfx_db: float
 var _previous_music_db: float
 var _muted := false
@@ -29,6 +30,11 @@ func _explode() -> void:
 	
 	($FreeTimer).start()
 	($Grenade as Node2D).hide()
+	
+	($StunArea/CollisionShape2D as CollisionShape2D).set_deferred(&"disabled", false)
+	($StunAreaTimer as Timer).start()
+	await ($StunAreaTimer as Timer).timeout
+	($StunArea/CollisionShape2D as CollisionShape2D).set_deferred(&"disabled", true)
 
 
 func unmute() -> void:
@@ -47,3 +53,14 @@ func unmute() -> void:
 			func(db: float) -> void: AudioServer.set_bus_volume_db(sfx_idx, db),
 			-60.0, _previous_sfx_db, unmute_duration
 	)
+
+
+func _on_stun_area_body_entered(body: Node2D) -> void:
+	if not multiplayer.is_server():
+		return
+	
+	var entity := body as Entity
+	if not entity:
+		return
+	
+	entity.add_effect.rpc(Effect.STUN, stun_duration)

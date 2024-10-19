@@ -51,17 +51,17 @@ script = ExtResource("2_unayg")
 [node name="Speedup" type="GPUParticles2D" parent="." index="1"]
 visible = false
 amount = 4
-process_material = SubResource("ParticleProcessMaterial_cvgup")
-texture = ExtResource("4_bowyg")
 lifetime = 2.0
 preprocess = 1.0
 local_coords = true
+texture = ExtResource("4_bowyg")
+process_material = SubResource("ParticleProcessMaterial_cvgup")
 
 [node name="Slowdown" type="GPUParticles2D" parent="." index="2"]
 visible = false
 amount = 4
-process_material = SubResource("ParticleProcessMaterial_icv2f")
-texture = ExtResource("5_dxcf3")
 lifetime = 2.0
 preprocess = 1.0
 local_coords = true
+texture = ExtResource("5_dxcf3")
+process_material = SubResource("ParticleProcessMaterial_icv2f")

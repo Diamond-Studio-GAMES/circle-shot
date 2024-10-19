@@ -261,8 +261,8 @@ _data = {
 [node name="Flashbang" instance=ExtResource("1_w01jl")]
 projectile_scene = ExtResource("2_wf1n2")
 spread_walk = 3.0
-projectile_speed = 2000.0
-projectile_damping = 500.0
+projectile_speed = 1800.0
+projectile_damping = 600.0
 ammo_total = 2
 
 [node name="ThrowPivot" parent="." index="0"]

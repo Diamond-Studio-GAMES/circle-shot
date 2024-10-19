@@ -11,6 +11,7 @@ func _start_effect() -> void:
 		($Speedup as Node2D).show()
 	elif multiplier < 1.0:
 		($Slowdown as Node2D).show()
+		negative = false
 
 
 func _end_effect() -> void:

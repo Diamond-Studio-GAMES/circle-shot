@@ -1,0 +1,34 @@
+[gd_scene load_steps=7 format=3 uid="uid://of54uwtr1ice"]
+
+[ext_resource type="PackedScene" uid="uid://baoklmloqoop3" path="res://game/entity/effect.tscn" id="1_33b72"]
+[ext_resource type="Script" path="res://game/effects/stun/stun.gd" id="2_ca7vy"]
+[ext_resource type="Texture2D" uid="uid://bebl5r6pq8sog" path="res://game/effects/stun/stun_star.png" id="4_tw637"]
+
+[sub_resource type="Curve" id="Curve_0bpgk"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25498, 1), 0.0, 0.0, 0, 0, Vector2(0.737052, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_lyobl"]
+curve = SubResource("Curve_0bpgk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uthax"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(64, 64, 1)
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_lyobl")
+
+[node name="Stun" instance=ExtResource("1_33b72")]
+script = ExtResource("2_ca7vy")
+shake_amplitude = 6.0
+shake_speed = 0.1
+stackable = false
+negative = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." index="1"]
+amount = 4
+lifetime = 1.5
+preprocess = 1.0
+local_coords = true
+texture = ExtResource("4_tw637")
+process_material = SubResource("ParticleProcessMaterial_uthax")

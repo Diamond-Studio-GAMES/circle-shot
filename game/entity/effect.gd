@@ -4,6 +4,7 @@ extends Node
 
 const SPEED_CHANGE := "uid://dkyu57ilvneen"
 const INVISIBILITY := "uid://66w5ixijgn51"
+const STUN := "uid://of54uwtr1ice"
 
 @export var stackable := true
 @export var negative := false

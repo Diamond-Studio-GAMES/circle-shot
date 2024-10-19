@@ -1,10 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://dwq3twijmmpig"]
+[gd_scene load_steps=10 format=3 uid="uid://dwq3twijmmpig"]
 
 [ext_resource type="PackedScene" uid="uid://8yrjqan0dqfx" path="res://game/weapons/grenades/common/grenade_projectile.tscn" id="1_ua7bf"]
 [ext_resource type="Texture2D" uid="uid://bah0mhat58x6x" path="res://game/weapons/grenades/flashbang/base.png" id="2_nfc8c"]
 [ext_resource type="Script" path="res://game/weapons/grenades/flashbang/flashbang_projectile.gd" id="2_otq4k"]
-[ext_resource type="Texture2D" uid="uid://b4yw2ehtx4wqf" path="res://game/menus/connect_local/background.png" id="4_1pb3o"]
+[ext_resource type="Texture2D" uid="uid://nyuii0fx273c" path="res://game/menus/lobby/background.png" id="4_eddhq"]
 [ext_resource type="AudioStream" uid="uid://dnce4ljo741pg" path="res://game/weapons/grenades/flashbang/explosion.wav" id="4_hj380"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8b4pb"]
+radius = 480.0
 
 [sub_resource type="Animation" id="Animation_vh1rv"]
 length = 0.001
@@ -47,7 +50,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_oxxvb"]
 resource_name = "Stun"
-length = 5.0
+length = 6.0
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -56,7 +59,7 @@ tracks/0/path = NodePath(".:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 5),
+"times": PackedFloat32Array(0, 6),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, false]
@@ -83,7 +86,7 @@ tracks/2/path = NodePath("Effect:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 4, 5),
+"times": PackedFloat32Array(0, 4, 6),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -95,7 +98,7 @@ tracks/3/path = NodePath("Effect/White:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 2.5, 4, 5),
+"times": PackedFloat32Array(0, 2.5, 4, 6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0.752941), Color(1, 1, 1, 0)]
@@ -123,14 +126,24 @@ _data = {
 
 [node name="FlashbangProjectile" instance=ExtResource("1_ua7bf")]
 script = ExtResource("2_otq4k")
-unmute_duration = 1.5
-speed = 2000.0
-damping = 500.0
+unmute_duration = 2.25
+stun_duration = 3.0
+speed = 1800.0
+damping = 600.0
 
-[node name="Grenade" parent="." index="0"]
+[node name="StunArea" type="Area2D" parent="." index="0"]
+collision_layer = 4
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StunArea" index="0"]
+shape = SubResource("CircleShape2D_8b4pb")
+disabled = true
+
+[node name="Grenade" parent="." index="1"]
 texture = ExtResource("2_nfc8c")
 
-[node name="Stun" type="CanvasLayer" parent="." index="4"]
+[node name="Stun" type="CanvasLayer" parent="." index="5"]
 layer = 10
 visible = false
 
@@ -149,7 +162,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("4_1pb3o")
+texture = ExtResource("4_eddhq")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="White" type="ColorRect" parent="Stun/Effect" index="1"]
 layout_mode = 1
@@ -166,11 +181,16 @@ libraries = {
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Stun" index="2"]
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." index="5"]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." index="6"]
 rect = Rect2(-64, -64, 128, 128)
 
-[node name="FreeTimer" type="Timer" parent="." index="6"]
-wait_time = 5.0
+[node name="FreeTimer" type="Timer" parent="." index="7"]
+wait_time = 6.0
 one_shot = true
 
+[node name="StunAreaTimer" type="Timer" parent="." index="8"]
+wait_time = 0.3
+one_shot = true
+
+[connection signal="body_entered" from="StunArea" to="." method="_on_stun_area_body_entered"]
 [connection signal="timeout" from="FreeTimer" to="." method="safe_free"]
