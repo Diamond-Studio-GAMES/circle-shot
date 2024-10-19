@@ -110,7 +110,7 @@ tracks/4/path = NodePath("..")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(3.25),
+"times": PackedFloat32Array(4),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -126,7 +126,7 @@ _data = {
 
 [node name="FlashbangProjectile" instance=ExtResource("1_ua7bf")]
 script = ExtResource("2_otq4k")
-unmute_duration = 2.25
+unmute_duration = 1.5
 stun_duration = 3.0
 speed = 1800.0
 damping = 600.0

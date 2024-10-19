@@ -8,6 +8,7 @@ signal local_player_created(player: Player)
 @export var player_scenes: Array[PackedScene]
 
 var local_player: Player
+var local_team: int
 var started := false
 var _players_equip_data: Dictionary[int, Array]
 var _players_names: Dictionary[int, String]
@@ -110,6 +111,7 @@ func spawn_player(id: int) -> void:
 
 func set_local_player(player: Player) -> void:
 	local_player = player
+	local_team = player.team
 	local_player_created.emit(player)
 	if started:
 		camera.target = player

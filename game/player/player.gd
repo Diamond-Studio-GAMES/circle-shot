@@ -41,8 +41,12 @@ func _ready() -> void:
 	
 	($Minimap/MinimapMarker/Visual as Node2D).self_modulate = TEAM_COLORS[team]
 	await get_tree().process_frame
-	($Minimap/MinimapMarker/Visual as Node2D).visible = \
-			($Minimap/MinimapNotifier as VisibleOnScreenNotifier2D).is_on_screen()
+	if team == (get_tree().get_first_node_in_group(&"Event") as Event).local_team:
+		($Minimap/MinimapMarker/Visual as Node2D).show()
+		($Minimap/MinimapNotifier as Node2D).hide()
+	else:
+		($Minimap/MinimapMarker/Visual as Node2D).visible = \
+				($Minimap/MinimapNotifier as VisibleOnScreenNotifier2D).is_on_screen()
 
 
 func _physics_process(delta: float) -> void:
