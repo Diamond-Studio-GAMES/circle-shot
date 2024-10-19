@@ -154,6 +154,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Texture" type="TextureRect" parent="Stun/Effect" index="0"]
 layout_mode = 1
@@ -162,6 +163,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("4_eddhq")
 expand_mode = 1
 stretch_mode = 6
@@ -173,6 +175,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Stun" index="1"]
 libraries = {

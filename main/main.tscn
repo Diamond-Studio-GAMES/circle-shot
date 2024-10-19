@@ -5,6 +5,21 @@
 [ext_resource type="Texture2D" uid="uid://tgykndvggm2o" path="res://main/loading_splash.png" id="2_wlqd8"]
 [ext_resource type="Texture2D" uid="uid://dsk1f63d31ahx" path="res://main/splash.png" id="4_iryjb"]
 
+[sub_resource type="Animation" id="Animation_i4btj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_32sky"]
 resource_name = "Begin"
 length = 0.5
@@ -19,21 +34,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(0, 0, 0, 1), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_10d34"]
-resource_name = "Black"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0, 0, 0, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_er3m0"]
@@ -52,8 +52,8 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_i4btj"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_10d34"]
+resource_name = "Black"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -64,7 +64,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Color(0, 0, 0, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5apas"]

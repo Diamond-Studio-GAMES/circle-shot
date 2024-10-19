@@ -240,6 +240,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ShowDebugCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/ShowDebug/Setting"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
 
@@ -441,6 +442,12 @@ size = Vector2i(240, 120)
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Video" to="." method="show_section" binds= ["Video"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Sound" to="." method="show_section" binds= ["Sound"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Controls" to="." method="show_section" binds= ["Controls"]]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/HitMarkers/Setting/HitMarkersCheck" to="." method="_on_hit_markers_check_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/HitMarkers/Setting/Help" to="." method="show_help" binds= [2]]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/ShowMinimap/Setting/ShowMinimapCheck" to="." method="_on_show_minimap_check_toggled"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/ShowDebug/Setting/ShowDebugCheck" to="." method="_on_show_debug_check_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/Renderer/Setting/Help" to="." method="show_help" binds= [0]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/ShaderCache/Setting/Help" to="." method="show_help" binds= [1]]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/MasterVolume/Setting/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/MusicVolume/Setting/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/SFXVolume/Setting/SFXVolumeSlider" to="." method="_on_sfx_volume_slider_value_changed"]

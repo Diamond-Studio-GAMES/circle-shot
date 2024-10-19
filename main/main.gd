@@ -94,6 +94,39 @@ func show_critical_error(info := "", log_error := "") -> void:
 	dialog.popup_centered()
 
 
+## Устанавливает настройки по умолчанию, если их ещё нет.
+func setup_settings() -> void:
+	Globals.set_bool(
+			"hit_markers",
+			Globals.get_setting_bool("hit_markers", true)
+	)
+	Globals.set_setting_bool(
+			"minimap",
+			Globals.get_setting_bool("minimap", true)
+	)
+	Globals.set_setting_bool(
+			"debug_data",
+			Globals.get_setting_bool("debug_data", false)
+	)
+	Globals.set_setting_float(
+			"master_volume",
+			Globals.get_setting_float("master_volume", 1.0)
+	)
+	Globals.set_setting_float(
+			"music_volume",
+			Globals.get_setting_float("music_volume", 1.0)
+	)
+	Globals.set_setting_float(
+			"sfx_volume",
+			Globals.get_setting_float("sfx_volume", 1.0)
+	)
+
+
+## Устанавливает настройки упралвения по умолчанию, если их ещё нет.
+func setup_controls_settings() -> void:
+	pass
+
+
 func _clear_screens() -> void:
 	if is_instance_valid(_menu):
 		_menu.queue_free()
@@ -143,6 +176,17 @@ func _loading_init() -> void:
 	
 	multiplayer.multiplayer_peer = null # Чтобы убрать OfflineMultiplayerPeer
 	get_viewport().set_canvas_cull_mask_bit(1, false)
+	setup_settings()
+	setup_controls_settings()
+	AudioServer.set_bus_volume_db(
+			AudioServer.get_bus_index(&"Master"), linear_to_db(Globals.get_float("master_volume"))
+	)
+	AudioServer.set_bus_volume_db(
+			AudioServer.get_bus_index(&"Music"), linear_to_db(Globals.get_float("music_volume"))
+	)
+	AudioServer.set_bus_volume_db(
+			AudioServer.get_bus_index(&"SFX"), linear_to_db(Globals.get_float("sfx_volume"))
+	)
 	
 	await get_tree().process_frame
 	print_verbose("Done initializing.")

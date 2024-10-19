@@ -48,6 +48,9 @@ func _create_hit_marker(where: Vector2) -> void:
 		push_error("This method must be called only by server!")
 		return
 	
+	if not Globals.get_setting_bool("hit_markers"):
+		return
+	
 	var marker: Node2D = _hit_marker_scene.instantiate()
 	marker.global_position = where
 	$VFX.add_child(marker)
@@ -57,6 +60,9 @@ func _create_hit_marker(where: Vector2) -> void:
 func _create_kill_marker(where: Vector2) -> void:
 	if multiplayer.get_remote_sender_id() != 1 and not multiplayer.is_server():
 		push_error("This method must be called only by server!")
+		return
+	
+	if not Globals.get_setting_bool("hit_markers"):
 		return
 	
 	var marker: Node2D = _death_marker_scene.instantiate()
