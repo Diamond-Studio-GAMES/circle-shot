@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://c3t6ukh8ob1wp"]
+
+[ext_resource type="Script" path="res://game/player/equip/skin_data.gd" id="1_og4gd"]
+
+[resource]
+script = ExtResource("1_og4gd")
+name = "РКН"
+brief_description = "РосКомПозорище"
+rarity = 2
+id = "vernity_discord"
+scene_path = "uid://chpvrgitya08l"
+image_path = "uid://cbe7p8vig2fo7"

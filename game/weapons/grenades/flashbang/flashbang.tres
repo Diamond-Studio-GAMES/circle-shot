@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://bqki86tfflf7n"]
+
+[ext_resource type="Script" path="res://game/player/equip/weapon_data.gd" id="1_xb4ah"]
+
+[resource]
+script = ExtResource("1_xb4ah")
+name = "Светошумовая граната"
+type = 2
+rarity = 2
+damage_text = "Ослепляет"
+ammo_text = "2 штуки"
+description = ""
+id = "flashbang"
+scene_path = "uid://cpojti341yqmd"
+image_path = "uid://dm20ql0m68j1j"
+spawnable_scenes_paths = Array[String](["uid://dwq3twijmmpig"])

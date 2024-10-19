@@ -481,6 +481,10 @@ unresizable = true
 ok_button_text = "Покинуть"
 cancel_button_text = "Остаться"
 
+[node name="Music" type="AudioStreamPlayer" parent="."]
+autoplay = true
+bus = &"Music"
+
 [connection signal="local_player_created" from="." to="UI/Main/PlayerUI" method="_on_local_player_created"]
 [connection signal="pressed" from="UI/Main/Leave" to="UI/QuitDialog" method="popup_centered"]
 [connection signal="toggled" from="UI/Main/Chat" to="UI/Main/ChatPreview" method="_on_chat_toggled"]

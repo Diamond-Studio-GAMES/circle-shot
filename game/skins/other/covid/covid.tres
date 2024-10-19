@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://dwtaxiaxwfyh4"]
+
+[ext_resource type="Script" path="res://game/player/equip/skin_data.gd" id="1_uymnl"]
+
+[resource]
+script = ExtResource("1_uymnl")
+name = "COVID-19"
+brief_description = "Вот зараза"
+rarity = 1
+id = "covid"
+scene_path = "uid://bxeqejyos1t0e"
+image_path = "uid://bicdinbuldwod"

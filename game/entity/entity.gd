@@ -132,7 +132,7 @@ func add_timeless_effect(effect_id: String, data := [], should_stack := true) ->
 func remove_timeless_effect(effect_id: String) -> void:
 	if is_queued_for_deletion():
 		print_verbose("Entity '%s' is going to be deleted. Effect with ID %d is not removed." % [
-			id,
+			name,
 			effect_id,
 		])
 		return
