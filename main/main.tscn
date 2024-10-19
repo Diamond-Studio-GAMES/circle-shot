@@ -69,10 +69,10 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5apas"]
 _data = {
-"Begin": SubResource("Animation_32sky"),
-"Black": SubResource("Animation_10d34"),
-"End": SubResource("Animation_er3m0"),
-"RESET": SubResource("Animation_i4btj")
+&"RESET": SubResource("Animation_i4btj"),
+&"Begin": SubResource("Animation_32sky"),
+&"End": SubResource("Animation_er3m0"),
+&"Black": SubResource("Animation_10d34")
 }
 
 [sub_resource type="Animation" id="Animation_utteb"]
@@ -157,13 +157,13 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_s0b2o"]
 _data = {
-"RESET": SubResource("Animation_utteb"),
-"SplashScreen": SubResource("Animation_nes4c")
+&"RESET": SubResource("Animation_utteb"),
+&"SplashScreen": SubResource("Animation_nes4c")
 }
 
 [node name="Main" type="Node"]
 script = ExtResource("1_hy7wi")
-scenes_to_preload_paths = Array[String](["uid://4wb77emq8t5p", "uid://scqgxynxowrb", "uid://wgln4clkkuuk", "uid://cmwb81du1kbtm"])
+scenes_to_preload_paths = Array[String](["uid://4wb77emq8t5p", "uid://scqgxynxowrb", "uid://wgln4clkkuuk", "uid://cmwb81du1kbtm", "uid://c2leb2h0qjtmo"])
 
 [node name="LoadingScreen" type="Control" parent="."]
 layout_mode = 3
@@ -244,7 +244,7 @@ vertical_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="LoadingScreen"]
 libraries = {
-"": SubResource("AnimationLibrary_5apas")
+&"": SubResource("AnimationLibrary_5apas")
 }
 autoplay = "Black"
 
@@ -286,7 +286,7 @@ texture = ExtResource("4_iryjb")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="SplashScreen"]
 libraries = {
-"": SubResource("AnimationLibrary_s0b2o")
+&"": SubResource("AnimationLibrary_s0b2o")
 }
 autoplay = "SplashScreen"
 

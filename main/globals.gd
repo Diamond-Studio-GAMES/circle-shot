@@ -6,10 +6,14 @@ extends Node
 
 ## Путь к файлу сохранения.
 const SAVE_FILE_PATH := "user://save.cfg"
-## Секция файла сохранения.
-const SAVE_FILE_SECTION := "save"
-## Пароль сохранения.
+## Пароль файлв сохранения.
 const SAVE_FILE_PASSWORD := "circle-shot"
+## Стандартная секция файла сохранения.
+const DEFAULT_SAVE_FILE_SECTION := "save"
+## Секция файла сохранения для настроек.
+const SETTINGS_SAVE_FILE_SECTION := "settings"
+## Секция файла сохранения для настроек управления (в частности переназначения клавиш).
+const CONTROLS_SAVE_FILE_SECTION := "controls"
 ## Ссылка на [Main]. Сокращение от [code]get_tree().current_scene as Main[/code].
 var main: Main
 ## Версия игры. Извлекается из [ProjectSettings].
@@ -19,7 +23,7 @@ var version: String = ProjectSettings.get_setting("application/config/version")
 var headless := false
 ## База данных всех предметов. Смотри [ItemsDB].
 var items_db: ItemsDB = load("uid://pwq1e7l2ckos")
-## Файл сохранения. Не модифицируйте его напрямую, используете методы [code]get_*/set_*[/code].
+## Файл сохранения. Предпочитайте методы [code]get_*/set_*[/code] для его модификации.
 var save_file: ConfigFile
 
 
@@ -45,55 +49,65 @@ func initialize(main_node: Main) -> void:
 
 #region Функции задавания и получения значений
 ## Получает значение типа [Variant] по [param id]. Если его нет, вернёт [param default_value].
-func get_variant(id: String, default_value: Variant) -> Variant:
-	return save_file.get_value(SAVE_FILE_SECTION, id, default_value)
+func get_variant(id: String, default_value: Variant,
+		section: String = DEFAULT_SAVE_FILE_SECTION) -> Variant:
+	return save_file.get_value(section, id, default_value)
 
 
 ## Задаёт значение типа [Variant] под [param id].
-func set_variant(id: String, value: Variant) -> void:
-	save_file.set_value(SAVE_FILE_SECTION, id, value)
+func set_variant(id: String, value: Variant,
+		section: String = DEFAULT_SAVE_FILE_SECTION) -> void:
+	save_file.set_value(section, id, value)
 
 
 ## Получает значение типа [int] по [param id]. Если его нет, вернёт [param default_value].
-func get_int(id: String, default_value := 0) -> int:
-	var value: int = save_file.get_value(SAVE_FILE_SECTION, id, default_value)
+func get_int(id: String, default_value := 0,
+		section: String = DEFAULT_SAVE_FILE_SECTION) -> int:
+	var value: int = save_file.get_value(section, id, default_value)
 	return value
 
 
 ## Задаёт значение типа [int] под [param id].
-func set_int(id: String, value: int) -> void:
-	save_file.set_value(SAVE_FILE_SECTION, id, value)
+func set_int(id: String, value: int,
+		section: String = DEFAULT_SAVE_FILE_SECTION) -> void:
+	save_file.set_value(section, id, value)
 
 
 ## Получает значение типа [float] по [param id]. Если его нет, вернёт [param default_value].
-func get_float(id: String, default_value := 0.0) -> float:
-	var value: float = save_file.get_value(SAVE_FILE_SECTION, id, default_value)
+func get_float(id: String, default_value := 0.0,
+		section: String = DEFAULT_SAVE_FILE_SECTION) -> float:
+	var value: float = save_file.get_value(section, id, default_value)
 	return value
 
 
 ## Задаёт значение типа [float] под [param id].
-func set_float(id: String, value: float) -> void:
-	save_file.set_value(SAVE_FILE_SECTION, id, value)
+func set_float(id: String, value: float,
+		section: String = DEFAULT_SAVE_FILE_SECTION) -> void:
+	save_file.set_value(section, id, value)
 
 
 ## Получает значение типа [bool] по [param id]. Если его нет, вернёт [param default_value].
-func get_bool(id: String, default_value := false) -> bool:
-	var value: bool = save_file.get_value(SAVE_FILE_SECTION, id, default_value)
+func get_bool(id: String, default_value := false,
+		section: String = DEFAULT_SAVE_FILE_SECTION) -> bool:
+	var value: bool = save_file.get_value(section, id, default_value)
 	return value
 
 
 ## Задаёт значение типа [bool] под [param id].
-func set_bool(id: String, value: bool) -> void:
-	save_file.set_value(SAVE_FILE_SECTION, id, value)
+func set_bool(id: String, value: bool,
+		section: String = DEFAULT_SAVE_FILE_SECTION) -> void:
+	save_file.set_value(section, id, value)
 
 
 ## Получает значение типа [String] по [param id]. Если его нет, вернёт [param default_value].
-func get_string(id: String, default_value := "") -> String:
-	var value: String = save_file.get_value(SAVE_FILE_SECTION, id, default_value)
+func get_string(id: String, default_value := "",
+		section: String = DEFAULT_SAVE_FILE_SECTION) -> String:
+	var value: String = save_file.get_value(section, id, default_value)
 	return value
 
 
 ## Задаёт значение типа [String] под [param id].
-func set_string(id: String, value: String) -> void:
-	save_file.set_value(SAVE_FILE_SECTION, id, value)
+func set_string(id: String, value: String,
+		section: String = DEFAULT_SAVE_FILE_SECTION) -> void:
+	save_file.set_value(section, id, value)
 #endregion

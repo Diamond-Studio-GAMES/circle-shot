@@ -10,10 +10,10 @@ signal loading_stage_finished(success: bool)
 
 ## Список путей к сценам для загрузки в память при запуске игры. Чтобы получить загруженные таким
 ## образом сцены, примените [method get_cached_or_load_scene].
-@export_file("*.tscn") var scenes_to_preload_paths: Array[String]
+@export_file("PackedScene") var scenes_to_preload_paths: Array[String]
 var game: Game
 var _menu: Menu
-var _other_screens: Array[Node] = []
+var _other_screens: Array[Node]
 var _preloaded_scenes: Dictionary[String, PackedScene]
 @onready var _load_status_label: Label = $LoadingScreen/StatusLabel
 @onready var _load_progress_bar: ProgressBar = $LoadingScreen/ProgressBar
@@ -33,6 +33,15 @@ func open_menu() -> void:
 	print_verbose("Opened menu.")
 
 
+## Открывает настройки.
+func open_settings() -> void:
+	var settings_scene: PackedScene = get_cached_or_load_scene("uid://c2leb2h0qjtmo")
+	var settings: Control = settings_scene.instantiate()
+	add_child(settings)
+	_other_screens.append(settings)
+	print_verbose("Opened settings.")
+
+
 ## Открывает игру с меню локальной игры. Закрывает всё остальное.
 func open_local_game() -> void:
 	if is_instance_valid(game):
@@ -46,6 +55,12 @@ func open_local_game() -> void:
 	loaded_game.init_connect_local()
 	game = loaded_game
 	print_verbose("Opened game with local menu.")
+
+
+## Удаляет экран, указанный в [param screen].
+func close_screen(screen: Control) -> void:
+	_other_screens.erase(screen)
+	screen.queue_free()
 
 
 ## Возвращает предзагруженную сцену по пути [param path], указанному в 

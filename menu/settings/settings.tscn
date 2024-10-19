@@ -1,4 +1,16 @@
-[gd_scene format=3 uid="uid://c2leb2h0qjtmo"]
+[gd_scene load_steps=11 format=3 uid="uid://c2leb2h0qjtmo"]
+
+[ext_resource type="Script" path="res://menu/settings/settings.gd" id="1_jwkxy"]
+[ext_resource type="Texture2D" uid="uid://cj0xdsi2q6ea4" path="res://menu/settings/icons/general.png" id="1_n6g3h"]
+[ext_resource type="Texture2D" uid="uid://c46yr5jd8oi7q" path="res://menu/settings/background.png" id="1_pp8cx"]
+[ext_resource type="Texture2D" uid="uid://b0j3g7rkerkdm" path="res://menu/theme/icons/help.png" id="1_xh6xh"]
+[ext_resource type="Texture2D" uid="uid://xej4r4t0qfix" path="res://menu/settings/icons/video.png" id="2_qkcqn"]
+[ext_resource type="Texture2D" uid="uid://crwpcig7mcbok" path="res://menu/settings/icons/game.png" id="2_wsc6q"]
+[ext_resource type="Texture2D" uid="uid://65yjl3wjlqpc" path="res://menu/settings/icons/sound.png" id="3_4iv1j"]
+[ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="3_kafpn"]
+[ext_resource type="Texture2D" uid="uid://c4rtsjndqjkbc" path="res://menu/settings/icons/controls.png" id="4_bdj5p"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_xsh6l"]
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -7,3 +19,428 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_jwkxy")
+help_messages = Array[String](["Выбирает предпочитаемый отрисовщик.
+Может не совпадать с текущим в случае отсутствии поддержки.
+Изменения будут применены после перезапуска игры.", "Включает шейдерный кэш, призванный убрать просадки
+кадров при компиляции шейдеров.
+Рекомендуется отключить на телефонах при использовании OpenGL,
+так как может вызывать падения игры.
+Изменения будут применены после перезапуска игры.", "Включает индикаторы, появляющиеся на экране
+при попадании в противника или при его убийстве."])
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_pp8cx")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -488.5
+offset_top = -252.5
+offset_right = 488.5
+offset_bottom = 252.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Title" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Title"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Title"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "Настройки"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Exit" type="Button" parent="PanelContainer/VBoxContainer/Title"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+icon = ExtResource("3_kafpn")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Sections" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="General" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections"]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_xsh6l")
+text = "Основное"
+icon = ExtResource("1_n6g3h")
+alignment = 0
+
+[node name="Game" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_xsh6l")
+text = "Игра"
+icon = ExtResource("2_wsc6q")
+alignment = 0
+
+[node name="Video" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_xsh6l")
+text = "Графика"
+icon = ExtResource("2_qkcqn")
+alignment = 0
+
+[node name="Sound" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_xsh6l")
+text = "Звук"
+icon = ExtResource("3_4iv1j")
+alignment = 0
+
+[node name="Controls" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_xsh6l")
+text = "Управление"
+icon = ExtResource("4_bdj5p")
+alignment = 0
+
+[node name="SectionsContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="General" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+alignment = 1
+
+[node name="ChangeName" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/General"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Сменить имя"
+
+[node name="ResetControlSettings" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/General"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Сбросить настройки управления"
+
+[node name="ResetSettings" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/General"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Сбросить все настройки"
+
+[node name="DeleteData" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/General"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Удалить все данные"
+
+[node name="Game" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HitMarkers" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/HitMarkers"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Индикаторы попадания"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/HitMarkers"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HitMarkersCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/HitMarkers/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/HitMarkers/Setting"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
+[node name="ShowMinimap" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/ShowMinimap"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Отображать мини-карту"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/ShowMinimap"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ShowMinimapCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/ShowMinimap/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/ShowMinimap/Setting"]
+visible = false
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
+[node name="ShowDebug" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/ShowDebug"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Отображать FPS и пинг"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/ShowDebug"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ShowDebugCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/ShowDebug/Setting"]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/ShowDebug/Setting"]
+visible = false
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
+[node name="Video" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CurrentRenderer" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Текущий отрисовщик: Vulkan"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Renderer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/Renderer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Предпочитаемый отрисовщик"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/Renderer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RendererOptions" type="OptionButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/Renderer/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "Vulkan"
+popup/item_0/id = 0
+popup/item_1/text = "OpenGL"
+popup/item_1/id = 1
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/Renderer/Setting"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
+[node name="ShaderCache" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/ShaderCache"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Шейдерный кэш"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/ShaderCache"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ShaderCacheCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/ShaderCache/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/ShaderCache/Setting"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
+[node name="Sound" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MasterVolume" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/MasterVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Общая громкость"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/MasterVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MasterVolumeSlider" type="HSlider" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/MasterVolume/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.01
+value = 0.78
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/MasterVolume/Setting"]
+visible = false
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
+[node name="MusicVolume" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/MusicVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Громкость музыки"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/MusicVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MusicVolumeSlider" type="HSlider" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/MusicVolume/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.01
+value = 0.78
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/MusicVolume/Setting"]
+visible = false
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
+[node name="SFXVolume" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/SFXVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Громкость звуков"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/SFXVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SFXVolumeSlider" type="HSlider" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/SFXVolume/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.01
+value = 0.78
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Sound/SFXVolume/Setting"]
+visible = false
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
+[node name="Controls" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Nope" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Controls"]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Пока настроек нет"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HelpDialog" type="AcceptDialog" parent="."]
+title = "Помощь по настройке"
+size = Vector2i(240, 120)
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Title/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/General" to="." method="show_section" binds= ["General"]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Game" to="." method="show_section" binds= ["Game"]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Video" to="." method="show_section" binds= ["Video"]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Sound" to="." method="show_section" binds= ["Sound"]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Controls" to="." method="show_section" binds= ["Controls"]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Game/HitMarkers/Setting/Help" to="." method="show_help" binds= [2]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/Renderer/Setting/Help" to="." method="show_help" binds= [0]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsContainer/Video/ShaderCache/Setting/Help" to="." method="show_help" binds= [1]]

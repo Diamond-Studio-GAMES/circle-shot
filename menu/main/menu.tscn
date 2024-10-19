@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://djuddec1qr5ot" path="res://menu/theme/icons/shop.png" id="4_jpuob"]
 [ext_resource type="Texture2D" uid="uid://d2rpk8yt0h06x" path="res://menu/theme/icons/achievements.png" id="5_noej1"]
 [ext_resource type="Texture2D" uid="uid://c3sk875fn0rx" path="res://menu/theme/icons/settings.png" id="6_0pcoh"]
-[ext_resource type="Texture2D" uid="uid://b0j3g7rkerkdm" path="res://menu/theme/icons/about.png" id="7_aw44p"]
+[ext_resource type="Texture2D" uid="uid://b0j3g7rkerkdm" path="res://menu/theme/icons/help.png" id="7_aw44p"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -151,5 +151,6 @@ horizontal_alignment = 2
 vertical_alignment = 2
 
 [connection signal="pressed" from="ButtonsContainer/PlayNetwork" to="." method="_on_play_network_pressed"]
+[connection signal="pressed" from="ButtonsContainer/Settings" to="." method="_on_settings_pressed"]
 [connection signal="confirmed" from="NameDialog" to="." method="_on_name_dialog_confirmed"]
 [connection signal="visibility_changed" from="NameDialog" to="." method="_on_name_dialog_visibility_changed"]

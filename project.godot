@@ -15,6 +15,7 @@ config/version="2.0.0.05"
 run/main_scene="res://main/main.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="circle-shot"
+config/project_settings_override="user://engine_settings.cfg"
 config/quit_on_go_back=false
 config/features=PackedStringArray("4.4", "GL Compatibility")
 run/max_fps=60

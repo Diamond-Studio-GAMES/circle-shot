@@ -271,6 +271,9 @@ position = Vector2(-32, -32)
 [node name="ThrowPoint" parent="ThrowPivot" index="0"]
 position = Vector2(144, 0)
 
+[node name="ThrowTimer" parent="." index="1"]
+wait_time = 12.0
+
 [node name="Grenade" type="Sprite2D" parent="." index="2"]
 visible = false
 texture = ExtResource("2_uiy3x")
