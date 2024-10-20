@@ -31,6 +31,8 @@ func _explode() -> void:
 	($FreeTimer).start()
 	($Grenade as Node2D).hide()
 	
+	if not multiplayer.is_server():
+		return
 	($StunArea/CollisionShape2D as CollisionShape2D).set_deferred(&"disabled", false)
 	($StunAreaTimer as Timer).start()
 	await ($StunAreaTimer as Timer).timeout
@@ -56,9 +58,6 @@ func unmute() -> void:
 
 
 func _on_stun_area_body_entered(body: Node2D) -> void:
-	if not multiplayer.is_server():
-		return
-	
 	var entity := body as Entity
 	if not entity:
 		return
