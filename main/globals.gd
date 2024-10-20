@@ -107,58 +107,58 @@ func set_string(id: String, value: String) -> void:
 ## Получает значение настройик типа [Variant] по [param id].
 ## Если его нет, вернёт [param default_value].
 func get_setting_variant(id: String, default_value: Variant) -> Variant:
-	return save_file.get_value(DEFAULT_SAVE_FILE_SECTION, id, default_value)
+	return save_file.get_value(SETTINGS_SAVE_FILE_SECTION, id, default_value)
 
 
 ## Задаёт значение настройки типа [Variant] под [param id].
 func set_setting_variant(id: String, value: Variant) -> void:
-	save_file.set_value(DEFAULT_SAVE_FILE_SECTION, id, value)
+	save_file.set_value(SETTINGS_SAVE_FILE_SECTION, id, value)
 
 
 ## Получает значение настройки типа [int] по [param id].
 ## Если его нет, вернёт [param default_value].
 func get_setting_int(id: String, default_value := 0) -> int:
-	var value: int = save_file.get_value(DEFAULT_SAVE_FILE_SECTION, id, default_value)
+	var value: int = save_file.get_value(SETTINGS_SAVE_FILE_SECTION, id, default_value)
 	return value
 
 
 ## Задаёт значение настройки типа [int] под [param id].
 func set_setting_int(id: String, value: int) -> void:
-	save_file.set_value(DEFAULT_SAVE_FILE_SECTION, id, value)
+	save_file.set_value(SETTINGS_SAVE_FILE_SECTION, id, value)
 
 
 ## Получает значение настройки типа [float] по [param id].
 ## Если его нет, вернёт [param default_value].
 func get_setting_float(id: String, default_value := 0.0) -> float:
-	var value: float = save_file.get_value(DEFAULT_SAVE_FILE_SECTION, id, default_value)
+	var value: float = save_file.get_value(SETTINGS_SAVE_FILE_SECTION, id, default_value)
 	return value
 
 
 ## Задаёт значение настройки типа [float] под [param id].
 func set_setting_float(id: String, value: float) -> void:
-	save_file.set_value(DEFAULT_SAVE_FILE_SECTION, id, value)
+	save_file.set_value(SETTINGS_SAVE_FILE_SECTION, id, value)
 
 
 ## Получает значение настройки типа [bool] по [param id].
 ## Если его нет, вернёт [param default_value].
 func get_setting_bool(id: String, default_value := false) -> bool:
-	var value: bool = save_file.get_value(DEFAULT_SAVE_FILE_SECTION, id, default_value)
+	var value: bool = save_file.get_value(SETTINGS_SAVE_FILE_SECTION, id, default_value)
 	return value
 
 
 ## Задаёт значение настройки типа [bool] под [param id].
 func set_setting_bool(id: String, value: bool) -> void:
-	save_file.set_value(DEFAULT_SAVE_FILE_SECTION, id, value)
+	save_file.set_value(SETTINGS_SAVE_FILE_SECTION, id, value)
 
 
 ## Получает значение настройки типа [String] по [param id].
 ## Если его нет, вернёт [param default_value].
 func get_setting_string(id: String, default_value := "") -> String:
-	var value: String = save_file.get_value(DEFAULT_SAVE_FILE_SECTION, id, default_value)
+	var value: String = save_file.get_value(SETTINGS_SAVE_FILE_SECTION, id, default_value)
 	return value
 
 
 ## Задаёт значение настройки типа [String] под [param id].
 func set_setting_string(id: String, value: String) -> void:
-	save_file.set_value(DEFAULT_SAVE_FILE_SECTION, id, value)
+	save_file.set_value(SETTINGS_SAVE_FILE_SECTION, id, value)
 #endregion

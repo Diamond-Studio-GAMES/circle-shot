@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bxs6sdufwbl8p"
-path="res://.godot/imported/together_game.png-75d86a21e30fe90ba2034d102a3f556b.ctex"
+uid="uid://djuddec1qr5ot"
+path="res://.godot/imported/shop.png-9ca58dad88950a4fe0fde680f3d53d57.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://menu/theme/icons/together_game.png"
-dest_files=["res://.godot/imported/together_game.png-75d86a21e30fe90ba2034d102a3f556b.ctex"]
+source_file="res://menu/main/icons/shop.png"
+dest_files=["res://.godot/imported/shop.png-9ca58dad88950a4fe0fde680f3d53d57.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djuddec1qr5ot"
-path="res://.godot/imported/shop.png-6c90de314b2dcf31ed97a85ab2240a5c.ctex"
+uid="uid://djfqfio1aley7"
+path="res://.godot/imported/reset_controls.png-bb6d9d88bbffdd47900d358c158bc008.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://menu/theme/icons/shop.png"
-dest_files=["res://.godot/imported/shop.png-6c90de314b2dcf31ed97a85ab2240a5c.ctex"]
+source_file="res://menu/settings/icons/reset_controls.png"
+dest_files=["res://.godot/imported/reset_controls.png-bb6d9d88bbffdd47900d358c158bc008.ctex"]
 
 [params]
 

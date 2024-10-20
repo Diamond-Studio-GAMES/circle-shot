@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnho657mg7o1w"
-path="res://.godot/imported/solo_game.png-955edee8912d0710b2987d685484471f.ctex"
+uid="uid://c3sk875fn0rx"
+path="res://.godot/imported/settings.png-a02dfdc9539e0220bcc2fae662eea1a4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://menu/theme/icons/solo_game.png"
-dest_files=["res://.godot/imported/solo_game.png-955edee8912d0710b2987d685484471f.ctex"]
+source_file="res://menu/main/icons/settings.png"
+dest_files=["res://.godot/imported/settings.png-a02dfdc9539e0220bcc2fae662eea1a4.ctex"]
 
 [params]
 

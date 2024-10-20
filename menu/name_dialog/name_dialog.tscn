@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://cuewsvjjnyl40"]
+
+[ext_resource type="Script" path="res://menu/name_dialog/name_dialog.gd" id="1_n2mo3"]
+
+[node name="NameDialog" type="AcceptDialog"]
+auto_translate_mode = 1
+title = "Как тебя зовут, игрок?"
+size = Vector2i(456, 144)
+unresizable = true
+ok_button_text = "Вперёд!"
+dialog_hide_on_ok = false
+dialog_close_on_escape = false
+script = ExtResource("1_n2mo3")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+offset_left = 32.0
+offset_top = 16.0
+offset_right = 213.0
+offset_bottom = 63.0
+placeholder_text = "Твоё имя..."
+alignment = 1
+max_length = 24
+expand_to_text_length = true
+context_menu_enabled = false
+
+[connection signal="confirmed" from="." to="." method="_on_confirmed"]

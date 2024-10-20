@@ -7,6 +7,12 @@ var _sent_ticks_msec: int
 @onready var _fps_label: Label = $FPSLabel
 
 
+func _ready() -> void:
+	if not Globals.get_setting_bool("debug_data"):
+		hide()
+		process_mode = Node.PROCESS_MODE_DISABLED
+
+
 func _process(_delta: float) -> void:
 	_fps_label.text = "FPS: %d" % Engine.get_frames_per_second()
 
