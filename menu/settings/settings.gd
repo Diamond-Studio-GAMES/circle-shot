@@ -28,6 +28,19 @@ func _ready() -> void:
 	(%MasterVolumeSlider as HSlider).value = Globals.get_setting_float("master_volume")
 	(%MusicVolumeSlider as HSlider).value = Globals.get_setting_float("music_volume")
 	(%SFXVolumeSlider as HSlider).value = Globals.get_setting_float("sfx_volume")
+	(%FullscreenCheck as CheckButton).set_pressed_no_signal(Globals.get_setting_bool("fullscreen"))
+	(%PreloadCheck as CheckButton).set_pressed_no_signal(Globals.get_setting_bool("preload"))
+	
+	if OS.has_feature("mobile"):
+		(%FullscreenCheck as CheckButton).set_pressed_no_signal(true)
+		(%FullscreenCheck as CheckButton).self_modulate = Color(1.0, 1.0, 1.0, 0.5)
+		(%FullscreenCheck as CheckButton).disabled = true
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_WM_GO_BACK_REQUEST:
+			_on_exit_pressed()
 
 
 func show_section(section_name: String) -> void:
@@ -126,13 +139,15 @@ func _on_renderer_options_item_selected(index: int) -> void:
 func _on_clear_shader_cache_pressed() -> void:
 	remove_recursive("user://shader_cache")
 	remove_recursive("user://vulkan")
-	OS.set_restart_on_exit(true)
+	if OS.has_feature("pc"):
+		OS.set_restart_on_exit(true)
 	get_tree().quit()
 
 
 func _on_reset_data_dialog_confirmed() -> void:
 	remove_recursive("user://")
-	OS.set_restart_on_exit(true)
+	if OS.has_feature("pc"):
+		OS.set_restart_on_exit(true)
 	get_tree().quit()
 
 
@@ -142,6 +157,7 @@ func _on_reset_settings_dialog_confirmed() -> void:
 	DirAccess.remove_absolute("user://engine_settings.cfg")
 	Globals.main.setup_settings()
 	Globals.main.setup_controls_settings()
+	Globals.main.apply_settings()
 	Globals.main.close_screen(self)
 	Globals.main.open_settings()
 
@@ -150,3 +166,8 @@ func _on_change_name_pressed() -> void:
 	($NameDialog as Window).title = \
 			"Смена имени (текущее: %s)" % Globals.get_string("player_name")
 	($NameDialog as AcceptDialog).popup_centered()
+
+
+func _on_fullscreen_check_toggled(toggled_on: bool) -> void:
+	Globals.set_setting_bool("fullscreen", toggled_on)
+	get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if toggled_on else Window.MODE_WINDOWED

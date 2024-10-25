@@ -88,6 +88,7 @@ func load_event(event_id: int, map_id: int) -> Event:
 		return null
 	var map_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
 	if not is_instance_valid(map_scene):
+		# TODO: удалить эту шарманку.
 		push_error("Loading of %s failed!" % _loading_path)
 		event.free()
 		_fail_load()

@@ -25,7 +25,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jwkxy")
-help_messages = Array[String](["Выбирает предпочитаемый отрисовщик.
+help_messages = Array[String](["Выбирает предпочитаемый отрисовщик:
+Vulkan - современный быстрый отрисовщик, однако может иметь проблемы с совместимостью.
+OpenGL - традиционный отрисовщик, поддерживающийся почти везде.
+Просадки кадров при компиляции шейдеров на нём гораздо сильнее.
+
 Может не совпадать с текущим в случае отсутствии поддержки.
 Изменения будут применены после перезапуска игры.", "Включает шейдерный кэш, призванный убрать просадки
 кадров при компиляции шейдеров.
@@ -33,7 +37,9 @@ help_messages = Array[String](["Выбирает предпочитаемый о
 так как может вызывать падения игры.
 Изменения будут применены после перезапуска игры.", "Включает индикаторы, появляющиеся на экране
 при попадании в противника или при его убийстве.", "Очищает шейдерный кэш.
-После применения игра будет перезапущена."])
+После применения игра будет перезапущена.", "Предзагрузка ресурсов обеспечивает более реактивные переходы
+между сценами, однако делает загрузку игры дольше и увеличивает расход памяти.
+Стоит выключить, если требуется экономить оперативную память."])
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -160,6 +166,32 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 alignment = 1
 
+[node name="PreloadResources" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/PreloadResources"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Предзагружать ресурсы"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/PreloadResources"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PreloadCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/PreloadResources/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/PreloadResources/Setting"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
 [node name="ChangeName" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -281,13 +313,39 @@ visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Fullscreen" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Полный экран"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FullscreenCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen/Setting"]
+visible = false
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
 [node name="CurrentRenderer" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 text = "Текущий отрисовщик: Vulkan"
-horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Renderer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video"]
@@ -482,7 +540,7 @@ size = Vector2i(240, 120)
 title = "Сброс настроек"
 size = Vector2i(705, 112)
 ok_button_text = "Сбросить"
-dialog_text = "Ты действительно хочешь вернуть все настройки к значениям по усолчанию?"
+dialog_text = "Ты действительно хочешь вернуть все настройки к значениям по умолчанию?"
 cancel_button_text = "Отмена"
 
 [node name="ResetDataDialog" type="ConfirmationDialog" parent="."]
@@ -509,6 +567,8 @@ placeholder_text = "Новое имя..."
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Video" to="." method="show_section" binds= ["Video"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Sound" to="." method="show_section" binds= ["Sound"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Controls" to="." method="show_section" binds= ["Controls"]]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/PreloadResources/Setting/PreloadCheck" to="." method="_on_shader_cache_check_toggled"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/PreloadResources/Setting/Help" to="." method="show_help" binds= [4]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/ChangeName" to="." method="_on_change_name_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/ResetSettings" to="ResetSettingsDialog" method="popup_centered"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/DeleteData" to="ResetDataDialog" method="popup_centered"]
@@ -516,6 +576,8 @@ placeholder_text = "Новое имя..."
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/HitMarkers/Setting/Help" to="." method="show_help" binds= [2]]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/ShowMinimap/Setting/ShowMinimapCheck" to="." method="_on_show_minimap_check_toggled"]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/ShowDebug/Setting/ShowDebugCheck" to="." method="_on_show_debug_check_toggled"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen/Setting/FullscreenCheck" to="." method="_on_fullscreen_check_toggled"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen/Setting/Help" to="." method="show_help" binds= [1]]
 [connection signal="item_selected" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Renderer/Setting/RendererOptions" to="." method="_on_renderer_options_item_selected"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Renderer/Setting/Help" to="." method="show_help" binds= [0]]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/ShaderCache/Setting/ShaderCacheCheck" to="." method="_on_shader_cache_check_toggled"]

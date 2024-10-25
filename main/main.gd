@@ -8,13 +8,13 @@ extends Node
 ## Внутренний сигнал, используемый при загрузке.
 signal loading_stage_finished(success: bool)
 
-## Список путей к сценам для загрузки в память при запуске игры. Чтобы получить загруженные таким
-## образом сцены, примените [method get_cached_or_load_scene].
-@export_file("PackedScene") var scenes_to_preload_paths: Array[String]
+## Список путей к сценам для загрузки в память при запуске игры. Ускоряет последующую загрузку
+## этих сцен.
+@export_file("Resource") var resources_to_preload_paths: Array[String]
 var game: Game
 var _menu: Menu
 var _other_screens: Array[Node]
-var _preloaded_scenes: Dictionary[String, PackedScene]
+var _preloaded_resources: Array[Resource]
 @onready var _load_status_label: Label = $LoadingScreen/StatusLabel
 @onready var _load_progress_bar: ProgressBar = $LoadingScreen/ProgressBar
 
@@ -26,7 +26,7 @@ func open_menu() -> void:
 		return
 	_clear_screens()
 	
-	var menu_scene: PackedScene = get_cached_or_load_scene("uid://4wb77emq8t5p")
+	var menu_scene: PackedScene = load("uid://4wb77emq8t5p")
 	var menu: Menu = menu_scene.instantiate()
 	add_child(menu)
 	_menu = menu
@@ -35,7 +35,7 @@ func open_menu() -> void:
 
 ## Открывает настройки.
 func open_settings() -> void:
-	var settings_scene: PackedScene = get_cached_or_load_scene("uid://c2leb2h0qjtmo")
+	var settings_scene: PackedScene = load("uid://c2leb2h0qjtmo")
 	var settings: Control = settings_scene.instantiate()
 	add_child(settings)
 	_other_screens.append(settings)
@@ -49,7 +49,7 @@ func open_local_game() -> void:
 		return
 	_clear_screens()
 	
-	var game_scene: PackedScene = get_cached_or_load_scene("uid://scqgxynxowrb")
+	var game_scene: PackedScene = load("uid://scqgxynxowrb")
 	var loaded_game: Game = game_scene.instantiate()
 	add_child(loaded_game)
 	loaded_game.init_connect_local()
@@ -60,19 +60,7 @@ func open_local_game() -> void:
 ## Удаляет экран, указанный в [param screen].
 func close_screen(screen: Control) -> void:
 	_other_screens.erase(screen)
-	# Чтобы не мешал созданию нового
-	remove_child(screen)
 	screen.queue_free()
-
-
-## Возвращает предзагруженную сцену по пути [param path], указанному в 
-## [member scenes_to_preload_paths]. Пути должны В ТОЧНОСТИ совпадать. Если сцена в предзагруженных
-## не найдена, то просто загружает.
-func get_cached_or_load_scene(path: String) -> PackedScene:
-	if path in _preloaded_scenes:
-		print_verbose("Returning cached scene in path: %s." % path)
-		return _preloaded_scenes[path]
-	return load(path)
 
 
 ## Выдаёт критическую ошибку, которая останавливает всю игру. Использовать только в безвыходных
@@ -150,11 +138,34 @@ func setup_settings() -> void:
 			"sfx_volume",
 			Globals.get_setting_float("sfx_volume", 1.0)
 	)
+	Globals.set_setting_bool(
+			"fullscreen",
+			Globals.get_setting_bool("fullscreen", OS.has_feature("mobile"))
+	)
+	Globals.set_setting_bool(
+			"preload",
+			Globals.get_setting_bool("preload", true)
+	)
 
 
-## Устанавливает настройки упралвения по умолчанию, если их ещё нет.
+## Устанавливает настройки управления по умолчанию, если их ещё нет.
 func setup_controls_settings() -> void:
 	Globals.save_file.set_value(Globals.CONTROLS_SAVE_FILE_SECTION, "xD", "xD")
+
+
+## Применяет общие настройки.
+func apply_settings() -> void:
+	AudioServer.set_bus_volume_db(
+			AudioServer.get_bus_index(&"Master"), linear_to_db(Globals.get_float("master_volume"))
+	)
+	AudioServer.set_bus_volume_db(
+			AudioServer.get_bus_index(&"Music"), linear_to_db(Globals.get_float("music_volume"))
+	)
+	AudioServer.set_bus_volume_db(
+			AudioServer.get_bus_index(&"SFX"), linear_to_db(Globals.get_float("sfx_volume"))
+	)
+	get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN \
+			if Globals.get_setting_bool("fullscreen") else Window.MODE_WINDOWED
 
 
 func _clear_screens() -> void:
@@ -183,7 +194,7 @@ func _start_load() -> void:
 	
 	# Загрузка треков
 	
-	_loading_preload_scenes()
+	_loading_preload_resources()
 	await loading_stage_finished
 	
 	_loading_open_menu()
@@ -208,15 +219,7 @@ func _loading_init() -> void:
 	get_viewport().set_canvas_cull_mask_bit(1, false)
 	setup_settings()
 	setup_controls_settings()
-	AudioServer.set_bus_volume_db(
-			AudioServer.get_bus_index(&"Master"), linear_to_db(Globals.get_float("master_volume"))
-	)
-	AudioServer.set_bus_volume_db(
-			AudioServer.get_bus_index(&"Music"), linear_to_db(Globals.get_float("music_volume"))
-	)
-	AudioServer.set_bus_volume_db(
-			AudioServer.get_bus_index(&"SFX"), linear_to_db(Globals.get_float("sfx_volume"))
-	)
+	apply_settings()
 	
 	await get_tree().process_frame
 	print_verbose("Done initializing.")
@@ -255,23 +258,34 @@ func _on_check_http_request_completed(result: HTTPRequest.Result, response_code:
 	loading_stage_finished.emit(true)
 
 
-func _loading_preload_scenes() -> void:
-	# Добавить проверку на настройку
-	print_verbose("Preloading scenes...")
-	_load_status_label.text = "Загрузка сцен в память..."
+func _loading_preload_resources() -> void:
+	if not Globals.get_setting_bool("preload"):
+		print_verbose("Not preloading resources: disabled.")
+		loading_stage_finished.emit(true)
+		return
+	
+	print_verbose("Preloading resources...")
+	_load_status_label.text = "Загрузка ресурсов в память..."
 	_load_progress_bar.value = 0
 	await get_tree().process_frame
 	
 	var counter: int = 1
-	for i: String in scenes_to_preload_paths:
-		var scene: PackedScene = load(i)
-		_preloaded_scenes[i] = scene
-		_load_progress_bar.value = 100.0 * counter / scenes_to_preload_paths.size()
-		counter += 1
-		print_verbose("Preloaded scene: %s." % i)
-		await get_tree().process_frame
+	var to_preload: Array[String]
+	to_preload.append_array(resources_to_preload_paths)
+	var to_preload_count: int = to_preload.size()
 	
-	print_verbose("Done preloading scenes.")
+	var last_ticks: int = Time.get_ticks_msec()
+	for i: String in to_preload:
+		var resource: Resource = load(i)
+		_preloaded_resources.append(resource)
+		_load_progress_bar.value = 100.0 * counter / to_preload_count
+		counter += 1
+		print_verbose("Preloaded resource: %s." % i)
+		if Time.get_ticks_msec() - last_ticks > 16:
+			await get_tree().process_frame
+			last_ticks = Time.get_ticks_msec()
+	
+	print_verbose("Done preloading resources.")
 	loading_stage_finished.emit(true)
 
 

@@ -61,7 +61,7 @@ func _exit_tree() -> void:
 
 ## Инициализирует меню подключения к локальной игре и лобби.
 func init_connect_local() -> void:
-	var menu_scene: PackedScene = Globals.main.get_cached_or_load_scene("uid://wgln4clkkuuk")
+	var menu_scene: PackedScene = load("uid://wgln4clkkuuk")
 	var menu: Control = menu_scene.instantiate()
 	add_child(menu)
 	print_verbose("Created connect_local_menu.")
@@ -265,7 +265,7 @@ func _check_players_ready() -> void:
 
 
 func _init_lobby() -> void:
-	var lobby_scene: PackedScene = Globals.main.get_cached_or_load_scene("uid://cmwb81du1kbtm")
+	var lobby_scene: PackedScene = load("uid://cmwb81du1kbtm")
 	var lobby: Control = lobby_scene.instantiate()
 	add_child(lobby)
 	print_verbose("Created lobby.")
