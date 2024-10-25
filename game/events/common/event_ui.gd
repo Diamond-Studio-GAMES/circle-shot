@@ -45,8 +45,8 @@ func show_intro() -> void:
 func _on_message_posted(message: String) -> void:
 	if _chat_button.button_pressed:
 		return
-	if get_child_count() >= messages_visible_limit:
-		get_child(0).queue_free()
+	if $Main/ChatPreview.get_child_count() >= messages_visible_limit:
+		$Main/ChatPreview.get_child(0).queue_free()
 	var rtl := RichTextLabel.new()
 	rtl.bbcode_enabled = true
 	rtl.scroll_active = false
@@ -64,7 +64,7 @@ func _on_message_posted(message: String) -> void:
 
 func _on_chat_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		for i: Node in get_children():
+		for i: Node in $Main/ChatPreview.get_children():
 			i.queue_free()
 
 

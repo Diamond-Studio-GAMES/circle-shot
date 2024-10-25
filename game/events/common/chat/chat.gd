@@ -18,7 +18,7 @@ var players_names: Dictionary[int, String]
 var players_teams: Dictionary[int, int]
 @onready var _chat_button: Button = get_node(chat_button_path)
 @onready var _messages: RichTextLabel = $VBoxContainer/Messages
-@onready var _line_edit: LineEdit = $VBoxContainer/HBoxContainer/LineEdit
+@onready var _chat_edit: LineEdit = $VBoxContainer/HBoxContainer/LineEdit
 
 
 ## Постит сообщение. Должно вызываться только сервером.
@@ -44,9 +44,11 @@ func clear_chat() -> void:
 
 ## Отправляет набранное сообщение. Автоматически очищает от лишних пробелов и прочих знаков.
 func send_message() -> void:
-	var message: String = _line_edit.text.strip_edges().strip_escapes()
-	_line_edit.clear()
-	_line_edit.grab_focus()
+	var message: String = _chat_edit.text.strip_edges().strip_escapes()
+	_chat_edit.clear()
+	_chat_button.grab_focus() # TODO: Убрать эту шарманку в новом дев билде и заменить на edit
+	_chat_edit.grab_focus.call_deferred()
+	
 	if message.is_empty():
 		return
 	if multiplayer.is_server():
@@ -93,4 +95,4 @@ func _request_post_message(message: String) -> void:
 func _on_chat_toggled(toggled_on: bool) -> void:
 	visible = toggled_on
 	if toggled_on:
-		_line_edit.grab_focus()
+		_chat_edit.grab_focus()

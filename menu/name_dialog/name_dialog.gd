@@ -13,6 +13,6 @@ func _on_confirmed() -> void:
 		($LineEdit as LineEdit).placeholder_text = "Недопустимое имя!"
 		return
 	Globals.set_string("player_name", player_name)
-	hide()
 	name_accepted.emit()
+	hide()
 	print_verbose("Name set: %s." % player_name)

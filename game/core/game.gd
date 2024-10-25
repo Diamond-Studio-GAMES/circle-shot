@@ -321,7 +321,8 @@ func _authenticate_callback(peer: int, data: PackedByteArray) -> void:
 			data.get_string_from_utf8(),
 		])
 		return
-	if multiplayer.get_peers().size() + int(not Globals.headless) + 1 >= max_players:
+	# TODO: Ждать фикса бага с get_peers
+	if multiplayer.get_peers().size() + int(not Globals.headless) >= max_players:
 		_scene_multiplayer.send_auth(peer, PackedByteArray([FailReason.FULL_ROOM]))
 		print_verbose("Rejecting %d: full room." % peer)
 		return
@@ -388,5 +389,6 @@ func _on_server_disconnected() -> void:
 	show_error("Разорвано соединение с сервером!")
 	push_warning("Disconnected from server.")
 	# Излучаем сигнал сами, потому что мы уже отключены
+	# TODO: Если пофиксят излучение сервер дисконнетед то мб можно без этого
 	closed.emit()
 	close()

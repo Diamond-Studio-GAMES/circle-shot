@@ -375,6 +375,7 @@ func _find_ips_for_broadcast() -> void:
 	_udp_peers.clear()
 	print_verbose("Finding IPs for broadcast...")
 	# Отсылаем пакеты по всем локальным адресам
+	# TODO: Ждать PR где добавят возможность искать широковещательные адреса
 	for i: String in IP.get_local_addresses():
 		if i.begins_with("192.168.") or i.begins_with("10.42.") or i.begins_with("10.22."):
 			var udp := PacketPeerUDP.new()

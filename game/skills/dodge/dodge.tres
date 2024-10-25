@@ -6,7 +6,7 @@
 script = ExtResource("1_8moi4")
 name = "Перекат"
 brief_description = "Уклонение от снарядов"
-usage_text = "20 исп./1 с"
+usage_text = "20 исп./2 с"
 rarity = 2
 id = "rolling"
 scene_path = "uid://cubicepjijo6d"

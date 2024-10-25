@@ -487,7 +487,9 @@ bus = &"Music"
 
 [connection signal="local_player_created" from="." to="UI/Main/PlayerUI" method="_on_local_player_created"]
 [connection signal="pressed" from="UI/Main/Leave" to="UI/QuitDialog" method="popup_centered"]
-[connection signal="toggled" from="UI/Main/Chat" to="UI/Main/ChatPreview" method="_on_chat_toggled"]
+[connection signal="toggled" from="UI/Main/Chat" to="UI" method="_on_chat_toggled"]
+[connection signal="toggled" from="UI/Main/Chat" to="UI/Main/ChatPanel" method="_on_chat_toggled"]
+[connection signal="message_posted" from="UI/Main/ChatPanel" to="UI" method="_on_message_posted"]
 [connection signal="text_submitted" from="UI/Main/ChatPanel/VBoxContainer/HBoxContainer/LineEdit" to="UI/Main/ChatPanel" method="send_message" unbinds=1]
 [connection signal="pressed" from="UI/Main/ChatPanel/VBoxContainer/HBoxContainer/Send" to="UI/Main/ChatPanel" method="send_message"]
 [connection signal="confirmed" from="UI/QuitDialog" to="UI" method="_on_quit_dialog_confirmed"]

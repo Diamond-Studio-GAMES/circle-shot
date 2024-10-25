@@ -4,11 +4,12 @@ extends Node
 
 signal ended
 signal local_player_created(player: Player)
+signal local_team_set(team: int)
 
 @export var player_scenes: Array[PackedScene]
 
 var local_player: Player
-var local_team: int
+var local_team: int = -1
 var started := false
 var _players_equip_data: Dictionary[int, Array]
 var _players_names: Dictionary[int, String]
@@ -117,8 +118,8 @@ func spawn_player(id: int) -> void:
 
 func set_local_player(player: Player) -> void:
 	local_player = player
-	local_team = player.team
 	local_player_created.emit(player)
+	set_local_team(player.team)
 	if started:
 		camera.target = player
 	else:
@@ -131,6 +132,11 @@ func set_local_player(player: Player) -> void:
 		tween.tween_property($Camera as Node2D, ^"position", player.position, 4.0)
 		await tween.finished
 		camera.target = player
+
+
+func set_local_team(team: int) -> void:
+	local_team = team
+	local_team_set.emit()
 
 
 @rpc("call_local", "reliable")

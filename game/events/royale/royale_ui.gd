@@ -26,13 +26,15 @@ func kill_player(which: int, killer: int) -> void:
 	_alive_players = Array(
 			get_tree().get_nodes_in_group(&"Player"), TYPE_OBJECT, &"CharacterBody2D", Player
 	)
-	if is_instance_valid(_spectating_player):
-		_alive_players.erase(_spectating_player)
+	for i: Player in _alive_players:
+		if i.id == which:
+			_alive_players.erase(i)
+			break
 	if _alive_players.size() == 0:
 		return
 	if which != _spectating_player.id:
 		return
-	if which == killer:
+	if killer < 0:
 		_set_player_to_spectate(randi() % _alive_players.size())
 		return
 	for i: int in range(_alive_players.size()):

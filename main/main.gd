@@ -60,6 +60,8 @@ func open_local_game() -> void:
 ## Удаляет экран, указанный в [param screen].
 func close_screen(screen: Control) -> void:
 	_other_screens.erase(screen)
+	# Чтобы не мешал созданию нового
+	remove_child(screen)
 	screen.queue_free()
 
 

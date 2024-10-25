@@ -83,14 +83,17 @@ func _on_show_debug_check_toggled(toggled_on: bool) -> void:
 
 func _on_master_volume_slider_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(&"Master"), linear_to_db(value))
+	Globals.set_setting_bool("master_volume", value)
 
 
 func _on_music_volume_slider_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(&"Music"), linear_to_db(value))
+	Globals.set_setting_bool("music_volume", value)
 
 
 func _on_sfx_volume_slider_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(&"SFX"), linear_to_db(value))
+	Globals.set_setting_bool("sfx_volume", value)
 
 
 func _on_shader_cache_check_toggled(toggled_on: bool) -> void:
@@ -139,7 +142,6 @@ func _on_reset_settings_dialog_confirmed() -> void:
 	DirAccess.remove_absolute("user://engine_settings.cfg")
 	Globals.main.setup_settings()
 	Globals.main.setup_controls_settings()
-	get_parent().remove_child(self)
 	Globals.main.close_screen(self)
 	Globals.main.open_settings()
 

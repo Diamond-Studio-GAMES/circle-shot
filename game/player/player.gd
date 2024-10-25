@@ -17,6 +17,7 @@ var skill: Skill
 @onready var player_input: PlayerInput = $Input
 @onready var _blood: CPUParticles2D = $Visual/Blood
 @onready var _weapons: Node2D = $Visual/Weapons
+@onready var _event: Event = get_tree().get_first_node_in_group(&"Event")
 
 
 func _ready() -> void:
@@ -25,7 +26,8 @@ func _ready() -> void:
 	($Name/Label as Label).text = player_name
 	($Name/Label as Label).self_modulate = TEAM_COLORS[team]
 	if is_local():
-		(get_tree().get_first_node_in_group(&"Event") as Event).set_local_player(self)
+		_event.set_local_player(self)
+		_event.set_local_team(team)
 		($ControlIndicator as Node2D).show()
 		($ControlIndicator as Node2D).self_modulate = TEAM_COLORS[team]
 		($AudioListener2D as AudioListener2D).make_current()
@@ -41,12 +43,8 @@ func _ready() -> void:
 	
 	($Minimap/MinimapMarker/Visual as Node2D).self_modulate = TEAM_COLORS[team]
 	await get_tree().process_frame
-	if team == (get_tree().get_first_node_in_group(&"Event") as Event).local_team:
-		($Minimap/MinimapMarker/Visual as Node2D).show()
-		($Minimap/MinimapNotifier as Node2D).hide()
-	else:
-		($Minimap/MinimapMarker/Visual as Node2D).visible = \
-				($Minimap/MinimapNotifier as VisibleOnScreenNotifier2D).is_on_screen()
+	_update_minimap_marker()
+	_event.local_team_set.connect(_update_minimap_marker)
 
 
 func _physics_process(delta: float) -> void:
@@ -329,6 +327,15 @@ func _set_current_weapon(to: Weapon.Type) -> void:
 	weapon_changed.emit(to)
 	ammo_text_updated.emit(current_weapon.get_ammo_text())
 	print_verbose("Player %d changed current weapon to type %d." % [id, to])
+
+
+func _update_minimap_marker() -> void:
+	if team == _event.local_team:
+		($Minimap/MinimapMarker/Visual as Node2D).show()
+		($Minimap/MinimapNotifier as Node2D).hide()
+	else:
+		($Minimap/MinimapMarker/Visual as Node2D).visible = \
+				($Minimap/MinimapNotifier as VisibleOnScreenNotifier2D).is_on_screen()
 
 
 func _on_health_changed(_old_value: int, new_value: int) -> void:
