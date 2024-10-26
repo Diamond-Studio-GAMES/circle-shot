@@ -1,13 +1,145 @@
-[gd_scene load_steps=10 format=3 uid="uid://dwq3twijmmpig"]
+[gd_scene load_steps=18 format=3 uid="uid://dwq3twijmmpig"]
 
 [ext_resource type="PackedScene" uid="uid://8yrjqan0dqfx" path="res://game/weapons/grenades/common/grenade_projectile.tscn" id="1_ua7bf"]
 [ext_resource type="Texture2D" uid="uid://bah0mhat58x6x" path="res://game/weapons/grenades/flashbang/base.png" id="2_nfc8c"]
 [ext_resource type="Script" path="res://game/weapons/grenades/flashbang/flashbang_projectile.gd" id="2_otq4k"]
-[ext_resource type="Texture2D" uid="uid://nyuii0fx273c" path="res://game/menus/lobby/background.png" id="4_eddhq"]
+[ext_resource type="Texture2D" uid="uid://ds2mr47spps1a" path="res://game/weapons/grenades/flashbang/explosion.png" id="3_c5i60"]
+[ext_resource type="Script" path="res://game/weapons/grenades/flashbang/flashbang_attack.gd" id="3_nxt1r"]
+[ext_resource type="AudioStream" uid="uid://bin43crd5xi3g" path="res://game/weapons/grenades/flashbang/explosion_friendly.wav" id="3_x712o"]
+[ext_resource type="Script" path="res://game/entity/attack/area_detector.gd" id="4_7cy3p"]
 [ext_resource type="AudioStream" uid="uid://dnce4ljo741pg" path="res://game/weapons/grenades/flashbang/explosion.wav" id="4_hj380"]
+
+[sub_resource type="Animation" id="Animation_rf2x3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Grenade:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Attack/AreaDetector/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xrikg"]
+resource_name = "Explode"
+length = 6.0
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("Attack/AreaDetector/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0.386719, 0.386719, 0.386719, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Grenade:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "audio"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sound")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_x712o")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/3/use_blend = true
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("..")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(6),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"safe_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_isnu3"]
+_data = {
+&"RESET": SubResource("Animation_rf2x3"),
+&"Explode": SubResource("Animation_xrikg")
+}
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8b4pb"]
 radius = 480.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3qk41"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 0
+properties/1/path = NodePath(".:speed")
+properties/1/spawn = true
+properties/1/replication_mode = 0
+properties/2/path = NodePath(".:direction")
+properties/2/spawn = true
+properties/2/replication_mode = 0
+properties/3/path = NodePath("Explosion/Attack:team")
+properties/3/spawn = true
+properties/3/replication_mode = 0
 
 [sub_resource type="Animation" id="Animation_vh1rv"]
 length = 0.001
@@ -67,7 +199,7 @@ tracks/0/keys = {
 tracks/1/type = "audio"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AudioStreamPlayer")
+tracks/1/path = NodePath("Sound")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -118,32 +250,86 @@ tracks/4/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_eemtv"]
+resource_name = "FriendlyStun"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Effect/White:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gc2tr"]
 _data = {
 &"RESET": SubResource("Animation_vh1rv"),
-&"Stun": SubResource("Animation_oxxvb")
+&"Stun": SubResource("Animation_oxxvb"),
+&"FriendlyStun": SubResource("Animation_eemtv")
 }
 
 [node name="FlashbangProjectile" instance=ExtResource("1_ua7bf")]
 script = ExtResource("2_otq4k")
 unmute_duration = 1.5
-stun_duration = 3.0
 speed = 1800.0
 damping = 600.0
 
-[node name="StunArea" type="Area2D" parent="." index="0"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="0"]
+root_node = NodePath("../Explosion")
+libraries = {
+&"": SubResource("AnimationLibrary_isnu3")
+}
+
+[node name="Explosion" type="Sprite2D" parent="." index="1"]
+self_modulate = Color(1, 1, 1, 0)
+z_index = 3
+scale = Vector2(2, 2)
+texture = ExtResource("3_c5i60")
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="Explosion" index="0"]
+scale = Vector2(0.5, 0.5)
+max_distance = 4000.0
+bus = &"SFX"
+
+[node name="Attack" type="Node2D" parent="Explosion" index="1"]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("3_nxt1r")
+damage = 1
+
+[node name="AreaDetector" type="Area2D" parent="Explosion/Attack" index="0"]
 collision_layer = 4
 collision_mask = 2
 monitorable = false
+script = ExtResource("4_7cy3p")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StunArea" index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Explosion/Attack/AreaDetector" index="0"]
 shape = SubResource("CircleShape2D_8b4pb")
 disabled = true
 
-[node name="Grenade" parent="." index="1"]
+[node name="Grenade" parent="." index="2"]
 texture = ExtResource("2_nfc8c")
 
-[node name="Stun" type="CanvasLayer" parent="." index="5"]
+[node name="MultiplayerSynchronizer" parent="." index="5"]
+replication_config = SubResource("SceneReplicationConfig_3qk41")
+
+[node name="Stun" type="CanvasLayer" parent="." index="6"]
 layer = 10
 visible = false
 
@@ -164,7 +350,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("4_eddhq")
 expand_mode = 1
 stretch_mode = 6
 
@@ -182,18 +367,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_gc2tr")
 }
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Stun" index="2"]
+[node name="Sound" type="AudioStreamPlayer" parent="Stun" index="2"]
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." index="6"]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." index="7"]
 rect = Rect2(-64, -64, 128, 128)
-
-[node name="FreeTimer" type="Timer" parent="." index="7"]
-wait_time = 6.0
-one_shot = true
-
-[node name="StunAreaTimer" type="Timer" parent="." index="8"]
-wait_time = 0.3
-one_shot = true
-
-[connection signal="body_entered" from="StunArea" to="." method="_on_stun_area_body_entered"]
-[connection signal="timeout" from="FreeTimer" to="." method="safe_free"]

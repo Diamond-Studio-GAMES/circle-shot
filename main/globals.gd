@@ -59,7 +59,7 @@ func set_variant(id: String, value: Variant) -> void:
 
 
 ## Получает значение типа [int] по [param id]. Если его нет, вернёт [param default_value].
-func get_int(id: String, default_value := 0) -> int:
+func get_int(id: String, default_value: int = 0) -> int:
 	var value: int = save_file.get_value(DEFAULT_SAVE_FILE_SECTION, id, default_value)
 	return value
 
@@ -104,7 +104,7 @@ func set_string(id: String, value: String) -> void:
 
 
 #region Функции задавания и получения настроек
-## Получает значение настройик типа [Variant] по [param id].
+## Получает значение настройки типа [Variant] по [param id].
 ## Если его нет, вернёт [param default_value].
 func get_setting_variant(id: String, default_value: Variant) -> Variant:
 	return save_file.get_value(SETTINGS_SAVE_FILE_SECTION, id, default_value)
@@ -117,7 +117,7 @@ func set_setting_variant(id: String, value: Variant) -> void:
 
 ## Получает значение настройки типа [int] по [param id].
 ## Если его нет, вернёт [param default_value].
-func get_setting_int(id: String, default_value := 0) -> int:
+func get_setting_int(id: String, default_value: int = 0) -> int:
 	var value: int = save_file.get_value(SETTINGS_SAVE_FILE_SECTION, id, default_value)
 	return value
 
@@ -149,16 +149,53 @@ func get_setting_bool(id: String, default_value := false) -> bool:
 ## Задаёт значение настройки типа [bool] под [param id].
 func set_setting_bool(id: String, value: bool) -> void:
 	save_file.set_value(SETTINGS_SAVE_FILE_SECTION, id, value)
+#endregion
 
 
-## Получает значение настройки типа [String] по [param id].
+#region Функции задавания и получения настроек управления
+## Получает значение настройки управления типа [Variant] по [param id].
 ## Если его нет, вернёт [param default_value].
-func get_setting_string(id: String, default_value := "") -> String:
-	var value: String = save_file.get_value(SETTINGS_SAVE_FILE_SECTION, id, default_value)
+func get_controls_variant(id: String, default_value: Variant) -> Variant:
+	return save_file.get_value(CONTROLS_SAVE_FILE_SECTION, id, default_value)
+
+
+## Задаёт значение настройки управления типа [Variant] под [param id].
+func set_controls_variant(id: String, value: Variant) -> void:
+	save_file.set_value(SETTINGS_SAVE_FILE_SECTION, id, value)
+
+
+## Получает значение настройки управления типа [float] по [param id].
+## Если его нет, вернёт [param default_value].
+func get_controls_float(id: String, default_value := 0.0) -> float:
+	var value: float = save_file.get_value(CONTROLS_SAVE_FILE_SECTION, id, default_value)
 	return value
 
 
-## Задаёт значение настройки типа [String] под [param id].
-func set_setting_string(id: String, value: String) -> void:
-	save_file.set_value(SETTINGS_SAVE_FILE_SECTION, id, value)
+## Задаёт значение настройки управления типа [float] под [param id].
+func set_controls_float(id: String, value: float) -> void:
+	save_file.set_value(CONTROLS_SAVE_FILE_SECTION, id, value)
+
+
+## Получает значение настройки управления типа [bool] по [param id].
+## Если его нет, вернёт [param default_value].
+func get_controls_bool(id: String, default_value := false) -> bool:
+	var value: bool = save_file.get_value(CONTROLS_SAVE_FILE_SECTION, id, default_value)
+	return value
+
+
+## Задаёт значение настройки управления типа [bool] под [param id].
+func set_controls_bool(id: String, value: bool) -> void:
+	save_file.set_value(CONTROLS_SAVE_FILE_SECTION, id, value)
+
+
+## Получает значение настройки управления типа [Vector2] по [param id].
+## Если его нет, вернёт [param default_value].
+func get_controls_vector2(id: String, default_value := Vector2.ZERO) -> Vector2:
+	var value: Vector2 = save_file.get_value(CONTROLS_SAVE_FILE_SECTION, id, default_value)
+	return value
+
+
+## Задаёт значение настройки управления типа [Vector2] под [param id].
+func set_controls_vector2(id: String, value: Vector2) -> void:
+	save_file.set_value(CONTROLS_SAVE_FILE_SECTION, id, value)
 #endregion

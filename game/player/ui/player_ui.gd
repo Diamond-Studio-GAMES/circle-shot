@@ -87,30 +87,15 @@ func _process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not is_instance_valid(_player):
-		return
-	
 	match input_method:
 		InputMethod.TOUCH:
 			_touch_input(event)
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not is_instance_valid(_player):
-		return
-	
 	match input_method:
 		InputMethod.KEYBOARD_AND_MOUSE:
 			_unhandled_keyboard_and_mouse_input(event)
-
-
-func _unhandled_key_input(event: InputEvent) -> void:
-	if not is_instance_valid(_player):
-		return
-	
-	match input_method:
-		InputMethod.KEYBOARD_AND_MOUSE:
-			_unhandled_key_keyboard_and_mouse_input(event)
 
 
 func select_weapon(type: Weapon.Type) -> void:
@@ -202,13 +187,6 @@ func _touch_input(event: InputEvent) -> void:
 
 
 func _unhandled_keyboard_and_mouse_input(event: InputEvent) -> void:
-	if event.is_action(&"shoot"):
-		_player.player_input.shooting = event.is_pressed()
-	if event.is_action(&"show_aim"):
-		_player.player_input.showing_aim = event.is_pressed()
-
-
-func _unhandled_key_keyboard_and_mouse_input(event: InputEvent) -> void:
 	if event.is_action(&"move_left"):
 		_moving_left = event.is_pressed()
 	if event.is_action(&"move_right"):
@@ -237,6 +215,13 @@ func _unhandled_key_keyboard_and_mouse_input(event: InputEvent) -> void:
 		additional_button()
 	elif event.is_action_pressed(&"use_skill"):
 		use_skill()
+	
+	if not is_instance_valid(_player):
+		return
+	if event.is_action(&"shoot"):
+		_player.player_input.shooting = event.is_pressed()
+	if event.is_action(&"show_aim"):
+		_player.player_input.showing_aim = event.is_pressed()
 
 
 func _process_touch_input_method(delta: float) -> void:

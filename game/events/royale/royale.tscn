@@ -53,7 +53,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_knbec"]
 resource_name = "Victory"
-length = 7.50001
+length = 7.0
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -62,7 +62,7 @@ tracks/0/path = NodePath(".:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1, 5, 7),
+"times": PackedFloat32Array(0, 1, 4.5, 6.5),
 "transitions": PackedFloat32Array(2, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]

@@ -501,7 +501,7 @@ func _on_change_event_pressed() -> void:
 
 
 func _on_change_map_pressed() -> void:
-	_items_grid.list_items(ItemsDB.Item.MAP, _selected_map)
+	_items_grid.list_items(ItemsDB.Item.MAP, _selected_map, _selected_event)
 	_item_selector.title = "Выбор карты"
 	_item_selector.popup_centered()
 
