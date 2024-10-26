@@ -156,13 +156,16 @@ func setup_controls_settings() -> void:
 ## Применяет общие настройки.
 func apply_settings() -> void:
 	AudioServer.set_bus_volume_db(
-			AudioServer.get_bus_index(&"Master"), linear_to_db(Globals.get_float("master_volume"))
+			AudioServer.get_bus_index(&"Master"),
+			linear_to_db(Globals.get_setting_float("master_volume"))
 	)
 	AudioServer.set_bus_volume_db(
-			AudioServer.get_bus_index(&"Music"), linear_to_db(Globals.get_float("music_volume"))
+			AudioServer.get_bus_index(&"Music"),
+			linear_to_db(Globals.get_setting_float("music_volume"))
 	)
 	AudioServer.set_bus_volume_db(
-			AudioServer.get_bus_index(&"SFX"), linear_to_db(Globals.get_float("sfx_volume"))
+			AudioServer.get_bus_index(&"SFX"),
+			linear_to_db(Globals.get_setting_float("sfx_volume"))
 	)
 	get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN \
 			if Globals.get_setting_bool("fullscreen") else Window.MODE_WINDOWED

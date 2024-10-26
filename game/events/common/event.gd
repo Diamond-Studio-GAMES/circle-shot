@@ -172,6 +172,10 @@ func _finish_setup() -> void:
 	pass
 
 
+func _finish_start() -> void:
+	pass
+
+
 func _get_player_scene(_id: int) -> PackedScene:
 	return player_scenes[0]
 
@@ -181,10 +185,6 @@ func _get_spawn_point(_id: int) -> Vector2:
 
 
 func _customize_player(_player: Player) -> void:
-	pass
-
-
-func _finish_start() -> void:
 	pass
 
 
