@@ -136,8 +136,8 @@ tracks/2/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_n8n4b"]
 _data = {
 &"RESET": SubResource("Animation_ki4so"),
-&"Defeat": SubResource("Animation_ty3n7"),
-&"Victory": SubResource("Animation_knbec")
+&"Victory": SubResource("Animation_knbec"),
+&"Defeat": SubResource("Animation_ty3n7")
 }
 
 [node name="Event" instance=ExtResource("1_5uf7s")]

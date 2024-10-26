@@ -27,22 +27,25 @@ func _process(_delta: float) -> void:
 		var angle: float = (screen_pos - screen_rect.size / 2).angle()
 		_arrow.rotation = angle
 		_arrow_icon.global_rotation = 0.0
-		var half_x: float = get_viewport_rect().size.x / 2 - arrow_margin
-		var half_y: float = get_viewport_rect().size.y / 2 - arrow_margin
-		_marker.position = get_viewport_rect().size / 2
-		if angle <= _screen_angle and angle >= -_screen_angle:
-			# Смотрит вправо 
-			_marker.position.x += half_x
-			_marker.position.y += tan(angle) * half_x
-		elif angle < -_screen_angle and angle > -PI + _screen_angle:
-			# Смотрит вверх
-			_marker.position.y -= half_y
-			_marker.position.x += tan(angle + PI / 2) * half_y
-		elif angle > -_screen_angle and angle < PI - _screen_angle:
-			# Смотрит вниз
-			_marker.position.y += half_y
-			_marker.position.x -= tan(angle - PI / 2) * half_y
+		if screen_rect.grow(-arrow_margin).has_point(screen_pos):
+			_marker.position = screen_pos
 		else:
-			# Смотрит влево
-			_marker.position.x -= half_x
-			_marker.position.y -= tan(angle + PI) * half_x
+			var half_x: float = get_viewport_rect().size.x / 2 - arrow_margin
+			var half_y: float = get_viewport_rect().size.y / 2 - arrow_margin
+			_marker.position = get_viewport_rect().size / 2
+			if angle <= _screen_angle and angle >= -_screen_angle:
+				# Смотрит вправо 
+				_marker.position.x += half_x
+				_marker.position.y += tan(angle) * half_x
+			elif angle < -_screen_angle and angle > -PI + _screen_angle:
+				# Смотрит вверх
+				_marker.position.y -= half_y
+				_marker.position.x += tan(angle + PI / 2) * half_y
+			elif angle > -_screen_angle and angle < PI - _screen_angle:
+				# Смотрит вниз
+				_marker.position.y += half_y
+				_marker.position.x -= tan(angle - PI / 2) * half_y
+			else:
+				# Смотрит влево
+				_marker.position.x -= half_x
+				_marker.position.y -= tan(angle + PI) * half_x
