@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventData" load_steps=4 format=3 uid="uid://dn5s2j1175lhl"]
+
+[ext_resource type="Script" path="res://game/events/common/map_data.gd" id="1_d4e2q"]
+[ext_resource type="Script" path="res://game/events/common/event_data.gd" id="2_066hq"]
+[ext_resource type="Resource" uid="uid://brqjqke8notbq" path="res://game/maps/teamfight/vortex/vortex.tres" id="2_nhpwv"]
+
+[resource]
+script = ExtResource("2_066hq")
+name = "Командный бой"
+brief_description = "Убивай противников на счёт!"
+min_players = 2
+max_players = 10
+players_divider = 2
+scene_path = "uid://d2iraf4bc27ee"
+image_path = "uid://crqlredjtnixv"
+maps = Array[ExtResource("1_d4e2q")]([ExtResource("2_nhpwv")])

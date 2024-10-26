@@ -37,6 +37,7 @@ func _ready() -> void:
 	for i: String in Globals.items_db.spawnable_other_paths:
 		other_spawner.add_spawnable_scene(ResourceUID.get_id_path(ResourceUID.text_to_id(i)))
 	
+	_initialize()
 	if multiplayer.is_server():
 		_setup()
 	
@@ -72,8 +73,6 @@ func _create_kill_marker(where: Vector2) -> void:
 
 
 func _setup() -> void:
-	if not multiplayer.is_server():
-		return
 	_make_teams()
 	_event_ui.chat.players_names = _players_names
 	_event_ui.chat.players_teams = _players_teams
@@ -92,10 +91,6 @@ func set_players_data(players_names: Dictionary[int, String],
 
 
 func spawn_player(id: int) -> void:
-	if not multiplayer.is_server():
-		push_error("Unexpected call on client!")
-		return
-	
 	var player_scene: PackedScene = _get_player_scene(id)
 	var player: Player = player_scene.instantiate()
 	player.global_position = _get_spawn_point(id)
@@ -163,6 +158,10 @@ func _end() -> void:
 	
 	ended.emit()
 	queue_free()
+
+
+func _initialize() -> void:
+	pass
 
 
 func _make_teams() -> void:

@@ -23,7 +23,7 @@ func _use() -> void:
 	_player.collision_layer = 0
 	
 	var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
-	tween.tween_property(_player.visual, ^"rotation", TAU, roll_duration)
+	tween.tween_property(_player.visual, ^"rotation", TAU * _player.visual.scale.x, roll_duration)
 	tween.tween_callback(func() -> void: _player.visual.rotation = 0.0)
 	
 	_roll_timer.start(roll_duration)

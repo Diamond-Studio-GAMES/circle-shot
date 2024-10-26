@@ -320,9 +320,14 @@ func _get_weapon_type_from_vector(vector: Vector2) -> Weapon.Type:
 
 
 func _on_local_player_created(player: Player) -> void:
+	_health_bar.max_value = player.max_health
 	_on_player_health_changed(player.max_health, player.max_health)
+	
 	_tint_anim.play(&"RESET")
+	var tween: Tween = create_tween()
 	($Controller as Control).show()
+	($Controller as Control).modulate = Color.TRANSPARENT
+	tween.tween_property($Controller as Control, ^":modulate", Color.WHITE, 0.5)
 	
 	player.health_changed.connect(_on_player_health_changed)
 	player.died.connect(_on_player_died)
@@ -335,8 +340,6 @@ func _on_local_player_created(player: Player) -> void:
 
 
 func _on_player_health_changed(old_value: int, new_value: int) -> void:
-	if new_value > _health_bar.max_value:
-		_health_bar.max_value = new_value
 	_health_bar.value = new_value
 	_health_text.text = "%d/%d" % [_health_bar.value, _health_bar.max_value]
 	if new_value < old_value:

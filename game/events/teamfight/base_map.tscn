@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://c338frelp27wo"]
+
+[ext_resource type="PackedScene" uid="uid://dp6wxqvjukdht" path="res://game/events/common/base_map.tscn" id="1_4hcn7"]
+
+[node name="Map" instance=ExtResource("1_4hcn7")]
+metadata/_edit_vertical_guides_ = [-4000.0, 4000.0]
+metadata/_edit_horizontal_guides_ = [-4000.0, 4000.0]
+
+[node name="SpawnPoints0" type="Node2D" parent="." index="1"]
+
+[node name="0" type="Marker2D" parent="SpawnPoints0" index="0"]
+position = Vector2(-330, 148)
+gizmo_extents = 76.0
+
+[node name="1" type="Marker2D" parent="SpawnPoints0" index="1"]
+position = Vector2(-466, 99)
+gizmo_extents = 76.0
+
+[node name="2" type="Marker2D" parent="SpawnPoints0" index="2"]
+position = Vector2(-374, 40)
+gizmo_extents = 76.0
+
+[node name="3" type="Marker2D" parent="SpawnPoints0" index="3"]
+position = Vector2(-330, 148)
+gizmo_extents = 76.0
+
+[node name="4" type="Marker2D" parent="SpawnPoints0" index="4"]
+position = Vector2(-475, 191)
+gizmo_extents = 76.0
+
+[node name="SpawnPoints1" type="Node2D" parent="." index="2"]
+
+[node name="0" type="Marker2D" parent="SpawnPoints1" index="0"]
+position = Vector2(504, 175)
+gizmo_extents = 76.0
+
+[node name="1" type="Marker2D" parent="SpawnPoints1" index="1"]
+position = Vector2(368, 126)
+gizmo_extents = 76.0
+
+[node name="2" type="Marker2D" parent="SpawnPoints1" index="2"]
+position = Vector2(460, 67)
+gizmo_extents = 76.0
+
+[node name="3" type="Marker2D" parent="SpawnPoints1" index="3"]
+position = Vector2(504, 175)
+gizmo_extents = 76.0
+
+[node name="4" type="Marker2D" parent="SpawnPoints1" index="4"]
+position = Vector2(359, 218)
+gizmo_extents = 76.0

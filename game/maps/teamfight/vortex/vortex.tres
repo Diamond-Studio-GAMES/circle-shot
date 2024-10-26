@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://brqjqke8notbq"]
+
+[ext_resource type="Script" path="res://game/events/common/map_data.gd" id="1_fdi78"]
+
+[resource]
+script = ExtResource("1_fdi78")
+name = "Вихрь"
+brief_description = "Здесь когда-то прошёлся торнадо"
+scene_path = "uid://yw3tn27vxvlr"
+image_path = "uid://cxqd2beqfqhx7"

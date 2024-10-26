@@ -21,6 +21,12 @@ var _alive_players: Array[int]
 @onready var _royale_ui: RoyaleUI = $UI
 
 
+func _initialize() -> void:
+	_spawn_points.shuffle()
+	_heal_box_points.shuffle()
+	_ammo_box_points.shuffle()
+
+
 func _finish_start() -> void:
 	if multiplayer.is_server():
 		_alive_players = _players_names.keys()
@@ -36,9 +42,6 @@ func _finish_start() -> void:
 
 
 func _make_teams() -> void:
-	_spawn_points.shuffle()
-	_heal_box_points.shuffle()
-	_ammo_box_points.shuffle()
 	var counter: int = 0
 	for i: int in _players_names:
 		_players_teams[i] = counter
@@ -46,7 +49,7 @@ func _make_teams() -> void:
 
 
 func _get_spawn_point(_id: int) -> Vector2:
-	var pos := (_spawn_points[_spawn_counter] as Node2D).global_position
+	var pos: Vector2 = (_spawn_points[_spawn_counter] as Node2D).global_position
 	_spawn_counter += 1
 	return pos
 

@@ -56,9 +56,12 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	velocity = knockback
+	var self_velocity := Vector2.ZERO
 	if not is_immobile():
-		velocity += entity_input.direction.limit_length(1.0) * speed * speed_multiplier
+		self_velocity = entity_input.direction.limit_length(1.0) * speed * speed_multiplier
+	velocity += self_velocity
 	move_and_slide()
+	# TODO: сделать что нибудь с этим
 	if multiplayer.is_server():
 		server_position = position
 	else:
@@ -67,8 +70,8 @@ func _physics_process(delta: float) -> void:
 				clampf(position.distance_to(server_position) / magic * delta, 0.0, 1.0)
 		)
 	
-	if not is_zero_approx(velocity.x):
-		visual.scale.x = -1 if velocity.x < 0 else 1
+	if not is_zero_approx(self_velocity.x):
+		visual.scale.x = -1 if self_velocity.x < 0 else 1
 
 
 #region Методы эффектов

@@ -7,11 +7,19 @@ var _alive_players: Array[Player]
 
 @rpc("call_local", "reliable")
 func set_alive_players(count: int) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
 	($Main/PlayerCounter as Label).text = str(count)
 
 
 @rpc("reliable", "call_local")
 func show_winner(winner: int, winner_name: String) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
 	_ended = true
 	if winner == multiplayer.get_unique_id():
 		($Main/GameEnd as Label).text = "ТЫ ПОБЕДИЛ!!!"
@@ -23,6 +31,10 @@ func show_winner(winner: int, winner_name: String) -> void:
 
 @rpc("reliable", "call_local")
 func kill_player(which: int, killer: int) -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
 	_alive_players = Array(
 			get_tree().get_nodes_in_group(&"Player"), TYPE_OBJECT, &"CharacterBody2D", Player
 	)
