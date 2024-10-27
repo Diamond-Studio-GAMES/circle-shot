@@ -72,15 +72,8 @@ var spawnable_projectiles_paths: Array[String]
 var spawnable_other_paths: Array[String]
 
 
+## Инициализирует базу данных предметов.
 func initialize() -> void:
-	weapons_light.sort_custom(_sort_rarity_weapon)
-	weapons_heavy.sort_custom(_sort_rarity_weapon)
-	weapons_support.sort_custom(_sort_rarity_weapon)
-	weapons_melee.sort_custom(_sort_rarity_weapon)
-	
-	skins.sort_custom(_sort_rarity_skin)
-	skills.sort_custom(_sort_rarity_skill)
-	
 	spawnable_projectiles_paths.clear()
 	spawnable_other_paths.clear()
 	
@@ -95,15 +88,3 @@ func initialize() -> void:
 	
 	for i: SkillData in skills:
 		spawnable_other_paths.append_array(i.spawnable_scenes_paths)
-
-
-func _sort_rarity_weapon(first: WeaponData, second: WeaponData) -> bool:
-	return first.rarity < second.rarity
-
-
-func _sort_rarity_skin(first: SkinData, second: SkinData) -> bool:
-	return first.rarity < second.rarity
-
-
-func _sort_rarity_skill(first: SkillData, second: SkillData) -> bool:
-	return first.rarity < second.rarity

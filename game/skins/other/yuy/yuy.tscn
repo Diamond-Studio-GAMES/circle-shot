@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjm6eb2572drg"]
+
+[ext_resource type="Texture2D" uid="uid://ba4lswtn6ceyv" path="res://game/skins/other/yuy/yuy.png" id="1_iopt8"]
+[ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="1_krcqx"]
+
+[node name="Yuy" type="Sprite2D"]
+texture = ExtResource("1_iopt8")
+script = ExtResource("1_krcqx")

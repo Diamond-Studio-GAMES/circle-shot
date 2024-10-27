@@ -45,7 +45,6 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 				item.texture = load(i.image_path)
 				(item.get_node(^"Container/Name") as Label).text = i.name
 				if selected == counter:
-					
 					(item.get_node(^"Container/Name") as Label).add_theme_color_override(
 							"font_color", Color.GREEN
 					)
@@ -57,7 +56,9 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 				counter += 1
 		ItemsDB.Item.SKIN:
 			columns = 3
-			for i: SkinData in Globals.items_db.skins:
+			var skins: Array[SkinData] = Globals.items_db.skins.duplicate()
+			skins.sort_custom(_sort_rarity_skin)
+			for i: SkinData in skins:
 				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
@@ -70,13 +71,14 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 						HORIZONTAL_ALIGNMENT_CENTER
 				(item.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(item.get_node(^"Click") as Button).pressed.connect(
-						_on_item_pressed.bind(type, counter)
+						_on_item_pressed.bind(type, Globals.items_db.skins.find(i))
 				)
 				add_child(item)
-				counter += 1
 		ItemsDB.Item.WEAPON_LIGHT:
 			columns = 3
-			for i: WeaponData in Globals.items_db.weapons_light:
+			var weapons: Array[WeaponData] = Globals.items_db.weapons_light.duplicate()
+			weapons.sort_custom(_sort_rarity_weapon)
+			for i: WeaponData in weapons:
 				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
@@ -87,13 +89,14 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 				(item.get_node(^"Description") as Label).text = i.ammo_text + '\n' + i.damage_text
 				(item.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(item.get_node(^"Click") as Button).pressed.connect(
-						_on_item_pressed.bind(type, counter)
+						_on_item_pressed.bind(type, Globals.items_db.weapons_light.find(i))
 				)
 				add_child(item)
-				counter += 1
 		ItemsDB.Item.WEAPON_HEAVY:
 			columns = 3
-			for i: WeaponData in Globals.items_db.weapons_heavy:
+			var weapons: Array[WeaponData] = Globals.items_db.weapons_heavy.duplicate()
+			weapons.sort_custom(_sort_rarity_weapon)
+			for i: WeaponData in weapons:
 				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
@@ -104,13 +107,14 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 				(item.get_node(^"Description") as Label).text = i.ammo_text + '\n' + i.damage_text
 				(item.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(item.get_node(^"Click") as Button).pressed.connect(
-						_on_item_pressed.bind(type, counter)
+						_on_item_pressed.bind(type, Globals.items_db.weapons_heavy.find(i))
 				)
 				add_child(item)
-				counter += 1
 		ItemsDB.Item.WEAPON_SUPPORT:
 			columns = 3
-			for i: WeaponData in Globals.items_db.weapons_support:
+			var weapons: Array[WeaponData] = Globals.items_db.weapons_support.duplicate()
+			weapons.sort_custom(_sort_rarity_weapon)
+			for i: WeaponData in weapons:
 				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
@@ -121,13 +125,14 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 				(item.get_node(^"Description") as Label).text = i.ammo_text + '\n' + i.damage_text
 				(item.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(item.get_node(^"Click") as Button).pressed.connect(
-						_on_item_pressed.bind(type, counter)
+						_on_item_pressed.bind(type, Globals.items_db.weapons_support.find(i))
 				)
 				add_child(item)
-				counter += 1
 		ItemsDB.Item.WEAPON_MELEE:
 			columns = 3
-			for i: WeaponData in Globals.items_db.weapons_melee:
+			var weapons: Array[WeaponData] = Globals.items_db.weapons_melee.duplicate()
+			weapons.sort_custom(_sort_rarity_weapon)
+			for i: WeaponData in weapons:
 				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
@@ -138,13 +143,14 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 				(item.get_node(^"Description") as Label).text = i.ammo_text + '\n' + i.damage_text
 				(item.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(item.get_node(^"Click") as Button).pressed.connect(
-						_on_item_pressed.bind(type, counter)
+						_on_item_pressed.bind(type, Globals.items_db.weapons_melee.find(i))
 				)
 				add_child(item)
-				counter += 1
 		ItemsDB.Item.SKILL:
 			columns = 3
-			for i: SkillData in Globals.items_db.skills:
+			var skills: Array[SkillData] = Globals.items_db.skills.duplicate()
+			skills.sort_custom(_sort_rarity_skill)
+			for i: SkillData in skills:
 				var item: TextureRect = _item_equip_scene.instantiate()
 				item.texture = load(i.image_path)
 				(item.get_node(^"Name") as Label).text = i.name
@@ -156,12 +162,23 @@ func list_items(type: ItemsDB.Item, selected: int = -1, selected_event: int = 0)
 						i.usage_text + '\n' + i.brief_description
 				(item.get_node(^"RarityFill") as ColorRect).color = ItemsDB.RARITY_COLORS[i.rarity]
 				(item.get_node(^"Click") as Button).pressed.connect(
-						_on_item_pressed.bind(type, counter)
+						_on_item_pressed.bind(type, Globals.items_db.skills.find(i))
 				)
 				add_child(item)
-				counter += 1
 		_:
 			push_error("Invalid type specified: %d!" % type)
+
+
+func _sort_rarity_weapon(first: WeaponData, second: WeaponData) -> bool:
+	return first.rarity < second.rarity
+
+
+func _sort_rarity_skin(first: SkinData, second: SkinData) -> bool:
+	return first.rarity < second.rarity
+
+
+func _sort_rarity_skill(first: SkillData, second: SkillData) -> bool:
+	return first.rarity < second.rarity
 
 
 func _on_item_pressed(type: ItemsDB.Item, id: int) -> void:

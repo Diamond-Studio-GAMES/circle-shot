@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://blr2mf2jfbpgy"]
+
+[ext_resource type="Script" path="res://game/player/equip/skin_data.gd" id="1_m2qkt"]
+
+[resource]
+script = ExtResource("1_m2qkt")
+name = "ЪУЪ"
+brief_description = "Попробуй это сказать!"
+rarity = 1
+id = "yuy"
+scene_path = "uid://bjm6eb2572drg"
+image_path = "uid://bcwosvm2fxdib"
