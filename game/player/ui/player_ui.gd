@@ -1,10 +1,6 @@
 extends Control
 
 
-enum InputMethod {
-	KEYBOARD_AND_MOUSE = 0,
-	TOUCH = 1,
-}
 const MIN_AIM_DIRECTION_LENGTH := 0.1
 const DEFAULT_WEAPON_BG_COLOR := Color(1.0, 1.0, 1.0, 0.5)
 const SELECTED_WEAPON_BG_COLOR := Color.WHITE
@@ -14,7 +10,7 @@ var aim_max_at_distance := 260.0
 var sneak_multiplier := 0.5
 var change_weapon_deadzone := 32.0
 var show_weapons_time := 0.4
-var input_method: InputMethod
+var input_method: Main.InputMethod
 
 var _player: Player
 
@@ -22,6 +18,9 @@ var _moving_left := false
 var _moving_right := false
 var _moving_up := false
 var _moving_down := false
+var _shooting := false
+var _showing_aim := false
+var _follow_mouse := true
 var _aim_zone: float
 
 var _touch_index: int = -1
@@ -59,14 +58,12 @@ var _weapon_selection_tween: Tween
 
 
 func _ready() -> void:
-	if not OS.has_feature("mobile"):
-		input_method = InputMethod.KEYBOARD_AND_MOUSE
-	else:
-		input_method = InputMethod.TOUCH
+	input_method = Globals.get_controls_int("input_method") as Main.InputMethod
 	
 	match input_method:
-		InputMethod.KEYBOARD_AND_MOUSE:
+		Main.InputMethod.KEYBOARD_AND_MOUSE:
 			_aim_zone = aim_max_at_distance - aim_deadzone
+			_follow_mouse = Globals.get_controls_bool("follow_mouse")
 			($Controller/TouchControls as Control).hide()
 			($Controller/Skill as Control).position = ($Controller/PCSkill as Control).position
 			($Controller/CurrentWeapon as Control).position = \
@@ -80,21 +77,21 @@ func _process(delta: float) -> void:
 	
 	_update_skill()
 	match input_method:
-		InputMethod.TOUCH:
+		Main.InputMethod.TOUCH:
 			_process_touch_input_method(delta)
-		InputMethod.KEYBOARD_AND_MOUSE:
+		Main.InputMethod.KEYBOARD_AND_MOUSE:
 			_process_keyboard_and_mouse_input_method()
 
 
 func _input(event: InputEvent) -> void:
 	match input_method:
-		InputMethod.TOUCH:
+		Main.InputMethod.TOUCH:
 			_touch_input(event)
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	match input_method:
-		InputMethod.KEYBOARD_AND_MOUSE:
+		Main.InputMethod.KEYBOARD_AND_MOUSE:
 			_unhandled_keyboard_and_mouse_input(event)
 
 
@@ -195,6 +192,10 @@ func _unhandled_keyboard_and_mouse_input(event: InputEvent) -> void:
 		_moving_up = event.is_pressed()
 	if event.is_action(&"move_down"):
 		_moving_down = event.is_pressed()
+	if event.is_action(&"shoot"):
+		_shooting = event.is_pressed()
+	if event.is_action(&"show_aim"):
+		_showing_aim = event.is_pressed()
 	
 	if event.is_action_pressed(&"show_weapons"):
 		if ($Controller/WeaponSelection as Control).visible:
@@ -215,13 +216,6 @@ func _unhandled_keyboard_and_mouse_input(event: InputEvent) -> void:
 		additional_button()
 	elif event.is_action_pressed(&"use_skill"):
 		use_skill()
-	
-	if not is_instance_valid(_player):
-		return
-	if event.is_action(&"shoot"):
-		_player.player_input.shooting = event.is_pressed()
-	if event.is_action(&"show_aim"):
-		_player.player_input.showing_aim = event.is_pressed()
 
 
 func _process_touch_input_method(delta: float) -> void:
@@ -251,12 +245,17 @@ func _process_keyboard_and_mouse_input_method() -> void:
 	if Input.is_action_pressed(&"sneak"):
 		_player.entity_input.direction *= sneak_multiplier
 	
-	var mouse_pos: Vector2 = _center.get_local_mouse_position()
-	var mouse_distance: float = mouse_pos.length()
-	if mouse_distance > aim_deadzone:
-		_player.player_input.aim_direction = mouse_pos.normalized() * ((
-				clampf(mouse_distance, aim_deadzone, aim_max_at_distance) - aim_deadzone
-		) / _aim_zone * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
+	_player.player_input.shooting = _shooting
+	_player.player_input.showing_aim = _showing_aim
+	
+	if _follow_mouse or _showing_aim:
+		var mouse_pos: Vector2 = _center.get_local_mouse_position()
+		var mouse_distance: float = mouse_pos.length()
+		if mouse_distance > aim_deadzone:
+			_player.player_input.aim_direction = mouse_pos.normalized() * ((
+					clampf(mouse_distance, aim_deadzone, aim_max_at_distance) - aim_deadzone
+			) / _aim_zone * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
+	_player.player_input.turn_with_aim = _follow_mouse or _showing_aim
 
 
 func _update_skill() -> void:

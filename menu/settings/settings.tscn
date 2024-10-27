@@ -40,6 +40,22 @@ OpenGL - традиционный отрисовщик, поддерживающ
 После применения игра будет перезапущена.", "Предзагрузка ресурсов обеспечивает более реактивные переходы
 между сценами, однако делает загрузку игры дольше и увеличивает расход памяти.
 Стоит выключить, если требуется экономить оперативную память.
+Изменения будут применены после перезапуска игры.", "Настраивает направление переката.
+Движение - перекат будет выполняться в сторону (последнего) движения.
+Прицел - перекат будет выполняться в сторону прицела.", "Настраивает тип управления.
+Касания - управления джойстиками и кнопками на экране.
+Предназначено для управления на телефонах.
+Клавитура и мышь - управления с клавиатуры и прицеливание с помощью мыши.
+Предназначено для ПК, однако может использоваться и на телефонах,
+если подключены физические устройства ввода.", "Если включено, прицел всегда смотрит в сторону мыши.
+Если отключено, прицел повернётся в сторону мыши при нажатии действия ПРИЦЕЛ.", "Включает загрузку пользовательских треков.
+Максимум одновременно загруженых треков - 20.
+Максимальный размер трека - 15 МБ.
+Если трек имеет больший размер, он не будет загружен.
+Поддерживаемые форматы треков: MP3 и OGG.
+Требуется предоставить разрешение на чтение файлов на Android.
+Если при попытки включить эту опцию она сама обратно выключается:
+попробуйте в настройках приложения самостоятельно выдать нужное разрешение.
 Изменения будут применены после перезапуска игры."])
 
 [node name="Background" type="TextureRect" parent="."]
@@ -202,7 +218,6 @@ icon = ExtResource("9_0iguj")
 [node name="ResetControlSettings" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General"]
 layout_mode = 2
 size_flags_horizontal = 4
-disabled = true
 text = "Сбросить настройки управления"
 icon = ExtResource("10_kedwe")
 
@@ -309,6 +324,38 @@ layout_mode = 2
 icon = ExtResource("1_xh6xh")
 expand_icon = true
 
+[node name="DodgeDirection" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/DodgeDirection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Направление переката"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/DodgeDirection"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DodgeOptions" type="OptionButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/DodgeDirection/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "Движение"
+popup/item_0/id = 0
+popup/item_1/text = "Прицел"
+popup/item_1/id = 1
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/DodgeDirection/Setting"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
 [node name="Video" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections"]
 visible = false
 layout_mode = 2
@@ -373,7 +420,7 @@ item_count = 2
 popup/item_0/text = "Vulkan"
 popup/item_0/id = 0
 popup/item_1/text = "OpenGL"
-popup/item_1/id = 1
+popup/item_1/id = 0
 
 [node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Renderer/Setting"]
 custom_minimum_size = Vector2(48, 0)
@@ -521,33 +568,164 @@ layout_mode = 2
 icon = ExtResource("1_xh6xh")
 expand_icon = true
 
+[node name="LoadCustomTracks" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/LoadCustomTracks"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Загрузка пользовательских треков"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/LoadCustomTracks"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CustomTracksCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/LoadCustomTracks/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/LoadCustomTracks/Setting"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
+[node name="CustomTracksSettings" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CustomTracksPath" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/CustomTracksSettings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Путь к папке с треками: "
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="LoadedTracksLabel" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/CustomTracksSettings"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Загруженные треки"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/CustomTracksSettings"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="LoadedTracks" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/CustomTracksSettings/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Empty" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/CustomTracksSettings/PanelContainer/LoadedTracks"]
+layout_mode = 2
+text = "Нет треков"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Controls" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Nope" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls"]
+[node name="InputMethod" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls"]
 layout_mode = 2
-theme_type_variation = &"HeaderMedium"
-text = "Пока настроек нет"
-horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/InputMethod"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Тип управления"
 vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/InputMethod"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InputOptions" type="OptionButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/InputMethod/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "Клавиатура + Мышь"
+popup/item_0/id = 0
+popup/item_1/text = "Касания"
+popup/item_1/id = 0
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/InputMethod/Setting"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
+[node name="KeyboardSettings" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FollowMouse" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Следить прицелом за мышью"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FollowMouseCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse/Setting"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
+[node name="TouchSettings" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="HelpDialog" type="AcceptDialog" parent="."]
 title = "Помощь по настройке"
 size = Vector2i(240, 120)
+unresizable = true
 
 [node name="ResetSettingsDialog" type="ConfirmationDialog" parent="."]
 title = "Сброс настроек"
 size = Vector2i(705, 112)
+unresizable = true
 ok_button_text = "Сбросить"
 dialog_text = "Ты действительно хочешь вернуть все настройки к значениям по умолчанию?"
+cancel_button_text = "Отмена"
+
+[node name="ResetControlsDialog" type="ConfirmationDialog" parent="."]
+auto_translate_mode = 1
+title = "Сброс настроек управления"
+size = Vector2i(705, 112)
+unresizable = true
+ok_button_text = "Сбросить"
+dialog_text = "Ты действительно хочешь вернуть настройки управления к значениям по умолчанию?"
 cancel_button_text = "Отмена"
 
 [node name="ResetDataDialog" type="ConfirmationDialog" parent="."]
 auto_translate_mode = 1
 title = "Удаление всех данных"
 size = Vector2i(913, 190)
+unresizable = true
 ok_button_text = "Удалить всё"
 dialog_text = "Удалить все данные игры?
 Это повлёчет за собой утерю инвентаря, валюты, достижений БЕЗ ВОЗМОЖНОСТИ ВОССТАНОВЛЕНИЯ!!!
@@ -568,15 +746,18 @@ placeholder_text = "Новое имя..."
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Video" to="." method="show_section" binds= ["Video"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Sound" to="." method="show_section" binds= ["Sound"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Controls" to="." method="show_section" binds= ["Controls"]]
-[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/PreloadResources/Setting/PreloadCheck" to="." method="_on_shader_cache_check_toggled"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/PreloadResources/Setting/PreloadCheck" to="." method="_on_preload_check_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/PreloadResources/Setting/Help" to="." method="show_help" binds= [4]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/ChangeName" to="." method="_on_change_name_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/ResetControlSettings" to="ResetControlsDialog" method="popup_centered"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/ResetSettings" to="ResetSettingsDialog" method="popup_centered"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/General/DeleteData" to="ResetDataDialog" method="popup_centered"]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/HitMarkers/Setting/HitMarkersCheck" to="." method="_on_hit_markers_check_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/HitMarkers/Setting/Help" to="." method="show_help" binds= [2]]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/ShowMinimap/Setting/ShowMinimapCheck" to="." method="_on_show_minimap_check_toggled"]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/ShowDebug/Setting/ShowDebugCheck" to="." method="_on_show_debug_check_toggled"]
+[connection signal="item_selected" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/DodgeDirection/Setting/DodgeOptions" to="." method="_on_dodge_options_item_selected"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/DodgeDirection/Setting/Help" to="." method="show_help" binds= [5]]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen/Setting/FullscreenCheck" to="." method="_on_fullscreen_check_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen/Setting/Help" to="." method="show_help" binds= [1]]
 [connection signal="item_selected" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Renderer/Setting/RendererOptions" to="." method="_on_renderer_options_item_selected"]
@@ -588,7 +769,14 @@ placeholder_text = "Новое имя..."
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/MasterVolume/Setting/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/MusicVolume/Setting/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/SFXVolume/Setting/SFXVolumeSlider" to="." method="_on_sfx_volume_slider_value_changed"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/LoadCustomTracks/Setting/CustomTracksCheck" to="." method="_on_custom_tracks_check_toggled"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Sound/LoadCustomTracks/Setting/Help" to="." method="show_help" binds= [8]]
+[connection signal="item_selected" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/InputMethod/Setting/InputOptions" to="." method="_on_input_options_item_selected"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/InputMethod/Setting/Help" to="." method="show_help" binds= [6]]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse/Setting/FollowMouseCheck" to="." method="_on_follow_mouse_check_toggled"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse/Setting/Help" to="." method="show_help" binds= [7]]
 [connection signal="confirmed" from="ResetSettingsDialog" to="." method="_on_reset_settings_dialog_confirmed"]
+[connection signal="confirmed" from="ResetControlsDialog" to="." method="_on_reset_controls_dialog_confirmed"]
 [connection signal="confirmed" from="ResetDataDialog" to="." method="_on_reset_data_dialog_confirmed"]
 
 [editable path="NameDialog"]

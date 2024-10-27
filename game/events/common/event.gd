@@ -148,6 +148,12 @@ func _start() -> void:
 	else:
 		local_player.unmake_disarmed()
 		local_player.unmake_immobile()
+	
+	if Globals.get_setting_bool("custom_tracks") \
+			and not Globals.main.loaded_custom_tracks.is_empty():
+		($Music as AudioStreamPlayer).stream = \
+				Globals.main.loaded_custom_tracks.values().pick_random()
+		($Music as AudioStreamPlayer).play()
 
 
 @rpc("call_local", "reliable")

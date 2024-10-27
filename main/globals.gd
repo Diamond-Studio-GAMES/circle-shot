@@ -6,7 +6,7 @@ extends Node
 
 ## Путь к файлу сохранения.
 const SAVE_FILE_PATH := "user://save.cfg"
-## Пароль файлв сохранения.
+## Пароль файла сохранения.
 const SAVE_FILE_PASSWORD := "circle-shot"
 ## Стандартная секция файла сохранения.
 const DEFAULT_SAVE_FILE_SECTION := "save"
@@ -173,6 +173,18 @@ func get_controls_float(id: String, default_value := 0.0) -> float:
 
 ## Задаёт значение настройки управления типа [float] под [param id].
 func set_controls_float(id: String, value: float) -> void:
+	save_file.set_value(CONTROLS_SAVE_FILE_SECTION, id, value)
+
+
+## Получает значение настройки управления типа [int] по [param id].
+## Если его нет, вернёт [param default_value].
+func get_controls_int(id: String, default_value: int = 0) -> int:
+	var value: int = save_file.get_value(CONTROLS_SAVE_FILE_SECTION, id, default_value)
+	return value
+
+
+## Задаёт значение настройки управления типа [int] под [param id].
+func set_controls_int(id: String, value: int) -> void:
 	save_file.set_value(CONTROLS_SAVE_FILE_SECTION, id, value)
 
 

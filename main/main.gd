@@ -7,14 +7,30 @@ extends Node
 
 ## Внутренний сигнал, используемый при загрузке.
 signal loading_stage_finished(success: bool)
+## Перечисление с возможными методами ввода.
+enum InputMethod {
+	## Клавиатура и мышь.
+	KEYBOARD_AND_MOUSE = 0,
+	## Касаниями.
+	TOUCH = 1,
+}
+## Разрешённые расширения файлов для загрузки в качестве пользовательских треков.
+const ALLOWED_MUSIC_FILE_EXTENSIONS: Array[String] = [".mp3", ".ogg"]
 
 ## Список путей к сценам для загрузки в память при запуске игры. Ускоряет последующую загрузку
 ## этих сцен.
 @export_file("Resource") var resources_to_preload_paths: Array[String]
+## Ссылка на узел игры.
 var game: Game
+## Словарь загруженных пользовательских треков в формате "<имя файла> : <ресурс трека>".
+var loaded_custom_tracks: Dictionary[String, AudioStream]
+
 var _menu: Menu
 var _other_screens: Array[Node]
 var _preloaded_resources: Array[Resource]
+
+## Путь до папки с пользовательскими треками.
+@onready var music_path: String = OS.get_system_dir(OS.SYSTEM_DIR_MUSIC).path_join("Circle Shot")
 @onready var _load_status_label: Label = $LoadingScreen/StatusLabel
 @onready var _load_progress_bar: ProgressBar = $LoadingScreen/ProgressBar
 
@@ -146,11 +162,29 @@ func setup_settings() -> void:
 			"preload",
 			Globals.get_setting_bool("preload", true)
 	)
+	Globals.set_setting_bool(
+			"aim_dodge",
+			Globals.get_setting_bool("aim_dodge", false)
+	)
+	Globals.set_setting_bool(
+			"custom_tracks",
+			Globals.get_setting_bool("custom_tracks", not OS.has_feature("android"))
+	)
 
 
 ## Устанавливает настройки управления по умолчанию, если их ещё нет.
 func setup_controls_settings() -> void:
-	Globals.save_file.set_value(Globals.CONTROLS_SAVE_FILE_SECTION, "xD", "xD")
+	var default_input_method: InputMethod = InputMethod.KEYBOARD_AND_MOUSE
+	if OS.has_feature("mobile"):
+		default_input_method = InputMethod.TOUCH
+	Globals.set_controls_int(
+			"input_method",
+			Globals.get_controls_int("input_method", default_input_method)
+	)
+	Globals.set_controls_bool(
+			"follow_mouse",
+			Globals.get_controls_bool("follow_mouse", true)
+	)
 
 
 ## Применяет общие настройки.
@@ -169,6 +203,13 @@ func apply_settings() -> void:
 	)
 	get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN \
 			if Globals.get_setting_bool("fullscreen") else Window.MODE_WINDOWED
+	if Globals.get_setting_bool("custom_tracks"):
+		DirAccess.make_dir_recursive_absolute(music_path)
+
+
+## Применяет настройки управления.
+func apply_controls_settings() -> void:
+	Input.emulate_touch_from_mouse = Globals.get_controls_int("input_method") == InputMethod.TOUCH
 
 
 func _clear_screens() -> void:
@@ -195,7 +236,8 @@ func _start_load() -> void:
 		# Синхронизация версии
 		pass
 	
-	# Загрузка треков
+	_loading_custom_tracks()
+	await loading_stage_finished
 	
 	_loading_preload_resources()
 	await loading_stage_finished
@@ -221,8 +263,9 @@ func _loading_init() -> void:
 	multiplayer.multiplayer_peer = null # Чтобы убрать OfflineMultiplayerPeer
 	get_viewport().set_canvas_cull_mask_bit(1, false)
 	setup_settings()
-	setup_controls_settings()
 	apply_settings()
+	setup_controls_settings()
+	apply_controls_settings()
 	
 	await get_tree().process_frame
 	print_verbose("Done initializing.")
@@ -246,25 +289,93 @@ func _loading_check_server() -> void:
 		http.queue_free()
 
 
-func _on_check_http_request_completed(result: HTTPRequest.Result, response_code: HTTPClient.ResponseCode,
-		_headers: PackedStringArray, _body: PackedByteArray, http: HTTPRequest) -> void:
-	http.queue_free()
-	if result != HTTPRequest.RESULT_SUCCESS:
-		push_warning("Connect to server: result is not Success! Result: %d" % result)
+func _loading_custom_tracks() -> void:
+	if not Globals.get_setting_bool("custom_tracks"):
+		print_verbose("Not loading custom tracks: disabled.")
+		loading_stage_finished.emit.call_deferred(false) # Ждём await
+		return
+	
+	print_verbose("Loading custom tracks...")
+	_load_status_label.text = "Загрузка пользовательских треков..."
+	_load_progress_bar.value = 0
+	await get_tree().process_frame
+	
+	var dir := DirAccess.open(music_path)
+	if not dir:
+		push_error("Failed creating DirAccess at path %s. Error: %s." % [
+			music_path,
+			error_string(DirAccess.get_open_error()),
+		])
 		loading_stage_finished.emit(false)
 		return
-	if response_code != HTTPClient.RESPONSE_OK:
-		push_warning("Connect to server: response code is not 200! Response code: %d" % response_code)
-		loading_stage_finished.emit(false)
-		return
-	print_verbose("Connection success.")
+	
+	var to_load: Dictionary[String, String]
+	dir.list_dir_begin()
+	var file_name: String = dir.get_next()
+	while not file_name.is_empty():
+		if to_load.size() >= 20:
+			break
+		if not dir.current_is_dir():
+			for i: String in ALLOWED_MUSIC_FILE_EXTENSIONS:
+				if file_name.ends_with(i):
+					to_load[dir.get_current_dir().path_join(file_name)] = i
+					print_verbose("Found track: %s." % dir.get_current_dir().path_join(file_name))
+					break
+		file_name = dir.get_next()
+	
+	var to_load_count: int = to_load.size()
+	var counter: int = 0
+	var last_ticks: int = Time.get_ticks_msec()
+	for i: String in to_load:
+		var stream: AudioStream
+		var valid := true
+		var file := FileAccess.open(i, FileAccess.READ)
+		if not file:
+			valid = false
+			push_error("Failed creating FileAccess at path %s. Error: %s." % [
+				i,
+				error_string(FileAccess.get_open_error()),
+			])
+		if valid and file.get_length() > 15 * 1024 * 1024:
+			valid = false
+		if valid:
+			match to_load[i]:
+				".mp3":
+					var mp3 := AudioStreamMP3.new()
+					mp3.data = file.get_buffer(file.get_length())
+					if mp3.data.is_empty():
+						valid = false
+					else:
+						stream = mp3
+				".ogg":
+					var ogg := AudioStreamOggVorbis.load_from_buffer(
+							file.get_buffer(file.get_length())
+					)
+					if ogg:
+						stream = ogg
+					else:
+						valid = false
+		
+		if valid:
+			print_verbose("Loaded track: %s." % i)
+			loaded_custom_tracks[i.get_file().get_basename()] = stream
+		else:
+			print_verbose("Track %s is invalid." % i)
+		
+		_load_progress_bar.value = 100.0 * counter / to_load_count
+		counter += 1
+		if Time.get_ticks_msec() - last_ticks > 16:
+			await get_tree().process_frame
+			last_ticks = Time.get_ticks_msec()
+	
+	print_verbose("Done loading custom tracks.")
 	loading_stage_finished.emit(true)
 
 
 func _loading_preload_resources() -> void:
 	if not Globals.get_setting_bool("preload"):
 		print_verbose("Not preloading resources: disabled.")
-		loading_stage_finished.emit(true)
+		loading_stage_finished.emit.call_deferred(false) # Ждём await
 		return
 	
 	print_verbose("Preloading resources...")
@@ -303,4 +414,22 @@ func _loading_open_menu() -> void:
 	move_child($LoadingScreen, 1)
 	($LoadingScreen/AnimationPlayer as AnimationPlayer).play(&"End")
 	await ($LoadingScreen/AnimationPlayer as AnimationPlayer).animation_finished
+	loading_stage_finished.emit(true)
+
+
+func _on_check_http_request_completed(result: HTTPRequest.Result,
+		response_code: HTTPClient.ResponseCode, _headers: PackedStringArray, 
+		_body: PackedByteArray, http: HTTPRequest) -> void:
+	http.queue_free()
+	if result != HTTPRequest.RESULT_SUCCESS:
+		push_warning("Connect to server: result is not Success! Result: %d" % result)
+		loading_stage_finished.emit(false)
+		return
+	if response_code != HTTPClient.RESPONSE_OK:
+		push_warning(
+				"Connect to server: response code is not 200! Response code: %d" % response_code
+		)
+		loading_stage_finished.emit(false)
+		return
+	print_verbose("Connection success.")
 	loading_stage_finished.emit(true)

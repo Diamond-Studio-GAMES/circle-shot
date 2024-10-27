@@ -39,7 +39,7 @@ const MAX_PLAYER_NAME_LENGTH: int = 24
 ## Максимальное число игроков, превысив которое, сервер начнёт отклонять соединения.
 ## Задаётся лобби на основе выбранного события. Не имеет эффекта на клиентах.
 var max_players: int = 10
-## Событие.
+## Ссылка на событие.
 var event: Event
 var _scene_multiplayer: SceneMultiplayer
 var _players_names: Dictionary[int, String]

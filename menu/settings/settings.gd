@@ -17,19 +17,36 @@ func _ready() -> void:
 	var shader_cache: bool = \
 			_override_file.get_value("rendering", "shader_compiler/shader_cache/enabled")
 	(%ShaderCacheCheck as Button).set_pressed_no_signal(shader_cache)
-	
 	if RenderingServer.get_rendering_device():
 		(%CurrentRenderer as Label).text = "Текущий отрисовщик: Vulkan"
 	else:
 		(%CurrentRenderer as Label).text = "Текущий отрисовщик: OpenGL"
+	
 	(%HitMarkersCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("hit_markers"))
 	(%ShowMinimapCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("minimap"))
 	(%ShowDebugCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("debug_data"))
 	(%MasterVolumeSlider as HSlider).value = Globals.get_setting_float("master_volume")
 	(%MusicVolumeSlider as HSlider).value = Globals.get_setting_float("music_volume")
 	(%SFXVolumeSlider as HSlider).value = Globals.get_setting_float("sfx_volume")
-	(%FullscreenCheck as CheckButton).set_pressed_no_signal(Globals.get_setting_bool("fullscreen"))
-	(%PreloadCheck as CheckButton).set_pressed_no_signal(Globals.get_setting_bool("preload"))
+	(%FullscreenCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("fullscreen"))
+	(%PreloadCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("preload"))
+	(%DodgeOptions as OptionButton).selected = int(Globals.get_setting_bool("aim_dodge"))
+	(%InputOptions as OptionButton).selected = Globals.get_controls_int("input_method")
+	_toggle_input_method_settings_visibility(Globals.get_controls_int("input_method"))
+	(%FollowMouseCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("follow_mouse"))
+	
+	# Кастомные треки
+	(%CustomTracksCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("custom_tracks"))
+	_on_custom_tracks_check_toggled((%CustomTracksCheck as Button).button_pressed)
+	(%CustomTracksPath as Label).text = "Путь к папке с треками: %s" % Globals.main.music_path
+	if not Globals.main.loaded_custom_tracks.is_empty():
+		for i: Node in %LoadedTracks.get_children():
+			i.queue_free()
+		
+		for i: String in Globals.main.loaded_custom_tracks:
+			var label := Label.new()
+			label.text = i
+			%LoadedTracks.add_child(label)
 	
 	if OS.has_feature("mobile"):
 		(%FullscreenCheck as CheckButton).set_pressed_no_signal(true)
@@ -78,6 +95,16 @@ func remove_recursive(path: String) -> void:
 		dir_access.remove(dir_access.get_current_dir())
 
 
+func _toggle_input_method_settings_visibility(method: Main.InputMethod) -> void:
+	(%KeyboardSettings as Control).hide()
+	(%TouchSettings as Control).hide()
+	match method:
+		Main.InputMethod.KEYBOARD_AND_MOUSE:
+			(%KeyboardSettings as Control).show()
+		Main.InputMethod.TOUCH:
+			(%TouchSettings as Control).show()
+
+
 func _on_exit_pressed() -> void:
 	Globals.main.close_screen(self)
 
@@ -95,18 +122,18 @@ func _on_show_debug_check_toggled(toggled_on: bool) -> void:
 
 
 func _on_master_volume_slider_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(&"Master"), linear_to_db(value))
 	Globals.set_setting_float("master_volume", value)
+	Globals.main.apply_settings()
 
 
 func _on_music_volume_slider_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(&"Music"), linear_to_db(value))
 	Globals.set_setting_float("music_volume", value)
+	Globals.main.apply_settings()
 
 
 func _on_sfx_volume_slider_value_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(&"SFX"), linear_to_db(value))
 	Globals.set_setting_float("sfx_volume", value)
+	Globals.main.apply_settings()
 
 
 func _on_shader_cache_check_toggled(toggled_on: bool) -> void:
@@ -156,8 +183,9 @@ func _on_reset_settings_dialog_confirmed() -> void:
 	Globals.save_file.erase_section(Globals.CONTROLS_SAVE_FILE_SECTION)
 	DirAccess.remove_absolute("user://engine_settings.cfg")
 	Globals.main.setup_settings()
-	Globals.main.setup_controls_settings()
 	Globals.main.apply_settings()
+	Globals.main.setup_controls_settings()
+	Globals.main.apply_controls_settings()
 	Globals.main.close_screen(self)
 	Globals.main.open_settings()
 
@@ -170,4 +198,55 @@ func _on_change_name_pressed() -> void:
 
 func _on_fullscreen_check_toggled(toggled_on: bool) -> void:
 	Globals.set_setting_bool("fullscreen", toggled_on)
-	get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if toggled_on else Window.MODE_WINDOWED
+	Globals.main.apply_settings()
+
+
+func _on_dodge_options_item_selected(index: int) -> void:
+	Globals.set_setting_bool("aim_dodge", bool(index))
+
+
+func _on_input_options_item_selected(index: int) -> void:
+	Globals.set_controls_int("input_method", index)
+	Globals.main.apply_controls_settings()
+	_toggle_input_method_settings_visibility(index)
+
+
+func _on_follow_mouse_check_toggled(toggled_on: bool) -> void:
+	Globals.set_controls_bool("follow_mouse", toggled_on)
+
+
+func _on_reset_controls_dialog_confirmed() -> void:
+	Globals.save_file.erase_section(Globals.CONTROLS_SAVE_FILE_SECTION)
+	Globals.main.setup_controls_settings()
+	Globals.main.apply_controls_settings()
+	Globals.main.close_screen(self)
+	Globals.main.open_settings()
+
+
+func _on_custom_tracks_check_toggled(toggled_on: bool) -> void:
+	if toggled_on and OS.has_feature("android"):
+		var perms: PackedStringArray = OS.get_granted_permissions()
+		if not (
+				perms.has("android.permission.READ_MEDIA_AUDIO") \
+				or perms.has("android.permission.READ_EXTERNAL_STORAGE")
+				or perms.has("android.permission.WRITE_EXTERNAL_STORAGE")
+		):
+			OS.request_permissions()
+			get_tree().on_request_permissions_result.connect(
+					_on_request_permissions_result, CONNECT_ONE_SHOT
+			)
+			return
+	(%CustomTracksSettings as Control).visible = toggled_on
+	Globals.set_setting_bool("custom_tracks", toggled_on)
+	Globals.main.apply_settings()
+
+
+func _on_request_permissions_result(permission: String, granted: bool) -> void:
+	print_verbose("Permission %s granted: %s." % [permission, str(granted)])
+	var lambda: Callable = func(value: bool) -> void:
+		(%CustomTracksCheck as Button).button_pressed = value
+	lambda.call_deferred(granted)
+
+
+func _on_preload_check_toggled(toggled_on: bool) -> void:
+	Globals.set_setting_bool("preload", toggled_on)
