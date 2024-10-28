@@ -235,7 +235,6 @@ func _on_custom_tracks_check_toggled(toggled_on: bool) -> void:
 			get_tree().on_request_permissions_result.connect(
 					_on_request_permissions_result, CONNECT_ONE_SHOT
 			)
-			return
 	(%CustomTracksSettings as Control).visible = toggled_on
 	Globals.set_setting_bool("custom_tracks", toggled_on)
 	Globals.main.apply_settings()

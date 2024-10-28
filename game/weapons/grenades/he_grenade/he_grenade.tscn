@@ -253,10 +253,10 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_v4ym2"]
 _data = {
-"Equip": SubResource("Animation_hh5j0"),
-"PostThrow": SubResource("Animation_2vql0"),
-"RESET": SubResource("Animation_tlngu"),
-"Throw": SubResource("Animation_8jvrf")
+&"RESET": SubResource("Animation_tlngu"),
+&"PostThrow": SubResource("Animation_2vql0"),
+&"Equip": SubResource("Animation_hh5j0"),
+&"Throw": SubResource("Animation_8jvrf")
 }
 
 [node name="HEGrenade" instance=ExtResource("1_hpr4b")]
@@ -265,6 +265,7 @@ projectile_scene = ExtResource("3_47sof")
 projectile_speed = 1600.0
 projectile_damping = 600.0
 projectile_explosion_time = 1.75
+ammo_total = 2
 
 [node name="Grenade" type="Sprite2D" parent="." index="0"]
 visible = false
@@ -281,5 +282,5 @@ position = Vector2(144, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
 libraries = {
-"": SubResource("AnimationLibrary_v4ym2")
+&"": SubResource("AnimationLibrary_v4ym2")
 }

@@ -254,9 +254,9 @@ tracks/2/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_v4ym2"]
 _data = {
 &"RESET": SubResource("Animation_tlngu"),
+&"PostThrow": SubResource("Animation_2vql0"),
 &"Equip": SubResource("Animation_hh5j0"),
-&"Throw": SubResource("Animation_8jvrf"),
-&"PostThrow": SubResource("Animation_2vql0")
+&"Throw": SubResource("Animation_8jvrf")
 }
 
 [node name="Flashbang" instance=ExtResource("1_w01jl")]
@@ -265,7 +265,6 @@ projectile_scene = ExtResource("2_wf1n2")
 spread_walk = 3.0
 projectile_speed = 1800.0
 projectile_damping = 600.0
-ammo_total = 2
 
 [node name="ThrowPivot" parent="." index="0"]
 position = Vector2(-32, -32)

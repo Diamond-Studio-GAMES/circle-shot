@@ -282,7 +282,7 @@ func _reject_start_event(reason: StartRejectReason, players_count: int) -> void:
 			])
 		StartRejectReason.INDIVISIBLE_NUMBER_OF_PLAYERS:
 			_game.show_error(
-					"Невозможно начать игру: количество игрков (%d) не делится на %d!" % [
+					"Невозможно начать игру: количество игроков (%d) не делится на %d!" % [
 						players_count,
 						Globals.items_db.events[_selected_event].players_divider,
 					]

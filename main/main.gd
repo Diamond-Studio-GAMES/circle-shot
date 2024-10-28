@@ -346,12 +346,14 @@ func _loading_custom_tracks() -> void:
 					if mp3.data.is_empty():
 						valid = false
 					else:
+						mp3.loop = true
 						stream = mp3
 				".ogg":
 					var ogg := AudioStreamOggVorbis.load_from_buffer(
 							file.get_buffer(file.get_length())
 					)
 					if ogg:
+						ogg.loop = true
 						stream = ogg
 					else:
 						valid = false
