@@ -43,8 +43,10 @@ func _finish_start() -> void:
 
 func _make_teams() -> void:
 	var counter: int = 0
+	var teams: Array = range(0, 10)
+	teams.shuffle()
 	for i: int in _players_names:
-		_players_teams[i] = counter
+		_players_teams[i] = teams[counter]
 		counter += 1
 
 

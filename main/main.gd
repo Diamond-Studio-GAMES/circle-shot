@@ -201,7 +201,7 @@ func apply_settings() -> void:
 			AudioServer.get_bus_index(&"SFX"),
 			linear_to_db(Globals.get_setting_float("sfx_volume"))
 	)
-	get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN \
+	get_window().mode = Window.MODE_FULLSCREEN \
 			if Globals.get_setting_bool("fullscreen") else Window.MODE_WINDOWED
 	if Globals.get_setting_bool("custom_tracks"):
 		DirAccess.make_dir_recursive_absolute(music_path)

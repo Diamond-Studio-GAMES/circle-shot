@@ -1,10 +1,49 @@
-[gd_scene load_steps=6 format=3 uid="uid://wgln4clkkuuk"]
+[gd_scene load_steps=9 format=3 uid="uid://wgln4clkkuuk"]
 
 [ext_resource type="Script" path="res://game/menus/connect_local/connect_local_menu.gd" id="1_f4u3n"]
 [ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="1_xj6us"]
 [ext_resource type="Texture2D" uid="uid://b4yw2ehtx4wqf" path="res://game/menus/connect_local/background.png" id="2_5kfp0"]
 [ext_resource type="Texture2D" uid="uid://h6smixikm521" path="res://game/menus/connect_local/icons/create.png" id="2_rk7v2"]
 [ext_resource type="Texture2D" uid="uid://cuig0ueedrpys" path="res://game/menus/connect_local/icons/join.png" id="3_ug3n1"]
+
+[sub_resource type="Animation" id="Animation_a8m6p"]
+resource_name = "Searching"
+length = 1.2
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": ["Поиск игр...", "Поиск игр", "Поиск игр.", "Поиск игр.."]
+}
+
+[sub_resource type="Animation" id="Animation_btwkk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Поиск игр..."]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_er3ru"]
+_data = {
+&"RESET": SubResource("Animation_btwkk"),
+&"Searching": SubResource("Animation_a8m6p")
+}
 
 [node name="ConnectLocalMenu" type="Control"]
 layout_mode = 3
@@ -129,6 +168,12 @@ layout_mode = 2
 text = "Поиск игр..."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Base/Margin/VBox/PanelContainer/NoGamesLabel"]
+libraries = {
+&"": SubResource("AnimationLibrary_er3ru")
+}
+autoplay = "Searching"
 
 [node name="ConnectIP" type="HBoxContainer" parent="Base/Margin/VBox"]
 layout_mode = 2
