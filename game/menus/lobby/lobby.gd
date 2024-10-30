@@ -88,15 +88,13 @@ func _delete_player_entry(id: int) -> void:
 	print_verbose("Deleted player %d entry." % id)
 
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "reliable", "call_local")
 func _register_new_player(player_name: String) -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if sender_id == 0:
-		sender_id = 1 # Локально от сервера
 	
 	if sender_id in _players:
 		push_warning("Player %d is already registered!")
@@ -114,10 +112,7 @@ func _register_new_player(player_name: String) -> void:
 	
 	if _players.size() == 1:
 		_admin_id = sender_id
-		if sender_id == 1:
-			_set_admin(true)
-		else:
-			_set_admin.rpc_id(sender_id, true)
+		_set_admin.rpc_id(sender_id, true)
 	else:
 		_set_admin.rpc_id(sender_id, false)
 	
@@ -125,9 +120,9 @@ func _register_new_player(player_name: String) -> void:
 	print_verbose("Registered player %d with name %s." % [sender_id, player_name])
 
 
-@rpc("reliable")
+@rpc("reliable", "call_local")
 func _set_admin(admin: bool) -> void:
-	if multiplayer.get_remote_sender_id() != 1 and not multiplayer.is_server():
+	if multiplayer.get_remote_sender_id() != 1:
 		push_error("This method must be called only by server!")
 		return
 	
@@ -138,23 +133,19 @@ func _set_admin(admin: bool) -> void:
 	if admin:
 		var my_event_id: int = Globals.get_int("selected_event")
 		var my_map_id: int = Globals.get_int("selected_map")
-		if multiplayer.is_server():
-			_request_set_environment(my_event_id, my_map_id)
-		else:
-			_request_set_environment.rpc_id(1, my_event_id, my_map_id)
+		_request_set_environment.rpc_id(1, my_event_id, my_map_id)
 	else:
 		(%ClientHint as Label).text = "Начать игру может только хост."
 	print_verbose("Admin set: %s." % str(admin))
 
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "reliable", "call_local")
 func _request_set_environment(event_id: int, map_id: int) -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
+	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if sender_id == 0:
-		sender_id = 1
 	if sender_id != _admin_id:
 		push_warning("Request rejected: player %d is not admin!" % sender_id)
 		return
@@ -192,29 +183,28 @@ func _set_environment(event_id: int, map_id: int) -> void:
 	_update_environment()
 
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "reliable", "call_local")
 func _request_kick_player(id: int) -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
+	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if sender_id == 0:
-		sender_id = 1
 	if sender_id != _admin_id:
 		push_warning("Request rejected: player %d is not admin!" % sender_id)
 		return
+	
 	print_verbose("Accepted kick request. Kicking: %d." % id)
 	multiplayer.multiplayer_peer.disconnect_peer(id)
 
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "reliable", "call_local")
 func _request_start_event() -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
+	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if sender_id == 0:
-		sender_id = 1
 	if sender_id != _admin_id:
 		push_warning("Request rejected: player %d is not admin!" % sender_id)
 		return
@@ -239,19 +229,16 @@ func _request_start_event() -> void:
 			Globals.items_db.events[_selected_event].players_divider,
 		])
 	if start_reject_reason != StartRejectReason.OK:
-		if sender_id == 1:
-			_reject_start_event(start_reject_reason, _players.size())
-		else:
-			_reject_start_event.rpc_id(sender_id, start_reject_reason, _players.size())
+		_reject_start_event.rpc_id(sender_id, start_reject_reason, _players.size())
 		return
 	
 	print_verbose("Accepted start event request. Starting...")
 	_start_event.rpc(_selected_event, _selected_map)
 
 
-@rpc("reliable")
+@rpc("reliable", "call_local")
 func _reject_start_event(reason: StartRejectReason, players_count: int) -> void:
-	if multiplayer.get_remote_sender_id() != 1 and not multiplayer.is_server():
+	if multiplayer.get_remote_sender_id() != 1:
 		push_error("This method must be called only by server!")
 		return
 	
@@ -392,7 +379,7 @@ func _do_broadcast() -> void:
 	data.append(_local_game_id) # ID игры
 	data.append(_players.size()) # Текущее количество игроков
 	data.append(_game.max_players) # Максимальное количество игроков
-	data.append_array(Globals.get_string("player_name", "Local Server").to_utf8_buffer()) # Имя хоста
+	data.append_array(Globals.get_string("player_name", "Local Server").to_utf8_buffer()) # Имя
 	for i: PacketPeerUDP in _udp_peers:
 		i.put_packet(data)
 	print_verbose("Broadcast of Game %d done. Data sent: %s (%d/%d)" % [
@@ -412,7 +399,7 @@ func _on_game_created() -> void:
 	($UpdateIPSTimer as Timer).start()
 	_local_game_id = randi() % 256
 	if not Globals.headless:
-		_register_new_player(Globals.get_string("player_name"))
+		_register_new_player.rpc_id(1, Globals.get_string("player_name"))
 	_do_broadcast()
 
 
@@ -471,17 +458,11 @@ func _on_peer_disconnected(id: int) -> void:
 
 
 func _on_kick_pressed(id: int) -> void:
-	if multiplayer.is_server():
-		_request_kick_player(id)
-	else:
-		_request_kick_player.rpc_id(1, id)
+	_request_kick_player.rpc_id(1, id)
 
 
 func _on_start_event_pressed() -> void:
-	if multiplayer.is_server():
-		_request_start_event()
-	else:
-		_request_start_event.rpc_id(1)
+	_request_start_event.rpc_id(1)
 
 
 func _on_leave_pressed() -> void:
@@ -546,15 +527,9 @@ func _on_item_selected(type: ItemsDB.Item, id: int) -> void:
 	_item_selector.hide()
 	match type:
 		ItemsDB.Item.EVENT:
-			if not multiplayer.is_server():
-				_request_set_environment.rpc_id(1, id, 0)
-			else:
-				_request_set_environment(id, 0)
+			_request_set_environment.rpc_id(1, id, 0)
 		ItemsDB.Item.MAP:
-			if not multiplayer.is_server():
-				_request_set_environment.rpc_id(1, _selected_event, id)
-			else:
-				_request_set_environment(_selected_event, id)
+			_request_set_environment.rpc_id(1, _selected_event, id)
 		ItemsDB.Item.SKIN:
 			_selected_skin = id
 			_update_equip()

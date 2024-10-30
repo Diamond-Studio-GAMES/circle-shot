@@ -166,14 +166,11 @@ func load_event(event_id: int, map_id: int, player_name := "", equip_data: Array
 		return
 	event = loaded_event
 	closed.connect(_loader.finish_load, CONNECT_ONE_SHOT)
-	if multiplayer.is_server():
-		if Globals.headless:
-			_players_not_ready.erase(1)
-			_check_players_ready()
-		else:
-			_send_player_data(player_name, equip_data)
-	else:
-		_send_player_data.rpc_id(1, player_name, equip_data)
+	if multiplayer.is_server() and Globals.headless:
+		_players_not_ready.erase(1)
+		_check_players_ready()
+		return
+	_send_player_data.rpc_id(1, player_name, equip_data)
 
 
 ## Показывает диалог с ошибкой.
@@ -199,19 +196,16 @@ static func validate_player_name(player_name: String, id: int = 0) -> String:
 	return player_name
 
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "reliable", "call_local")
 func _send_player_data(player_name: String, equip_data: Array[int]) -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if sender_id == 0:
-		sender_id = 1
-	
 	player_name = validate_player_name(player_name, sender_id)
 	if equip_data.size() != 6:
-		push_warning("Client's %d skin has incorrect equip data size: %d." % [
+		push_warning("Client % has incorrect equip data size: %d." % [
 			sender_id,
 			equip_data.size(),
 		])

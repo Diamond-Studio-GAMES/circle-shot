@@ -25,10 +25,7 @@ func _use() -> void:
 		_response_timer.start()
 	if not _player.is_local():
 		return
-	if not multiplayer.is_server():
-		_request_dodge.rpc_id(1, _roll_direction)
-	else:
-		_request_dodge(_roll_direction)
+	_request_dodge.rpc_id(1, _roll_direction)
 
 
 @rpc("reliable", "call_local", "authority", 2)
@@ -60,15 +57,13 @@ func dodge(direction: Vector2) -> void:
 	_player.collision_layer = previous_collision_layer
 
 
-@rpc("reliable", "call_remote", "any_peer", 2)
+@rpc("reliable", "call_local", "any_peer", 2)
 func _request_dodge(direction: Vector2) -> void:
 	if not multiplayer.is_server():
 		push_error("This method must be called only on server!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if sender_id == 0:
-		sender_id = 1
 	if _player.id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
 			sender_id, _player.id

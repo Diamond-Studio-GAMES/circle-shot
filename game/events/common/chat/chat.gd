@@ -51,22 +51,17 @@ func send_message() -> void:
 	
 	if message.is_empty():
 		return
-	if multiplayer.is_server():
-		_request_post_message(message)
-	else:
-		_request_post_message.rpc_id(1, message)
+	_request_post_message.rpc_id(1, message)
 	print_verbose("Sent message: %s" % message)
 
 
-@rpc("any_peer", "call_remote", "reliable", 5)
+@rpc("any_peer", "call_local", "reliable", 5)
 func _request_post_message(message: String) -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if sender_id == 0:
-		sender_id = 1
 	if not players_names.has(sender_id):
 		push_warning("Received post message request from unknown peer (%d)." % sender_id)
 		return

@@ -28,17 +28,17 @@ var _touch_timer := 0.0
 var _touch_start_position: Vector2
 var _weapon_selection_tween: Tween
 
-@onready var _health_bar: TextureProgressBar = $Controller/HealthBar
+var _health_immediate_bar_tween: Tween
+var _health_bar_tween: Tween
+
+@onready var _health_bar: TextureProgressBar = $Controller/HealthBar/Health
+@onready var _health_immediate_bar: TextureProgressBar = $Controller/HealthBar/HealthImmediate
 @onready var _health_text: Label = $Controller/HealthBar/Label
 @onready var _blood_vignette: TextureRect = $Controller/BloodVignette
 @onready var _tint_anim: AnimationPlayer = $PlayerTint/AnimationPlayer
 
 @onready var _current_weapon: TextureRect = $Controller/CurrentWeapon
 @onready var _current_weapon_icon: TextureRect = $Controller/CurrentWeapon/Icon
-@onready var _light_weapon_icon: TextureRect = $Controller/WeaponSelection/LightWeaponIcon
-@onready var _heavy_weapon_icon: TextureRect = $Controller/WeaponSelection/HeavyWeaponIcon
-@onready var _support_weapon_icon: TextureRect = $Controller/WeaponSelection/SupportWeaponIcon
-@onready var _melee_weapon_icon: TextureRect = $Controller/WeaponSelection/MeleeWeaponIcon
 @onready var _ammo_text: Label = $Controller/CurrentWeapon/Label
 
 @onready var _weapon_selection: Control = $Controller/WeaponSelection
@@ -303,9 +303,16 @@ func _get_weapon_type_from_vector(vector: Vector2) -> Weapon.Type:
 		return Weapon.Type.MELEE
 
 
+func _change_health_bar_glow(glow: float) -> void:
+	(_health_bar.material as ShaderMaterial).set_shader_parameter(&"power", glow)
+
+
 func _on_local_player_created(player: Player) -> void:
 	_health_bar.max_value = player.max_health
+	_health_immediate_bar.max_value = player.max_health
 	_on_player_health_changed(player.max_health, player.max_health)
+	_health_bar_tween.kill()
+	_change_health_bar_glow(0.0) # Убрать эффект отхила
 	
 	_tint_anim.play(&"RESET")
 	var tween: Tween = create_tween()
@@ -326,8 +333,24 @@ func _on_local_player_created(player: Player) -> void:
 func _on_player_health_changed(old_value: int, new_value: int) -> void:
 	_health_bar.value = new_value
 	_health_text.text = "%d/%d" % [_health_bar.value, _health_bar.max_value]
+	
 	if new_value < old_value:
 		_tint_anim.play(&"Hurt")
+		if is_instance_valid(_health_immediate_bar_tween):
+			_health_immediate_bar_tween.kill()
+		_health_immediate_bar_tween = create_tween()
+		if _health_immediate_bar.value < old_value:
+			_health_immediate_bar.value = old_value
+		_health_bar_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
+		_health_immediate_bar_tween.tween_interval(0.3)
+		_health_immediate_bar_tween.tween_property(_health_immediate_bar, ^":value", new_value, 0.5)
+	else:
+		if is_instance_valid(_health_bar_tween):
+			_health_bar_tween.kill()
+		_health_bar_tween = create_tween()
+		_health_bar_tween.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE)
+		_health_bar_tween.tween_method(_change_health_bar_glow, 1.0, 0.0, 1.0)
+	
 	_blood_vignette.visible = new_value < _health_bar.max_value * 0.34
 
 
@@ -336,87 +359,58 @@ func _on_player_died(_who: int) -> void:
 	_tint_anim.play(&"Death")
 
 
-func _on_weapon_changed(to: Weapon.Type) -> void:
-	match to:
-		Weapon.Type.LIGHT:
-			_current_weapon_icon.texture = _light_weapon_icon.texture
-			(_current_weapon_icon.material as ShaderMaterial).set_shader_parameter(
-					&"color",
-					(_light_weapon_icon.material as ShaderMaterial).get_shader_parameter(&"color")
-			)
-		Weapon.Type.HEAVY:
-			_current_weapon_icon.texture = _heavy_weapon_icon.texture
-			(_current_weapon_icon.material as ShaderMaterial).set_shader_parameter(
-					&"color",
-					(_heavy_weapon_icon.material as ShaderMaterial).get_shader_parameter(&"color")
-			)
-		Weapon.Type.SUPPORT:
-			_current_weapon_icon.texture = _support_weapon_icon.texture
-			(_current_weapon_icon.material as ShaderMaterial).set_shader_parameter(
-					&"color",
-					(_support_weapon_icon.material as ShaderMaterial).get_shader_parameter(&"color")
-			)
-		Weapon.Type.MELEE:
-			_current_weapon_icon.texture = _melee_weapon_icon.texture
-			(_current_weapon_icon.material as ShaderMaterial).set_shader_parameter(
-					&"color",
-					(_melee_weapon_icon.material as ShaderMaterial).get_shader_parameter(&"color")
-			)
+func _on_weapon_changed(_to: Weapon.Type) -> void:
+	if not is_instance_valid(_player.current_weapon):
+		_current_weapon_icon.texture = null
+		return
+	
+	_current_weapon_icon.texture = load(_player.current_weapon.data.image_path)
+	(_current_weapon_icon.material as ShaderMaterial).set_shader_parameter(
+			&"color",
+			ItemsDB.RARITY_COLORS[_player.current_weapon.data.rarity],
+	)
 	
 	($Controller/TouchControls/Anchor/AdditionalButton as Node2D).visible = \
 			_player.current_weapon.has_additional_button()
 
 
-func _on_weapon_equipped(type: Weapon.Type, weapon_id: int) -> void:
+func _on_weapon_equipped(type: Weapon.Type, data: WeaponData) -> void:
 	var weapon_icon: TextureRect
 	var weapon_text: Label
-	var weapon_data: WeaponData
 	match type:
 		Weapon.Type.LIGHT:
-			weapon_icon = _light_weapon_icon
+			weapon_icon = $Controller/WeaponSelection/LightWeaponIcon
 			weapon_text = $Controller/WeaponSelection/LightWeaponName
-			if weapon_id >= 0:
-				weapon_data = Globals.items_db.weapons_light[weapon_id]
 		Weapon.Type.HEAVY:
-			weapon_icon = _heavy_weapon_icon
+			weapon_icon = $Controller/WeaponSelection/HeavyWeaponIcon
 			weapon_text = $Controller/WeaponSelection/HeavyWeaponName
-			if weapon_id >= 0:
-				weapon_data = Globals.items_db.weapons_heavy[weapon_id]
 		Weapon.Type.SUPPORT:
-			weapon_icon = _support_weapon_icon
+			weapon_icon = $Controller/WeaponSelection/SupportWeaponIcon
 			weapon_text = $Controller/WeaponSelection/SupportWeaponName
-			if weapon_id >= 0:
-				weapon_data = Globals.items_db.weapons_support[weapon_id]
 		Weapon.Type.MELEE:
-			weapon_icon = _melee_weapon_icon
+			weapon_icon = $Controller/WeaponSelection/MeleeWeaponIcon
 			weapon_text = $Controller/WeaponSelection/MeleeWeaponName
-			if weapon_id >= 0:
-				weapon_data = Globals.items_db.weapons_melee[weapon_id]
 	
-	if weapon_id < 0:
+	if not data:
 		weapon_icon.texture = null
 		weapon_text.text = "Нет оружия"
-		if type == _player.current_weapon_type:
-			_current_weapon_icon.texture = null
-			_ammo_text.text = "Нет оружия"
 		return
 	
-	weapon_icon.texture = load(weapon_data.image_path)
+	weapon_icon.texture = load(data.image_path)
 	(weapon_icon.material as ShaderMaterial).set_shader_parameter(
 			&"color",
-			ItemsDB.RARITY_COLORS[weapon_data.rarity],
+			ItemsDB.RARITY_COLORS[data.rarity],
 	)
-	weapon_text.text = weapon_data.name
+	weapon_text.text = data.name
 
 
-func _on_skill_equipped(skill_id: int) -> void:
-	if skill_id < 0:
+func _on_skill_equipped(data: SkillData) -> void:
+	if not data:
 		_skill.hide()
 		return
 	_skill.show()
 	
-	($Controller/Skill/Icon as TextureRect).texture = \
-			load(Globals.items_db.skills[skill_id].image_path)
+	($Controller/Skill/Icon as TextureRect).texture = load(data.image_path)
 	_update_skill()
 
 

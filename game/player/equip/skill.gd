@@ -4,6 +4,7 @@ extends Node2D
 
 @export var use_times: int = 2
 @export var use_cooldown: int = 30
+var data: SkillData
 var _player: Player
 var _cooldown_timer := 0.0
 
@@ -13,9 +14,10 @@ func _physics_process(delta: float) -> void:
 	_player.skill_vars[1] = ceili(_cooldown_timer)
 
 
-func initialize(player: Player) -> void:
+func initialize(player: Player, skill_data: SkillData) -> void:
 	if player.skill_vars.is_empty():
 		player.skill_vars = [use_times, use_cooldown]
+	data = skill_data
 	_player = player
 	_initialize()
 

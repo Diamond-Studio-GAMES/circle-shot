@@ -44,9 +44,9 @@ func _ready() -> void:
 	_event_ui.show_intro()
 
 
-@rpc("reliable", "call_remote", "authority", 1)
+@rpc("reliable", "call_local", "authority", 1)
 func _create_hit_marker(where: Vector2) -> void:
-	if multiplayer.get_remote_sender_id() != 1 and not multiplayer.is_server():
+	if multiplayer.get_remote_sender_id() != 1:
 		push_error("This method must be called only by server!")
 		return
 	
@@ -58,9 +58,9 @@ func _create_hit_marker(where: Vector2) -> void:
 	$VFX.add_child(marker)
 
 
-@rpc("reliable", "call_remote", "authority", 1)
+@rpc("reliable", "call_local", "authority", 1)
 func _create_kill_marker(where: Vector2) -> void:
-	if multiplayer.get_remote_sender_id() != 1 and not multiplayer.is_server():
+	if multiplayer.get_remote_sender_id() != 1:
 		push_error("This method must be called only by server!")
 		return
 	
@@ -205,10 +205,7 @@ func _player_disconnected(_id: int) -> void:
 func _on_player_damaged(who: int, by: int) -> void:
 	if by in _players:
 		var target: Player = _players[who]
-		if by == 1:
-			_create_hit_marker(target.global_position)
-		else:
-			_create_hit_marker.rpc_id(by, target.global_position)
+		_create_hit_marker.rpc_id(by, target.global_position)
 
 
 func _on_player_killed(who: int, by: int) -> void:
@@ -229,10 +226,7 @@ func _on_player_killed(who: int, by: int) -> void:
 	
 	if by in _players:
 		var target: Player = _players[who]
-		if by == 1:
-			_create_kill_marker(target.global_position)
-		else:
-			_create_kill_marker.rpc_id(by, target.global_position)
+		_create_kill_marker.rpc_id(by, target.global_position)
 	
 	_players_skill_vars[who] = _players[who].skill_vars
 	_player_killed(who, by)

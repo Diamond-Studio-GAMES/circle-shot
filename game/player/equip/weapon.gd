@@ -20,6 +20,7 @@ enum Type {
 @export_range(0.5, 2.0, 0.01) var speed_multiplier_when_current := 1.0
 var ammo: int
 var ammo_in_stock: int
+var data: WeaponData
 var _blocked_shooting_counter: int = 0
 var _player: Player
 @warning_ignore("unused_private_class_variable") # Для дочерних классов
@@ -37,8 +38,9 @@ func shoot() -> void:
 	_player.ammo_text_updated.emit(get_ammo_text())
 
 
-func initialize(player: Player) -> void:
+func initialize(player: Player, weapon_data: WeaponData) -> void:
 	_player = player
+	data = weapon_data
 	hide()
 	process_mode = PROCESS_MODE_DISABLED
 	_initialize()

@@ -4,7 +4,11 @@ extends Effect
 func _start_effect() -> void:
 	($Smoke as GPUParticles2D).restart()
 	var tween: Tween = create_tween()
-	if multiplayer.get_unique_id() == _entity.id:
+	var should_be_visible: bool = _entity.is_local()
+	var event: Event = get_tree().get_first_node_in_group(&"Event")
+	if event:
+		should_be_visible = should_be_visible or event.local_team == _entity.team
+	if should_be_visible:
 		tween.tween_property(
 				_entity,
 				^"visual:modulate", 

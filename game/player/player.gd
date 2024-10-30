@@ -3,13 +3,14 @@ extends Entity
 
 
 signal weapon_changed(type: Weapon.Type)
-signal weapon_equipped(type: Weapon.Type, id: int)
+signal weapon_equipped(type: Weapon.Type, data: WeaponData)
 signal ammo_text_updated(text: String)
-signal skill_equipped(id: int)
+signal skill_equipped(data: SkillData)
 
 var player_name := "Колобок"
 var equip_data: Array[int]
 var skill_vars: Array[int]
+var skin: PlayerSkin
 var current_weapon: Weapon
 var current_weapon_type := Weapon.Type.LIGHT
 var skill: Skill
@@ -32,14 +33,27 @@ func _ready() -> void:
 		($ControlIndicator as Node2D).self_modulate = TEAM_COLORS[team]
 		($AudioListener2D as AudioListener2D).make_current()
 	
-	set_skin(equip_data[0])
 	
-	set_weapon(Weapon.Type.LIGHT, equip_data[1])
-	set_weapon(Weapon.Type.HEAVY, equip_data[2])
-	set_weapon(Weapon.Type.SUPPORT, equip_data[3])
-	set_weapon(Weapon.Type.MELEE, equip_data[4])
+	set_skin(Globals.items_db.skins[equip_data[0]])
 	
-	set_skill(equip_data[5])
+	set_weapon(
+			Weapon.Type.LIGHT,
+			Globals.items_db.weapons_light[equip_data[1]] if equip_data[1] >= 0 else null
+	)
+	set_weapon(
+			Weapon.Type.HEAVY,
+			Globals.items_db.weapons_heavy[equip_data[2]] if equip_data[2] >= 0 else null
+	)
+	set_weapon(
+			Weapon.Type.SUPPORT,
+			Globals.items_db.weapons_support[equip_data[3]] if equip_data[3] >= 0 else null
+	)
+	set_weapon(
+			Weapon.Type.MELEE,
+			Globals.items_db.weapons_light[equip_data[4]] if equip_data[4] >= 0 else null
+	)
+	
+	set_skill(Globals.items_db.skills[equip_data[5]] if equip_data[5] >= 0 else null)
 	
 	($Minimap/MinimapMarker/Visual as Node2D).self_modulate = TEAM_COLORS[team]
 	await get_tree().process_frame
@@ -109,46 +123,35 @@ func use_skill() -> void:
 func try_change_weapon(to: Weapon.Type) -> void:
 	if to == current_weapon_type:
 		return
-	if not multiplayer.is_server():
-		_request_change_weapon.rpc_id(1, to)
-	else:
-		_request_change_weapon(to)
+	_request_change_weapon.rpc_id(1, to)
 
 
 func try_reload_weapon() -> void:
-	if not multiplayer.is_server():
-		_request_reload.rpc_id(1)
-	else:
-		_request_reload()
+	_request_reload.rpc_id(1)
 
 
 func try_use_additional_button_weapon() -> void:
-	if not multiplayer.is_server():
-		_request_additional_button.rpc_id(1)
-	else:
-		_request_additional_button()
+	_request_additional_button.rpc_id(1)
 
 
 func try_use_skill() -> void:
-	if not multiplayer.is_server():
-		_request_use_skill.rpc_id(1)
-	else:
-		_request_use_skill()
+	_request_use_skill.rpc_id(1)
 
 
-func set_skin(skin_id: int) -> void:
+func set_skin(data: SkinData) -> void:
 	for i: Node in $Visual/Skin.get_children():
 		i.queue_free()
 	
-	var skin_scene: PackedScene = load(Globals.items_db.skins[skin_id].scene_path)
-	var skin: PlayerSkin = skin_scene.instantiate()
+	var skin_scene: PackedScene = load(data.scene_path)
+	skin = skin_scene.instantiate()
+	skin.data = data
 	skin.player = self
 	$Visual/Skin.add_child(skin)
-	equip_data[0] = skin_id
-	print_verbose("Skin on player %d set: %d." % [id, skin_id])
+	equip_data[0] = Globals.items_db.skins.find(data)
+	print_verbose("Skin '%s' with ID %d on player %d set." % [data.id, equip_data[0], id])
 
 
-func set_weapon(type: Weapon.Type, weapon_id: int) -> void:
+func set_weapon(type: Weapon.Type, data: WeaponData) -> void:
 	var old_weapon: Node = _weapons.get_child(type)
 	if old_weapon == current_weapon:
 		(old_weapon as Weapon).unmake_current()
@@ -156,47 +159,50 @@ func set_weapon(type: Weapon.Type, weapon_id: int) -> void:
 	_weapons.remove_child(old_weapon)
 	old_weapon.queue_free()
 	
-	if weapon_id < 0:
+	if not data:
 		var placeholder := Node.new()
 		placeholder.name = "NoWeapon%d" % type
 		_weapons.add_child(placeholder)
 		_weapons.move_child(placeholder, type)
-		equip_data[1 + type] = -1
-		weapon_equipped.emit(type, weapon_id)
+		equip_data[1 + type] = -2 # TODO: задокументить
+		weapon_equipped.emit(type, null)
 		print_verbose("Removed weapon with type %d on player %d." % [type, id])
 		
 		if current_weapon_type == type:
-			for i: int in range(1, 5):
-				if equip_data[i] >= 0:
-					_set_current_weapon(i - 1)
-					break
-			current_weapon = null
+			_set_current_weapon(type)
 		return
 	
-	var weapon_path: String
-	match type:
-		Weapon.Type.LIGHT:
-			weapon_path = Globals.items_db.weapons_light[weapon_id].scene_path
-		Weapon.Type.HEAVY:
-			weapon_path = Globals.items_db.weapons_heavy[weapon_id].scene_path
-		Weapon.Type.SUPPORT:
-			weapon_path = Globals.items_db.weapons_support[weapon_id].scene_path
-		Weapon.Type.MELEE:
-			weapon_path = Globals.items_db.weapons_melee[weapon_id].scene_path
+	var weapon_path: String = data.scene_path
 	var weapon_scene: PackedScene = load(weapon_path)
 	var weapon: Weapon = weapon_scene.instantiate()
 	_weapons.add_child(weapon)
 	_weapons.move_child(weapon, type)
-	weapon.initialize(self)
+	weapon.initialize(self, data)
+	var weapon_id: int = -1
+	match type:
+		Weapon.Type.LIGHT:
+			weapon_id = Globals.items_db.weapons_light.find(data)
+		Weapon.Type.HEAVY:
+			weapon_id = Globals.items_db.weapons_heavy.find(data)
+		Weapon.Type.SUPPORT:
+			weapon_id = Globals.items_db.weapons_support.find(data)
+		Weapon.Type.MELEE:
+			weapon_id = Globals.items_db.weapons_melee.find(data)
 	equip_data[1 + type] = weapon_id
-	weapon_equipped.emit(type, weapon_id)
-	print_verbose("Set weapon with ID %d with type %d on player %d" % [weapon_id, type, id])
 	
-	if current_weapon_type == type:
+	weapon_equipped.emit(type, data)
+	print_verbose("Set weapon '%s' with ID %d with type %d on player %d." % [
+		data.id,
+		weapon_id,
+		type,
+		id,
+	])
+	
+	if current_weapon_type == type or not current_weapon:
 		_set_current_weapon(type)
 
 
-func set_skill(skill_id: int, reset_skill_vars := false) -> void:
+func set_skill(data: SkillData, reset_skill_vars := false) -> void:
 	if reset_skill_vars:
 		skill_vars.clear()
 	
@@ -204,31 +210,28 @@ func set_skill(skill_id: int, reset_skill_vars := false) -> void:
 		remove_child(skill)
 		skill.queue_free()
 	
-	if skill_id < 0:
+	if not data:
 		skill = null
-		skill_equipped.emit(skill_id)
+		skill_equipped.emit(data)
 		print_verbose("Removed skill on player %d." % id)
 		return
 	
-	var skill_scene: PackedScene = load(Globals.items_db.skills[skill_id].scene_path)
-	var skilln: Skill = skill_scene.instantiate()
-	add_child(skilln)
-	skilln.initialize(self)
-	skill = skilln
-	equip_data[5] = skill_id
-	skill_equipped.emit(skill_id)
-	print_verbose("Set skill with ID %d on player %d" % [skill_id, id])
+	var skill_scene: PackedScene = load(data.scene_path)
+	skill = skill_scene.instantiate()
+	add_child(skill)
+	skill.initialize(self, data)
+	equip_data[5] = Globals.items_db.skills.find(data)
+	skill_equipped.emit(data)
+	print_verbose("Set skill '%s' with ID %d on player %d set." % [data.id, equip_data[5], id])
 
 
-@rpc("any_peer", "reliable", "call_remote", 2)
+@rpc("any_peer", "reliable", "call_local", 2)
 func _request_change_weapon(to: Weapon.Type) -> void:
 	if not multiplayer.is_server():
 		push_error("This method must be called only on server!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if sender_id == 0:
-		sender_id = 1
 	if id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
 			sender_id, id
@@ -239,21 +242,17 @@ func _request_change_weapon(to: Weapon.Type) -> void:
 		return
 	if is_disarmed():
 		return
-	if equip_data[to + 1] < 0:
-		return
 	
 	change_weapon.rpc(to)
 
 
-@rpc("any_peer", "reliable", "call_remote", 2)
+@rpc("any_peer", "reliable", "call_local", 2)
 func _request_reload() -> void:
 	if not multiplayer.is_server():
 		push_error("This method must be called only on server!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if sender_id == 0:
-		sender_id = 1
 	if id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
 			sender_id, id
@@ -270,15 +269,13 @@ func _request_reload() -> void:
 	reload_weapon.rpc()
 
 
-@rpc("any_peer", "reliable", "call_remote", 2)
+@rpc("any_peer", "reliable", "call_local", 2)
 func _request_additional_button() -> void:
 	if not multiplayer.is_server():
 		push_error("This method must be called only on server!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if sender_id == 0:
-		sender_id = 1
 	if id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
 			sender_id, id
@@ -295,15 +292,13 @@ func _request_additional_button() -> void:
 	additional_button_weapon.rpc()
 
 
-@rpc("any_peer", "reliable", "call_remote", 2)
+@rpc("any_peer", "reliable", "call_local", 2)
 func _request_use_skill() -> void:
 	if not multiplayer.is_server():
 		push_error("This method must be called only on server!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if sender_id == 0:
-		sender_id = 1
 	if id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
 			sender_id, id
@@ -321,11 +316,12 @@ func _request_use_skill() -> void:
 
 
 func _set_current_weapon(to: Weapon.Type) -> void:
-	current_weapon = _weapons.get_child(to)
-	current_weapon.make_current()
+	current_weapon = _weapons.get_child(to) as Weapon
+	if current_weapon:
+		current_weapon.make_current()
+	ammo_text_updated.emit(current_weapon.get_ammo_text() if current_weapon else "Нет оружия")
 	current_weapon_type = to
 	weapon_changed.emit(to)
-	ammo_text_updated.emit(current_weapon.get_ammo_text())
 	print_verbose("Player %d changed current weapon to type %d." % [id, to])
 
 
