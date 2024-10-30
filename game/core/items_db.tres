@@ -23,7 +23,6 @@
 [ext_resource type="Script" path="res://game/player/equip/weapon_data.gd" id="16_uslwp"]
 [ext_resource type="Resource" uid="uid://cico6bxoxthxp" path="res://game/weapons/guns/ak_74/ak_74.tres" id="17_7vx3p"]
 [ext_resource type="Resource" uid="uid://bb4c32cmatk2p" path="res://game/weapons/guns/shotgun/shotgun.tres" id="18_hjrvg"]
-[ext_resource type="Resource" uid="uid://gkuvrx6p0txb" path="res://game/weapons/guns/sniper_rifle/sniper_rifle.tres" id="19_5dl73"]
 [ext_resource type="Resource" uid="uid://dsw7rll4x5yvn" path="res://game/skins/standard/war/war.tres" id="19_bkemq"]
 [ext_resource type="Resource" uid="uid://c3r86qgxy0nrq" path="res://game/skins/programming/arch/arch.tres" id="20_nbhfx"]
 [ext_resource type="Resource" uid="uid://ec5r1p2ay37a" path="res://game/weapons/guns/p350/p350.tres" id="20_wegr4"]
@@ -44,7 +43,7 @@ script = ExtResource("2_y7sof")
 events = Array[ExtResource("1_yrpvj")]([ExtResource("2_8tgde"), ExtResource("3_2oage")])
 skins = Array[ExtResource("3_c4k52")]([ExtResource("4_kr1x8"), ExtResource("5_3l44y"), ExtResource("6_etdf3"), ExtResource("7_7vr63"), ExtResource("8_yhh8f"), ExtResource("9_jevbu"), ExtResource("10_2k6xx"), ExtResource("11_bvpy1"), ExtResource("12_oy32e"), ExtResource("13_o4wj6"), ExtResource("14_rknbs"), ExtResource("15_c1d01"), ExtResource("19_bkemq"), ExtResource("20_nbhfx"), ExtResource("22_tu5xb"), ExtResource("23_wv8kv"), ExtResource("24_tbr3x"), ExtResource("26_g26gg")])
 weapons_light = Array[ExtResource("16_uslwp")]([ExtResource("20_wegr4"), ExtResource("21_43s3b")])
-weapons_heavy = Array[ExtResource("16_uslwp")]([ExtResource("17_7vx3p"), ExtResource("21_qy8k3"), ExtResource("18_hjrvg"), ExtResource("19_5dl73")])
+weapons_heavy = Array[ExtResource("16_uslwp")]([ExtResource("17_7vx3p"), ExtResource("21_qy8k3"), ExtResource("18_hjrvg")])
 weapons_support = Array[ExtResource("16_uslwp")]([ExtResource("25_wbuqy"), ExtResource("26_xy8s6"), ExtResource("36_240aq")])
 weapons_melee = Array[ExtResource("16_uslwp")]([ExtResource("23_50d6n"), ExtResource("24_gbbrj")])
 skills = Array[ExtResource("3_x8mha")]([ExtResource("4_hfvvw"), ExtResource("6_2wp4d")])
