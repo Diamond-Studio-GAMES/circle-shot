@@ -50,7 +50,7 @@ func _ready() -> void:
 	)
 	set_weapon(
 			Weapon.Type.MELEE,
-			Globals.items_db.weapons_light[equip_data[4]] if equip_data[4] >= 0 else null
+			Globals.items_db.weapons_melee[equip_data[4]] if equip_data[4] >= 0 else null
 	)
 	
 	set_skill(Globals.items_db.skills[equip_data[5]] if equip_data[5] >= 0 else null)
@@ -237,10 +237,7 @@ func _request_change_weapon(to: Weapon.Type) -> void:
 			sender_id, id
 		])
 		return
-	
-	if to == current_weapon_type:
-		return
-	if is_disarmed():
+	if to == current_weapon_type or is_disarmed():
 		return
 	
 	change_weapon.rpc(to)
@@ -258,12 +255,7 @@ func _request_reload() -> void:
 			sender_id, id
 		])
 		return
-	
-	if is_disarmed():
-		return
-	if not is_instance_valid(current_weapon):
-		return
-	if not current_weapon.can_reload():
+	if is_disarmed() or not is_instance_valid(current_weapon) or not current_weapon.can_reload():
 		return
 	
 	reload_weapon.rpc()
@@ -281,12 +273,8 @@ func _request_additional_button() -> void:
 			sender_id, id
 		])
 		return
-	
-	if is_disarmed():
-		return
-	if not is_instance_valid(current_weapon):
-		return
-	if not current_weapon.has_additional_button():
+	if is_disarmed() or not is_instance_valid(current_weapon) \
+			or not current_weapon.has_additional_button():
 		return
 	
 	additional_button_weapon.rpc()
@@ -305,11 +293,7 @@ func _request_use_skill() -> void:
 		])
 		return
 	
-	if is_disarmed():
-		return
-	if not is_instance_valid(skill):
-		return
-	if not skill.can_use():
+	if is_disarmed() or not is_instance_valid(skill) or not skill.can_use():
 		return
 	
 	use_skill.rpc()

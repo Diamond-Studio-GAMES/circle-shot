@@ -253,6 +253,7 @@ func _start_event() -> void:
 
 func _check_players_ready() -> void:
 	if not multiplayer.is_server():
+		push_error("Unexpected call on client!")
 		return
 	if _players_not_ready.is_empty():
 		_start_event.rpc()

@@ -24,6 +24,8 @@ func _process(_delta: float) -> void:
 	_aim.hide()
 	
 	if can_shoot():
+		if not visible and ammo_in_stock > 0:
+			_make_current()
 		_aim.visible = _player.player_input.showing_aim
 		_throw_pivot.rotation = _calculate_aim_direction()
 		
@@ -37,10 +39,9 @@ func _process(_delta: float) -> void:
 		_aim.points[1].x = projectile_speed * time * speed_multiplier - \
 				projectile_damping / 2 * time * time
 		
-		if _player.player_input.shooting:
-			if ammo_in_stock > 0:
-				if multiplayer.is_server() and not _reloading:
-					shoot.rpc()
+		if _player.player_input.shooting and ammo_in_stock > 0 \
+				and multiplayer.is_server() and not _reloading:
+			shoot.rpc()
 
 
 func _make_current() -> void:

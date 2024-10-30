@@ -18,10 +18,9 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if can_shoot():
-		if multiplayer.is_server():
-			if _player.player_input.shooting and _shoot_timer <= 0.0:
-				shoot.rpc()
+	if multiplayer.is_server() and can_shoot() \
+			and _player.player_input.shooting and _shoot_timer <= 0.0:
+		shoot.rpc()
 	_shoot_timer -= delta
 
 

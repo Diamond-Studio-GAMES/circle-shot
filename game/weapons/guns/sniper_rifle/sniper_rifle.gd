@@ -15,7 +15,9 @@ func _process(delta: float) -> void:
 	super(delta)
 	if _aiming and _player.is_local():
 		_aim_target.global_position = _calculate_aim_target_position()
-		_aim_texture_material.set_shader_parameter(&"radius", _calculate_spread() * BLUR_SPREAD_MULTIPLIER)
+		_aim_texture_material.set_shader_parameter(
+				&"radius", _calculate_spread() * BLUR_SPREAD_MULTIPLIER
+		)
 
 
 func _exit_tree() -> void:

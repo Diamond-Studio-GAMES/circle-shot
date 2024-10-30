@@ -51,11 +51,9 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if can_shoot():
-		if _player.player_input.shooting:
-			if ammo >= ammo_per_shot:
-				if multiplayer.is_server() and _shoot_timer <= 0.0:
-					shoot.rpc()
+	if multiplayer.is_server() and can_shoot() and _player.player_input.shooting \
+			and ammo >= ammo_per_shot and _shoot_timer <= 0.0:
+		shoot.rpc()
 	_shoot_timer -= delta
 	if _player.is_local() and can_reload() and ammo <= 0:
 		_player.try_reload_weapon()

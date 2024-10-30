@@ -92,9 +92,7 @@ func _freeze_players() -> void:
 
 func _respawn_player(id: int) -> void:
 	await get_tree().create_timer(comeback_time, false).timeout
-	if _time_remained <= 0:
-		return
-	if id in _players_names:
+	if _time_remained > 0 and id in _players_names:
 		spawn_player(id)
 
 

@@ -135,9 +135,8 @@ func _touch_input(event: InputEvent) -> void:
 	var touch_event := event as InputEventScreenTouch
 	if touch_event:
 		if touch_event.pressed:
-			if _touch_index >= 0:
-				return
-			if not _is_point_inside_of_control(touch_event.position, _current_weapon):
+			if _touch_index >= 0 \
+					or not _is_point_inside_of_control(touch_event.position, _current_weapon):
 				return
 			_touch_index = touch_event.index
 			_touch_start_position = touch_event.position
@@ -165,22 +164,21 @@ func _touch_input(event: InputEvent) -> void:
 		return
 	
 	var drag_event := event as InputEventScreenDrag
-	if drag_event:
-		if drag_event.index != _touch_index:
-			return
-		_weapon_selection_bg_light.self_modulate = DEFAULT_WEAPON_BG_COLOR
-		_weapon_selection_bg_heavy.self_modulate = DEFAULT_WEAPON_BG_COLOR
-		_weapon_selection_bg_support.self_modulate = DEFAULT_WEAPON_BG_COLOR
-		_weapon_selection_bg_melee.self_modulate = DEFAULT_WEAPON_BG_COLOR
-		match _get_weapon_type_from_vector(drag_event.position - _touch_start_position):
-			Weapon.Type.LIGHT:
-				_weapon_selection_bg_light.self_modulate = SELECTED_WEAPON_BG_COLOR
-			Weapon.Type.HEAVY:
-				_weapon_selection_bg_heavy.self_modulate = SELECTED_WEAPON_BG_COLOR
-			Weapon.Type.SUPPORT:
-				_weapon_selection_bg_support.self_modulate = SELECTED_WEAPON_BG_COLOR
-			Weapon.Type.MELEE:
-				_weapon_selection_bg_melee.self_modulate = SELECTED_WEAPON_BG_COLOR
+	if not drag_event or drag_event.index != _touch_index:
+		return
+	_weapon_selection_bg_light.self_modulate = DEFAULT_WEAPON_BG_COLOR
+	_weapon_selection_bg_heavy.self_modulate = DEFAULT_WEAPON_BG_COLOR
+	_weapon_selection_bg_support.self_modulate = DEFAULT_WEAPON_BG_COLOR
+	_weapon_selection_bg_melee.self_modulate = DEFAULT_WEAPON_BG_COLOR
+	match _get_weapon_type_from_vector(drag_event.position - _touch_start_position):
+		Weapon.Type.LIGHT:
+			_weapon_selection_bg_light.self_modulate = SELECTED_WEAPON_BG_COLOR
+		Weapon.Type.HEAVY:
+			_weapon_selection_bg_heavy.self_modulate = SELECTED_WEAPON_BG_COLOR
+		Weapon.Type.SUPPORT:
+			_weapon_selection_bg_support.self_modulate = SELECTED_WEAPON_BG_COLOR
+		Weapon.Type.MELEE:
+			_weapon_selection_bg_melee.self_modulate = SELECTED_WEAPON_BG_COLOR
 
 
 func _unhandled_keyboard_and_mouse_input(event: InputEvent) -> void:
@@ -202,19 +200,19 @@ func _unhandled_keyboard_and_mouse_input(event: InputEvent) -> void:
 			close_weapon_selection()
 		else:
 			open_weapon_selection()
-	elif event.is_action_pressed(&"weapon_light"):
+	if event.is_action_pressed(&"weapon_light"):
 		select_weapon(Weapon.Type.LIGHT)
-	elif event.is_action_pressed(&"weapon_heavy"):
+	if event.is_action_pressed(&"weapon_heavy"):
 		select_weapon(Weapon.Type.HEAVY)
-	elif event.is_action_pressed(&"weapon_support"):
+	if event.is_action_pressed(&"weapon_support"):
 		select_weapon(Weapon.Type.SUPPORT)
-	elif event.is_action_pressed(&"weapon_melee"):
+	if event.is_action_pressed(&"weapon_melee"):
 		select_weapon(Weapon.Type.MELEE)
-	elif event.is_action_pressed(&"reload"):
+	if event.is_action_pressed(&"reload"):
 		reload()
-	elif event.is_action_pressed(&"additional_button"):
+	if event.is_action_pressed(&"additional_button"):
 		additional_button()
-	elif event.is_action_pressed(&"use_skill"):
+	if event.is_action_pressed(&"use_skill"):
 		use_skill()
 
 
@@ -259,9 +257,7 @@ func _process_keyboard_and_mouse_input_method() -> void:
 
 
 func _update_skill() -> void:
-	if not is_instance_valid(_player):
-		return
-	if not is_instance_valid(_player.skill):
+	if not is_instance_valid(_player) or not is_instance_valid(_player.skill):
 		return
 	
 	if _player.skill_vars[0] > 0:

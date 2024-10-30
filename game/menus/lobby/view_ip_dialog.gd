@@ -75,14 +75,15 @@ func _find_ips() -> void:
 Код ошибки: %d" % error
 
 
-func _on_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+func _on_request_completed(result: int, response_code: int,
+		_headers: PackedStringArray,body: PackedByteArray) -> void:
 	if result != HTTPRequest.RESULT_SUCCESS:
-		push_warning("Connect to server: result is not Success! Result: %d" % result)
+		push_warning("Quiry global IP: result is not Success! Result: %d" % result)
 		dialog_text += '\n'
 		dialog_text += "Ошибка запроса глобального IP-адреса! Код ошибки: %d" % result
 		return
 	if response_code != HTTPClient.RESPONSE_OK:
-		push_warning("Connect to server: response code is not 200! Response code: %d" % response_code)
+		push_warning("Quiry global IP: response code is not 200! Response code: %d" % response_code)
 		dialog_text += '\n'
 		dialog_text += "Ошибка получения глобального IP-адреса! Код ошибки: %d" % response_code
 		return
