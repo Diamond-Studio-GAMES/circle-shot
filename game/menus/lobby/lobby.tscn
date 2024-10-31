@@ -96,6 +96,7 @@ self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
 custom_minimum_size = Vector2(392, 80)
 layout_mode = 2
 size_flags_horizontal = 3
+expand_mode = 1
 
 [node name="Container" type="VBoxContainer" parent="Panels/Lobby/VBoxContainer/Environment/Event"]
 layout_mode = 1

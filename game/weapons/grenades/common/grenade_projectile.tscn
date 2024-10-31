@@ -55,7 +55,7 @@ properties/2/replication_mode = 0
 
 [node name="GrenadeProjectile" type="AnimatableBody2D"]
 collision_layer = 4
-collision_mask = 25
+collision_mask = 9
 sync_to_physics = false
 script = ExtResource("1_am5bm")
 

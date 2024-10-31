@@ -16,7 +16,7 @@ var current_weapon_type := Weapon.Type.LIGHT
 var skill: Skill
 
 @onready var player_input: PlayerInput = $Input
-@onready var _blood: CPUParticles2D = $Visual/Blood
+@onready var blood: CPUParticles2D = $Visual/Blood
 @onready var _weapons: Node2D = $Visual/Weapons
 @onready var _event: Event = get_tree().get_first_node_in_group(&"Event")
 
@@ -228,7 +228,7 @@ func set_skill(data: SkillData, reset_skill_vars := false) -> void:
 @rpc("any_peer", "reliable", "call_local", 2)
 func _request_change_weapon(to: Weapon.Type) -> void:
 	if not multiplayer.is_server():
-		push_error("This method must be called only on server!")
+		push_error("Unexpected call on client!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
@@ -246,7 +246,7 @@ func _request_change_weapon(to: Weapon.Type) -> void:
 @rpc("any_peer", "reliable", "call_local", 2)
 func _request_reload() -> void:
 	if not multiplayer.is_server():
-		push_error("This method must be called only on server!")
+		push_error("Unexpected call on client!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
@@ -264,7 +264,7 @@ func _request_reload() -> void:
 @rpc("any_peer", "reliable", "call_local", 2)
 func _request_additional_button() -> void:
 	if not multiplayer.is_server():
-		push_error("This method must be called only on server!")
+		push_error("Unexpected call on client!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
@@ -283,7 +283,7 @@ func _request_additional_button() -> void:
 @rpc("any_peer", "reliable", "call_local", 2)
 func _request_use_skill() -> void:
 	if not multiplayer.is_server():
-		push_error("This method must be called only on server!")
+		push_error("Unexpected call on client!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
@@ -319,7 +319,4 @@ func _update_minimap_marker() -> void:
 
 
 func _on_health_changed(_old_value: int, new_value: int) -> void:
-	if new_value < max_health / 3.0:
-		_blood.emitting = true
-	else:
-		_blood.emitting = false
+	blood.emitting = new_value < max_health / 3.0

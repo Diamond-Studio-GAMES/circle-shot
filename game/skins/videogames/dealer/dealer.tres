@@ -6,7 +6,7 @@
 script = ExtResource("1_6ulw4")
 name = "Дилер"
 brief_description = "Я вставлю патроны в неизвестном порядке..."
-rarity = 3
+rarity = 2
 id = "dealer"
 scene_path = "uid://lvofe70e7tx7"
 image_path = "uid://c8np7n73fe7q3"

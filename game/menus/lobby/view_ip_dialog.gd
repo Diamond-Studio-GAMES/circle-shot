@@ -72,11 +72,11 @@ func _find_ips() -> void:
 		push_warning("Can't connect to server! Error: %s" % error_string(error))
 		dialog_text += '\n'
 		dialog_text += "Невозможно создать запрос для получения глобального IP-адреса! \
-Код ошибки: %d" % error
+Ошибка: %s" % error_string(error)
 
 
 func _on_request_completed(result: int, response_code: int,
-		_headers: PackedStringArray,body: PackedByteArray) -> void:
+		_headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result != HTTPRequest.RESULT_SUCCESS:
 		push_warning("Quiry global IP: result is not Success! Result: %d" % result)
 		dialog_text += '\n'
@@ -93,6 +93,7 @@ func _on_request_completed(result: int, response_code: int,
 	dialog_text += '\n'
 	dialog_text += "Чтобы игроки могли подключиться по глобальному IP-адресу, \
 необходимо открыть порт: %d" % Game.DEFAULT_PORT
+	print_verbose("Global IP: %s" % _global_ip)
 
 
 func _on_custom_action(action: StringName) -> void:

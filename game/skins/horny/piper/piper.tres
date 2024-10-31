@@ -6,7 +6,7 @@
 script = ExtResource("1_dltsc")
 name = "Пайпер"
 brief_description = "ЭТО ПАЙПЕР?!?!?!"
-rarity = 2
+rarity = 1
 id = "piper"
 scene_path = "uid://cad2esn66vr66"
 image_path = "uid://c6cl60m4btgyq"

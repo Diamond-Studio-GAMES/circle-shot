@@ -75,7 +75,7 @@ func _player_disconnected(_who: int) -> void:
 	if _time_remained <= 0:
 		return
 	# Недостаточно участников команд
-	if not (_players_teams.find_key(0) and _players_teams.find_key(0)):
+	if not (_players_teams.find_key(0) and _players_teams.find_key(1)):
 		_time_remained = 1
 
 

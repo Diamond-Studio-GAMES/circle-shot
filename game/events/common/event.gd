@@ -137,7 +137,7 @@ func set_local_team(team: int) -> void:
 @rpc("call_local", "reliable")
 func _start() -> void:
 	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called by server!")
+		push_error("This method must be called only by server!")
 		return
 	
 	started = true
@@ -159,7 +159,7 @@ func _start() -> void:
 @rpc("call_local", "reliable")
 func _end() -> void:
 	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called by server!")
+		push_error("This method must be called only by server!")
 		return
 	
 	ended.emit()

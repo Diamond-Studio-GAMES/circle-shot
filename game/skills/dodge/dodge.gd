@@ -60,7 +60,7 @@ func dodge(direction: Vector2) -> void:
 @rpc("reliable", "call_local", "any_peer", 2)
 func _request_dodge(direction: Vector2) -> void:
 	if not multiplayer.is_server():
-		push_error("This method must be called only on server!")
+		push_error("Unexpected call on client!")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()

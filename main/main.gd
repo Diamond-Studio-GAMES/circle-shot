@@ -35,6 +35,12 @@ var _preloaded_resources: Array[Resource]
 @onready var _load_progress_bar: ProgressBar = $LoadingScreen/ProgressBar
 
 
+func _input(event: InputEvent) -> void:
+	if event.is_action(&"fullscreen") and event.is_pressed() and Globals.save_file:
+		Globals.set_setting_bool("fullscreen", not Globals.get_setting_bool("fullscreen", false))
+		apply_settings()
+
+
 ## Открывает меню. Закрывает все остальное.
 func open_menu() -> void:
 	if is_instance_valid(_menu):

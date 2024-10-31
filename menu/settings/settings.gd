@@ -54,6 +54,13 @@ func _ready() -> void:
 		(%FullscreenCheck as CheckButton).disabled = true
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action(&"fullscreen") and event.is_pressed():
+		(%FullscreenCheck as CheckButton).set_pressed_no_signal(
+				Globals.get_setting_bool("fullscreen")
+		)
+
+
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_WM_GO_BACK_REQUEST:

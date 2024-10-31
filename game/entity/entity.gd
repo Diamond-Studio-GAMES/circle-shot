@@ -214,7 +214,7 @@ func set_health(health: int) -> void:
 
 func damage(amount: int, by: int) -> void:
 	if not multiplayer.is_server():
-		push_error("This method must be called only on server!")
+		push_error("Unexpected call on client!")
 		return
 	if current_health <= 0:
 		return
@@ -234,7 +234,7 @@ func damage(amount: int, by: int) -> void:
 
 func heal(amount: int) -> void:
 	if not multiplayer.is_server():
-		push_error("This method must be called only on server!")
+		push_error("Unexpected call on client!")
 		return
 	
 	var new_health: int = clampi(current_health + amount, 0, max_health)
