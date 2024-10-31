@@ -5,5 +5,5 @@ extends "res://game/weapons/guns/common/bullet.gd"
 @export var should_stack := true
 
 func _damage_player(player: Player, amount: int = damage) -> void:
-	super(player, amount)
+	#super(player, amount)
 	player.add_effect.rpc(Effect.SPEED_CHANGE, effect_duration, [effect_multiplier], should_stack)

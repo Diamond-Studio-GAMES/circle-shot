@@ -245,6 +245,10 @@ func _start_load() -> void:
 	_loading_open_menu()
 	await loading_stage_finished
 	$LoadingScreen.queue_free()
+	
+	if Globals.headless:
+		open_local_game()
+		game.create()
 
 
 func _loading_init() -> void:

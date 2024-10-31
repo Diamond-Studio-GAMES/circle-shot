@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://7fxjvg1x0b2s"
-path="res://.godot/imported/light_sword.png-cb4a622663d00139f8d6f5f5da1a2cbb.ctex"
+uid="uid://cpd3d53o0hohg"
+path="res://.godot/imported/blade.png-60ac403b2d704b94f56448eb75728b82.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/weapons/melee/light_sword/light_sword.png"
-dest_files=["res://.godot/imported/light_sword.png-cb4a622663d00139f8d6f5f5da1a2cbb.ctex"]
+source_file="res://game/weapons/melee/lightsaber/blade.png"
+dest_files=["res://.godot/imported/blade.png-60ac403b2d704b94f56448eb75728b82.ctex"]
 
 [params]
 

@@ -34,6 +34,8 @@ func kill_player(which: int, killer: int) -> void:
 	if multiplayer.get_remote_sender_id() != 1:
 		push_error("This method must be called only by server!")
 		return
+	if Globals.headless:
+		return
 	
 	_alive_players = Array(
 			get_tree().get_nodes_in_group(&"Player"), TYPE_OBJECT, &"CharacterBody2D", Player
@@ -42,9 +44,7 @@ func kill_player(which: int, killer: int) -> void:
 		if i.id == which:
 			_alive_players.erase(i)
 			break
-	if _alive_players.size() == 0:
-		return
-	if which != _spectating_player.id:
+	if _alive_players.size() == 0 or which != _spectating_player.id:
 		return
 	if killer < 0:
 		_set_player_to_spectate(randi() % _alive_players.size())

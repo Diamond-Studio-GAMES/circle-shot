@@ -549,11 +549,6 @@ icon = ExtResource("2_wjeu5")
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0.125, 0.125, 0.125, 1)
-theme_override_colors/font_hover_color = Color(0.105469, 0.105469, 0.105469, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.167969, 0.167969, 0.167969, 1)
 text = "Подключён к "
 underline = 1
 

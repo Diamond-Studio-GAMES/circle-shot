@@ -71,4 +71,4 @@ func can_reload() -> bool:
 
 
 func get_ammo_text() -> String:
-	return "Неограниченно"
+	return "Не ограничено"

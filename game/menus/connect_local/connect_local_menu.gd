@@ -14,9 +14,10 @@ func _ready() -> void:
 	_game.joined.connect(_on_game_joined)
 	_game.closed.connect(_on_game_closed)
 	
-	var clipboard_content: String = DisplayServer.clipboard_get().get_slice('\n', 0)
-	if clipboard_content.is_valid_ip_address():
-		_ip_edit.text = clipboard_content
+	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
+		var clipboard_content: String = DisplayServer.clipboard_get().get_slice('\n', 0)
+		if clipboard_content.is_valid_ip_address():
+			_ip_edit.text = clipboard_content
 	
 	_udp.listen(Game.LISTEN_PORT)
 	print_verbose("Started listening...")

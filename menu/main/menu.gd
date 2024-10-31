@@ -4,7 +4,7 @@ extends Control
 var _name_accepted := false
 
 func _ready() -> void:
-	($Version as Label).text = 'v' + Globals.version
+	($About as Window).title = "Об игре (версия: %s)" % Globals.version
 	if Globals.get_string("player_name").is_empty():
 		($NameDialog as Window).popup_centered()
 

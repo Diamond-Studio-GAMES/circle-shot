@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://h2a4hucar1wo"]
+
+[ext_resource type="Script" path="res://game/player/equip/weapon_data.gd" id="1_son83"]
+
+[resource]
+script = ExtResource("1_son83")
+name = "Световой меч"
+type = 3
+rarity = 1
+damage_text = "Урон: 60"
+ammo_text = "Не ограничено"
+description = ""
+id = "nonutnovember"
+scene_path = "uid://bxpa2b61ln4jx"
+image_path = "uid://8ff7tf8ct5pg"
+spawnable_scenes_paths = Array[String]([])
