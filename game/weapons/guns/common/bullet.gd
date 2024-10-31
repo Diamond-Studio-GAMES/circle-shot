@@ -15,7 +15,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _create_vfx(pos: Vector2) -> void:
-	var vfx_parent: Node = get_tree().get_first_node_in_group("VFXParent")
+	var vfx_parent: Node = get_tree().get_first_node_in_group(&"VFXParent")
 	if not is_instance_valid(vfx_parent):
 		return
 	var vfx: Node2D = hit_vfx_scene.instantiate()

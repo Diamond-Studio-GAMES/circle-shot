@@ -11,6 +11,8 @@ extends Resource
 @export var type := Weapon.Type.LIGHT
 ## Редкость оружия. Смотри [enum ItemsDB.Rarity].
 @export var rarity := ItemsDB.Rarity.COMMON
+## ID оружия. Должно быть уникальным.
+@export var id: String
 @export_group("Stats")
 ## Текст, кратко говорящий об уроне оружия. Чаще всего "Урон/с" или просто "Урон".
 @export var damage_text: String
@@ -19,8 +21,6 @@ extends Resource
 ## Полное описание оружия, включающее в себя почти всю информацию о нём. Для форматирования можно
 ## использовать BBCode.
 @export_multiline var description: String
-## ID оружия. Должно быть уникальным.
-@export var id: String
 @export_group("Paths")
 ## Путь к сцене оружия.
 @export_file("PackedScene") var scene_path: String

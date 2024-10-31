@@ -6,14 +6,15 @@ func _start_effect() -> void:
 		queue_free()
 		return
 	var multiplier: float = _data[0]
-	_entity.speed_multiplier *= multiplier
+	_entity.damage_multiplier *= multiplier
 	if multiplier > 1.0:
-		($Speedup as Node2D).show()
+		($Up as Node2D).show()
+		pass
 	elif multiplier < 1.0:
-		($Slowdown as Node2D).show()
+		($Down as Node2D).show()
 		negative = true
 
 
 func _end_effect() -> void:
 	var multiplier: float = _data[0]
-	_entity.speed_multiplier /= multiplier
+	_entity.damage_multiplier /= multiplier

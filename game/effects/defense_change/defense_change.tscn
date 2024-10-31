@@ -1,0 +1,135 @@
+[gd_scene load_steps=11 format=3 uid="uid://cf24vsbhb6f8g"]
+
+[ext_resource type="Script" path="res://game/effects/defense_change/defense_change.gd" id="1_2wpe2"]
+[ext_resource type="PackedScene" uid="uid://baoklmloqoop3" path="res://game/entity/effect.tscn" id="1_3lon1"]
+[ext_resource type="Texture2D" uid="uid://cben4ii42w3uj" path="res://game/effects/defense_change/defense_bubble.png" id="3_vnc5c"]
+[ext_resource type="Texture2D" uid="uid://bei3em235lcd5" path="res://game/effects/defense_change/defense_down.png" id="4_dgabw"]
+
+[sub_resource type="Animation" id="Animation_khg5p"]
+resource_name = "Shield"
+length = 2.0
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.752941)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.9, 0.9)]
+}
+
+[sub_resource type="Animation" id="Animation_kf2xq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4dol4"]
+_data = {
+&"RESET": SubResource("Animation_kf2xq"),
+&"Shield": SubResource("Animation_khg5p")
+}
+
+[sub_resource type="Curve" id="Curve_i062s"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 0.75), 0.0, 0.0, 0, 0, Vector2(0.75, 0.75), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+metadata/_snap_enabled = true
+metadata/_snap_count = 20
+
+[sub_resource type="CurveTexture" id="CurveTexture_w0stq"]
+curve = SubResource("Curve_i062s")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dvdok"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, 8, 0)
+emission_shape = 1
+emission_sphere_radius = 80.0
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_w0stq")
+
+[node name="DefenseChange" instance=ExtResource("1_3lon1")]
+script = ExtResource("1_2wpe2")
+
+[node name="Bubble" type="Sprite2D" parent="." index="1"]
+visible = false
+texture = ExtResource("3_vnc5c")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Bubble" index="0"]
+libraries = {
+&"": SubResource("AnimationLibrary_4dol4")
+}
+
+[node name="Down" type="GPUParticles2D" parent="." index="2"]
+visible = false
+amount = 3
+lifetime = 2.5
+preprocess = 1.0
+local_coords = true
+texture = ExtResource("4_dgabw")
+process_material = SubResource("ParticleProcessMaterial_dvdok")

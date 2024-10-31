@@ -24,7 +24,7 @@ func _ready() -> void:
 	
 	(%HitMarkersCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("hit_markers"))
 	(%ShowMinimapCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("minimap"))
-	(%ShowDebugCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("debug_data"))
+	(%ShowDebugCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("debug_info"))
 	(%MasterVolumeSlider as HSlider).value = Globals.get_setting_float("master_volume")
 	(%MusicVolumeSlider as HSlider).value = Globals.get_setting_float("music_volume")
 	(%SFXVolumeSlider as HSlider).value = Globals.get_setting_float("sfx_volume")
@@ -125,7 +125,7 @@ func _on_show_minimap_check_toggled(toggled_on: bool) -> void:
 
 
 func _on_show_debug_check_toggled(toggled_on: bool) -> void:
-	Globals.set_setting_bool("debug_data", toggled_on)
+	Globals.set_setting_bool("debug_info", toggled_on)
 
 
 func _on_master_volume_slider_value_changed(value: float) -> void:

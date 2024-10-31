@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhlky5iu0nax1"]
+
+[ext_resource type="Script" path="res://game/skills/energy_drink/energy_drink.gd" id="1_mig33"]
+
+[node name="EnergyDrink" type="Node2D"]
+script = ExtResource("1_mig33")
+speed_boost = 0.2
+damage_boost = 0.15
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

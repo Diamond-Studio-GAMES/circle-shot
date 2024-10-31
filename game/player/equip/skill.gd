@@ -7,6 +7,8 @@ extends Node2D
 var data: SkillData
 var _player: Player
 var _cooldown_timer := 0.0
+@warning_ignore("unused_private_class_variable") # Для дочерних классов
+@onready var _other_parent: Node2D = get_tree().get_first_node_in_group(&"OtherParent")
 
 
 func _physics_process(delta: float) -> void:

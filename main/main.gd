@@ -145,8 +145,8 @@ func setup_settings() -> void:
 			Globals.get_setting_bool("minimap", true)
 	)
 	Globals.set_setting_bool(
-			"debug_data",
-			Globals.get_setting_bool("debug_data", false)
+			"debug_info",
+			Globals.get_setting_bool("debug_info", false)
 	)
 	Globals.set_setting_float(
 			"master_volume",

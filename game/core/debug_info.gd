@@ -8,7 +8,7 @@ var _sent_ticks_msec: int
 
 
 func _ready() -> void:
-	if not Globals.get_setting_bool("debug_data"):
+	if not Globals.get_setting_bool("debug_info"):
 		hide()
 		process_mode = Node.PROCESS_MODE_DISABLED
 

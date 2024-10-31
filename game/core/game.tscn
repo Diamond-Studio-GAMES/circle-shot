@@ -2,38 +2,9 @@
 
 [ext_resource type="Script" path="res://game/core/game.gd" id="1_j8au2"]
 [ext_resource type="Script" path="res://game/core/loader.gd" id="2_p5b8s"]
-[ext_resource type="Script" path="res://game/core/debug_data.gd" id="3_0xkxq"]
+[ext_resource type="Script" path="res://game/core/debug_info.gd" id="3_0xkxq"]
 [ext_resource type="Texture2D" uid="uid://tgykndvggm2o" path="res://main/loading_splash.png" id="3_512x5"]
 [ext_resource type="Texture2D" uid="uid://drssc5o2ehjq" path="res://main/logo.png" id="4_yi0ok"]
-
-[sub_resource type="Animation" id="Animation_sprsr"]
-resource_name = "EndLoad"
-length = 0.3
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.3),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Screen:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
 
 [sub_resource type="Animation" id="Animation_oievw"]
 length = 0.001
@@ -90,11 +61,40 @@ tracks/1/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_sprsr"]
+resource_name = "EndLoad"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Screen:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_a1c02"]
 _data = {
-"EndLoad": SubResource("Animation_sprsr"),
-"RESET": SubResource("Animation_oievw"),
-"StartLoad": SubResource("Animation_xk7kp")
+&"RESET": SubResource("Animation_oievw"),
+&"StartLoad": SubResource("Animation_xk7kp"),
+&"EndLoad": SubResource("Animation_sprsr")
 }
 
 [node name="Game" type="Node"]
@@ -185,14 +185,14 @@ horizontal_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Loader"]
 libraries = {
-"": SubResource("AnimationLibrary_a1c02")
+&"": SubResource("AnimationLibrary_a1c02")
 }
 
-[node name="DebugData" type="CanvasLayer" parent="."]
+[node name="DebugInfo" type="CanvasLayer" parent="."]
 layer = 6
 script = ExtResource("3_0xkxq")
 
-[node name="FPSLabel" type="Label" parent="DebugData"]
+[node name="FPSLabel" type="Label" parent="DebugInfo"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -206,7 +206,7 @@ theme_override_constants/outline_size = 4
 text = "FPS: 60"
 horizontal_alignment = 1
 
-[node name="PingLabel" type="Label" parent="DebugData"]
+[node name="PingLabel" type="Label" parent="DebugInfo"]
 visible = false
 anchors_preset = 1
 anchor_left = 1.0
@@ -221,7 +221,7 @@ theme_override_constants/outline_size = 4
 text = "Пинг: 999 мс"
 horizontal_alignment = 1
 
-[node name="PingTimer" type="Timer" parent="DebugData/PingLabel"]
+[node name="PingTimer" type="Timer" parent="DebugInfo/PingLabel"]
 one_shot = true
 
 [node name="ErrorDialog" type="AcceptDialog" parent="."]
@@ -240,8 +240,8 @@ unresizable = true
 ok_button_text = "Отмена"
 dialog_text = "Подключение к 192.168.100.1..."
 
-[connection signal="closed" from="." to="DebugData" method="_on_game_closed"]
-[connection signal="joined" from="." to="DebugData" method="_on_game_joined"]
-[connection signal="timeout" from="DebugData/PingLabel/PingTimer" to="DebugData" method="_on_ping_timer_timeout"]
+[connection signal="closed" from="." to="DebugInfo" method="_on_game_closed"]
+[connection signal="joined" from="." to="DebugInfo" method="_on_game_joined"]
+[connection signal="timeout" from="DebugInfo/PingLabel/PingTimer" to="DebugInfo" method="_on_ping_timer_timeout"]
 [connection signal="canceled" from="ConnectingDialog" to="." method="close"]
 [connection signal="confirmed" from="ConnectingDialog" to="." method="close"]
