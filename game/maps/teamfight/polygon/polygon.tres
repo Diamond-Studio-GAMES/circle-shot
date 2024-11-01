@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_fdi78")
-name = "Вихрь"
-brief_description = "Здесь когда-то прошёлся торнадо"
+name = "Полигон"
+brief_description = "Отличное место для перестрелок!"
 scene_path = "uid://yw3tn27vxvlr"
 image_path = "uid://cxqd2beqfqhx7"

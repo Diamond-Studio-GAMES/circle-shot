@@ -18,7 +18,8 @@ func _physics_process(delta: float) -> void:
 
 func initialize(player: Player, skill_data: SkillData) -> void:
 	if player.skill_vars.is_empty():
-		player.skill_vars = [use_times, use_cooldown]
+		player.skill_vars = [use_times, 0]
+	_cooldown_timer = player.skill_vars[1]
 	data = skill_data
 	_player = player
 	_initialize()

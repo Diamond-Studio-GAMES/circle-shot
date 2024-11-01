@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://dx3fhqi5o23kv"]
 
-[ext_resource type="Texture2D" uid="uid://m5cg1us21mro" path="res://game/maps/teamfight/vortex/tiles.png" id="1_u1mtd"]
+[ext_resource type="Texture2D" uid="uid://m5cg1us21mro" path="res://game/maps/teamfight/polygon/tiles.png" id="1_u1mtd"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s6c3c"]
 texture = ExtResource("1_u1mtd")

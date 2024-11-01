@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=4 uid="uid://yw3tn27vxvlr"]
 
 [ext_resource type="PackedScene" uid="uid://c338frelp27wo" path="res://game/events/teamfight/base_map.tscn" id="1_4q00e"]
-[ext_resource type="TileSet" uid="uid://dx3fhqi5o23kv" path="res://game/maps/teamfight/vortex/tile_set.tres" id="2_jpejt"]
+[ext_resource type="TileSet" uid="uid://dx3fhqi5o23kv" path="res://game/maps/teamfight/polygon/tile_set.tres" id="2_jpejt"]
 
 [node name="Map" instance=ExtResource("1_4q00e")]
 metadata/_edit_horizontal_guides_ = [4000.0, -4000.0]
