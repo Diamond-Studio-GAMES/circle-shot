@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://connpgqem0b21"]
+
+[ext_resource type="Script" path="res://game/player/equip/weapon_data.gd" id="1_s825u"]
+
+[resource]
+script = ExtResource("1_s825u")
+name = "I NEED MORE BULLETS"
+type = 1
+rarity = 4
+id = "nicecocksir"
+damage_text = "Урон/с: 40/30"
+ammo_text = "25/75"
+description = ""
+scene_path = "uid://tpvpkv3eid7i"
+image_path = "uid://che11gmsosjmk"
+spawnable_scenes_paths = Array[String](["uid://ll80nn6exap3", "uid://bh8r5gsd6ghjm"])

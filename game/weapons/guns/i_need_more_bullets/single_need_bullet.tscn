@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://ll80nn6exap3"]
+
+[ext_resource type="PackedScene" uid="uid://1durulsrwk7o" path="res://game/weapons/guns/common/bullet.tscn" id="1_c4n8g"]
+[ext_resource type="PackedScene" uid="uid://c45vuv36c8f6" path="res://game/weapons/guns/i_need_more_bullets/single_need_bullet_hit.tscn" id="2_scwbr"]
+[ext_resource type="Texture2D" uid="uid://cd26opdvjp5t5" path="res://game/weapons/guns/i_need_more_bullets/single_bullet.png" id="3_pklkt"]
+
+[node name="SingleNeedBullet" instance=ExtResource("1_c4n8g")]
+speed = 4000.0
+hit_vfx_scene = ExtResource("2_scwbr")
+damage = 30
+
+[node name="Sprite2D" parent="." index="1"]
+visible = false
+
+[node name="Bullet" type="Sprite2D" parent="." index="4"]
+position = Vector2(-22, 0)
+texture = ExtResource("3_pklkt")

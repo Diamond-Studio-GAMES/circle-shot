@@ -27,6 +27,7 @@ func _ready() -> void:
 	if multiplayer.is_server():
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
+	# TODO: когда исправят UID???
 	var entities_spawner: MultiplayerSpawner = $EntitiesSpawner
 	for i: PackedScene in player_scenes:
 		entities_spawner.add_spawnable_scene(i.resource_path)
@@ -70,18 +71,6 @@ func _create_kill_marker(where: Vector2) -> void:
 	var marker: Node2D = _death_marker_scene.instantiate()
 	marker.global_position = where
 	$VFX.add_child(marker)
-
-
-func _setup() -> void:
-	_make_teams()
-	_event_ui.chat.players_names = _players_names
-	_event_ui.chat.players_teams = _players_teams
-	for i: int in _players_names:
-		spawn_player(i)
-	_finish_setup()
-	
-	await get_tree().create_timer(5, false).timeout
-	_start.rpc()
 
 
 func set_players_data(players_names: Dictionary[int, String],
@@ -164,6 +153,18 @@ func _end() -> void:
 	
 	ended.emit()
 	queue_free()
+
+
+func _setup() -> void:
+	_make_teams()
+	_event_ui.chat.players_names = _players_names
+	_event_ui.chat.players_teams = _players_teams
+	for i: int in _players_names:
+		spawn_player(i)
+	_finish_setup()
+	
+	await get_tree().create_timer(5, false).timeout
+	_start.rpc()
 
 
 func _initialize() -> void:

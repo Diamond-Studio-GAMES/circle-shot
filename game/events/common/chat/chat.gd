@@ -46,7 +46,7 @@ func clear_chat() -> void:
 func send_message() -> void:
 	var message: String = _chat_edit.text.strip_edges().strip_escapes()
 	_chat_edit.clear()
-	_chat_button.grab_focus() # TODO: Убрать эту шарманку в новом дев билде и заменить на edit
+	grab_focus() # TODO: Убрать эту шарманку в новом версии и заменить на edit, пофиксить фокус мод
 	_chat_edit.grab_focus.call_deferred()
 	
 	if message.is_empty():

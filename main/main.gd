@@ -154,7 +154,7 @@ func setup_settings() -> void:
 	)
 	Globals.set_setting_float(
 			"music_volume",
-			Globals.get_setting_float("music_volume", 1.0)
+			Globals.get_setting_float("music_volume", 0.7)
 	)
 	Globals.set_setting_float(
 			"sfx_volume",

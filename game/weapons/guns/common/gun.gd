@@ -1,7 +1,7 @@
 extends Weapon
 
 
-@export var shoot_interval: float = 0.5
+@export var shoot_interval := 0.5
 @export var ammo_per_shot: int = 1
 @export var to_aim_time := 0.15
 @export var projectile_scene: PackedScene
@@ -100,7 +100,7 @@ func _shoot() -> void:
 	_shoot_timer = shoot_interval
 	
 	ammo -= ammo_per_shot
-	_anim.play("Shoot")
+	_anim.play(&"Shoot")
 	_anim.seek(0, true)
 	if multiplayer.is_server():
 		_create_projectile()

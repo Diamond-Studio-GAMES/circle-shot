@@ -20,6 +20,7 @@ func _create_vfx(pos: Vector2) -> void:
 		return
 	var vfx: Node2D = hit_vfx_scene.instantiate()
 	vfx.global_position = pos
+	vfx.rotation = rotation
 	vfx_parent.add_child(vfx)
 
 

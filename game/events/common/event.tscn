@@ -309,6 +309,7 @@ offset_top = -480.0
 offset_right = 496.0
 offset_bottom = -80.0
 grow_vertical = 0
+focus_mode = 2
 script = ExtResource("3_8d55t")
 chat_button_path = NodePath("../Chat")
 

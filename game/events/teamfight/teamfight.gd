@@ -25,15 +25,12 @@ func _initialize() -> void:
 
 
 func _finish_setup() -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
-		return
-	if multiplayer.is_server():
-		_teamfight_ui.set_kills.rpc(red_kills, blue_kills)
+	_teamfight_ui.set_kills.rpc(red_kills, blue_kills)
 
 
 func _finish_start() -> void:
-	($MatchTimer as Timer).start()
+	if multiplayer.is_server():
+		($MatchTimer as Timer).start()
 
 
 func _make_teams() -> void:
@@ -77,6 +74,11 @@ func _player_disconnected(_who: int) -> void:
 	# Недостаточно участников команд
 	if not (_players_teams.find_key(0) and _players_teams.find_key(1)):
 		_time_remained = 1
+
+
+@rpc("reliable", "call_local")
+func _update_time(remained: int) -> void:
+	_teamfight_ui.set_time(remained)
 
 
 @rpc("reliable", "call_local")
@@ -128,8 +130,7 @@ func _on_local_player_died(_who: int) -> void:
 
 func _on_match_timer_timeout() -> void:
 	_time_remained -= 1
-	_teamfight_ui.set_time(_time_remained)
+	_update_time.rpc(_time_remained)
 	if _time_remained <= 0:
 		($MatchTimer as Timer).stop()
-		if multiplayer.is_server():
-			_determine_winner()
+		_determine_winner()

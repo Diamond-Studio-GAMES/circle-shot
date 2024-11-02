@@ -572,6 +572,7 @@ visible = false
 self_modulate = Color(1, 1, 1, 0.878431)
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
+focus_mode = 2
 script = ExtResource("3_amd3n")
 chat_button_path = NodePath("../Lobby/VBoxContainer/ControlButtons/Chat")
 metadata/_edit_use_anchors_ = true

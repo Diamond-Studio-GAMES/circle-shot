@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://c2jsq46q2vp6k"]
+
+[ext_resource type="Texture2D" uid="uid://k0mk54lmi1cg" path="res://game/weapons/guns/i_need_more_bullets/bullet.png" id="1_3kco5"]
+
+[sub_resource type="Curve" id="Curve_qnh65"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_awj6c"]
+curve = SubResource("Curve_qnh65")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a1edw"]
+particle_flag_disable_z = true
+direction = Vector3(-1, 0, 0)
+spread = 90.0
+initial_velocity_min = 32.0
+initial_velocity_max = 128.0
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_awj6c")
+
+[node name="NeedBulletHit" type="Node2D"]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(-24, 0)
+emitting = false
+amount = 1
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+visibility_rect = Rect2(-80, -80, 160, 160)
+local_coords = true
+texture = ExtResource("1_3kco5")
+process_material = SubResource("ParticleProcessMaterial_a1edw")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[connection signal="ready" from="GPUParticles2D" to="GPUParticles2D" method="restart"]
+[connection signal="timeout" from="Timer" to="." method="queue_free"]
