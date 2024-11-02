@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cosnyq0oetgix"
-path="res://.godot/imported/adaptive_icon_monochrome.png-7a17a8094e45e0f140584ef0d7ad87a0.ctex"
+uid="uid://c8kwpub0o3dj2"
+path="res://.godot/imported/icon_season.png-6268d128a7c6be88b3231ccc290cb695.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://misc/adaptive_icon_monochrome.png"
-dest_files=["res://.godot/imported/adaptive_icon_monochrome.png-7a17a8094e45e0f140584ef0d7ad87a0.ctex"]
+source_file="res://misc/icon_season.png"
+dest_files=["res://.godot/imported/icon_season.png-6268d128a7c6be88b3231ccc290cb695.ctex"]
 
 [params]
 

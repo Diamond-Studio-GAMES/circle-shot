@@ -16,5 +16,8 @@ extends Resource
 @export_group("Paths")
 ## Путь до сцены со скином.
 @export_file("PackedScene") var scene_path: String
-## Путь до картинки скина.
+## Путь до картинки скина, желательно с разрешением 256 на 256.
 @export_file("Texture2D") var image_path: String
+## Индекс скина в массиве [ItemsDB]. Равен -1 если его там нет.
+## Задаётся при инициализации [ItemsDB].
+var idx_in_db: int = -1

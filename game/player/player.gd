@@ -147,7 +147,7 @@ func set_skin(data: SkinData) -> void:
 	skin.data = data
 	skin.player = self
 	$Visual/Skin.add_child(skin)
-	equip_data[0] = Globals.items_db.skins.find(data)
+	equip_data[0] = data.idx_in_db
 	print_verbose("Skin '%s' with ID %d on player %d set." % [data.id, equip_data[0], id])
 
 
@@ -178,22 +178,12 @@ func set_weapon(type: Weapon.Type, data: WeaponData) -> void:
 	_weapons.add_child(weapon)
 	_weapons.move_child(weapon, type)
 	weapon.initialize(self, data)
-	var weapon_id: int = -1
-	match type:
-		Weapon.Type.LIGHT:
-			weapon_id = Globals.items_db.weapons_light.find(data)
-		Weapon.Type.HEAVY:
-			weapon_id = Globals.items_db.weapons_heavy.find(data)
-		Weapon.Type.SUPPORT:
-			weapon_id = Globals.items_db.weapons_support.find(data)
-		Weapon.Type.MELEE:
-			weapon_id = Globals.items_db.weapons_melee.find(data)
-	equip_data[1 + type] = weapon_id
+	equip_data[1 + type] = data.idx_in_db
 	
 	weapon_equipped.emit(type, data)
 	print_verbose("Set weapon '%s' with ID %d with type %d on player %d." % [
 		data.id,
-		weapon_id,
+		data.idx_in_db,
 		type,
 		id,
 	])
@@ -220,7 +210,7 @@ func set_skill(data: SkillData, reset_skill_vars := false) -> void:
 	skill = skill_scene.instantiate()
 	add_child(skill)
 	skill.initialize(self, data)
-	equip_data[5] = Globals.items_db.skills.find(data)
+	equip_data[5] = data.idx_in_db
 	skill_equipped.emit(data)
 	print_verbose("Set skill '%s' with ID %d on player %d set." % [data.id, equip_data[5], id])
 

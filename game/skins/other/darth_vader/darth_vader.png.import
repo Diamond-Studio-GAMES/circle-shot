@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpgtbbs4x5chj"
-path="res://.godot/imported/adaptive_icon_background.png-de1e631f696de537c71a6112b3a8c56d.ctex"
+uid="uid://gqeynwu8x1qh"
+path="res://.godot/imported/darth_vader.png-8b954da0dfb48756835527f47c7b009d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://misc/adaptive_icon_background.png"
-dest_files=["res://.godot/imported/adaptive_icon_background.png-de1e631f696de537c71a6112b3a8c56d.ctex"]
+source_file="res://game/skins/other/darth_vader/darth_vader.png"
+dest_files=["res://.godot/imported/darth_vader.png-8b954da0dfb48756835527f47c7b009d.ctex"]
 
 [params]
 

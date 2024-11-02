@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://daw8p0m7qlaln"]
+
+[ext_resource type="Texture2D" uid="uid://ch26h8tmfr3li" path="res://game/skins/other/deb/deb.png" id="1_0j8ia"]
+[ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="1_bi761"]
+
+[node name="Deb" type="Sprite2D"]
+texture = ExtResource("1_0j8ia")
+script = ExtResource("1_bi761")

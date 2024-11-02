@@ -20,7 +20,7 @@ const ALLOWED_MUSIC_FILE_EXTENSIONS: Array[String] = [".mp3", ".ogg"]
 ## Список путей к сценам для загрузки в память при запуске игры. Ускоряет последующую загрузку
 ## этих сцен.
 @export_file("Resource") var resources_to_preload_paths: Array[String]
-## Ссылка на узел игры.
+## Ссылка на [Game]. Может отсутствовать.
 var game: Game
 ## Словарь загруженных пользовательских треков в формате "<имя файла> : <ресурс трека>".
 var loaded_custom_tracks: Dictionary[String, AudioStream]

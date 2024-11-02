@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://3cta5u3qtmvj"]
+[gd_scene load_steps=12 format=3 uid="uid://3cta5u3qtmvj"]
 
 [ext_resource type="PackedScene" uid="uid://8yrjqan0dqfx" path="res://game/weapons/grenades/common/grenade_projectile.tscn" id="1_3kt7o"]
 [ext_resource type="Texture2D" uid="uid://of5a60eh78px" path="res://game/weapons/grenades/smoke_grenade/base.png" id="2_e4wmq"]
@@ -256,6 +256,18 @@ tracks/19/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("SmokeZone/CollisionShape2D:disabled")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0, 0.7, 13),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
 
 [sub_resource type="Animation" id="Animation_p0g7m"]
 length = 0.001
@@ -487,12 +499,27 @@ tracks/18/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
 }
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("SmokeZone/CollisionShape2D:disabled")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kply2"]
 _data = {
-"Explode": SubResource("Animation_28i3b"),
-"RESET": SubResource("Animation_p0g7m")
+&"RESET": SubResource("Animation_p0g7m"),
+&"Explode": SubResource("Animation_28i3b")
 }
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i77hk"]
+radius = 1280.0
 
 [node name="SmokeGrenadeProjectile" instance=ExtResource("1_3kt7o")]
 script = ExtResource("2_hk066")
@@ -550,8 +577,17 @@ disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Explosion" index="3"]
 libraries = {
-"": SubResource("AnimationLibrary_kply2")
+&"": SubResource("AnimationLibrary_kply2")
 }
+
+[node name="SmokeZone" type="Area2D" parent="Explosion" index="4"]
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Explosion/SmokeZone" index="0"]
+shape = SubResource("CircleShape2D_i77hk")
+disabled = true
 
 [connection signal="body_entered" from="Explosion/InvisibilityArea" to="Explosion/InvisibilityArea" method="_on_body_entered"]
 [connection signal="body_exited" from="Explosion/InvisibilityArea" to="Explosion/InvisibilityArea" method="_on_body_exited"]

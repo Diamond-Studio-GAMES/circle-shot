@@ -88,3 +88,17 @@ func initialize() -> void:
 	
 	for i: SkillData in skills:
 		spawnable_other_paths.append_array(i.spawnable_scenes_paths)
+	
+	# Задавание idx_in_db у предметов.
+	for i: int in range(skins.size()):
+		skins[i].idx_in_db = i
+	for i: int in range(skills.size()):
+		skills[i].idx_in_db = i
+	for i: int in range(weapons_light.size()):
+		weapons_light[i].idx_in_db = i
+	for i: int in range(weapons_heavy.size()):
+		weapons_heavy[i].idx_in_db = i
+	for i: int in range(weapons_support.size()):
+		weapons_support[i].idx_in_db = i
+	for i: int in range(weapons_melee.size()):
+		weapons_melee[i].idx_in_db = i

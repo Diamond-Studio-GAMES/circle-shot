@@ -403,12 +403,12 @@ tracks/4/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1c0bv"]
 _data = {
-"Equip": SubResource("Animation_daweh"),
-"PostEquip": SubResource("Animation_jn7sa"),
-"PostReload": SubResource("Animation_kpkmr"),
-"RESET": SubResource("Animation_pk7gt"),
-"Reload": SubResource("Animation_dae75"),
-"Shoot": SubResource("Animation_pwqt3")
+&"RESET": SubResource("Animation_pk7gt"),
+&"Reload": SubResource("Animation_dae75"),
+&"Equip": SubResource("Animation_daweh"),
+&"Shoot": SubResource("Animation_pwqt3"),
+&"PostReload": SubResource("Animation_kpkmr"),
+&"PostEquip": SubResource("Animation_jn7sa")
 }
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e4bfp"]
@@ -463,9 +463,9 @@ offset = Vector2(112, -16)
 position = Vector2(77, -22)
 emitting = false
 amount = 1
-process_material = SubResource("ParticleProcessMaterial_my80r")
-texture = ExtResource("8_y68u3")
 one_shot = true
+texture = ExtResource("8_y68u3")
+process_material = SubResource("ParticleProcessMaterial_my80r")
 
 [node name="ShootPoint" parent="." index="2"]
 position = Vector2(296, -22)
@@ -484,6 +484,7 @@ position = Vector2(-160, 0)
 target_position = Vector2(1600, 0)
 collision_mask = 3
 hit_from_inside = true
+collide_with_areas = true
 
 [node name="AimTarget" type="Marker2D" parent="ShootPoint" index="3"]
 
@@ -492,7 +493,7 @@ position = Vector2(1440, 0)
 
 [node name="AnimationPlayer" parent="." index="3"]
 libraries = {
-"": SubResource("AnimationLibrary_1c0bv")
+&"": SubResource("AnimationLibrary_1c0bv")
 }
 
 [node name="Aim" type="CanvasLayer" parent="." index="4"]

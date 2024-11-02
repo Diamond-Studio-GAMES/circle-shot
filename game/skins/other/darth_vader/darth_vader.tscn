@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://burx26c0yih2u"]
+
+[ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="1_cado5"]
+[ext_resource type="Texture2D" uid="uid://gqeynwu8x1qh" path="res://game/skins/other/darth_vader/darth_vader.png" id="1_qk6mp"]
+
+[node name="DarthVader" type="Sprite2D"]
+texture = ExtResource("1_qk6mp")
+script = ExtResource("1_cado5")

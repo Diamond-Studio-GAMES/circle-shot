@@ -20,7 +20,7 @@ extends Resource
 @export_range(1, 5, 1) var players_divider: int = 1
 ## Путь до сцены с событием.
 @export_file("PackedScene") var scene_path: String
-## Путь до картинки-обложки события. Рекомендуемое разрешение: 392 на 80.
+## Путь до картинки-обложки события. Разрешение: 784 на 160.
 @export_file("Texture2D") var image_path: String
 ## Массив карт данного события.
 @export var maps: Array[MapData]

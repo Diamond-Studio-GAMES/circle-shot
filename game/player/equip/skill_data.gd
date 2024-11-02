@@ -20,8 +20,11 @@ extends Resource
 @export_group("Paths")
 ## Путь до сцены с навыком.
 @export_file("PackedScene") var scene_path: String
-## Путь до картинки навыка.
+## Путь до картинки навыка, желательно с разрешением 256 пикселей по большей стороне.
 @export_file("Texture2D") var image_path: String
 ## Массив путей к сценам, относящихся конкретно к этому навыка, которые должны синхронизироваться
 ## при появлении. Например, сцена удара об землю.
 @export_file("PackedScene") var spawnable_scenes_paths: Array[String]
+## Индекс навыка в массиве [ItemsDB]. Равен -1 если его там нет.
+## Задаётся при инициализации [ItemsDB].
+var idx_in_db: int = -1
