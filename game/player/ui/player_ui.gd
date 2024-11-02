@@ -25,6 +25,7 @@ var _aim_zone: float
 
 var _touch_index: int = -1
 var _touch_timer := 0.0
+var _joystick_fire := false
 var _touch_start_position: Vector2
 var _weapon_selection_tween: Tween
 
@@ -53,6 +54,7 @@ var _health_bar_tween: Tween
 @onready var _move_joystick: VirtualJoystick = $Controller/TouchControls/MoveVirtualJoystick
 @onready var _aim_joystick: VirtualJoystick = $Controller/TouchControls/AimVirtualJoystick
 @onready var _shoot_area: TouchScreenButton = $Controller/TouchControls/ShootArea
+@onready var _single_shot_timer: Timer = $SingleShotTimer
 
 @onready var _center: Control = $Center
 
@@ -69,6 +71,10 @@ func _ready() -> void:
 			($Controller/CurrentWeapon as Control).position = \
 					($Controller/PCCurrentWeapon as Control).position
 			($Controller/Skill/TouchScreenButton as Node2D).hide()
+		Main.InputMethod.TOUCH:
+			_joystick_fire = Globals.get_controls_bool("joystick_fire")
+			if _joystick_fire:
+				_aim_joystick.released.connect(_on_aim_joystick_released)
 
 
 func _process(delta: float) -> void:
@@ -227,7 +233,12 @@ func _process_touch_input_method(delta: float) -> void:
 	else:
 		_player.player_input.showing_aim = false
 		_player.player_input.turn_with_aim = false
-	_player.player_input.shooting = _shoot_area.is_pressed()
+	if not _joystick_fire:
+		_player.player_input.shooting = _shoot_area.is_pressed()
+	else:
+		if not is_instance_valid(_player.current_weapon) \
+				or not _player.current_weapon.shoot_on_joystick_release:
+			_player.player_input.shooting = not _aim_joystick.output.is_zero_approx()
 	
 	if _touch_index >= 0:
 		_touch_timer += delta
@@ -412,3 +423,18 @@ func _on_skill_equipped(data: SkillData) -> void:
 
 func _on_ammo_text_updated(text: String) -> void:
 	_ammo_text.text = text
+
+
+func _on_aim_joystick_released(output: Vector2) -> void:
+	if (
+			is_instance_valid(_player) and is_instance_valid(_player.current_weapon) \
+			and _player.current_weapon.shoot_on_joystick_release
+			and not output.is_zero_approx()
+	):
+		_player.player_input.shooting = true
+		_single_shot_timer.start()
+
+
+func _on_single_shot_timer_timeout() -> void:
+	if is_instance_valid(_player):
+		_player.player_input.shooting = false

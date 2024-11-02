@@ -3,6 +3,9 @@ extends Control
 
 ## A simple virtual joystick for touchscreens, with useful options.
 
+## Emits when joystick is released. [param output] contains joystick's output before resetting.
+signal released(output: Vector2)
+
 enum VisibilityMode {
 	ALWAYS, ## The joystick is always visible.
 	TOUCHSCREEN_ONLY, ## The joystick is visible on touchscreens only.
@@ -155,6 +158,7 @@ func _update_joystick(touch_position: Vector2) -> void:
 
 
 func _reset() -> void:
+	released.emit(output)
 	_pressed = false
 	output = Vector2.ZERO
 	_touch_index = -1

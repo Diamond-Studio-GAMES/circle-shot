@@ -191,6 +191,10 @@ func setup_controls_settings() -> void:
 			"follow_mouse",
 			Globals.get_controls_bool("follow_mouse", true)
 	)
+	Globals.set_controls_bool(
+			"joystick_fire",
+			Globals.get_controls_bool("joystick_fire", false)
+	)
 
 
 ## Применяет общие настройки.

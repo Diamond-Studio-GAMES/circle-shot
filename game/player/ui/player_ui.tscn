@@ -645,5 +645,10 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="SingleShotTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
 [connection signal="pressed" from="Controller/TouchControls/Anchor/AdditionalButton" to="." method="additional_button"]
 [connection signal="pressed" from="Controller/Skill/TouchScreenButton" to="." method="use_skill"]
+[connection signal="timeout" from="SingleShotTimer" to="." method="_on_single_shot_timer_timeout"]

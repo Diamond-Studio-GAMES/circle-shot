@@ -56,7 +56,10 @@ OpenGL - традиционный отрисовщик, поддерживающ
 Требуется предоставить разрешение на чтение файлов на Android.
 Если при попытки включить эту опцию она сама обратно выключается:
 попробуйте в настройках приложения самостоятельно выдать нужное разрешение.
-Изменения будут применены после перезапуска игры."])
+Изменения будут применены после перезапуска игры.", "Настраивает способ стрельбы.
+Зона стрельбы - чтобы вести огонь, удерживайте левый верхний угол.
+Джойстик прицеливания - чтобы отвести огонь, отведите в сторону джойстик прицеливания.
+На некоторых оружиях выстрел будет совершён только после того, как вы отпустите палец."])
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -178,6 +181,7 @@ theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
 [node name="General" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -629,7 +633,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Controls" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -698,6 +701,38 @@ expand_icon = true
 [node name="TouchSettings" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="FireMode" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/FireMode"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Стрелять с помощью"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/FireMode"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FireModeOptions" type="OptionButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/FireMode/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "Зоны стрельбы"
+popup/item_0/id = 0
+popup/item_1/text = "Джойстика прицеливания"
+popup/item_1/id = 0
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/FireMode/Setting"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
 
 [node name="HelpDialog" type="AcceptDialog" parent="."]
 title = "Помощь по настройке"
@@ -775,6 +810,8 @@ placeholder_text = "Новое имя..."
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/InputMethod/Setting/Help" to="." method="show_help" binds= [6]]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse/Setting/FollowMouseCheck" to="." method="_on_follow_mouse_check_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse/Setting/Help" to="." method="show_help" binds= [7]]
+[connection signal="item_selected" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/FireMode/Setting/FireModeOptions" to="." method="_on_fire_mode_options_item_selected"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/FireMode/Setting/Help" to="." method="show_help" binds= [9]]
 [connection signal="confirmed" from="ResetSettingsDialog" to="." method="_on_reset_settings_dialog_confirmed"]
 [connection signal="confirmed" from="ResetControlsDialog" to="." method="_on_reset_controls_dialog_confirmed"]
 [connection signal="confirmed" from="ResetDataDialog" to="." method="_on_reset_data_dialog_confirmed"]

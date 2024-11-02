@@ -72,6 +72,51 @@ tracks/1/keys = {
 "values": [Vector2(0, 12), Vector2(0, -8), Vector2(0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_x17tu"]
+resource_name = "PostEquip"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base:rotation")
+tracks/0/interp = 4
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2993),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.153362, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Base:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2993),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -8), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hitka"]
+resource_name = "PostReload"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Base:rotation")
+tracks/0/interp = 3
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.349066, 0.0]
+}
+
 [sub_resource type="Animation" id="Animation_mrem2"]
 length = 0.001
 tracks/0/type = "value"
@@ -339,59 +384,14 @@ tracks/3/keys = {
 }]
 }
 
-[sub_resource type="Animation" id="Animation_x17tu"]
-resource_name = "PostEquip"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Base:rotation")
-tracks/0/interp = 4
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2993),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [-0.153362, 0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Base:position")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2993),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, -8), Vector2(0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_hitka"]
-resource_name = "PostReload"
-length = 0.3
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Base:rotation")
-tracks/0/interp = 3
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.349066, 0.0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tv7o7"]
 _data = {
-"Equip": SubResource("Animation_7gni2"),
-"PostEquip": SubResource("Animation_x17tu"),
-"PostReload": SubResource("Animation_hitka"),
-"RESET": SubResource("Animation_mrem2"),
-"Reload": SubResource("Animation_iq16r"),
-"Shoot": SubResource("Animation_llg42")
+&"RESET": SubResource("Animation_mrem2"),
+&"Reload": SubResource("Animation_iq16r"),
+&"PostEquip": SubResource("Animation_x17tu"),
+&"PostReload": SubResource("Animation_hitka"),
+&"Equip": SubResource("Animation_7gni2"),
+&"Shoot": SubResource("Animation_llg42")
 }
 
 [node name="DesertEagle" instance=ExtResource("1_l8sst")]
@@ -410,6 +410,7 @@ recoil_increasing_time = 0.5
 recoil_reset_time = 0.7
 ammo_per_load = 7
 ammo_total = 42
+shoot_on_joystick_release = true
 
 [node name="Magazine" type="Sprite2D" parent="." index="0"]
 visible = false
@@ -440,15 +441,15 @@ offset = Vector2(48, -12)
 position = Vector2(22, -51)
 emitting = false
 amount = 1
-process_material = SubResource("ParticleProcessMaterial_bkidh")
-texture = ExtResource("7_2nu1t")
 lifetime = 0.6
 one_shot = true
+texture = ExtResource("7_2nu1t")
+process_material = SubResource("ParticleProcessMaterial_bkidh")
 
 [node name="ShootPoint" parent="." index="2"]
 position = Vector2(134, -50)
 
 [node name="AnimationPlayer" parent="." index="3"]
 libraries = {
-"": SubResource("AnimationLibrary_tv7o7")
+&"": SubResource("AnimationLibrary_tv7o7")
 }

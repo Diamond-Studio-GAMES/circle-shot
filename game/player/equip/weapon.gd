@@ -18,6 +18,7 @@ enum Type {
 @export var ammo_per_load: int = 10
 @export var ammo_total: int = 150
 @export_range(0.5, 2.0, 0.01) var speed_multiplier_when_current := 1.0
+@export var shoot_on_joystick_release := false
 var ammo: int
 var ammo_in_stock: int
 var data: WeaponData

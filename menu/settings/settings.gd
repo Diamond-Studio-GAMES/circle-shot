@@ -34,6 +34,7 @@ func _ready() -> void:
 	(%InputOptions as OptionButton).selected = Globals.get_controls_int("input_method")
 	_toggle_input_method_settings_visibility(Globals.get_controls_int("input_method"))
 	(%FollowMouseCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("follow_mouse"))
+	(%FireModeOptions as OptionButton).selected = int(Globals.get_controls_bool("joystick_fire"))
 	
 	# Кастомные треки
 	(%CustomTracksCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("custom_tracks"))
@@ -256,3 +257,7 @@ func _on_request_permissions_result(permission: String, granted: bool) -> void:
 
 func _on_preload_check_toggled(toggled_on: bool) -> void:
 	Globals.set_setting_bool("preload", toggled_on)
+
+
+func _on_fire_mode_options_item_selected(index: int) -> void:
+	Globals.set_controls_bool("joystick_fire", bool(index))

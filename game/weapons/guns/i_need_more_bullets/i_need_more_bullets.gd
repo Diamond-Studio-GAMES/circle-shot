@@ -36,6 +36,7 @@ func _shoot() -> void:
 func additional_button() -> void:
 	_in_single_mode = not _in_single_mode
 	_aim_device.visible = _in_single_mode
+	shoot_on_joystick_release = _in_single_mode
 	if not (_switch_sfx.playing or _switch_single_sfx.playing):
 		_switch_sfx.playing = not _in_single_mode
 		_switch_single_sfx.playing = _in_single_mode
