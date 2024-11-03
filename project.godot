@@ -182,6 +182,7 @@ common/enable_object_picking=false
 
 [rendering]
 
+rendering_device/fallback_to_d3d12=false
 renderer/rendering_method="mobile"
 textures/vram_compression/import_s3tc_bptc=true
 textures/vram_compression/import_etc2_astc=true
