@@ -1,4 +1,4 @@
-extends "res://game/weapons/grenades/common/grenade.gd"
+extends Grenade
 
 
 func _customize_projectile(projectile: GrenadeProjectile) -> void:

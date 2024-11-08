@@ -1,3 +1,4 @@
+class_name ShapeDetector
 extends ShapeCast2D
 
 @export var damage_interval := 0.3

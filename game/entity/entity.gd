@@ -216,15 +216,12 @@ func damage(amount: int, by: int) -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
-	if current_health <= 0:
-		return
-	var new_health: int = clampi(
-			current_health - roundi(amount * defense_multiplier),
-			0, max_health
-	)
-	if new_health == current_health:
+	if is_immune() or current_health <= 0 or amount <= 0:
 		return
 	
+	var new_health: int = clampi(
+			current_health - maxi(roundi(amount * defense_multiplier), 1), 0, max_health
+	)
 	if new_health <= 0:
 		killed.emit(id, by)
 	else:
@@ -236,10 +233,10 @@ func heal(amount: int) -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
+	if current_health <= 0 or amount <= 0:
+		return
 	
 	var new_health: int = clampi(current_health + amount, 0, max_health)
-	if new_health == current_health:
-		return
 	set_health.rpc(new_health)
 #endregion
 

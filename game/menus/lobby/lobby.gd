@@ -68,7 +68,9 @@ func _add_player_entry(id: int, player_name: String) -> void:
 	var player_entry: Node = _player_entry_scene.instantiate()
 	player_entry.name = str(id)
 	if id == multiplayer.get_unique_id():
-		player_name += " (Ты)"
+		(player_entry.get_node(^"Name") as Label).add_theme_color_override(
+				&"font_color", Color.CORNFLOWER_BLUE
+		)
 		(player_entry.get_node(^"Kick") as BaseButton).disabled = true
 	(player_entry.get_node(^"Name") as Label).text = player_name
 	# Проверка на админа своеобразная
@@ -107,7 +109,7 @@ func _register_new_player(player_name: String) -> void:
 	player_name = Game.validate_player_name(player_name, sender_id)
 	_players[sender_id] = player_name
 	
-	_chat.post_message.rpc("> Игрок [color=green]%s[/color] подключился!" % player_name)
+	_chat.post_message.rpc("> [color=green]%s[/color] подключается!" % player_name)
 	_chat.players_names[sender_id] = player_name
 	
 	if _players.size() == 1:
@@ -193,9 +195,22 @@ func _request_kick_player(id: int) -> void:
 	if sender_id != _admin_id:
 		push_warning("Request rejected: player %d is not admin!" % sender_id)
 		return
+	if id == _admin_id:
+		push_warning("Cannot kick admin!")
+		return
+	if _game.state != Game.State.LOBBY:
+		push_warning("Cannot kick if not in lobby!")
+		return
 	
 	print_verbose("Accepted kick request. Kicking: %d." % id)
-	multiplayer.multiplayer_peer.disconnect_peer(id)
+	(multiplayer as SceneMultiplayer).disconnect_peer(id)
+	_chat.post_message.rpc("> [color=green]%s[/color] выгоняет игрока [color=red]%s[/color]!" % [
+		_players[_admin_id],
+		_players[id],
+	])
+	_chat.players_names.erase(id)
+	_players.erase(id)
+	_delete_player_entry.rpc(id)
 
 
 @rpc("any_peer", "reliable", "call_local")
@@ -312,12 +327,10 @@ func _update_environment() -> void:
 	(%Event as TextureRect).texture = load(event.image_path)
 	(%Event/Container/Name as Label).text = event.name
 	(%Event/Container/Description as Label).text = event.brief_description
-	Globals.set_int("selected_event", _selected_event)
 	
 	(%Map as TextureRect).texture = load(event.maps[_selected_map].image_path)
 	(%Map/Container/Name as Label).text = event.maps[_selected_map].name
 	(%Map/Container/Description as Label).text = event.maps[_selected_map].brief_description
-	Globals.set_int("selected_map", _selected_map)
 
 
 func _update_equip() -> void:
@@ -325,37 +338,31 @@ func _update_equip() -> void:
 	(%Skin/Name as Label).text = skin.name
 	(%Skin/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[skin.rarity]
 	(%Skin as TextureRect).texture = load(skin.image_path)
-	Globals.set_int("selected_skin", _selected_skin)
 	
 	var light_weapon: WeaponData = Globals.items_db.weapons_light[_selected_light_weapon]
 	(%LightWeapon/Name as Label).text = light_weapon.name
 	(%LightWeapon/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[light_weapon.rarity]
 	(%LightWeapon as TextureRect).texture = load(light_weapon.image_path)
-	Globals.set_int("selected_light_weapon", _selected_light_weapon)
 	
 	var heavy_weapon: WeaponData = Globals.items_db.weapons_heavy[_selected_heavy_weapon]
 	(%HeavyWeapon/Name as Label).text = heavy_weapon.name
 	(%HeavyWeapon/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[heavy_weapon.rarity]
 	(%HeavyWeapon as TextureRect).texture = load(heavy_weapon.image_path)
-	Globals.set_int("selected_heavy_weapon", _selected_heavy_weapon)
 	
 	var support_weapon: WeaponData = Globals.items_db.weapons_support[_selected_support_weapon]
 	(%SupportWeapon/Name as Label).text = support_weapon.name
 	(%SupportWeapon/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[support_weapon.rarity]
 	(%SupportWeapon as TextureRect).texture = load(support_weapon.image_path)
-	Globals.set_int("selected_support_weapon", _selected_support_weapon)
 	
 	var melee_weapon: WeaponData = Globals.items_db.weapons_melee[_selected_melee_weapon]
 	(%MeleeWeapon/Name as Label).text = melee_weapon.name
 	(%MeleeWeapon/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[melee_weapon.rarity]
 	(%MeleeWeapon as TextureRect).texture = load(melee_weapon.image_path)
-	Globals.set_int("selected_melee_weapon", _selected_melee_weapon)
 	
 	var skill: SkillData = Globals.items_db.skills[_selected_skill]
 	(%Skill/Name as Label).text = skill.name
 	(%Skill/RarityFill as ColorRect).color = ItemsDB.RARITY_COLORS[skill.rarity]
 	(%Skill as TextureRect).texture = load(skill.image_path)
-	Globals.set_int("selected_skill", _selected_skill)
 
 
 func _find_ips_for_broadcast() -> void:
@@ -408,10 +415,8 @@ func _on_game_joined() -> void:
 	(%AdminPanel as HBoxContainer).hide()
 	(%ClientHint as Label).show()
 	(%ControlButtons/ConnectedToIP as Control).show()
-	var peers: Array[ENetPacketPeer] = \
-			(multiplayer.multiplayer_peer as ENetMultiplayerPeer).host.get_peers()
-	(%ControlButtons/ConnectedToIP as LinkButton).text = "Подключён к %s" % \
-			peers[0].get_remote_address()
+	(%ControlButtons/ConnectedToIP as LinkButton).text = "Подключёно к %s" % \
+			(multiplayer.multiplayer_peer as ENetMultiplayerPeer).get_peer(1).get_remote_address()
 	(%ControlButtons/ViewIPs as Control).hide()
 	(%ClientHint as Label).text = "Ожидание сервера..."
 	_register_new_player.rpc_id(1, Globals.get_string("player_name"))
@@ -444,7 +449,7 @@ func _on_game_ended() -> void:
 func _on_peer_disconnected(id: int) -> void:
 	if not multiplayer.is_server():
 		return
-	_chat.post_message.rpc("> Игрок [color=green]%s[/color] отключился!" % _players[id])
+	_chat.post_message.rpc("> [color=green]%s[/color] отключается!" % _players[id])
 	_chat.players_names.erase(id)
 	_players.erase(id)
 	if id == _admin_id:
@@ -470,9 +475,9 @@ func _on_leave_pressed() -> void:
 
 
 func _on_connected_to_ip_pressed() -> void:
-	var peers: Array[ENetPacketPeer] = \
-			(multiplayer.multiplayer_peer as ENetMultiplayerPeer).host.get_peers()
-	DisplayServer.clipboard_set(peers[0].get_remote_address())
+	DisplayServer.clipboard_set(
+			(multiplayer.multiplayer_peer as ENetMultiplayerPeer).get_peer(1).get_remote_address()
+	)
 
 
 func _on_change_event_pressed() -> void:
@@ -527,24 +532,34 @@ func _on_item_selected(type: ItemsDB.Item, id: int) -> void:
 	_item_selector.hide()
 	match type:
 		ItemsDB.Item.EVENT:
-			_request_set_environment.rpc_id(1, id, 0)
+			if id != _selected_event:
+				_request_set_environment.rpc_id(1, id, 0)
+				Globals.set_int("selected_event", id)
+				Globals.set_int("selected_map", 0)
 		ItemsDB.Item.MAP:
 			_request_set_environment.rpc_id(1, _selected_event, id)
+			Globals.set_int("selected_map", id)
 		ItemsDB.Item.SKIN:
 			_selected_skin = id
+			Globals.set_int("selected_skin", id)
 			_update_equip()
 		ItemsDB.Item.WEAPON_LIGHT:
 			_selected_light_weapon = id
+			Globals.set_int("selected_light_weapon", id)
 			_update_equip()
 		ItemsDB.Item.WEAPON_HEAVY:
 			_selected_heavy_weapon = id
+			Globals.set_int("selected_heavy_weapon", id)
 			_update_equip()
 		ItemsDB.Item.WEAPON_SUPPORT:
 			_selected_support_weapon = id
+			Globals.set_int("selected_support_weapon", id)
 			_update_equip()
 		ItemsDB.Item.WEAPON_MELEE:
 			_selected_melee_weapon = id
+			Globals.set_int("selected_melee_weapon", id)
 			_update_equip()
 		ItemsDB.Item.SKILL:
 			_selected_skill = id
+			Globals.set_int("selected_skill", id)
 			_update_equip()

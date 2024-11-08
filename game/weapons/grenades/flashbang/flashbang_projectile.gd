@@ -14,9 +14,10 @@ func _exit_tree() -> void:
 
 func _explode() -> void:
 	($AnimationPlayer as AnimationPlayer).play(&"Explode")
+	var event: Event = get_tree().get_first_node_in_group(&"Event")
 	if ($VisibleOnScreenNotifier2D as VisibleOnScreenNotifier2D).is_on_screen():
-		if (get_tree().get_first_node_in_group(&"Event") as Event).local_team \
-				!= ($Explosion/Attack as Attack).team:
+		if event.local_team != ($Explosion/Attack as Attack).team \
+				and is_instance_valid(event.local_player):
 			var music_idx: int = AudioServer.get_bus_index(&"Music")
 			var sfx_idx: int = AudioServer.get_bus_index(&"SFX")
 			_previous_music_db = AudioServer.get_bus_volume_db(music_idx)

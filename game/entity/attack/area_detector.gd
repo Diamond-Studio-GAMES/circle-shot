@@ -1,3 +1,4 @@
+class_name AreaDetector
 extends Area2D
 
 

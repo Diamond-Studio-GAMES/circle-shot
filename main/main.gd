@@ -16,6 +16,8 @@ enum InputMethod {
 }
 ## Разрешённые расширения файлов для загрузки в качестве пользовательских треков.
 const ALLOWED_MUSIC_FILE_EXTENSIONS: Array[String] = [".mp3", ".ogg"]
+## Максимальная длина названия файла пользовательского трека. Лишнее обрезается.
+const MAX_MUSIC_FILE_NAME_LENGTH: int = 45
 
 ## Список путей к сценам для загрузки в память при запуске игры. Ускоряет последующую загрузку
 ## этих сцен.
@@ -194,6 +196,14 @@ func setup_controls_settings() -> void:
 	Globals.set_controls_bool(
 			"joystick_fire",
 			Globals.get_controls_bool("joystick_fire", false)
+	)
+	Globals.set_controls_float(
+			"sneak_multiplier",
+			Globals.get_controls_float("sneak_multiplier", 0.5)
+	)
+	Globals.set_controls_bool(
+			"square_joystick",
+			Globals.get_controls_bool("square_joystick", false)
 	)
 
 
@@ -374,7 +384,9 @@ func _loading_custom_tracks() -> void:
 		
 		if valid:
 			print_verbose("Loaded track: %s." % i)
-			loaded_custom_tracks[i.get_file().get_basename()] = stream
+			loaded_custom_tracks[
+				i.get_file().get_basename().left(MAX_MUSIC_FILE_NAME_LENGTH)
+			] = stream
 		else:
 			print_verbose("Track %s is invalid." % i)
 		

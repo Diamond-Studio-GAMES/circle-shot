@@ -1,4 +1,4 @@
-extends "res://game/weapons/guns/common/gun.gd"
+extends Gun
 
 @export var buckshot_in_shot: int = 6
 var _reloading := false

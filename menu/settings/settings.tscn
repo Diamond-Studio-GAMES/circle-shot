@@ -27,39 +27,26 @@ grow_vertical = 2
 script = ExtResource("1_jwkxy")
 help_messages = Array[String](["Выбирает предпочитаемый отрисовщик:
 Vulkan - современный быстрый отрисовщик, однако может иметь проблемы с совместимостью.
-OpenGL - традиционный отрисовщик, поддерживающийся почти везде.
-Просадки кадров при компиляции шейдеров на нём гораздо сильнее.
+OpenGL - традиционный отрисовщик, поддерживающийся почти везде. Просадки кадров при компиляции шейдеров на нём гораздо сильнее.
 
 Может не совпадать с текущим в случае отсутствии поддержки.
-Изменения будут применены после перезапуска игры.", "Включает шейдерный кэш, призванный убрать просадки
-кадров при компиляции шейдеров.
-Рекомендуется отключить на телефонах при использовании OpenGL,
-так как может вызывать падения игры.
-Изменения будут применены после перезапуска игры.", "Включает индикаторы, появляющиеся на экране
-при попадании в противника или при его убийстве.", "Очищает шейдерный кэш.
-После применения игра будет перезапущена.", "Предзагрузка ресурсов обеспечивает более реактивные переходы
-между сценами, однако делает загрузку игры дольше и увеличивает расход памяти.
-Стоит выключить, если требуется экономить оперативную память.
+Изменения будут применены после перезапуска игры.", "Включает шейдерный кэш, призванный убрать просадки кадров при компиляции шейдеров. Рекомендуется отключить на телефонах при использовании OpenGL, так как может вызывать падения игры.
+Изменения будут применены после перезапуска игры.", "Включает индикаторы, появляющиеся на экране при попадании в противника или при его убийстве.", "Очищает шейдерный кэш.
+После применения игра будет перезапущена.", "Предзагрузка ресурсов обеспечивает более реактивные переходы между сценами, однако делает загрузку игры дольше и увеличивает расход памяти. Стоит выключить, если требуется сильно экономить оперативную память.
 Изменения будут применены после перезапуска игры.", "Настраивает направление переката.
 Движение - перекат будет выполняться в сторону (последнего) движения.
 Прицел - перекат будет выполняться в сторону прицела.", "Настраивает тип управления.
-Касания - управления джойстиками и кнопками на экране.
-Предназначено для управления на телефонах.
-Клавитура и мышь - управления с клавиатуры и прицеливание с помощью мыши.
-Предназначено для ПК, однако может использоваться и на телефонах,
-если подключены физические устройства ввода.", "Если включено, прицел всегда смотрит в сторону мыши.
+Касания - управления джойстиками и кнопками на экране. Предназначено для управления на телефонах.
+Клавитура и мышь - управления с клавиатуры и прицеливание с помощью мыши. Предназначено для ПК, однако может использоваться и на телефонах, если подключены физические устройства ввода.", "Если включено, прицел всегда смотрит в сторону мыши.
 Если отключено, прицел повернётся в сторону мыши при нажатии действия ПРИЦЕЛ.", "Включает загрузку пользовательских треков.
 Максимум одновременно загруженых треков - 20.
-Максимальный размер трека - 15 МБ.
-Если трек имеет больший размер, он не будет загружен.
+Максимальный размер трека - 15 МБ. Если трек имеет больший размер, он не будет загружен.
 Поддерживаемые форматы треков: MP3 и OGG.
 Требуется предоставить разрешение на чтение файлов на Android.
-Если при попытки включить эту опцию она сама обратно выключается:
-попробуйте в настройках приложения самостоятельно выдать нужное разрешение.
+Если при попытки включить эту опцию она сама обратно выключается: попробуйте в настройках приложения самостоятельно выдать нужное разрешение.
 Изменения будут применены после перезапуска игры.", "Настраивает способ стрельбы.
 Зона стрельбы - чтобы вести огонь, удерживайте левый верхний угол.
-Джойстик прицеливания - чтобы отвести огонь, отведите в сторону джойстик прицеливания.
-На некоторых оружиях выстрел будет совершён только после того, как вы отпустите палец."])
+Джойстик прицеливания - чтобы отвести огонь, отведите в сторону джойстик прицеливания. На некоторых оружиях выстрел будет совершён только после того, как вы отпустите палец.", "Включает умный джойстик, заключающийся в том, что зависимость скорости передвижения от расстояния ручки джойстика до его центра становится нелинейной. Это позволяет легче уменьшать скорость ходьбы."])
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -69,6 +56,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_pp8cx")
+stretch_mode = 6
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -698,6 +686,47 @@ layout_mode = 2
 icon = ExtResource("1_xh6xh")
 expand_icon = true
 
+[node name="SneakMultiplier" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/SneakMultiplier"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Скорость крадущегося игрока"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/SneakMultiplier"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SneakSlider" type="HSlider" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/SneakMultiplier/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 0.2
+max_value = 0.8
+step = 0.01
+value = 0.5
+
+[node name="SneakValue" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/SneakMultiplier/Setting"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/SneakMultiplier/Setting"]
+visible = false
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
 [node name="TouchSettings" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -734,10 +763,37 @@ layout_mode = 2
 icon = ExtResource("1_xh6xh")
 expand_icon = true
 
+[node name="SquareJoystick" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/SquareJoystick"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"HeaderSmall"
+text = "Умный джойстик движения"
+vertical_alignment = 1
+
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/SquareJoystick"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SquareCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/SquareJoystick/Setting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/SquareJoystick/Setting"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+icon = ExtResource("1_xh6xh")
+expand_icon = true
+
 [node name="HelpDialog" type="AcceptDialog" parent="."]
 title = "Помощь по настройке"
-size = Vector2i(240, 120)
+size = Vector2i(800, 120)
 unresizable = true
+dialog_autowrap = true
 
 [node name="ResetSettingsDialog" type="ConfirmationDialog" parent="."]
 title = "Сброс настроек"
@@ -810,8 +866,11 @@ placeholder_text = "Новое имя..."
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/InputMethod/Setting/Help" to="." method="show_help" binds= [6]]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse/Setting/FollowMouseCheck" to="." method="_on_follow_mouse_check_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse/Setting/Help" to="." method="show_help" binds= [7]]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/SneakMultiplier/Setting/SneakSlider" to="." method="_on_sneak_slider_value_changed"]
 [connection signal="item_selected" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/FireMode/Setting/FireModeOptions" to="." method="_on_fire_mode_options_item_selected"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/FireMode/Setting/Help" to="." method="show_help" binds= [9]]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/SquareJoystick/Setting/SquareCheck" to="." method="_on_square_check_toggled"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/SquareJoystick/Setting/Help" to="." method="show_help" binds= [10]]
 [connection signal="confirmed" from="ResetSettingsDialog" to="." method="_on_reset_settings_dialog_confirmed"]
 [connection signal="confirmed" from="ResetControlsDialog" to="." method="_on_reset_controls_dialog_confirmed"]
 [connection signal="confirmed" from="ResetDataDialog" to="." method="_on_reset_data_dialog_confirmed"]

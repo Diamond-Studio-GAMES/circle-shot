@@ -45,10 +45,13 @@ func load_event(event_id: int, map_id: int) -> Event:
 	_status_text.text = "Загрузка события..."
 	
 	_loading_path = Globals.items_db.events[event_id].scene_path
-	print_verbose("Requesting load for path %s." % _loading_path)
+	print_verbose("Requesting load for event path %s." % _loading_path)
 	var err: Error = ResourceLoader.load_threaded_request(_loading_path)
 	if err != OK:
-		push_error("Request failed with error: %s." % error_string(err))
+		push_error("Load request for event %s failed with error: %s." % [
+			_loading_path,
+			error_string(err)
+		])
 		_fail_load()
 		return null
 	set_process(true)
@@ -56,15 +59,16 @@ func load_event(event_id: int, map_id: int) -> Event:
 	
 	var success: bool = await loaded_part
 	if not success:
-		push_error("Loading of %s failed!" % _loading_path)
+		push_error("Loading of event %s failed!" % _loading_path)
 		_fail_load()
 		return null
 	var event_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
 	if not is_instance_valid(event_scene):
-		push_error("Loading of %s failed!" % _loading_path)
+		# TODO: удалить эту шарманку.
+		push_error("Loading of event %s failed!" % _loading_path)
 		_fail_load()
 		return null
-	print_verbose("Done loading %s." % _loading_path)
+	print_verbose("Done loading event %s." % _loading_path)
 	var event: Event = event_scene.instantiate()
 	_loaded_part = true
 	
@@ -72,28 +76,31 @@ func load_event(event_id: int, map_id: int) -> Event:
 	_status_text.text = "Загрузка карты..."
 	
 	_loading_path = Globals.items_db.events[event_id].maps[map_id].scene_path
-	print_verbose("Requesting load for path %s." % _loading_path)
+	print_verbose("Requesting load for map path %s." % _loading_path)
 	err = ResourceLoader.load_threaded_request(_loading_path)
 	if err != OK:
-		push_error("Request failed with error: %s." % error_string(err))
+		push_error("Load request for map %s failed with error: %s." % [
+			_loading_path,
+			error_string(err)
+		])
 		event.free()
 		_fail_load()
 		return null
 	
 	success = await loaded_part
 	if not success:
-		push_error("Loading of %s failed!" % _loading_path)
+		push_error("Loading of map %s failed!" % _loading_path)
 		event.free()
 		_fail_load()
 		return null
 	var map_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
 	if not is_instance_valid(map_scene):
 		# TODO: удалить эту шарманку.
-		push_error("Loading of %s failed!" % _loading_path)
+		push_error("Loading of map %s failed!" % _loading_path)
 		event.free()
 		_fail_load()
 		return null
-	print_verbose("Done loading %s." % _loading_path)
+	print_verbose("Done loading map %s." % _loading_path)
 	var map: Node = map_scene.instantiate()
 	event.add_child(map)
 	

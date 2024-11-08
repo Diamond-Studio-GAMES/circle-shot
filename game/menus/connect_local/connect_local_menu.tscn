@@ -6,6 +6,21 @@
 [ext_resource type="Texture2D" uid="uid://h6smixikm521" path="res://game/menus/connect_local/icons/create.png" id="2_rk7v2"]
 [ext_resource type="Texture2D" uid="uid://cuig0ueedrpys" path="res://game/menus/connect_local/icons/join.png" id="3_ug3n1"]
 
+[sub_resource type="Animation" id="Animation_btwkk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Поиск игр..."]
+}
+
 [sub_resource type="Animation" id="Animation_a8m6p"]
 resource_name = "Searching"
 length = 1.2
@@ -24,21 +39,6 @@ tracks/0/keys = {
 "values": ["Поиск игр...", "Поиск игр", "Поиск игр.", "Поиск игр.."]
 }
 
-[sub_resource type="Animation" id="Animation_btwkk"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:text")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": ["Поиск игр..."]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_er3ru"]
 _data = {
 &"RESET": SubResource("Animation_btwkk"),
@@ -54,29 +54,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_f4u3n")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Image" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.768627, 0.768627, 0.768627, 1)
-
-[node name="Image" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -800.0
-offset_top = -360.0
-offset_right = 800.0
-offset_bottom = 360.0
-grow_horizontal = 2
-grow_vertical = 2
 texture = ExtResource("2_5kfp0")
+stretch_mode = 6
 
 [node name="Base" type="PanelContainer" parent="."]
 layout_mode = 1

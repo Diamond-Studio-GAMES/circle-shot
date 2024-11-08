@@ -5,12 +5,17 @@ const MIN_AIM_DIRECTION_LENGTH := 0.1
 const DEFAULT_WEAPON_BG_COLOR := Color(1.0, 1.0, 1.0, 0.5)
 const SELECTED_WEAPON_BG_COLOR := Color.WHITE
 
+var input_method: Main.InputMethod
+
 var aim_deadzone := 60.0
 var aim_max_at_distance := 260.0
 var sneak_multiplier := 0.5
+var follow_mouse := true
+
+var joystick_fire := false
 var change_weapon_deadzone := 32.0
 var show_weapons_time := 0.4
-var input_method: Main.InputMethod
+var square_joystick := false
 
 var _player: Player
 
@@ -20,12 +25,10 @@ var _moving_up := false
 var _moving_down := false
 var _shooting := false
 var _showing_aim := false
-var _follow_mouse := true
 var _aim_zone: float
 
 var _touch_index: int = -1
 var _touch_timer := 0.0
-var _joystick_fire := false
 var _touch_start_position: Vector2
 var _weapon_selection_tween: Tween
 
@@ -65,16 +68,18 @@ func _ready() -> void:
 	match input_method:
 		Main.InputMethod.KEYBOARD_AND_MOUSE:
 			_aim_zone = aim_max_at_distance - aim_deadzone
-			_follow_mouse = Globals.get_controls_bool("follow_mouse")
+			follow_mouse = Globals.get_controls_bool("follow_mouse")
 			($Controller/TouchControls as Control).hide()
 			($Controller/Skill as Control).position = ($Controller/PCSkill as Control).position
 			($Controller/CurrentWeapon as Control).position = \
 					($Controller/PCCurrentWeapon as Control).position
 			($Controller/Skill/TouchScreenButton as Node2D).hide()
+			sneak_multiplier = Globals.get_controls_float("sneak_multiplier")
 		Main.InputMethod.TOUCH:
-			_joystick_fire = Globals.get_controls_bool("joystick_fire")
-			if _joystick_fire:
+			joystick_fire = Globals.get_controls_bool("joystick_fire")
+			if joystick_fire:
 				_aim_joystick.released.connect(_on_aim_joystick_released)
+			square_joystick = Globals.get_controls_bool("square_joystick")
 
 
 func _process(delta: float) -> void:
@@ -223,7 +228,12 @@ func _unhandled_keyboard_and_mouse_input(event: InputEvent) -> void:
 
 
 func _process_touch_input_method(delta: float) -> void:
-	_player.entity_input.direction = _move_joystick.output
+	var direction: Vector2 = _move_joystick.output
+	if square_joystick:
+		_player.entity_input.direction = direction.normalized() * direction.length_squared()
+	else:
+		_player.entity_input.direction = _move_joystick.output
+	
 	if not _aim_joystick.output.is_zero_approx():
 		var aim: Vector2 = _aim_joystick.output
 		_player.player_input.aim_direction = aim.normalized() * MIN_AIM_DIRECTION_LENGTH + \
@@ -233,7 +243,8 @@ func _process_touch_input_method(delta: float) -> void:
 	else:
 		_player.player_input.showing_aim = false
 		_player.player_input.turn_with_aim = false
-	if not _joystick_fire:
+	
+	if not joystick_fire:
 		_player.player_input.shooting = _shoot_area.is_pressed()
 	else:
 		if not is_instance_valid(_player.current_weapon) \
@@ -257,14 +268,14 @@ func _process_keyboard_and_mouse_input_method() -> void:
 	_player.player_input.shooting = _shooting
 	_player.player_input.showing_aim = _showing_aim
 	
-	if _follow_mouse or _showing_aim:
+	if follow_mouse or _showing_aim:
 		var mouse_pos: Vector2 = _center.get_local_mouse_position()
 		var mouse_distance: float = mouse_pos.length()
 		if mouse_distance > aim_deadzone:
 			_player.player_input.aim_direction = mouse_pos.normalized() * ((
 					clampf(mouse_distance, aim_deadzone, aim_max_at_distance) - aim_deadzone
 			) / _aim_zone * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
-	_player.player_input.turn_with_aim = _follow_mouse or _showing_aim
+	_player.player_input.turn_with_aim = follow_mouse or _showing_aim
 
 
 func _update_skill() -> void:

@@ -39,8 +39,10 @@ heal_vfx_scene = ExtResource("2_xk3vx")
 
 [node name="Input" type="MultiplayerSynchronizer" parent="."]
 root_path = NodePath(".")
+replication_interval = 0.03
 replication_config = SubResource("SceneReplicationConfig_c2pj3")
 script = ExtResource("2_1a3pf")
 
 [node name="Synchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 0.05
 replication_config = SubResource("SceneReplicationConfig_uh5p1")

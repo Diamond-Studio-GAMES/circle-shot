@@ -290,12 +290,13 @@ _data = {
 
 [node name="Lightsaber" type="Node2D"]
 script = ExtResource("1_xho1k")
-damage = 50
+damage = 45
 shoot_interval = 0.75
 to_aim_time = 0.2
 ammo_per_load = 1
 ammo_total = 0
 speed_multiplier_when_current = 1.11
+shoot_on_joystick_release = true
 
 [node name="AttackPolygon" type="Polygon2D" parent="."]
 visible = false

@@ -7,9 +7,9 @@ func _ready() -> void:
 
 
 func _on_confirmed() -> void:
-	var player_name: String = ($LineEdit as LineEdit).text.strip_edges().strip_escapes()
+	var player_name: String = Game.validate_player_name(($LineEdit as LineEdit).text)
 	($LineEdit as LineEdit).clear()
-	if player_name.is_empty():
+	if player_name == "Игрок":
 		($LineEdit as LineEdit).placeholder_text = "Недопустимое имя!"
 		return
 	Globals.set_string("player_name", player_name)

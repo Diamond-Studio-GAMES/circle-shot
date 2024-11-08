@@ -1,4 +1,4 @@
-extends "res://game/weapons/guns/common/gun.gd"
+extends Gun
 
 
 const BLUR_SPREAD_MULTIPLIER := 0.2

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Circle Shot"
-config/version="2.0.0.11"
+config/version="2.0.0.12"
 run/main_scene="res://main/main.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="circle-shot"
@@ -178,6 +178,7 @@ buffering/agile_event_flushing=true
 
 [physics]
 
+common/physics_jitter_fix=0.0
 common/enable_object_picking=false
 
 [rendering]

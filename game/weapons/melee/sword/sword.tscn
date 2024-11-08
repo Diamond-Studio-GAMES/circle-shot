@@ -184,10 +184,10 @@ tracks/4/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4jlhl"]
 _data = {
-"Attack": SubResource("Animation_5thpn"),
-"Equip": SubResource("Animation_636hb"),
-"PostEquip": SubResource("Animation_0rmtf"),
-"RESET": SubResource("Animation_1qggq")
+&"RESET": SubResource("Animation_1qggq"),
+&"Attack": SubResource("Animation_5thpn"),
+&"PostEquip": SubResource("Animation_0rmtf"),
+&"Equip": SubResource("Animation_636hb")
 }
 
 [node name="Sword" type="Node2D"]
@@ -197,6 +197,7 @@ shoot_interval = 1.1
 ammo_per_load = 1
 ammo_total = 0
 speed_multiplier_when_current = 1.08
+shoot_on_joystick_release = true
 
 [node name="AttackPolygon" type="Polygon2D" parent="."]
 visible = false
@@ -232,5 +233,5 @@ script = ExtResource("4_bgb4x")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_4jlhl")
+&"": SubResource("AnimationLibrary_4jlhl")
 }

@@ -35,6 +35,8 @@ func _ready() -> void:
 	_toggle_input_method_settings_visibility(Globals.get_controls_int("input_method"))
 	(%FollowMouseCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("follow_mouse"))
 	(%FireModeOptions as OptionButton).selected = int(Globals.get_controls_bool("joystick_fire"))
+	(%SquareCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("square_joystick"))
+	(%SneakSlider as HSlider).value = Globals.get_controls_float("sneak_multiplier")
 	
 	# Кастомные треки
 	(%CustomTracksCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("custom_tracks"))
@@ -261,3 +263,12 @@ func _on_preload_check_toggled(toggled_on: bool) -> void:
 
 func _on_fire_mode_options_item_selected(index: int) -> void:
 	Globals.set_controls_bool("joystick_fire", bool(index))
+
+
+func _on_square_check_toggled(toggled_on: bool) -> void:
+	Globals.set_controls_bool("square_joystick", toggled_on)
+
+
+func _on_sneak_slider_value_changed(value: float) -> void:
+	Globals.set_controls_float("sneak_multiplier", value)
+	(%SneakValue as Label).text = "x%.2f" % value

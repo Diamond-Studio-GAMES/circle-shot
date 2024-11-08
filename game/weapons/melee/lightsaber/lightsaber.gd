@@ -1,4 +1,4 @@
-extends "res://game/weapons/melee/common/melee.gd"
+extends Melee
 
 
 func _initialize() -> void:

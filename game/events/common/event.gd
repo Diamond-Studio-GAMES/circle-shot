@@ -219,7 +219,7 @@ func _on_player_killed(who: int, by: int) -> void:
 			_players_names[who],
 		]
 	else:
-		message_text = "Игрок [color=#%s]%s[/color] убит!" % [
+		message_text = "[color=#%s]%s[/color] умирает!" % [
 			Entity.TEAM_COLORS[_players_teams[who]].to_html(false),
 			_players_names[who],
 		]
@@ -235,7 +235,7 @@ func _on_player_killed(who: int, by: int) -> void:
 
 
 func _on_peer_disconnected(id: int) -> void:
-	var message_text: String = "Игрок [color=#%s]%s[/color] отключился!" % [
+	var message_text: String = "[color=#%s]%s[/color] отключается!" % [
 		Entity.TEAM_COLORS[_players_teams[id]].to_html(false),
 		_players_names[id],
 	]

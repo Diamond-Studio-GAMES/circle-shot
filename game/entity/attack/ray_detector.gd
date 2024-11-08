@@ -1,3 +1,4 @@
+class_name RayDetector
 extends RayCast2D
 
 

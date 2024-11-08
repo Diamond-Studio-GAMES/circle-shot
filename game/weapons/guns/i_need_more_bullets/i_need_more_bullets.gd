@@ -1,4 +1,4 @@
-extends "res://game/weapons/guns/common/gun.gd"
+extends Gun
 
 
 @export var single_shoot_interval := 0.5

@@ -76,10 +76,8 @@ func create(port: int = DEFAULT_PORT) -> void:
 		show_error("Невозможно создать сервер! Ошибка: %s" % error_string(error))
 		print_verbose("Can't create server with error: %s." % error_string(error))
 		return
-	# Уменьшаем время тайм-аута
-	for i: ENetPacketPeer in peer.host.get_peers():
-		i.set_timeout(BASE_TIMEOUT, BASE_TIMEOUT * 2, BASE_TIMEOUT * 3)
 	multiplayer.multiplayer_peer = peer
+	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	created.emit()
 	print_verbose("Created server at port %d." % port)
@@ -101,13 +99,12 @@ func join(ip: String, port: int = DEFAULT_PORT) -> void:
 		push_warning("Can't initiate connection.")
 		return
 	# Уменьшаем время тайм-аута
-	for i: ENetPacketPeer in peer.host.get_peers():
-		i.set_timeout(BASE_TIMEOUT, BASE_TIMEOUT * 2, BASE_TIMEOUT * 3)
-	multiplayer.multiplayer_peer = peer
+	peer.get_peer(1).set_timeout(BASE_TIMEOUT, BASE_TIMEOUT * 2, BASE_TIMEOUT * 3)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	_scene_multiplayer.peer_authenticating.connect(_on_peer_authenticating)
 	_scene_multiplayer.peer_authentication_failed.connect(_on_peer_authentication_failed)
+	multiplayer.multiplayer_peer = peer
 	($ConnectingDialog as Window).show()
 	($ConnectingDialog as AcceptDialog).dialog_text = "Подключение к %s..." % ip
 	print_verbose("Connecting to %s..." % ip)
@@ -182,7 +179,8 @@ func show_error(error_text: String) -> void:
 ## Проверяет имя игрока и исправляет при необходимости. Если [param id] равен 0, не печатает
 ## никаких предупреждений.
 static func validate_player_name(player_name: String, id: int = 0) -> String:
-	player_name = player_name.strip_edges().strip_escapes()
+	# Там, где якобы пусто, стоит пустой символ
+	player_name = player_name.strip_edges().strip_escapes().lstrip('⁣')
 	if player_name.is_empty():
 		return "Игрок%d" % id if id != 0 else "Игрок"
 	elif player_name.length() > MAX_PLAYER_NAME_LENGTH:
@@ -369,6 +367,14 @@ func _on_connection_failed() -> void:
 	show_error("Невозможно подключиться к серверу!")
 	push_warning("Connection failed.")
 	close()
+
+
+func _on_peer_connected(id: int) -> void:
+	# Уменьшаем время тайм-аута
+	(multiplayer.multiplayer_peer as ENetMultiplayerPeer).get_peer(id).set_timeout(
+			BASE_TIMEOUT, BASE_TIMEOUT * 2, BASE_TIMEOUT * 3
+	)
+	print_verbose("Peer connected: %d." % id)
 
 
 func _on_peer_disconnected(id: int) -> void:
