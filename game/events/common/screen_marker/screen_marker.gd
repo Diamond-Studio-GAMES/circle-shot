@@ -4,6 +4,7 @@ extends Node2D
 @export var margin := 120.0
 @export var arrow_margin := 16.0
 var _screen_angle: float
+@onready var _visual: CanvasLayer = $Visual
 @onready var _marker: Node2D = $Visual/Marker
 @onready var _icon: Sprite2D = $Visual/Marker/Icon
 @onready var _arrow: Sprite2D = $Visual/Marker/Arrow
@@ -15,6 +16,10 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	_visual.visible = visible
+	if not visible:
+		return
+	
 	var screen_pos: Vector2 = get_global_transform_with_canvas() * Vector2.ZERO
 	var screen_rect: Rect2 = get_viewport_rect()
 	if screen_rect.grow(-margin).has_point(screen_pos):

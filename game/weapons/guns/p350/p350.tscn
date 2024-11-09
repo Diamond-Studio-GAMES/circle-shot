@@ -9,21 +9,21 @@
 [ext_resource type="Texture2D" uid="uid://t7d0mqq0rq2r" path="res://game/weapons/guns/p350/shutter.png" id="6_g8rcj"]
 
 [sub_resource type="Curve" id="Curve_mhxuf"]
-max_value = 6.0
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 6), 0.0, 0.0, 0, 0]
+max_value = 4.5
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 4.5), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_u2hho"]
-min_value = -3.5
-max_value = 3.5
-_data = [Vector2(0.224913, 0), 0.0, 0.0, 0, 0, Vector2(1, -3.5), 0.0, 0.0, 0, 0]
+min_value = -2.5
+max_value = 0.0
+_data = [Vector2(0.224913, 0), 0.0, 0.0, 0, 0, Vector2(1, -2.5), 0.0, 0.0, 0, 0]
 point_count = 2
 metadata/_snap_enabled = true
 
 [sub_resource type="Curve" id="Curve_sa1x5"]
-min_value = -3.5
+min_value = -2.5
 max_value = 0.0
-_data = [Vector2(0.0103806, -3.5), 0.0, 0.0, 0, 0, Vector2(1, -3.5), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, -2.5), 0.0, 0.0, 0, 0, Vector2(1, -2.5), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_6dfmg"]
@@ -335,8 +335,8 @@ _data = {
 shoot_interval = 0.4
 to_aim_time = 0.2
 projectile_scene = ExtResource("2_tgivs")
-spread_base = 2.5
-spread_walk = 3.0
+spread_base = 1.5
+spread_walk = 2.5
 spread_curve = SubResource("Curve_mhxuf")
 spread_increasing_time = 0.325
 spread_reset_time = 0.5

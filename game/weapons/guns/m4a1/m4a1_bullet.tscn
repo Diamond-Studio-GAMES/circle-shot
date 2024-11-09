@@ -4,7 +4,7 @@
 
 [node name="M4A1Bullet" instance=ExtResource("1_xpwh2")]
 speed = 3200.0
-damage = 6
+damage = 7
 
 [node name="RayDetector" parent="." index="0"]
 position = Vector2(-160, 0)

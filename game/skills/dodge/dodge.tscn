@@ -5,8 +5,8 @@
 
 [node name="Dodge" type="Node2D"]
 script = ExtResource("1_366lt")
-roll_speed = 1200.0
-roll_duration = 0.4
+roll_speed = 1300.0
+roll_duration = 0.45
 use_times = 20
 use_cooldown = 2
 metadata/_custom_type_script = ExtResource("2_e1gj7")
