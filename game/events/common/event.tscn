@@ -191,8 +191,8 @@ tracks/6/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ctugk"]
 _data = {
-&"RESET": SubResource("Animation_atj0b"),
-&"Intro": SubResource("Animation_4bxhi")
+&"Intro": SubResource("Animation_4bxhi"),
+&"RESET": SubResource("Animation_atj0b")
 }
 
 [node name="Event" type="Node" groups=["Event"]]
