@@ -37,6 +37,8 @@ func _ready() -> void:
 	(%FireModeOptions as OptionButton).selected = int(Globals.get_controls_bool("joystick_fire"))
 	(%SquareCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("square_joystick"))
 	(%SneakSlider as HSlider).value = Globals.get_controls_float("sneak_multiplier")
+	(%VibDamageCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration_damage"))
+	(%VibHitCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration_hit"))
 	
 	# Кастомные треки
 	(%CustomTracksCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("custom_tracks"))
@@ -276,3 +278,11 @@ func _on_square_check_toggled(toggled_on: bool) -> void:
 func _on_sneak_slider_value_changed(value: float) -> void:
 	Globals.set_controls_float("sneak_multiplier", value)
 	(%SneakValue as Label).text = "x%.2f" % value
+
+
+func _on_vib_hit_check_toggled(toggled_on: bool) -> void:
+	Globals.set_setting_bool("vibration_hit", toggled_on)
+
+
+func _on_vib_damage_check_toggled(toggled_on: bool) -> void:
+	Globals.set_setting_bool("vibration_damage", toggled_on)

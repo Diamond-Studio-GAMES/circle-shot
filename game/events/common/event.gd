@@ -51,12 +51,12 @@ func _create_hit_marker(where: Vector2) -> void:
 		push_error("This method must be called only by server!")
 		return
 	
-	if not Globals.get_setting_bool("hit_markers"):
-		return
-	
-	var marker: Node2D = _hit_marker_scene.instantiate()
-	marker.global_position = where
-	$VFX.add_child(marker)
+	if Globals.get_setting_bool("vibration_damage"):
+		Input.vibrate_handheld(100, 0.15)
+	if Globals.get_setting_bool("hit_markers"):
+		var marker: Node2D = _hit_marker_scene.instantiate()
+		marker.global_position = where
+		$VFX.add_child(marker)
 
 
 @rpc("reliable", "call_local", "authority", 1)
@@ -65,12 +65,12 @@ func _create_kill_marker(where: Vector2) -> void:
 		push_error("This method must be called only by server!")
 		return
 	
-	if not Globals.get_setting_bool("hit_markers"):
-		return
-	
-	var marker: Node2D = _death_marker_scene.instantiate()
-	marker.global_position = where
-	$VFX.add_child(marker)
+	if Globals.get_setting_bool("vibration_damage"):
+		Input.vibrate_handheld(400, 0.3)
+	if Globals.get_setting_bool("hit_markers"):
+		var marker: Node2D = _death_marker_scene.instantiate()
+		marker.global_position = where
+		$VFX.add_child(marker)
 
 
 func set_players_data(players_names: Dictionary[int, String],

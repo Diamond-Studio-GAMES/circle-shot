@@ -228,8 +228,8 @@ unresizable = true
 ok_button_text = "Отмена"
 dialog_text = "Подключение к 192.168.100.1..."
 
-[connection signal="closed" from="." to="DebugInfo" method="_on_game_closed"]
 [connection signal="closed" from="." to="Loader" method="_on_game_closed"]
+[connection signal="closed" from="." to="DebugInfo" method="_on_game_closed"]
 [connection signal="joined" from="." to="DebugInfo" method="_on_game_joined"]
 [connection signal="timeout" from="DebugInfo/PingLabel/PingTimer" to="DebugInfo" method="_on_ping_timer_timeout"]
 [connection signal="canceled" from="ConnectingDialog" to="." method="close"]

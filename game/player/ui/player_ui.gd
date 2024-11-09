@@ -4,18 +4,23 @@ extends Control
 const MIN_AIM_DIRECTION_LENGTH := 0.1
 const DEFAULT_WEAPON_BG_COLOR := Color(1.0, 1.0, 1.0, 0.5)
 const SELECTED_WEAPON_BG_COLOR := Color.WHITE
+const MIN_VIBRATION_DURATION_MS: int = 100
+const MAX_VIBRATION_DURATION_MS: int = 500
+const MIN_VIBRATION_AMPLITUDE := 0.1
+const MAX_VIBRATION_AMPLITUDE := 0.5
 
 var input_method: Main.InputMethod
+var vibration_enabled: bool
 
 var aim_deadzone := 60.0
 var aim_max_at_distance := 260.0
-var sneak_multiplier := 0.5
-var follow_mouse := true
+var sneak_multiplier: float
+var follow_mouse: bool
 
-var joystick_fire := false
+var joystick_fire: bool
 var change_weapon_deadzone := 32.0
 var show_weapons_time := 0.4
-var square_joystick := false
+var square_joystick: bool
 
 var _player: Player
 
@@ -64,6 +69,7 @@ var _health_bar_tween: Tween
 
 func _ready() -> void:
 	input_method = Globals.get_controls_int("input_method") as Main.InputMethod
+	vibration_enabled = Globals.get_setting_bool("vibration_damage")
 	
 	match input_method:
 		Main.InputMethod.KEYBOARD_AND_MOUSE:
@@ -362,6 +368,14 @@ func _on_player_health_changed(old_value: int, new_value: int) -> void:
 		_health_bar_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
 		_health_immediate_bar_tween.tween_interval(0.3)
 		_health_immediate_bar_tween.tween_property(_health_immediate_bar, ^":value", new_value, 0.5)
+		
+		var change_ratio: float = (old_value - new_value) / float(_player.max_health)
+		Input.vibrate_handheld(
+				MIN_VIBRATION_DURATION_MS
+				+ roundi((MAX_VIBRATION_DURATION_MS - MIN_VIBRATION_DURATION_MS) * change_ratio),
+				MIN_VIBRATION_AMPLITUDE
+				+ roundi((MAX_VIBRATION_AMPLITUDE - MIN_VIBRATION_AMPLITUDE) * change_ratio)
+		)
 	else:
 		if is_instance_valid(_health_bar_tween):
 			_health_bar_tween.kill()
@@ -375,6 +389,8 @@ func _on_player_health_changed(old_value: int, new_value: int) -> void:
 func _on_player_died(_who: int) -> void:
 	($Controller as Control).hide()
 	_tint_anim.play(&"Death")
+	if vibration_enabled:
+		Input.vibrate_handheld(MAX_VIBRATION_DURATION_MS, MAX_VIBRATION_AMPLITUDE)
 
 
 func _on_weapon_changed(_to: Weapon.Type) -> void:

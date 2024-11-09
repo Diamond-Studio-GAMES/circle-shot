@@ -184,6 +184,14 @@ func setup_settings() -> void:
 			"custom_tracks",
 			Globals.get_setting_bool("custom_tracks", not OS.has_feature("android"))
 	)
+	Globals.set_setting_bool(
+			"vibration_damage",
+			Globals.get_setting_bool("vibration_damage", false)
+	)
+	Globals.set_setting_bool(
+			"vibration_hit",
+			Globals.get_setting_bool("vibration_hit", false)
+	)
 
 
 ## Устанавливает настройки управления по умолчанию, если их ещё нет.
