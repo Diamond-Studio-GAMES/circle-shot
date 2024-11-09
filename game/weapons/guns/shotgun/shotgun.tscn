@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://vaggbadprpmu"]
+[gd_scene load_steps=21 format=3 uid="uid://vaggbadprpmu"]
 
 [ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_hu422"]
 [ext_resource type="Texture2D" uid="uid://cln1si1eynqrx" path="res://game/weapons/guns/shotgun/base.png" id="2_2dero"]
@@ -25,22 +25,8 @@ max_value = 0.0
 _data = [Vector2(0, -8), 0.0, 0.0, 0, 0]
 point_count = 1
 
-[sub_resource type="Curve" id="Curve_ccnsu"]
-_data = [Vector2(0.501916, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_it1uq"]
-curve = SubResource("Curve_ccnsu")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n6682"]
-particle_flag_disable_z = true
-direction = Vector3(0, -1, 0)
-initial_velocity_min = 256.0
-initial_velocity_max = 256.0
-angular_velocity_min = -720.0
-angular_velocity_max = 720.0
-gravity = Vector3(0, 98, 0)
-alpha_curve = SubResource("CurveTexture_it1uq")
+[sub_resource type="Gradient" id="Gradient_d2dv7"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="Animation" id="Animation_tx04y"]
 resource_name = "EndReload"
@@ -348,14 +334,14 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nbp2k"]
 _data = {
-"EndReload": SubResource("Animation_tx04y"),
-"Equip": SubResource("Animation_0fhwh"),
-"PostEquip": SubResource("Animation_42t1q"),
-"PostReload": SubResource("Animation_creb4"),
-"RESET": SubResource("Animation_vqatp"),
-"Reload": SubResource("Animation_4x8gt"),
-"Shoot": SubResource("Animation_m4vyy"),
-"StartReload": SubResource("Animation_j74ca")
+&"EndReload": SubResource("Animation_tx04y"),
+&"Equip": SubResource("Animation_0fhwh"),
+&"PostEquip": SubResource("Animation_42t1q"),
+&"PostReload": SubResource("Animation_creb4"),
+&"RESET": SubResource("Animation_vqatp"),
+&"Reload": SubResource("Animation_4x8gt"),
+&"Shoot": SubResource("Animation_m4vyy"),
+&"StartReload": SubResource("Animation_j74ca")
 }
 
 [node name="Shotgun" instance=ExtResource("1_hu422")]
@@ -398,19 +384,25 @@ offset = Vector2(20, 0)
 texture = ExtResource("6_cukv2")
 offset = Vector2(56, 0)
 
-[node name="Sleeve" type="GPUParticles2D" parent="Base" index="2"]
+[node name="Sleeve" type="CPUParticles2D" parent="Base" index="2"]
 position = Vector2(43, -21)
 emitting = false
 amount = 1
-process_material = SubResource("ParticleProcessMaterial_n6682")
-texture = ExtResource("5_stexv")
 lifetime = 0.8
 one_shot = true
+texture = ExtResource("5_stexv")
+direction = Vector2(0, -1)
+gravity = Vector2(0, 98)
+initial_velocity_min = 256.0
+initial_velocity_max = 256.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+color_ramp = SubResource("Gradient_d2dv7")
 
 [node name="ShootPoint" parent="." index="2"]
 position = Vector2(196, -23)
 
 [node name="AnimationPlayer" parent="." index="3"]
 libraries = {
-"": SubResource("AnimationLibrary_nbp2k")
+&"": SubResource("AnimationLibrary_nbp2k")
 }

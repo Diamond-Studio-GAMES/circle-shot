@@ -112,9 +112,9 @@ func show_critical_error(info := "", log_error := "") -> void:
 func setup_settings() -> void:
 	var override_file := ConfigFile.new()
 	override_file.load("user://engine_settings.cfg")
-	var preffered_renderer: String = ProjectSettings.get_setting_with_override(
-			&"rendering/renderer/rendering_method"
-	)
+	#var preffered_renderer: String = ProjectSettings.get_setting_with_override(
+			#&"rendering/renderer/rendering_method"
+	#)
 	var shader_cache: bool = ProjectSettings.get_setting_with_override(
 			&"rendering/shader_compiler/shader_cache/enabled"
 	)
@@ -124,18 +124,18 @@ func setup_settings() -> void:
 	override_file.set_value(
 			"rendering", "shader_compiler/shader_cache/enabled.mobile", shader_cache
 	)
-	override_file.set_value(
-			"rendering", "rendering_device/pipeline_cache/enable", shader_cache
-	)
-	override_file.set_value(
-			"rendering", "rendering_device/pipeline_cache/enable.mobile", shader_cache
-	)
-	override_file.set_value(
-			"rendering", "renderer/rendering_method", preffered_renderer
-	)
-	override_file.set_value(
-			"rendering", "renderer/rendering_method.mobile", preffered_renderer
-	)
+	#override_file.set_value(
+			#"rendering", "rendering_device/pipeline_cache/enable", shader_cache
+	#)
+	#override_file.set_value(
+			#"rendering", "rendering_device/pipeline_cache/enable.mobile", shader_cache
+	#)
+	#override_file.set_value(
+			#"rendering", "renderer/rendering_method", preffered_renderer
+	#)
+	#override_file.set_value(
+			#"rendering", "renderer/rendering_method.mobile", preffered_renderer
+	#)
 	override_file.save("user://engine_settings.cfg")
 	
 	Globals.set_setting_bool(

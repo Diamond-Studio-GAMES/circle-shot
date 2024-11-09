@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://jhqjtl8ewlm5"]
+[gd_scene load_steps=19 format=3 uid="uid://jhqjtl8ewlm5"]
 
 [ext_resource type="PackedScene" uid="uid://ckvaaln275hfv" path="res://game/weapons/guns/common/gun.tscn" id="1_4qhkt"]
 [ext_resource type="PackedScene" uid="uid://duvq6s4rriwpi" path="res://game/weapons/guns/m4a1/m4a1_bullet.tscn" id="2_0lskg"]
@@ -25,22 +25,8 @@ max_value = 4.0
 _data = [Vector2(0, -4), 0.0, 0.0, 0, 0, Vector2(0.5, 4), 0.0, 0.0, 0, 0, Vector2(1, -4), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="Curve" id="Curve_rjb36"]
-_data = [Vector2(0.501916, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_n1jpg"]
-curve = SubResource("Curve_rjb36")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7cjyy"]
-particle_flag_disable_z = true
-direction = Vector3(0, -1, 0)
-initial_velocity_min = 256.0
-initial_velocity_max = 256.0
-angular_velocity_min = -720.0
-angular_velocity_max = 720.0
-gravity = Vector3(0, 98, 0)
-alpha_curve = SubResource("CurveTexture_n1jpg")
+[sub_resource type="Gradient" id="Gradient_1bgpl"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="Animation" id="Animation_4t45g"]
 resource_name = "Equip"
@@ -362,12 +348,12 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_y3tow"]
 _data = {
-"Equip": SubResource("Animation_4t45g"),
-"PostEquip": SubResource("Animation_lluxh"),
-"PostReload": SubResource("Animation_ga7im"),
-"RESET": SubResource("Animation_4b246"),
-"Reload": SubResource("Animation_5ogug"),
-"Shoot": SubResource("Animation_jxreg")
+&"Equip": SubResource("Animation_4t45g"),
+&"PostEquip": SubResource("Animation_lluxh"),
+&"PostReload": SubResource("Animation_ga7im"),
+&"RESET": SubResource("Animation_4b246"),
+&"Reload": SubResource("Animation_5ogug"),
+&"Shoot": SubResource("Animation_jxreg")
 }
 
 [node name="M4A1" instance=ExtResource("1_4qhkt")]
@@ -409,14 +395,20 @@ show_behind_parent = true
 texture = ExtResource("3_da3ya")
 offset = Vector2(84, -24)
 
-[node name="Sleeve" type="GPUParticles2D" parent="Weapon" index="2"]
+[node name="Sleeve" type="CPUParticles2D" parent="Weapon" index="2"]
 position = Vector2(46, -34)
 emitting = false
 amount = 1
-process_material = SubResource("ParticleProcessMaterial_7cjyy")
-texture = ExtResource("6_17arg")
 lifetime = 0.13
 one_shot = true
+texture = ExtResource("6_17arg")
+direction = Vector2(0, -1)
+gravity = Vector2(0, 98)
+initial_velocity_min = 256.0
+initial_velocity_max = 256.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+color_ramp = SubResource("Gradient_1bgpl")
 
 [node name="Shoot" type="Sprite2D" parent="Weapon" index="3"]
 visible = false
@@ -430,5 +422,5 @@ position = Vector2(263, -33)
 
 [node name="AnimationPlayer" parent="." index="3"]
 libraries = {
-"": SubResource("AnimationLibrary_y3tow")
+&"": SubResource("AnimationLibrary_y3tow")
 }

@@ -8,19 +8,19 @@ func _ready() -> void:
 	
 	# Конфигурация настроек
 	_override_file.load("user://engine_settings.cfg")
-	var preffered_renderer: int
-	if _override_file.get_value("rendering", "renderer/rendering_method") == "mobile":
-		preffered_renderer = 0
-	else:
-		preffered_renderer = 1
-	(%RendererOptions as OptionButton).selected = preffered_renderer
+	#var preffered_renderer: int
+	#if _override_file.get_value("rendering", "renderer/rendering_method") == "mobile":
+		#preffered_renderer = 0
+	#else:
+		#preffered_renderer = 1
+	#(%RendererOptions as OptionButton).selected = preffered_renderer
 	var shader_cache: bool = \
 			_override_file.get_value("rendering", "shader_compiler/shader_cache/enabled")
 	(%ShaderCacheCheck as Button).set_pressed_no_signal(shader_cache)
-	if RenderingServer.get_rendering_device():
-		(%CurrentRenderer as Label).text = "Текущий отрисовщик: Vulkan"
-	else:
-		(%CurrentRenderer as Label).text = "Текущий отрисовщик: OpenGL"
+	#if RenderingServer.get_rendering_device():
+		#(%CurrentRenderer as Label).text = "Текущий отрисовщик: Vulkan"
+	#else:
+		#(%CurrentRenderer as Label).text = "Текущий отрисовщик: OpenGL"
 	
 	(%HitMarkersCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("hit_markers"))
 	(%ShowMinimapCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("minimap"))

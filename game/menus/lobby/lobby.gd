@@ -74,7 +74,7 @@ func _add_player_entry(id: int, player_name: String) -> void:
 		(player_entry.get_node(^"Kick") as BaseButton).disabled = true
 	(player_entry.get_node(^"Name") as Label).text = player_name
 	# Проверка на админа своеобразная
-	(player_entry.get_node(^"Kick") as Control).visible = %AdminPanel.visible
+	(player_entry.get_node(^"Kick") as Control).visible = (%AdminPanel as Control).visible
 	(player_entry.get_node(^"Kick") as BaseButton).pressed.connect(_on_kick_pressed.bind(id))
 	_players_container.add_child(player_entry)
 	print_verbose("Added player %d entry with name: %s." % [id, player_name])
@@ -131,7 +131,7 @@ func _set_admin(admin: bool) -> void:
 	(%AdminPanel as HBoxContainer).visible = admin
 	(%ClientHint as Label).visible = not admin
 	for i: Node in _players_container.get_children():
-		i.get_node(^"Kick").visible = admin
+		(i.get_node(^"Kick") as Control).visible = admin
 	if admin:
 		var my_event_id: int = Globals.get_int("selected_event")
 		var my_map_id: int = Globals.get_int("selected_map")
