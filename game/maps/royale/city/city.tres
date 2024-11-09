@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_d3qjt")
-name = "Фронт"
-brief_description = "Когда-то это был обычный город..."
+name = "Заброшенный город"
+brief_description = "Люди покинули его по какой-то причине..."
 scene_path = "uid://b64pdjqw7s1j0"
 image_path = "uid://065rdqpbni6r"

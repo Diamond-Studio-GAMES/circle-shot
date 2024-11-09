@@ -9,8 +9,49 @@
 [ext_resource type="Texture2D" uid="uid://c1rotus1aunmr" path="res://menu/theme/icons/left.png" id="7_oyafe"]
 [ext_resource type="Texture2D" uid="uid://ix82y4qydhql" path="res://menu/theme/icons/right.png" id="8_ub7jk"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ov848"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_0ce5t"]
 viewport_path = NodePath("UI/MinimapViewport")
+
+[sub_resource type="Animation" id="Animation_ty3n7"]
+resource_name = "Defeat"
+length = 2.00001
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.2, 1.4, 1.6, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1.5, 1.5), Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1), Vector2(1.05, 1.05), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:theme_override_colors/font_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_ki4so"]
 length = 0.001
@@ -92,51 +133,10 @@ tracks/2/keys = {
 "values": [Color(1, 1, 0, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_ty3n7"]
-resource_name = "Defeat"
-length = 2.00001
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:scale")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1, 1.2, 1.4, 1.6, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(1e-05, 1e-05), Vector2(1.5, 1.5), Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1), Vector2(1.05, 1.05), Vector2(1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:theme_override_colors/font_color")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 0, 0, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:self_modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_n8n4b"]
 _data = {
-&"RESET": SubResource("Animation_ki4so"),
 &"Defeat": SubResource("Animation_ty3n7"),
+&"RESET": SubResource("Animation_ki4so"),
 &"Victory": SubResource("Animation_knbec")
 }
 
@@ -182,7 +182,7 @@ _spawnable_scenes = PackedStringArray("res://game/events/royale/heal_box.tscn", 
 script = ExtResource("6_q5vxn")
 
 [node name="Minimap" parent="UI/Main" index="1"]
-texture = SubResource("ViewportTexture_ov848")
+texture = SubResource("ViewportTexture_0ce5t")
 
 [node name="PlayerCounterTitle" type="Label" parent="UI/Main" index="5"]
 layout_mode = 1

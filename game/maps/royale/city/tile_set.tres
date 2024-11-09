@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://cd3bbm1gifps4"]
 
-[ext_resource type="Texture2D" uid="uid://cbh6d2c5byowa" path="res://game/maps/royale/war/tiles.png" id="1_btlt6"]
+[ext_resource type="Texture2D" uid="uid://baeau1pwg26ex" path="res://game/maps/royale/city/tiles.png" id="1_btlt6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s6c3c"]
 texture = ExtResource("1_btlt6")
@@ -15,6 +15,7 @@ texture_region_size = Vector2i(160, 160)
 0:1/0 = 0
 1:1/0 = 0
 2:0/0 = 0
+2:0/0/physics_layer_2/polygon_0/points = PackedVector2Array(-80, -40, 0, -80, 40, -80, 80, -40, 80, 40, 40, 80, -40, 80, -80, 40)
 
 [resource]
 tile_size = Vector2i(160, 160)
@@ -22,4 +23,6 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
 physics_layer_1/collision_layer = 9
 physics_layer_1/collision_mask = 0
+physics_layer_2/collision_layer = 16
+physics_layer_2/collision_mask = 0
 sources/2 = SubResource("TileSetAtlasSource_s6c3c")
