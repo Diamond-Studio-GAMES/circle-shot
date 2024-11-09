@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cubicepjijo6d"]
+[gd_scene load_steps=3 format=3 uid="uid://cubicepjijo6d"]
 
 [ext_resource type="Script" path="res://game/skills/dodge/dodge.gd" id="1_366lt"]
+[ext_resource type="Script" path="res://game/player/equip/skill.gd" id="2_e1gj7"]
 
 [node name="Dodge" type="Node2D"]
 script = ExtResource("1_366lt")
@@ -8,6 +9,7 @@ roll_speed = 1200.0
 roll_duration = 0.4
 use_times = 20
 use_cooldown = 2
+metadata/_custom_type_script = ExtResource("2_e1gj7")
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true

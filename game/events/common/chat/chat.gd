@@ -1,5 +1,5 @@
 class_name Chat
-extends Control
+extends PanelContainer
 
 ## Чат для общения.
 ##
@@ -46,8 +46,7 @@ func clear_chat() -> void:
 func send_message() -> void:
 	var message: String = _chat_edit.text.strip_edges().strip_escapes()
 	_chat_edit.clear()
-	grab_focus() # TODO: Убрать эту шарманку в новом версии и заменить на edit, пофиксить фокус мод
-	_chat_edit.grab_focus.call_deferred()
+	_chat_edit.edit()
 	
 	if message.is_empty():
 		return

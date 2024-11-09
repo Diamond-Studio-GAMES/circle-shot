@@ -6,3 +6,4 @@
 [node name="Apple" type="Sprite2D"]
 texture = ExtResource("2_txhno")
 script = ExtResource("2_a3ger")
+metadata/_custom_type_script = ExtResource("2_a3ger")

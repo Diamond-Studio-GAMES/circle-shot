@@ -6,3 +6,4 @@
 [node name="PlayerClassic" type="Sprite2D"]
 texture = ExtResource("2_v1k3a")
 script = ExtResource("2_v584y")
+metadata/_custom_type_script = ExtResource("2_v584y")

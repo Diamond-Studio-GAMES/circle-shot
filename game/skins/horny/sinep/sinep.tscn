@@ -6,3 +6,4 @@
 [node name="sineP" type="Sprite2D"]
 texture = ExtResource("2_at1jw")
 script = ExtResource("2_25v7j")
+metadata/_custom_type_script = ExtResource("2_25v7j")

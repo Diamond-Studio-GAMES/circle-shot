@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://1durulsrwk7o"]
+[gd_scene load_steps=7 format=3 uid="uid://1durulsrwk7o"]
 
 [ext_resource type="Script" path="res://game/weapons/guns/common/bullet.gd" id="1_fc6k8"]
+[ext_resource type="Script" path="res://game/entity/attack/attack.gd" id="1_fm5bq"]
 [ext_resource type="PackedScene" uid="uid://d5ag68upkkaq" path="res://game/weapons/guns/common/bullet_hit.tscn" id="2_jsg66"]
 [ext_resource type="Texture2D" uid="uid://cyro3oroia5l6" path="res://game/weapons/guns/common/bullet.png" id="2_u82m3"]
 [ext_resource type="Script" path="res://game/entity/attack/ray_detector.gd" id="3_gkcmb"]
@@ -20,6 +21,7 @@ properties/2/replication_mode = 0
 script = ExtResource("1_fc6k8")
 speed = 2000.0
 hit_vfx_scene = ExtResource("2_jsg66")
+metadata/_custom_type_script = ExtResource("1_fm5bq")
 
 [node name="RayDetector" type="RayCast2D" parent="."]
 position = Vector2(-128, 0)
@@ -27,6 +29,7 @@ target_position = Vector2(128, 0)
 collision_mask = 11
 hit_from_inside = true
 script = ExtResource("3_gkcmb")
+metadata/_custom_type_script = ExtResource("3_gkcmb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1

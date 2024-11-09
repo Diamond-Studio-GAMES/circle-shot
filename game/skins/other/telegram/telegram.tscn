@@ -6,3 +6,4 @@
 [node name="Telegram" type="Sprite2D"]
 texture = ExtResource("2_bd058")
 script = ExtResource("2_g5inp")
+metadata/_custom_type_script = ExtResource("2_g5inp")

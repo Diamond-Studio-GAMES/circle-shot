@@ -116,7 +116,7 @@ func _toggle_input_method_settings_visibility(method: Main.InputMethod) -> void:
 
 
 func _on_exit_pressed() -> void:
-	Globals.main.close_screen(self)
+	queue_free()
 
 
 func _on_hit_markers_check_toggled(toggled_on: bool) -> void:
@@ -196,8 +196,10 @@ func _on_reset_settings_dialog_confirmed() -> void:
 	Globals.main.apply_settings()
 	Globals.main.setup_controls_settings()
 	Globals.main.apply_controls_settings()
-	Globals.main.close_screen(self)
-	Globals.main.open_settings()
+	
+	name = &"OldSettings"
+	queue_free()
+	Globals.main.open_screen(load("uid://c2leb2h0qjtmo") as PackedScene)
 
 
 func _on_change_name_pressed() -> void:
@@ -229,8 +231,10 @@ func _on_reset_controls_dialog_confirmed() -> void:
 	Globals.save_file.erase_section(Globals.CONTROLS_SAVE_FILE_SECTION)
 	Globals.main.setup_controls_settings()
 	Globals.main.apply_controls_settings()
-	Globals.main.close_screen(self)
-	Globals.main.open_settings()
+	
+	name = &"OldSettings"
+	queue_free()
+	Globals.main.open_screen(load("uid://c2leb2h0qjtmo") as PackedScene)
 
 
 func _on_custom_tracks_check_toggled(toggled_on: bool) -> void:

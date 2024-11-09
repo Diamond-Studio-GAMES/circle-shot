@@ -6,3 +6,4 @@
 [node name="War" type="Sprite2D"]
 texture = ExtResource("1_mel6r")
 script = ExtResource("1_1w36t")
+metadata/_custom_type_script = ExtResource("1_1w36t")

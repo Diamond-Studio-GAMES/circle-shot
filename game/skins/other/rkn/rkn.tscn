@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://chpvrgitya08l"]
+[gd_scene load_steps=8 format=3 uid="uid://chpvrgitya08l"]
 
 [ext_resource type="Texture2D" uid="uid://cbe7p8vig2fo7" path="res://game/skins/other/rkn/rkn.png" id="1_vmqjf"]
 [ext_resource type="Script" path="res://game/skins/other/rkn/rkn.gd" id="2_q3vus"]
 [ext_resource type="Texture2D" uid="uid://b4n44qj6g285d" path="res://game/skins/other/rkn/true_rkn.png" id="3_upk0t"]
+[ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="3_v1luj"]
 
 [sub_resource type="Animation" id="Animation_gfrao"]
 length = 0.001
@@ -45,6 +46,7 @@ _data = {
 [node name="RKN" type="Sprite2D"]
 texture = ExtResource("1_vmqjf")
 script = ExtResource("2_q3vus")
+metadata/_custom_type_script = ExtResource("3_v1luj")
 
 [node name="TrueRKN" type="Sprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0)

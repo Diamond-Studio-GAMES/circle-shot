@@ -6,3 +6,4 @@
 [node name="Sunflower" type="Sprite2D"]
 texture = ExtResource("2_nm6ld")
 script = ExtResource("2_ra5tm")
+metadata/_custom_type_script = ExtResource("2_ra5tm")

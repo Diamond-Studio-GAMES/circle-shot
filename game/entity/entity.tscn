@@ -30,6 +30,7 @@ motion_mode = 1
 platform_on_leave = 2
 script = ExtResource("1_rxssn")
 heal_vfx_scene = ExtResource("2_xk3vx")
+metadata/_custom_type_script = ExtResource("1_rxssn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
@@ -42,6 +43,7 @@ root_path = NodePath(".")
 replication_interval = 0.03
 replication_config = SubResource("SceneReplicationConfig_c2pj3")
 script = ExtResource("2_1a3pf")
+metadata/_custom_type_script = ExtResource("2_1a3pf")
 
 [node name="Synchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_interval = 0.05

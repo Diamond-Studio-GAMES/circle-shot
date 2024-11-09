@@ -7,6 +7,7 @@ script = ExtResource("1_34i6u")
 ammo_per_load = 0
 ammo_total = 3
 shoot_on_joystick_release = true
+metadata/_custom_type_script = ExtResource("1_34i6u")
 
 [node name="ThrowPivot" type="Marker2D" parent="."]
 

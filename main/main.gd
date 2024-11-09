@@ -24,11 +24,12 @@ const MAX_MUSIC_FILE_NAME_LENGTH: int = 45
 @export_file("Resource") var resources_to_preload_paths: Array[String]
 ## Ссылка на [Game]. Может отсутствовать.
 var game: Game
+## Ссылка на [Menu]. Может отсутствовать.
+var menu: Menu
+## Список открытых на данный момент экранов.
+var screens: Array[Control]
 ## Словарь загруженных пользовательских треков в формате "<имя файла> : <ресурс трека>".
 var loaded_custom_tracks: Dictionary[String, AudioStream]
-
-var _menu: Menu
-var _other_screens: Array[Node]
 var _preloaded_resources: Array[Resource]
 
 ## Путь до папки с пользовательскими треками.
@@ -45,25 +46,19 @@ func _input(event: InputEvent) -> void:
 
 ## Открывает меню. Закрывает все остальное.
 func open_menu() -> void:
-	if is_instance_valid(_menu):
+	if is_instance_valid(menu):
 		push_error("Menu is already opened!")
 		return
-	_clear_screens()
+	
+	if is_instance_valid(game):
+		game.queue_free()
+	for i: Node in screens:
+		i.queue_free()
 	
 	var menu_scene: PackedScene = load("uid://4wb77emq8t5p")
-	var menu: Menu = menu_scene.instantiate()
+	menu = menu_scene.instantiate()
 	add_child(menu)
-	_menu = menu
 	print_verbose("Opened menu.")
-
-
-## Открывает настройки.
-func open_settings() -> void:
-	var settings_scene: PackedScene = load("uid://c2leb2h0qjtmo")
-	var settings: Control = settings_scene.instantiate()
-	add_child(settings)
-	_other_screens.append(settings)
-	print_verbose("Opened settings.")
 
 
 ## Открывает игру с меню локальной игры. Закрывает всё остальное.
@@ -71,20 +66,31 @@ func open_local_game() -> void:
 	if is_instance_valid(game):
 		push_error("Game is already opened!")
 		return
-	_clear_screens()
+	
+	if is_instance_valid(menu):
+		menu.queue_free()
+	for i: Node in screens:
+		i.queue_free()
 	
 	var game_scene: PackedScene = load("uid://scqgxynxowrb")
-	var loaded_game: Game = game_scene.instantiate()
-	add_child(loaded_game)
-	loaded_game.init_connect_local()
-	game = loaded_game
+	game = game_scene.instantiate()
+	add_child(game)
+	game.init_connect_local()
 	print_verbose("Opened game with local menu.")
 
 
-## Удаляет экран, указанный в [param screen].
-func close_screen(screen: Control) -> void:
-	_other_screens.erase(screen)
-	screen.queue_free()
+## Открывает экран, указанный в [param screen], регистрируя его в [member screens].
+## Возвращает узел этого экрана или [code]null[/code], если такой экран уже открыт.
+func open_screen(screen_scene: PackedScene) -> Control:
+	var screen: Control = screen_scene.instantiate()
+	if has_node(NodePath(screen.name)):
+		push_error("Screen %s is already opened!" % screen.name)
+		return null
+	screen.tree_exited.connect(screens.erase.bind(screen))
+	add_child(screen)
+	screens.append(screen)
+	print_verbose("Opened screen '%s'." % screen.name)
+	return screen
 
 
 ## Выдаёт критическую ошибку, которая останавливает всю игру. Использовать только в безвыходных
@@ -230,17 +236,6 @@ func apply_settings() -> void:
 ## Применяет настройки управления.
 func apply_controls_settings() -> void:
 	Input.emulate_touch_from_mouse = Globals.get_controls_int("input_method") == InputMethod.TOUCH
-
-
-func _clear_screens() -> void:
-	if is_instance_valid(_menu):
-		_menu.queue_free()
-	if is_instance_valid(game):
-		game.queue_free()
-	for i: Node in _other_screens:
-		i.queue_free()
-	_other_screens.clear()
-	print_verbose("Screens cleared.")
 
 
 func _start_load() -> void:

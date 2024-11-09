@@ -6,3 +6,4 @@
 [node name="Android" type="Sprite2D"]
 texture = ExtResource("1_bwwa0")
 script = ExtResource("2_oeuuy")
+metadata/_custom_type_script = ExtResource("2_oeuuy")

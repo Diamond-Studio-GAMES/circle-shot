@@ -8,3 +8,4 @@
 texture = ExtResource("2_wnbls")
 script = ExtResource("2_lsj16")
 custom_death_vfx_scene = ExtResource("2_fr12t")
+metadata/_custom_type_script = ExtResource("2_lsj16")

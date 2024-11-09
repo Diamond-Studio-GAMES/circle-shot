@@ -59,7 +59,7 @@ tracks/3/keys = {
 }
 
 [sub_resource type="Animation" id="Animation_3xxqq"]
-resource_name = "move"
+resource_name = "Move"
 length = 20.0
 loop_mode = 1
 step = 0.1
@@ -114,19 +114,21 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vpitb"]
 _data = {
-"RESET": SubResource("Animation_nkyee"),
-"move": SubResource("Animation_3xxqq")
+&"Move": SubResource("Animation_3xxqq"),
+&"RESET": SubResource("Animation_nkyee")
 }
 
 [node name="PoisonSmoke" type="Node2D"]
 script = ExtResource("1_khcpy")
 damage = 20
+metadata/_custom_type_script = ExtResource("1_khcpy")
 
 [node name="AreaDetector" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 2
 monitorable = false
 script = ExtResource("1_fivwm")
+metadata/_custom_type_script = ExtResource("1_fivwm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaDetector"]
 shape = SubResource("WorldBoundaryShape2D_k7uj4")
@@ -174,9 +176,9 @@ region_rect = Rect2(0, 0, 4096, 2048)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_vpitb")
+&"": SubResource("AnimationLibrary_vpitb")
 }
-autoplay = "move"
+autoplay = "Move"
 
 [node name="MinimapRemote" type="RemoteTransform2D" parent="."]
 remote_path = NodePath("../MinimapMarker/Line")

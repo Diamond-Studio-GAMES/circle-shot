@@ -19,6 +19,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6hvox")
+metadata/_custom_type_script = ExtResource("1_6hvox")
 
 [node name="Image" type="TextureRect" parent="."]
 layout_mode = 1

@@ -6,3 +6,4 @@
 [node name="Yuy" type="Sprite2D"]
 texture = ExtResource("1_iopt8")
 script = ExtResource("1_krcqx")
+metadata/_custom_type_script = ExtResource("1_krcqx")

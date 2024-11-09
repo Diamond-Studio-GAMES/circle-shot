@@ -1,11 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://bhlky5iu0nax1"]
+[gd_scene load_steps=3 format=3 uid="uid://bhlky5iu0nax1"]
 
 [ext_resource type="Script" path="res://game/skills/energy_drink/energy_drink.gd" id="1_mig33"]
+[ext_resource type="Script" path="res://game/player/equip/skill.gd" id="2_s2xr4"]
 
 [node name="EnergyDrink" type="Node2D"]
 script = ExtResource("1_mig33")
 speed_boost = 0.2
 damage_boost = 0.15
+metadata/_custom_type_script = ExtResource("2_s2xr4")
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true

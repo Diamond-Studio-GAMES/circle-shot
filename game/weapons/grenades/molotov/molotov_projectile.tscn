@@ -678,8 +678,8 @@ tracks/26/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cwnr0"]
 _data = {
-&"RESET": SubResource("Animation_md7om"),
-&"Explode": SubResource("Animation_tlyri")
+&"Explode": SubResource("Animation_tlyri"),
+&"RESET": SubResource("Animation_md7om")
 }
 
 [node name="MolotovProjectile" instance=ExtResource("1_vnids")]
@@ -709,6 +709,7 @@ replication_config = SubResource("SceneReplicationConfig_adfdp")
 [node name="Attack" type="Node2D" parent="." index="4"]
 script = ExtResource("5_l5qjx")
 damage = 6
+metadata/_custom_type_script = ExtResource("5_l5qjx")
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
@@ -718,6 +719,7 @@ collision_mask = 2
 monitorable = false
 script = ExtResource("6_lx3vu")
 damage_interval = 0.25
+metadata/_custom_type_script = ExtResource("6_lx3vu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack/AreaDetector" index="0"]
 shape = SubResource("CircleShape2D_vji31")

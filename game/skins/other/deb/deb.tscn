@@ -6,3 +6,4 @@
 [node name="Deb" type="Sprite2D"]
 texture = ExtResource("1_0j8ia")
 script = ExtResource("1_bi761")
+metadata/_custom_type_script = ExtResource("1_bi761")

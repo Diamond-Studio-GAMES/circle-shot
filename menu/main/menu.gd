@@ -19,7 +19,7 @@ func _on_play_network_pressed() -> void:
 
 
 func _on_settings_pressed() -> void:
-	Globals.main.open_settings()
+	Globals.main.open_screen(load("uid://c2leb2h0qjtmo") as PackedScene)
 
 
 func _on_name_dialog_name_accepted() -> void:

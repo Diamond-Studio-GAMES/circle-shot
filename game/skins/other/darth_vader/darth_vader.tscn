@@ -6,3 +6,4 @@
 [node name="DarthVader" type="Sprite2D"]
 texture = ExtResource("1_qk6mp")
 script = ExtResource("1_cado5")
+metadata/_custom_type_script = ExtResource("1_cado5")

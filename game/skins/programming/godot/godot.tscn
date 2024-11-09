@@ -6,3 +6,4 @@
 [node name="Godot" type="Sprite2D"]
 texture = ExtResource("2_661qc")
 script = ExtResource("2_c2a2l")
+metadata/_custom_type_script = ExtResource("2_c2a2l")

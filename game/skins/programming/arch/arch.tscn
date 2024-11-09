@@ -6,3 +6,4 @@
 [node name="Arch" type="Sprite2D"]
 texture = ExtResource("1_va53v")
 script = ExtResource("1_r85lp")
+metadata/_custom_type_script = ExtResource("1_r85lp")

@@ -6,3 +6,4 @@
 [node name="Covid" type="Sprite2D"]
 texture = ExtResource("1_fgl8y")
 script = ExtResource("2_vpfae")
+metadata/_custom_type_script = ExtResource("2_vpfae")

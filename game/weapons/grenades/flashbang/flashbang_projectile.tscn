@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dwq3twijmmpig"]
+[gd_scene load_steps=19 format=3 uid="uid://dwq3twijmmpig"]
 
 [ext_resource type="PackedScene" uid="uid://8yrjqan0dqfx" path="res://game/weapons/grenades/common/grenade_projectile.tscn" id="1_ua7bf"]
 [ext_resource type="Texture2D" uid="uid://bah0mhat58x6x" path="res://game/weapons/grenades/flashbang/base.png" id="2_nfc8c"]
@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://bin43crd5xi3g" path="res://game/weapons/grenades/flashbang/explosion_friendly.wav" id="3_x712o"]
 [ext_resource type="Script" path="res://game/entity/attack/area_detector.gd" id="4_7cy3p"]
 [ext_resource type="AudioStream" uid="uid://dnce4ljo741pg" path="res://game/weapons/grenades/flashbang/explosion.wav" id="4_hj380"]
+[ext_resource type="Script" path="res://game/entity/attack/attack.gd" id="6_qtvta"]
 
 [sub_resource type="Animation" id="Animation_rf2x3"]
 length = 0.001
@@ -120,8 +121,8 @@ tracks/4/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_isnu3"]
 _data = {
-&"RESET": SubResource("Animation_rf2x3"),
-&"Explode": SubResource("Animation_xrikg")
+&"Explode": SubResource("Animation_xrikg"),
+&"RESET": SubResource("Animation_rf2x3")
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8b4pb"]
@@ -280,9 +281,9 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gc2tr"]
 _data = {
+&"FriendlyStun": SubResource("Animation_eemtv"),
 &"RESET": SubResource("Animation_vh1rv"),
-&"Stun": SubResource("Animation_oxxvb"),
-&"FriendlyStun": SubResource("Animation_eemtv")
+&"Stun": SubResource("Animation_oxxvb")
 }
 
 [node name="FlashbangProjectile" instance=ExtResource("1_ua7bf")]
@@ -312,12 +313,14 @@ bus = &"SFX"
 scale = Vector2(0.5, 0.5)
 script = ExtResource("3_nxt1r")
 damage = 1
+metadata/_custom_type_script = ExtResource("6_qtvta")
 
 [node name="AreaDetector" type="Area2D" parent="Explosion/Attack" index="0"]
 collision_layer = 4
 collision_mask = 2
 monitorable = false
 script = ExtResource("4_7cy3p")
+metadata/_custom_type_script = ExtResource("4_7cy3p")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Explosion/Attack/AreaDetector" index="0"]
 shape = SubResource("CircleShape2D_8b4pb")

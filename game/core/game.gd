@@ -24,6 +24,19 @@ enum FailReason {
 	## Уже в игре.
 	IN_GAME = 3,
 }
+## Перечисление состояний игры.
+enum State {
+	## Игра закрыта.
+	CLOSED = 0,
+	## Подключено, в лобби.
+	LOBBY = 1,
+	## Загрузка игры.
+	LOADING = 2,
+	## Подключено, находится в событии.
+	EVENT = 3,
+	## Одиночная игра.
+	SOLO = 4,
+}
 ## Порт для подключения по умолчанию.
 const DEFAULT_PORT: int = 7415
 ## Базовое время, определяющее через сколько соединение должно быть прервано (в мс).
@@ -39,8 +52,11 @@ const MAX_PLAYER_NAME_LENGTH: int = 24
 ## Максимальное число игроков, превысив которое, сервер начнёт отклонять соединения.
 ## Задаётся лобби на основе выбранного события. Не имеет эффекта на клиентах.
 var max_players: int = 10
+## Текущее состояние игры.
+var state: State = State.CLOSED
 ## Ссылка на событие.
 var event: Event
+
 var _scene_multiplayer: SceneMultiplayer
 var _players_names: Dictionary[int, String]
 var _players_equip_data: Dictionary[int, Array]
@@ -81,6 +97,7 @@ func create(port: int = DEFAULT_PORT) -> void:
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	created.emit()
 	print_verbose("Created server at port %d." % port)
+	state = State.LOBBY
 
 
 ## Пытается подключиться к серверу по [param ip].
@@ -112,7 +129,7 @@ func join(ip: String, port: int = DEFAULT_PORT) -> void:
 
 ## Закрывает игру.
 func close() -> void:
-	if not multiplayer.multiplayer_peer:
+	if state == State.CLOSED:
 		push_error("Can't close because game is already closed!")
 		return
 	
@@ -144,24 +161,25 @@ func close() -> void:
 		event.process_mode = Node.PROCESS_MODE_DISABLED
 		event.queue_free()
 		print_verbose("Event deleted.")
+	state = State.CLOSED
 
 
 ## Загружает событие по данным [param event_id] и [param map_id]. Если вызвано сервером без игрока,
 ## [param player_name] и [param equip_data] можно не указывать.
 func load_event(event_id: int, map_id: int, player_name := "", equip_data: Array[int] = []) -> void:
+	state = State.LOADING
 	if multiplayer.is_server():
 		# Конвертация xD
 		_players_not_ready = Array(multiplayer.get_peers() as Array, TYPE_INT, StringName(), null)
 		_players_not_ready.append(1)
 		_players_equip_data.clear()
 		_players_names.clear()
-	var loaded_event: Event = await _loader.load_event(event_id, map_id)
-	if not is_instance_valid(loaded_event):
+	event = await _loader.load_event(event_id, map_id)
+	if not is_instance_valid(event):
 		show_error("Ошибка при загрузке события! Отключаюсь.")
 		push_error("Loading of event failed. Disconnecting.")
 		close()
 		return
-	event = loaded_event
 	closed.connect(_loader.finish_load, CONNECT_ONE_SHOT)
 	if multiplayer.is_server() and Globals.headless:
 		_players_not_ready.erase(1)
@@ -240,13 +258,15 @@ func _start_event() -> void:
 		push_error("This method must be called only by server!")
 		return
 	
-	event.ended.connect(ended.emit)
+	event.ended.connect(_on_event_ended)
 	closed.disconnect(_loader.finish_load)
 	if multiplayer.is_server():
 		event.set_players_data(_players_names, _players_equip_data)
 	add_child(event)
 	_loader.finish_load()
 	started.emit()
+	print_verbose("Event started.")
+	state = State.EVENT
 
 
 func _check_players_ready() -> void:
@@ -319,7 +339,7 @@ func _authenticate_callback(peer: int, data: PackedByteArray) -> void:
 		_scene_multiplayer.send_auth(peer, PackedByteArray([FailReason.FULL_ROOM]))
 		print_verbose("Rejecting %d: full room." % peer)
 		return
-	if _loader.is_processing() or is_instance_valid(event):
+	if state in [State.LOADING, State.EVENT]:
 		_scene_multiplayer.send_auth(peer, PackedByteArray([FailReason.IN_GAME]))
 		print_verbose("Rejecting %d: already in game." % peer)
 	
@@ -360,6 +380,7 @@ func _on_connected_to_server() -> void:
 	multiplayer.connected_to_server.disconnect(_on_connected_to_server)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	print_verbose("Connected to server.")
+	state = State.LOBBY
 
 
 func _on_connection_failed() -> void:
@@ -393,3 +414,8 @@ func _on_server_disconnected() -> void:
 	# TODO: Если пофиксят излучение сервер дисконнетед то мб можно без этого
 	closed.emit()
 	close()
+
+
+func _on_event_ended() -> void:
+	ended.emit()
+	state = State.LOBBY
