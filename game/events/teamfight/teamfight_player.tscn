@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://0t25gyfsaiqe"]
+[gd_scene load_steps=3 format=3 uid="uid://0t25gyfsaiqe"]
 
 [ext_resource type="PackedScene" uid="uid://3l0k1cn63ahd" path="res://game/player/player.tscn" id="1_hu82l"]
+[ext_resource type="Script" path="res://game/events/teamfight/teamfight_player.gd" id="2_k6wy1"]
 
 [node name="Player" instance=ExtResource("1_hu82l")]
+script = ExtResource("2_k6wy1")
 max_health = 50
+
+[node name="ImmuneTimer" type="Timer" parent="." index="9"]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="ImmuneTimer" to="." method="_on_immune_timer_timeout"]
