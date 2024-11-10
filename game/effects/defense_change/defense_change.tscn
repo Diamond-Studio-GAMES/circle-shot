@@ -111,6 +111,7 @@ libraries = {
 }
 
 [node name="Down" type="CPUParticles2D" parent="." index="2"]
+visible = false
 position = Vector2(0, -8)
 amount = 3
 lifetime = 2.5

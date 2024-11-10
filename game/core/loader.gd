@@ -107,7 +107,7 @@ func load_event(event_id: int, map_id: int) -> Event:
 	set_process(false)
 	_bar.value = 100
 	_status_text.text = "Ожидание других игроков..."
-	print_verbose("Done loading event. Waiting for players.")
+	print_verbose("Done loading event.")
 	return event
 
 

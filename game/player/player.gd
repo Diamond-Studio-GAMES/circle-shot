@@ -148,7 +148,7 @@ func set_skin(data: SkinData) -> void:
 	skin.player = self
 	$Visual/Skin.add_child(skin)
 	equip_data[0] = data.idx_in_db
-	print_verbose("Skin '%s' with ID %d on player %d set." % [data.id, equip_data[0], id])
+	print_verbose("Skin %s with ID %d on player %s set." % [data.id, equip_data[0], name])
 
 
 func set_weapon(type: Weapon.Type, data: WeaponData) -> void:
@@ -166,7 +166,7 @@ func set_weapon(type: Weapon.Type, data: WeaponData) -> void:
 		_weapons.move_child(placeholder, type)
 		equip_data[1 + type] = -2 # TODO: задокументить
 		weapon_equipped.emit(type, null)
-		print_verbose("Removed weapon with type %d on player %d." % [type, id])
+		print_verbose("Removed weapon with type %d on player %s." % [type, name])
 		
 		if current_weapon_type == type:
 			_set_current_weapon(type)
@@ -181,11 +181,11 @@ func set_weapon(type: Weapon.Type, data: WeaponData) -> void:
 	equip_data[1 + type] = data.idx_in_db
 	
 	weapon_equipped.emit(type, data)
-	print_verbose("Set weapon '%s' with ID %d with type %d on player %d." % [
+	print_verbose("Set weapon %s with ID %d with type %d on player %s." % [
 		data.id,
 		data.idx_in_db,
 		type,
-		id,
+		name,
 	])
 	
 	if current_weapon_type == type or not current_weapon:
@@ -203,7 +203,7 @@ func set_skill(data: SkillData, reset_skill_vars := false) -> void:
 	if not data:
 		skill = null
 		skill_equipped.emit(data)
-		print_verbose("Removed skill on player %d." % id)
+		print_verbose("Removed skill on player %s." % name)
 		return
 	
 	var skill_scene: PackedScene = load(data.scene_path)
@@ -212,7 +212,7 @@ func set_skill(data: SkillData, reset_skill_vars := false) -> void:
 	skill.initialize(self, data)
 	equip_data[5] = data.idx_in_db
 	skill_equipped.emit(data)
-	print_verbose("Set skill '%s' with ID %d on player %d set." % [data.id, equip_data[5], id])
+	print_verbose("Set skill %s with ID %d on player %s." % [data.id, equip_data[5], name])
 
 
 @rpc("any_peer", "reliable", "call_local", 2)
@@ -296,7 +296,7 @@ func _set_current_weapon(to: Weapon.Type) -> void:
 	ammo_text_updated.emit(current_weapon.get_ammo_text() if current_weapon else "Нет оружия")
 	current_weapon_type = to
 	weapon_changed.emit(to)
-	print_verbose("Player %d changed current weapon to type %d." % [id, to])
+	print_verbose("Player %s changed current weapon to type %d." % [name, to])
 
 
 func _update_minimap_marker() -> void:

@@ -87,21 +87,19 @@ func add_effect(effect_id: String, duration := 1.0, data := [], should_stack := 
 			if i.id == effect_id:
 				i.add_duration(duration)
 				effect.free()
-				print_verbose("Added duration (%f) to effect '%s' on entity '%s' with ID %d." % [
+				print_verbose("Added duration %f to effect %s on entity %s." % [
 					duration,
-					effect_id,
+					effect.name,
 					name,
-					id,
 				])
 				return
 	
 	_effects.add_child(effect)
 	effect.initialize(self, effect_id, data, false, duration)
-	print_verbose("Added effect '%s' with duration %f to entity '%s' with ID %d." % [
-		effect_id,
+	print_verbose("Added effect %s with duration %f to entity %s." % [
+		effect.name,
 		duration,
 		name,
-		id,
 	])
 
 
@@ -117,24 +115,18 @@ func add_timeless_effect(effect_id: String, data := [], should_stack := true) ->
 			if i.id == effect_id:
 				i.timeless_counter += 1
 				effect.free()
-				print_verbose("Increased counter of effect '%s' on entity '%s' with ID %d." % [
-					effect_id, name, id
-				])
+				print_verbose("Increased counter of effect %s on entity %s." % [effect.name, name])
 				return
 	
 	_effects.add_child(effect)
 	effect.initialize(self, effect_id, data, true)
-	print_verbose("Added timeless effect '%s' to entity '%s' with ID %d." % [
-		effect_id,
-		name,
-		id,
-	])
+	print_verbose("Added timeless effect %s to entity %s." % [effect.name, name])
 
 
 @rpc("authority", "reliable", "call_local", 3)
 func remove_timeless_effect(effect_id: String) -> void:
 	if is_queued_for_deletion():
-		print_verbose("Entity '%s' is going to be deleted. Effect with ID %d is not removed." % [
+		print_verbose("Entity %s is going to be deleted. Effect with ID %s is not removed." % [
 			name,
 			effect_id,
 		])
@@ -147,11 +139,7 @@ func remove_timeless_effect(effect_id: String) -> void:
 	for i: Effect in _effects.get_children():
 		if i.id == effect_id:
 			i.timeless_counter -= 1
-			print_verbose("Removed timeless effect '%s' on entity '%s' with ID %d." % [
-				effect_id,
-				name,
-				id,
-			])
+			print_verbose("Removed timeless effect %s on entity %s." % [i.name, name])
 			return
 
 
@@ -164,11 +152,10 @@ func clear_effects(negative := true, positive := false) -> void:
 	for i: Effect in _effects.get_children():
 		if i.negative == negative or i.negative != positive:
 			i.clear()
-			print_verbose("Cleared %s effect '%s' on entity '%s' with ID %d." % [
+			print_verbose("Cleared %s effect %s on entity %s." % [
 				"negative" if i.negative else "positive",
-				i.id,
+				i.name,
 				name,
-				id,
 			])
 #endregion
 
@@ -189,7 +176,7 @@ func set_health(health: int) -> void:
 			var death_vfx: Node2D = death_vfx_scene.instantiate()
 			death_vfx.position = position
 			_vfx_parent.add_child(death_vfx)
-		print_verbose("Entity '%s' with ID %d died." % [name, id])
+		print_verbose("Entity %s died." % name)
 		if multiplayer.is_server():
 			queue_free()
 		return
@@ -207,9 +194,7 @@ func set_health(health: int) -> void:
 	current_health = health
 	if current_health > max_health:
 		max_health = current_health
-	print_verbose("Entity '%s' with ID %d changed health: %d/%d." % [
-		name, id, current_health, max_health
-	])
+	print_verbose("Entity %s changed health: %d/%d." % [name, current_health, max_health])
 
 
 func damage(amount: int, by: int) -> void:

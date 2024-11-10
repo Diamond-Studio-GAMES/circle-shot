@@ -185,6 +185,7 @@ func load_event(event_id: int, map_id: int, player_name := "", equip_data: Array
 		_players_not_ready.erase(1)
 		_check_players_ready()
 		return
+	print_verbose("Sending data. Name: %s, Equip data: %s." % [player_name, str(equip_data)])
 	_send_player_data.rpc_id(1, player_name, equip_data)
 
 
@@ -249,6 +250,11 @@ func _send_player_data(player_name: String, equip_data: Array[int]) -> void:
 	_players_names[sender_id] = player_name
 	_players_equip_data[sender_id] = equip_data
 	_players_not_ready.erase(sender_id)
+	print_verbose("Player %d sent data. Name: %s, Equip data: %s." % [
+		sender_id,
+		player_name,
+		str(equip_data)
+	])
 	_check_players_ready()
 
 
@@ -258,6 +264,7 @@ func _start_event() -> void:
 		push_error("This method must be called only by server!")
 		return
 	
+	print_verbose("Starting event...")
 	event.ended.connect(_on_event_ended)
 	closed.disconnect(_loader.finish_load)
 	if multiplayer.is_server():
@@ -265,14 +272,15 @@ func _start_event() -> void:
 	add_child(event)
 	_loader.finish_load()
 	started.emit()
-	print_verbose("Event started.")
 	state = State.EVENT
+	print_verbose("Event started.")
 
 
 func _check_players_ready() -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
+	print_verbose("Waiting for players: %s." % str(_players_not_ready))
 	if _players_not_ready.is_empty():
 		_start_event.rpc()
 
