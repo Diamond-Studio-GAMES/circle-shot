@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c2leb2h0qjtmo"]
+[gd_scene load_steps=17 format=3 uid="uid://c2leb2h0qjtmo"]
 
 [ext_resource type="Script" path="res://menu/settings/settings.gd" id="1_jwkxy"]
 [ext_resource type="Texture2D" uid="uid://cj0xdsi2q6ea4" path="res://menu/settings/icons/general.png" id="1_n6g3h"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://brcaom8n83yf2" path="res://menu/settings/icons/reset.png" id="11_d7m0t"]
 [ext_resource type="Texture2D" uid="uid://b1u3v2dc3jemk" path="res://menu/theme/icons/delete.png" id="12_g4yas"]
 [ext_resource type="PackedScene" uid="uid://cuewsvjjnyl40" path="res://menu/name_dialog/name_dialog.tscn" id="14_eq4mb"]
+[ext_resource type="Texture2D" uid="uid://c53e8se18ejxy" path="res://menu/settings/icons/edit_actions.png" id="14_wy2dx"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_xsh6l"]
 
@@ -38,7 +39,7 @@ OpenGL - традиционный отрисовщик, поддерживающ
 Прицел - перекат будет выполняться в сторону прицела.", "Настраивает тип управления.
 Касания - управления джойстиками и кнопками на экране. Предназначено для управления на телефонах.
 Клавитура и мышь - управления с клавиатуры и прицеливание с помощью мыши. Предназначено для ПК, однако может использоваться и на телефонах, если подключены физические устройства ввода.", "Если включено, прицел всегда смотрит в сторону мыши.
-Если отключено, прицел повернётся в сторону мыши при нажатии действия ПРИЦЕЛ.", "Включает загрузку пользовательских треков.
+Если отключено, прицел повернётся в сторону мыши при нажатии действия ПОКАЗАТЬ ПРИЦЕЛ.", "Включает загрузку пользовательских треков.
 Максимум одновременно загруженых треков - 20.
 Максимальный размер трека - 15 МБ. Если трек имеет больший размер, он не будет загружен.
 Поддерживаемые форматы треков: MP3 и OGG.
@@ -232,6 +233,7 @@ text = "Удалить все данные"
 icon = ExtResource("12_g4yas")
 
 [node name="Game" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -676,7 +678,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Controls" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -783,6 +784,12 @@ layout_mode = 2
 icon = ExtResource("1_xh6xh")
 expand_icon = true
 
+[node name="ConfigureActions" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Настроить действия..."
+icon = ExtResource("14_wy2dx")
+
 [node name="TouchSettings" type="VBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -887,6 +894,9 @@ ok_button_text = "Сменить"
 [node name="LineEdit" parent="NameDialog" index="3"]
 placeholder_text = "Новое имя..."
 
+[node name="ActionsConfiguration" parent="." instance_placeholder="res://menu/settings/actions_configuration.tscn"]
+visible = false
+
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Title/Exit" to="." method="_on_exit_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/General" to="." method="show_section" binds= ["General"]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/Sections/Game" to="." method="show_section" binds= ["Game"]]
@@ -925,6 +935,7 @@ placeholder_text = "Новое имя..."
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse/Setting/FollowMouseCheck" to="." method="_on_follow_mouse_check_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/FollowMouse/Setting/Help" to="." method="show_help" binds= [7]]
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/SneakMultiplier/Setting/SneakSlider" to="." method="_on_sneak_slider_value_changed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/KeyboardSettings/ConfigureActions" to="." method="_on_configure_actions_pressed"]
 [connection signal="item_selected" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/FireMode/Setting/FireModeOptions" to="." method="_on_fire_mode_options_item_selected"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/FireMode/Setting/Help" to="." method="show_help" binds= [9]]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Controls/TouchSettings/SquareJoystick/Setting/SquareCheck" to="." method="_on_square_check_toggled"]

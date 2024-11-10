@@ -14,6 +14,14 @@ enum InputMethod {
 	## Касаниями.
 	TOUCH = 1,
 }
+## Перечисление с допустимыми типами событий при использовании
+## [enum Main.InputMethod.KEYBOARD_AND_MOUSE].
+enum ActionEventType {
+	## События типа [InputEventKey].
+	KEY = 0,
+	## События типа [InputEventMouseButton].
+	MOUSE_BUTTON = 1,
+}
 ## Разрешённые расширения файлов для загрузки в качестве пользовательских треков.
 const ALLOWED_MUSIC_FILE_EXTENSIONS: Array[String] = [".mp3", ".ogg"]
 ## Максимальная длина названия файла пользовательского трека. Лишнее обрезается.
@@ -219,6 +227,32 @@ func setup_controls_settings() -> void:
 			"square_joystick",
 			Globals.get_controls_bool("square_joystick", false)
 	)
+	
+	for i: StringName in InputMap.get_actions():
+		if i.begins_with("ui_"):
+			continue
+		
+		var event: InputEvent = InputMap.action_get_events(i)[0]
+		var coded_event_type: ActionEventType
+		var coded_event_value: int
+		
+		var mb := event as InputEventMouseButton
+		if mb:
+			coded_event_type = ActionEventType.MOUSE_BUTTON
+			coded_event_value = mb.button_index
+		var key := event as InputEventKey
+		if key:
+			coded_event_type = ActionEventType.KEY
+			coded_event_value = key.physical_keycode
+		
+		Globals.set_controls_int(
+				"action_%s_event_type" % i,
+				Globals.get_controls_int("action_%s_event_type" % i, coded_event_type)
+		)
+		Globals.set_controls_int(
+				"action_%s_event_value" % i,
+				Globals.get_controls_int("action_%s_event_value" % i, coded_event_value)
+		)
 
 
 ## Применяет общие настройки.
@@ -244,6 +278,28 @@ func apply_settings() -> void:
 ## Применяет настройки управления.
 func apply_controls_settings() -> void:
 	Input.emulate_touch_from_mouse = Globals.get_controls_int("input_method") == InputMethod.TOUCH
+	
+	for i: StringName in InputMap.get_actions():
+		if i.begins_with("ui_"):
+			continue
+		InputMap.action_erase_events(i)
+		
+		var coded_event_type: ActionEventType = \
+				Globals.get_controls_int("action_%s_event_type" % i) as ActionEventType
+		var coded_event_value: int = Globals.get_controls_int("action_%s_event_value" % i)
+		var event: InputEvent
+		
+		match coded_event_type:
+			ActionEventType.KEY:
+				var key := InputEventKey.new()
+				key.physical_keycode = coded_event_value as Key
+				event = key
+			ActionEventType.MOUSE_BUTTON:
+				var mb := InputEventMouseButton.new()
+				mb.button_index = coded_event_value as MouseButton
+				event = mb
+		
+		InputMap.action_add_event(i, event)
 
 
 func _start_load() -> void:

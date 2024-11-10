@@ -286,3 +286,9 @@ func _on_vib_hit_check_toggled(toggled_on: bool) -> void:
 
 func _on_vib_damage_check_toggled(toggled_on: bool) -> void:
 	Globals.set_setting_bool("vibration_damage", toggled_on)
+
+
+func _on_configure_actions_pressed() -> void:
+	if $ActionsConfiguration is InstancePlaceholder:
+		($ActionsConfiguration as InstancePlaceholder).create_instance(true)
+	($ActionsConfiguration as Window).popup_centered()

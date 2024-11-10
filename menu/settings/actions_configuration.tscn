@@ -1,0 +1,491 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4axjhbd674h8"]
+
+[ext_resource type="Texture2D" uid="uid://ndobp7p586tx" path="res://menu/settings/icons/edit.png" id="1_glpac"]
+[ext_resource type="Script" path="res://menu/settings/actions_configuration.gd" id="1_h33al"]
+
+[node name="ActionsConfiguration" type="Window"]
+auto_translate_mode = 1
+title = "Настройка действий"
+position = Vector2i(0, 28)
+size = Vector2i(640, 640)
+transient = true
+exclusive = true
+unresizable = true
+script = ExtResource("1_h33al")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Actions" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MoveLeft" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveLeft"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Двигаться влево"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveLeft"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveLeft"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="MoveRight" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveRight"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Двигаться вправо"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveRight"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveRight"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="MoveUp" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveUp"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Двигаться вверх"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveUp"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveUp"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="MoveDown" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveDown"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Двигаться вниз"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveDown"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveDown"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="Sneak" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Sneak"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Красться"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Sneak"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Sneak"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="Shoot" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Shoot"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Стрелять"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Shoot"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Shoot"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="ShowAim" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/ShowAim"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Показать прицел"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/ShowAim"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/ShowAim"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="Reload" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Reload"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Перезарядиться"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Reload"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Reload"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="AdditionalButton" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/AdditionalButton"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Дополнительная кнопка оружия"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/AdditionalButton"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/AdditionalButton"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="WeaponLight" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponLight"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Лёгкое оружие"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponLight"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponLight"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="WeaponHeavy" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponHeavy"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Тяжёлое оружие"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponHeavy"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponHeavy"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="WeaponSupport" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponSupport"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Оружие поддержки"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponSupport"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponSupport"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="WeaponMelee" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponMelee"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Ближнее оружие"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponMelee"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponMelee"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="ShowWeapons" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/ShowWeapons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Показать оружия"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/ShowWeapons"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/ShowWeapons"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="UseSkill" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/UseSkill"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Использовать навык"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/UseSkill"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/UseSkill"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="Chat" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Chat"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Открыть чат"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Chat"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Chat"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="CloseChat" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/CloseChat"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Закрыть чат"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/CloseChat"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/CloseChat"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="Fullscreen" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_type_variation = &"HeaderSmall"
+text = "Переключить полный экран"
+
+[node name="Event" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Fullscreen"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderMedium"
+text = "Z"
+horizontal_alignment = 1
+
+[node name="ActionEdit" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/Actions/Fullscreen"]
+layout_mode = 2
+icon = ExtResource("1_glpac")
+
+[node name="Buttons" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Discard" type="Button" parent="VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Отмена"
+
+[node name="Save" type="Button" parent="VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 6
+disabled = true
+text = "Сохранить"
+
+[node name="EventSelector" type="ConfirmationDialog" parent="."]
+position = Vector2i(0, 28)
+size = Vector2i(600, 120)
+unresizable = true
+ok_button_text = "Выбрать"
+dialog_text = "Ожидаю ввод..."
+dialog_close_on_escape = false
+cancel_button_text = "Отмена"
+
+[connection signal="close_requested" from="." to="." method="_on_discard_pressed"]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveLeft/ActionEdit" to="." method="edit_action" binds= [&"move_left"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveRight/ActionEdit" to="." method="edit_action" binds= [&"move_right"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveUp/ActionEdit" to="." method="edit_action" binds= [&"move_up"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveDown/ActionEdit" to="." method="edit_action" binds= [&"move_down"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/Sneak/ActionEdit" to="." method="edit_action" binds= [&"sneak"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/Shoot/ActionEdit" to="." method="edit_action" binds= [&"shoot"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/ShowAim/ActionEdit" to="." method="edit_action" binds= [&"show_aim"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/Reload/ActionEdit" to="." method="edit_action" binds= [&"reload"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/AdditionalButton/ActionEdit" to="." method="edit_action" binds= [&"additional_button"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponLight/ActionEdit" to="." method="edit_action" binds= [&"weapon_light"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponHeavy/ActionEdit" to="." method="edit_action" binds= [&"weapon_heavy"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponSupport/ActionEdit" to="." method="edit_action" binds= [&"weapon_support"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/WeaponMelee/ActionEdit" to="." method="edit_action" binds= [&"weapon_melee"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/ShowWeapons/ActionEdit" to="." method="edit_action" binds= [&"show_weapons"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/UseSkill/ActionEdit" to="." method="edit_action" binds= [&"use_skill"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/Chat/ActionEdit" to="." method="edit_action" binds= [&"chat"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/CloseChat/ActionEdit" to="." method="edit_action" binds= [&"close_chat"]]
+[connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/Fullscreen/ActionEdit" to="." method="edit_action" binds= [&"fullscreen"]]
+[connection signal="pressed" from="VBoxContainer/Buttons/Discard" to="." method="_on_discard_pressed"]
+[connection signal="pressed" from="VBoxContainer/Buttons/Save" to="." method="_on_save_pressed"]
+[connection signal="canceled" from="EventSelector" to="." method="_on_event_selector_canceled"]
+[connection signal="confirmed" from="EventSelector" to="." method="_on_event_selector_confirmed"]
+[connection signal="window_input" from="EventSelector" to="." method="_on_event_selector_window_input"]
