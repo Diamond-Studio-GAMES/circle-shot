@@ -4,6 +4,10 @@ extends Camera2D
 var target: Node2D
 var _shake_tween: Tween
 
+func _ready() -> void:
+	position_smoothing_enabled = Globals.get_setting_bool("smooth_camera")
+
+
 func _process(_delta: float) -> void:
 	if is_instance_valid(target):
 		global_position = target.global_position

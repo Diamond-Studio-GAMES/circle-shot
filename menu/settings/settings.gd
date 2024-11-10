@@ -39,6 +39,7 @@ func _ready() -> void:
 	(%SneakSlider as HSlider).value = Globals.get_controls_float("sneak_multiplier")
 	(%VibDamageCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration_damage"))
 	(%VibHitCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration_hit"))
+	(%SmoothCameraCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("smooth_camera"))
 	
 	# Кастомные треки
 	(%CustomTracksCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("custom_tracks"))
@@ -292,3 +293,7 @@ func _on_configure_actions_pressed() -> void:
 	if $ActionsConfiguration is InstancePlaceholder:
 		($ActionsConfiguration as InstancePlaceholder).create_instance(true)
 	($ActionsConfiguration as Window).popup_centered()
+
+
+func _on_smooth_camera_check_toggled(toggled_on: bool) -> void:
+	Globals.set_setting_bool("smooth_camera", toggled_on)

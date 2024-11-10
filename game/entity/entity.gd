@@ -136,7 +136,9 @@ func remove_timeless_effect(effect_id: String) -> void:
 		push_error("This method must be called only by server!")
 		return
 	
-	for i: Effect in _effects.get_children():
+	var effects: Array[Node] = _effects.get_children()
+	effects.reverse()
+	for i: Effect in effects:
 		if i.id == effect_id:
 			i.timeless_counter -= 1
 			print_verbose("Removed timeless effect %s on entity %s." % [i.name, name])

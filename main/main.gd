@@ -200,6 +200,10 @@ func setup_settings() -> void:
 			"vibration_hit",
 			Globals.get_setting_bool("vibration_hit", false)
 	)
+	Globals.set_setting_bool(
+			"smooth_camera",
+			Globals.get_setting_bool("smooth_camera", true)
+	)
 
 
 ## Устанавливает настройки управления по умолчанию, если их ещё нет.
