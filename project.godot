@@ -179,6 +179,8 @@ common/enable_object_picking=false
 
 [rendering]
 
+rendering_device/fallback_to_d3d12=false
+gl_compatibility/fallback_to_native=false
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_s3tc_bptc=true
