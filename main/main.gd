@@ -47,7 +47,8 @@ var _preloaded_resources: Array[Resource]
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action(&"fullscreen") and event.is_pressed() and Globals.save_file:
+	if event.is_action(&"fullscreen") and event.is_pressed() \
+			and Globals.save_file and OS.has_feature("pc"):
 		Globals.set_setting_bool("fullscreen", not Globals.get_setting_bool("fullscreen", false))
 		apply_settings()
 
@@ -178,7 +179,7 @@ func setup_settings() -> void:
 	)
 	Globals.set_setting_bool(
 			"fullscreen",
-			Globals.get_setting_bool("fullscreen", OS.has_feature("mobile"))
+			Globals.get_setting_bool("fullscreen", OS.has_feature("pc"))
 	)
 	Globals.set_setting_bool(
 			"preload",
@@ -190,7 +191,7 @@ func setup_settings() -> void:
 	)
 	Globals.set_setting_bool(
 			"custom_tracks",
-			Globals.get_setting_bool("custom_tracks", not OS.has_feature("android"))
+			Globals.get_setting_bool("custom_tracks", OS.has_feature("pc"))
 	)
 	Globals.set_setting_bool(
 			"vibration_damage",
@@ -230,6 +231,14 @@ func setup_controls_settings() -> void:
 	Globals.set_controls_bool(
 			"square_joystick",
 			Globals.get_controls_bool("square_joystick", false)
+	)
+	Globals.set_controls_float(
+			"aim_deadzone",
+			Globals.get_controls_float("aim_deadzone", 0.2)
+	)
+	Globals.set_controls_float(
+			"aim_zone",
+			Globals.get_controls_float("aim_zone", 0.6)
 	)
 	
 	for i: StringName in InputMap.get_actions():
@@ -273,8 +282,16 @@ func apply_settings() -> void:
 			AudioServer.get_bus_index(&"SFX"),
 			linear_to_db(Globals.get_setting_float("sfx_volume"))
 	)
-	get_window().mode = Window.MODE_FULLSCREEN \
-			if Globals.get_setting_bool("fullscreen") else Window.MODE_WINDOWED
+	if Globals.get_setting_bool("fullscreen"):
+		if not get_window().mode in [Window.MODE_EXCLUSIVE_FULLSCREEN, Window.MODE_FULLSCREEN]:
+			get_window().mode = Window.MODE_FULLSCREEN
+	else:
+		if not get_window().mode in [
+			Window.MODE_WINDOWED,
+			Window.MODE_MINIMIZED,
+			Window.MODE_MAXIMIZED,
+		]:
+			get_window().mode = Window.MODE_WINDOWED
 	if Globals.get_setting_bool("custom_tracks"):
 		DirAccess.make_dir_recursive_absolute(music_path)
 
@@ -283,6 +300,8 @@ func apply_settings() -> void:
 func apply_controls_settings() -> void:
 	Input.emulate_touch_from_mouse = Globals.get_controls_int("input_method") == InputMethod.TOUCH
 	
+	if not Globals.get_controls_int("input_method") == InputMethod.KEYBOARD_AND_MOUSE:
+		return
 	for i: StringName in InputMap.get_actions():
 		if i.begins_with("ui_"):
 			continue

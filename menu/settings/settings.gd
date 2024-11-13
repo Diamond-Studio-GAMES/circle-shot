@@ -1,7 +1,11 @@
 extends Control
 
+
+const AIM_VISUAL_MAX_SIZE := 360.0
 @export_multiline var help_messages: Array[String]
 var _override_file := ConfigFile.new()
+@onready var _aim_visual: ColorRect = %AimVisual
+
 
 func _ready() -> void:
 	show_section("General")
@@ -25,9 +29,9 @@ func _ready() -> void:
 	(%HitMarkersCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("hit_markers"))
 	(%ShowMinimapCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("minimap"))
 	(%ShowDebugCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("debug_info"))
-	(%MasterVolumeSlider as HSlider).value = Globals.get_setting_float("master_volume")
-	(%MusicVolumeSlider as HSlider).value = Globals.get_setting_float("music_volume")
-	(%SFXVolumeSlider as HSlider).value = Globals.get_setting_float("sfx_volume")
+	(%MasterVolumeSlider as HSlider).set_value_no_signal(Globals.get_setting_float("master_volume"))
+	(%MusicVolumeSlider as HSlider).set_value_no_signal(Globals.get_setting_float("music_volume"))
+	(%SFXVolumeSlider as HSlider).set_value_no_signal(Globals.get_setting_float("sfx_volume"))
 	(%FullscreenCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("fullscreen"))
 	(%PreloadCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("preload"))
 	(%DodgeOptions as OptionButton).selected = int(Globals.get_setting_bool("aim_dodge"))
@@ -36,10 +40,22 @@ func _ready() -> void:
 	(%FollowMouseCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("follow_mouse"))
 	(%FireModeOptions as OptionButton).selected = int(Globals.get_controls_bool("joystick_fire"))
 	(%SquareCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("square_joystick"))
-	(%SneakSlider as HSlider).value = Globals.get_controls_float("sneak_multiplier")
+	(%SneakSlider as HSlider).set_value_no_signal(Globals.get_controls_float("sneak_multiplier"))
 	(%VibDamageCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration_damage"))
 	(%VibHitCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration_hit"))
 	(%SmoothCameraCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("smooth_camera"))
+	(%AimDZoneSlider as HSlider).value = Globals.get_controls_float("aim_deadzone")
+	(%AimZoneSlider as HSlider).set_value_no_signal(Globals.get_controls_float("aim_zone"))
+	
+	var viewport_size: Vector2 = get_viewport_rect().size
+	if viewport_size.x >= viewport_size.y:
+		_aim_visual.custom_minimum_size.x = AIM_VISUAL_MAX_SIZE
+		_aim_visual.custom_minimum_size.y = \
+				viewport_size.y / viewport_size.x * AIM_VISUAL_MAX_SIZE
+	else:
+		_aim_visual.custom_minimum_size.y = AIM_VISUAL_MAX_SIZE
+		_aim_visual.custom_minimum_size.x = \
+				viewport_size.x / viewport_size.y * AIM_VISUAL_MAX_SIZE
 	
 	# Кастомные треки
 	(%CustomTracksCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("custom_tracks"))
@@ -54,10 +70,11 @@ func _ready() -> void:
 			label.text = i
 			%LoadedTracks.add_child(label)
 	
-	if OS.has_feature("mobile"):
-		(%FullscreenCheck as CheckButton).set_pressed_no_signal(true)
-		(%FullscreenCheck as CheckButton).self_modulate = Color(1.0, 1.0, 1.0, 0.5)
-		(%FullscreenCheck as CheckButton).disabled = true
+	if not OS.has_feature("pc"):
+		(%FullscreenCheck.get_parent().get_parent() as Control).hide()
+	if not OS.has_feature("mobile"):
+		(%VibDamageCheck.get_parent().get_parent() as Control).hide()
+		(%VibHitCheck.get_parent().get_parent() as Control).hide()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -82,7 +99,7 @@ func show_section(section_name: String) -> void:
 
 func show_help(help_idx: int) -> void:
 	($HelpDialog as AcceptDialog).dialog_text = help_messages[help_idx]
-	($HelpDialog as Window).popup_centered()
+	($HelpDialog as Window).popup_centered(Vector2i.UP * 64)
 
 
 func remove_recursive(path: String) -> void:
@@ -248,10 +265,10 @@ func _on_custom_tracks_check_toggled(toggled_on: bool) -> void:
 				or perms.has("android.permission.READ_EXTERNAL_STORAGE")
 				or perms.has("android.permission.WRITE_EXTERNAL_STORAGE")
 		):
-			OS.request_permissions()
 			get_tree().on_request_permissions_result.connect(
 					_on_request_permissions_result, CONNECT_ONE_SHOT
 			)
+			OS.request_permissions()
 	(%CustomTracksSettings as Control).visible = toggled_on
 	Globals.set_setting_bool("custom_tracks", toggled_on)
 	Globals.main.apply_settings()
@@ -297,3 +314,35 @@ func _on_configure_actions_pressed() -> void:
 
 func _on_smooth_camera_check_toggled(toggled_on: bool) -> void:
 	Globals.set_setting_bool("smooth_camera", toggled_on)
+
+
+func _on_aim_d_zone_slider_value_changed(value: float) -> void:
+	Globals.set_controls_float("aim_deadzone", value)
+	(%AimZoneSlider as HSlider).min_value = maxf(value + 0.1, 0.3)
+	_aim_visual.queue_redraw()
+
+
+func _on_aim_zone_slider_value_changed(value: float) -> void:
+	Globals.set_controls_float("aim_zone", value)
+	_aim_visual.queue_redraw()
+
+
+func _on_aim_visual_draw() -> void:
+	var min_side: float = minf(_aim_visual.size.x, _aim_visual.size.y) / 2
+	_aim_visual.draw_circle(
+			_aim_visual.size / 2, min_side * Globals.get_controls_float("aim_zone"),
+			Color.GREEN, true, -1.0, true
+	)
+	_aim_visual.draw_circle(
+			_aim_visual.size / 2, min_side * Globals.get_controls_float("aim_deadzone"),
+			Color.RED, true, -1.0, true
+	)
+	
+	_aim_visual.draw_line(
+			Vector2(_aim_visual.size.x / 2, 0.0),
+			Vector2(_aim_visual.size.x / 2, _aim_visual.size.y), Color.BLACK
+	)
+	_aim_visual.draw_line(
+			Vector2(0.0, _aim_visual.size.y / 2),
+			Vector2(_aim_visual.size.x, _aim_visual.size.y / 2), Color.BLACK
+	)

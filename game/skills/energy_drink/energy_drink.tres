@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_213rr")
 name = "Энергетик"
-brief_description = "Усиливает героя на 5 c"
+brief_description = "Усиливает на 5 c"
 usage_text = "2 исп./30 с"
 rarity = 1
 id = "hypercharge"

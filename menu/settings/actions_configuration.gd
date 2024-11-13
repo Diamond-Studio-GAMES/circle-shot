@@ -13,6 +13,8 @@ var _pending_coded_event_values: Dictionary[StringName, int]
 
 
 func _ready() -> void:
+	if not OS.has_feature("pc"):
+		(%Actions/Fullscreen as Control).hide()
 	($EventSelector as AcceptDialog).get_label().horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_load_keys_from_map()
 

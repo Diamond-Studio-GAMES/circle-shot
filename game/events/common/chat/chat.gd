@@ -46,7 +46,7 @@ func clear_chat() -> void:
 func send_message() -> void:
 	var message: String = _chat_edit.text.strip_edges().strip_escapes()
 	_chat_edit.clear()
-	_chat_edit.edit()
+	_chat_edit.edit.call_deferred()
 	
 	if message.is_empty():
 		return

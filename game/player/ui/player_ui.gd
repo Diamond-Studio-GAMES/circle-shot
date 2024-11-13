@@ -12,8 +12,8 @@ const MAX_VIBRATION_AMPLITUDE := 0.5
 var input_method: Main.InputMethod
 var vibration_enabled: bool
 
-var aim_deadzone := 60.0
-var aim_max_at_distance := 260.0
+var aim_deadzone: float
+var aim_zone: float
 var sneak_multiplier: float
 var follow_mouse: bool
 
@@ -73,14 +73,18 @@ func _ready() -> void:
 	
 	match input_method:
 		Main.InputMethod.KEYBOARD_AND_MOUSE:
-			_aim_zone = aim_max_at_distance - aim_deadzone
-			follow_mouse = Globals.get_controls_bool("follow_mouse")
 			($Controller/TouchControls as Control).hide()
 			($Controller/Skill as Control).position = ($Controller/PCSkill as Control).position
 			($Controller/CurrentWeapon as Control).position = \
 					($Controller/PCCurrentWeapon as Control).position
 			($Controller/Skill/TouchScreenButton as Node2D).hide()
+			follow_mouse = Globals.get_controls_bool("follow_mouse")
 			sneak_multiplier = Globals.get_controls_float("sneak_multiplier")
+			var smallest_side: float = minf(get_viewport_rect().size.x, get_viewport_rect().size.y)
+			prints(Globals.get_controls_float("aim_deadzone"), Globals.get_controls_float("aim_zone"))
+			aim_deadzone = Globals.get_controls_float("aim_deadzone") * smallest_side
+			aim_zone = Globals.get_controls_float("aim_zone") * smallest_side
+			_aim_zone = aim_zone - aim_deadzone
 		Main.InputMethod.TOUCH:
 			joystick_fire = Globals.get_controls_bool("joystick_fire")
 			if joystick_fire:
@@ -279,7 +283,7 @@ func _process_keyboard_and_mouse_input_method() -> void:
 		var mouse_distance: float = mouse_pos.length()
 		if mouse_distance > aim_deadzone:
 			_player.player_input.aim_direction = mouse_pos.normalized() * ((
-					clampf(mouse_distance, aim_deadzone, aim_max_at_distance) - aim_deadzone
+					clampf(mouse_distance, aim_deadzone, aim_zone) - aim_deadzone
 			) / _aim_zone * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
 	_player.player_input.turn_with_aim = follow_mouse or _showing_aim
 
@@ -370,12 +374,13 @@ func _on_player_health_changed(old_value: int, new_value: int) -> void:
 		_health_immediate_bar_tween.tween_property(_health_immediate_bar, ^":value", new_value, 0.5)
 		
 		var change_ratio: float = (old_value - new_value) / float(_player.max_health)
-		Input.vibrate_handheld(
-				MIN_VIBRATION_DURATION_MS
-				+ roundi((MAX_VIBRATION_DURATION_MS - MIN_VIBRATION_DURATION_MS) * change_ratio),
-				MIN_VIBRATION_AMPLITUDE
-				+ roundi((MAX_VIBRATION_AMPLITUDE - MIN_VIBRATION_AMPLITUDE) * change_ratio)
-		)
+		if vibration_enabled:
+			Input.vibrate_handheld(
+					MIN_VIBRATION_DURATION_MS +
+					roundi((MAX_VIBRATION_DURATION_MS - MIN_VIBRATION_DURATION_MS) * change_ratio),
+					MIN_VIBRATION_AMPLITUDE +
+					roundi((MAX_VIBRATION_AMPLITUDE - MIN_VIBRATION_AMPLITUDE) * change_ratio)
+			)
 	else:
 		if is_instance_valid(_health_bar_tween):
 			_health_bar_tween.kill()
