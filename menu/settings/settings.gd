@@ -99,7 +99,8 @@ func show_section(section_name: String) -> void:
 
 func show_help(help_idx: int) -> void:
 	($HelpDialog as AcceptDialog).dialog_text = help_messages[help_idx]
-	($HelpDialog as Window).popup_centered(Vector2i.UP * 64)
+	($HelpDialog as Window).size.y = 0 # Устанавливает минимальную высоту
+	($HelpDialog as Window).popup_centered()
 
 
 func remove_recursive(path: String) -> void:

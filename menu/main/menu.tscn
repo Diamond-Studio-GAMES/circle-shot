@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://d2rpk8yt0h06x" path="res://menu/main/icons/achievements.png" id="5_noej1"]
 [ext_resource type="Texture2D" uid="uid://c3sk875fn0rx" path="res://menu/main/icons/settings.png" id="6_0pcoh"]
 [ext_resource type="Texture2D" uid="uid://b0j3g7rkerkdm" path="res://menu/theme/icons/help.png" id="7_aw44p"]
-[ext_resource type="PackedScene" uid="uid://cuewsvjjnyl40" path="res://menu/name_dialog/name_dialog.tscn" id="10_yw6bl"]
+[ext_resource type="PackedScene" uid="uid://cuewsvjjnyl40" path="res://menu/main/name_dialog.tscn" id="10_yw6bl"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3

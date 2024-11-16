@@ -75,8 +75,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2v1tq"]
 _data = {
-"Marker": SubResource("Animation_uv8e6"),
-"RESET": SubResource("Animation_gmqot")
+&"Marker": SubResource("Animation_uv8e6"),
+&"RESET": SubResource("Animation_gmqot")
 }
 
 [node name="KillMarker" instance=ExtResource("1_m4fcy")]
@@ -92,6 +92,6 @@ texture = ExtResource("2_cjxir")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Visual/Marker" index="2"]
 libraries = {
-"": SubResource("AnimationLibrary_2v1tq")
+&"": SubResource("AnimationLibrary_2v1tq")
 }
 autoplay = "Marker"

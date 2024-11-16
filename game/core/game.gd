@@ -140,6 +140,8 @@ func close() -> void:
 	):
 		closed.emit()
 	
+	if multiplayer.peer_connected.is_connected(_on_peer_connected):
+		multiplayer.peer_connected.disconnect(_on_peer_connected)
 	if multiplayer.peer_disconnected.is_connected(_on_peer_disconnected):
 		multiplayer.peer_disconnected.disconnect(_on_peer_disconnected)
 	if multiplayer.connection_failed.is_connected(_on_connection_failed):

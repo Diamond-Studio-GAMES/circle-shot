@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://djfqfio1aley7" path="res://menu/settings/icons/reset_controls.png" id="10_kedwe"]
 [ext_resource type="Texture2D" uid="uid://brcaom8n83yf2" path="res://menu/settings/icons/reset.png" id="11_d7m0t"]
 [ext_resource type="Texture2D" uid="uid://b1u3v2dc3jemk" path="res://menu/theme/icons/delete.png" id="12_g4yas"]
-[ext_resource type="PackedScene" uid="uid://cuewsvjjnyl40" path="res://menu/name_dialog/name_dialog.tscn" id="14_eq4mb"]
+[ext_resource type="PackedScene" uid="uid://cuewsvjjnyl40" path="res://menu/main/name_dialog.tscn" id="14_eq4mb"]
 [ext_resource type="Texture2D" uid="uid://c53e8se18ejxy" path="res://menu/settings/icons/edit_controls.png" id="14_wy2dx"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_xsh6l"]
