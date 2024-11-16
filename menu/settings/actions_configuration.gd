@@ -134,15 +134,15 @@ func _on_save_pressed() -> void:
 	_pending_coded_event_values.clear()
 	_load_keys_from_map()
 	($VBoxContainer/Buttons/Save as Button).disabled = true
-	hide()
+	($VBoxContainer/Buttons/Discard as Button).disabled = true
 
 
 func _on_discard_pressed() -> void:
 	_pending_coded_event_types.clear()
 	_pending_coded_event_values.clear()
 	_load_keys_from_map()
-	($VBoxContainer/Buttons/Save as Button).disabled = true
-	hide()
+	($VBoxContainer/Buttons/Discard as Button).disabled = true
+	($VBoxContainer/Buttons/Discard as Button).disabled = true
 
 
 func _on_event_selector_confirmed() -> void:
@@ -160,6 +160,7 @@ func _on_event_selector_confirmed() -> void:
 	_pending_coded_event_types[_editing_action] = _coded_event_candidate_type
 	_pending_coded_event_values[_editing_action] = _coded_event_candidate_value
 	($VBoxContainer/Buttons/Save as Button).disabled = false
+	($VBoxContainer/Buttons/Discard as Button).disabled = false
 
 
 func _on_event_selector_canceled() -> void:

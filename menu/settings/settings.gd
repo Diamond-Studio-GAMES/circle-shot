@@ -40,7 +40,7 @@ func _ready() -> void:
 	(%FollowMouseCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("follow_mouse"))
 	(%FireModeOptions as OptionButton).selected = int(Globals.get_controls_bool("joystick_fire"))
 	(%SquareCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("square_joystick"))
-	(%SneakSlider as HSlider).set_value_no_signal(Globals.get_controls_float("sneak_multiplier"))
+	(%SneakSlider as HSlider).value = Globals.get_controls_float("sneak_multiplier")
 	(%VibDamageCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration_damage"))
 	(%VibHitCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration_hit"))
 	(%SmoothCameraCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("smooth_camera"))
@@ -346,3 +346,7 @@ func _on_aim_visual_draw() -> void:
 			Vector2(0.0, _aim_visual.size.y / 2),
 			Vector2(_aim_visual.size.x, _aim_visual.size.y / 2), Color.BLACK
 	)
+
+
+func _on_configure_controls_pressed() -> void:
+	Globals.main.open_screen(load("uid://5wx4yqp027gq") as PackedScene)

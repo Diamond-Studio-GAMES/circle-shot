@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=40 format=3 uid="uid://bbeb6tjpfk7sg"]
+[gd_resource type="Theme" load_steps=42 format=3 uid="uid://bbeb6tjpfk7sg"]
 
 [ext_resource type="Texture2D" uid="uid://dmcjw00hj8l16" path="res://menu/theme/textures/panel.png" id="1_xws5c"]
 [ext_resource type="Texture2D" uid="uid://dl131g2b7pe4q" path="res://menu/theme/textures/tick_on.png" id="2_o68rj"]
@@ -16,6 +16,8 @@
 [ext_resource type="Texture2D" uid="uid://dai426mwk81ur" path="res://menu/theme/textures/menu_hover.png" id="13_l0equ"]
 [ext_resource type="Texture2D" uid="uid://8cue2wwapt6y" path="res://menu/theme/textures/menu_bg.png" id="14_egv83"]
 [ext_resource type="Texture2D" uid="uid://i620baydxvy6" path="res://menu/theme/textures/scroll.png" id="15_o4fbm"]
+[ext_resource type="Texture2D" uid="uid://cgyrbha3f6r1f" path="res://menu/theme/textures/v_grabber.png" id="15_t7j08"]
+[ext_resource type="Texture2D" uid="uid://ci5gdlrk1x3ee" path="res://menu/theme/textures/h_grabber.png" id="16_wqc4x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4so7"]
 content_margin_left = 32.0
@@ -241,6 +243,7 @@ HSlider/icons/grabber_highlight = ExtResource("6_6oate")
 HSlider/styles/grabber_area = SubResource("StyleBoxTexture_f1gs1")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxTexture_f1gs1")
 HSlider/styles/slider = SubResource("StyleBoxTexture_mnl67")
+HSplitContainer/icons/grabber = ExtResource("15_t7j08")
 Label/colors/font_color = Color(0, 0, 0, 1)
 LineEdit/colors/font_color = Color(1, 1, 1, 1)
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_8bhdh")
@@ -266,11 +269,13 @@ ProgressBar/constants/outline_size = 4
 ProgressBar/styles/background = SubResource("StyleBoxTexture_w7tci")
 ProgressBar/styles/fill = SubResource("StyleBoxTexture_n7jmp")
 Separator/styles/separator = SubResource("StyleBoxLine_7jwu7")
+SplitContainer/constants/autohide = 0
 VScrollBar/styles/grabber = SubResource("StyleBoxTexture_uy3fd")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxTexture_fxl4a")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxTexture_apbkv")
 VScrollBar/styles/scroll = SubResource("StyleBoxTexture_qnlht")
 VScrollBar/styles/scroll_focus = SubResource("StyleBoxTexture_qnlht")
+VSplitContainer/icons/grabber = ExtResource("16_wqc4x")
 Window/colors/title_color = Color(0, 0, 0, 1)
 Window/constants/close_h_offset = 24
 Window/constants/close_v_offset = 24

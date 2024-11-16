@@ -74,22 +74,36 @@ func _ready() -> void:
 	match input_method:
 		Main.InputMethod.KEYBOARD_AND_MOUSE:
 			($Controller/TouchControls as Control).hide()
-			($Controller/Skill as Control).position = ($Controller/PCSkill as Control).position
-			($Controller/CurrentWeapon as Control).position = \
-					($Controller/PCCurrentWeapon as Control).position
 			($Controller/Skill/TouchScreenButton as Node2D).hide()
 			follow_mouse = Globals.get_controls_bool("follow_mouse")
 			sneak_multiplier = Globals.get_controls_float("sneak_multiplier")
 			var smallest_side: float = minf(get_viewport_rect().size.x, get_viewport_rect().size.y)
-			prints(Globals.get_controls_float("aim_deadzone"), Globals.get_controls_float("aim_zone"))
-			aim_deadzone = Globals.get_controls_float("aim_deadzone") * smallest_side
-			aim_zone = Globals.get_controls_float("aim_zone") * smallest_side
+			aim_deadzone = Globals.get_controls_float("aim_deadzone") * smallest_side / 2
+			aim_zone = Globals.get_controls_float("aim_zone") * smallest_side / 2
 			_aim_zone = aim_zone - aim_deadzone
 		Main.InputMethod.TOUCH:
 			joystick_fire = Globals.get_controls_bool("joystick_fire")
 			if joystick_fire:
 				_aim_joystick.released.connect(_on_aim_joystick_released)
 			square_joystick = Globals.get_controls_bool("square_joystick")
+			
+			_move_joystick.scale = Vector2.ONE * Globals.get_controls_float("move_joystick_scale")
+			_move_joystick.deadzone_size = Globals.get_controls_float("move_joystick_deadzone")
+			_move_joystick.clampzone_size *= Globals.get_controls_float("move_joystick_scale")
+			_move_joystick.deadzone_size *= Globals.get_controls_float("move_joystick_scale")
+			_move_joystick.joystick_mode = \
+					Globals.get_controls_int("move_joystick_mode") as VirtualJoystick.JoystickMode
+			
+			_aim_joystick.scale = Vector2.ONE * Globals.get_controls_float("aim_joystick_scale")
+			_aim_joystick.deadzone_size = Globals.get_controls_float("aim_joystick_deadzone")
+			_aim_joystick.clampzone_size *= Globals.get_controls_float("aim_joystick_scale")
+			_aim_joystick.deadzone_size *= Globals.get_controls_float("aim_joystick_scale")
+			_aim_joystick.joystick_mode = \
+					Globals.get_controls_int("aim_joystick_mode") as VirtualJoystick.JoystickMode
+			
+			(_shoot_area.shape as RectangleShape2D).size = \
+					Globals.get_controls_vector2("shoot_area")
+			_shoot_area.position = Globals.get_controls_vector2("shoot_area") / 2
 
 
 func _process(delta: float) -> void:

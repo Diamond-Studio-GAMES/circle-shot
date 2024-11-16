@@ -6,6 +6,8 @@ signal ended
 signal local_player_created(player: Player)
 signal local_team_set(team: int)
 
+const SPAWN_POINT_RANDOMNESS := 40.0
+
 @export var player_scenes: Array[PackedScene]
 
 var local_player: Player
@@ -82,7 +84,10 @@ func set_players_data(players_names: Dictionary[int, String],
 func spawn_player(id: int) -> void:
 	var player_scene: PackedScene = _get_player_scene(id)
 	var player: Player = player_scene.instantiate()
-	player.global_position = _get_spawn_point(id)
+	player.global_position = _get_spawn_point(id) + Vector2(
+			randf_range(-SPAWN_POINT_RANDOMNESS, SPAWN_POINT_RANDOMNESS),
+			randf_range(-SPAWN_POINT_RANDOMNESS, SPAWN_POINT_RANDOMNESS)
+	)
 	player.team = _players_teams[id]
 	player.id = id
 	player.player_name = _players_names[id]

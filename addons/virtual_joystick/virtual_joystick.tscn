@@ -7,6 +7,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 200.0
 offset_bottom = 200.0
+pivot_offset = Vector2(100, 100)
 script = ExtResource("1_8x4dy")
 metadata/_custom_type_script = ExtResource("1_8x4dy")
 
@@ -25,6 +26,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(100, 100)
 mouse_force_pass_scroll_events = false
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Tip" type="TextureRect" parent="Base"]
@@ -41,4 +43,5 @@ offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(50, 50)
+expand_mode = 1
 stretch_mode = 5

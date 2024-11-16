@@ -241,6 +241,7 @@ func setup_controls_settings() -> void:
 			Globals.get_controls_float("aim_zone", 0.6)
 	)
 	
+	InputMap.load_from_project_settings()
 	for i: StringName in InputMap.get_actions():
 		if i.begins_with("ui_"):
 			continue
@@ -266,6 +267,117 @@ func setup_controls_settings() -> void:
 				"action_%s_event_value" % i,
 				Globals.get_controls_int("action_%s_event_value" % i, coded_event_value)
 		)
+	
+	#region Настройки управления на телефоне
+	Globals.set_controls_int(
+			"anchors_preset_health_bar",
+			Globals.get_controls_int("anchors_preset_health_bar", Control.PRESET_CENTER_BOTTOM)
+	)
+	Globals.set_controls_vector2(
+			"offsets_lt_health_bar",
+			Globals.get_controls_vector2("offsets_lt_health_bar", Vector2(-240, -64))
+	)
+	Globals.set_controls_vector2(
+			"offsets_rb_health_bar",
+			Globals.get_controls_vector2("offsets_rb_health_bar", Vector2(240, -16))
+	)
+	
+	Globals.set_controls_int(
+			"anchors_preset_additional",
+			Globals.get_controls_int("anchors_preset_additional", Control.PRESET_BOTTOM_RIGHT)
+	)
+	Globals.set_controls_vector2(
+			"offsets_lt_additional",
+			Globals.get_controls_vector2("offsets_lt_additional", Vector2(-128, -128))
+	)
+	Globals.set_controls_vector2(
+			"offsets_rb_additional",
+			Globals.get_controls_vector2("offsets_rb_additional", Vector2(-8, -8))
+	)
+	
+	Globals.set_controls_int(
+			"anchors_preset_move_js",
+			Globals.get_controls_int("anchors_preset_move_js", Control.PRESET_BOTTOM_LEFT)
+	)
+	Globals.set_controls_vector2(
+			"offsets_lt_move_js",
+			Globals.get_controls_vector2("offsets_lt_move_js", Vector2(128, -328))
+	)
+	Globals.set_controls_vector2(
+			"offsets_rb_move_js",
+			Globals.get_controls_vector2("offsets_rb_move_js", Vector2(328, -128))
+	)
+	
+	Globals.set_controls_int(
+			"anchors_preset_aim_js",
+			Globals.get_controls_int("anchors_preset_aim_js", Control.PRESET_BOTTOM_RIGHT)
+	)
+	Globals.set_controls_vector2(
+			"offsets_lt_aim_js",
+			Globals.get_controls_vector2("offsets_lt_aim_js", Vector2(-328, -328))
+	)
+	Globals.set_controls_vector2(
+			"offsets_rb_aim_js",
+			Globals.get_controls_vector2("offsets_rb_aim_js", Vector2(-128, -128))
+	)
+	
+	Globals.set_controls_int(
+			"anchors_preset_weapon",
+			Globals.get_controls_int("anchors_preset_weapon", Control.PRESET_CENTER_RIGHT)
+	)
+	Globals.set_controls_vector2(
+			"offsets_lt_weapon",
+			Globals.get_controls_vector2("offsets_lt_weapon", Vector2(-288, -232))
+	)
+	Globals.set_controls_vector2(
+			"offsets_rb_weapon",
+			Globals.get_controls_vector2("offsets_rb_weapon", Vector2(0, -88))
+	)
+	
+	Globals.set_controls_int(
+			"anchors_preset_skill",
+			Globals.get_controls_int("anchors_preset_skill", Control.PRESET_CENTER_RIGHT)
+	)
+	Globals.set_controls_vector2(
+			"offsets_lt_skill",
+			Globals.get_controls_vector2("offsets_lt_skill", Vector2(-128, -80))
+	)
+	Globals.set_controls_vector2(
+			"offsets_rb_skill",
+			Globals.get_controls_vector2("offsets_rb_skill", Vector2(-8, 40))
+	)
+	
+	Globals.set_controls_float(
+			"move_joystick_scale",
+			Globals.get_controls_float("move_joystick_scale", 1.0)
+	)
+	Globals.set_controls_float(
+			"move_joystick_deadzone",
+			Globals.get_controls_float("move_joystick_deadzone", 20.0)
+	)
+	Globals.set_controls_int(
+			"move_joystick_mode",
+			Globals.get_controls_int("move_joystick_mode", VirtualJoystick.JoystickMode.DYNAMIC)
+	)
+	
+	Globals.set_controls_float(
+			"aim_joystick_scale",
+			Globals.get_controls_float("aim_joystick_scale", 1.0)
+	)
+	Globals.set_controls_float(
+			"aim_joystick_deadzone",
+			Globals.get_controls_float("aim_joystick_deadzone", 20.0)
+	)
+	Globals.set_controls_int(
+			"aim_joystick_mode",
+			Globals.get_controls_int("aim_joystick_type", VirtualJoystick.JoystickMode.DYNAMIC)
+	)
+	
+	Globals.set_controls_vector2(
+			"shoot_area",
+			Globals.get_controls_vector2("shoot_area", Vector2(640, 256))
+	)
+	#endregion
 
 
 ## Применяет общие настройки.
@@ -385,6 +497,7 @@ func _loading_check_server() -> void:
 	await get_tree().process_frame
 	
 	var http := HTTPRequest.new()
+	http.timeout = 3.0
 	http.request_completed.connect(_on_check_http_request_completed.bind(http))
 	add_child(http)
 	

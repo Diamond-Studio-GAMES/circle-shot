@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c4axjhbd674h8"]
 
-[ext_resource type="Texture2D" uid="uid://ndobp7p586tx" path="res://menu/settings/icons/edit.png" id="1_glpac"]
+[ext_resource type="Texture2D" uid="uid://ndobp7p586tx" path="res://menu/theme/icons/edit.png" id="1_glpac"]
 [ext_resource type="Script" path="res://menu/settings/actions_configuration.gd" id="1_h33al"]
 
 [node name="ActionsConfiguration" type="Window"]
@@ -448,7 +448,8 @@ alignment = 1
 [node name="Discard" type="Button" parent="VBoxContainer/Buttons"]
 layout_mode = 2
 size_flags_horizontal = 6
-text = "Отмена"
+disabled = true
+text = "Сбросить"
 
 [node name="Save" type="Button" parent="VBoxContainer/Buttons"]
 layout_mode = 2
@@ -465,6 +466,7 @@ dialog_text = "Ожидаю ввод..."
 dialog_close_on_escape = false
 cancel_button_text = "Отмена"
 
+[connection signal="close_requested" from="." to="." method="hide"]
 [connection signal="close_requested" from="." to="." method="_on_discard_pressed"]
 [connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveLeft/ActionEdit" to="." method="edit_action" binds= [&"move_left"]]
 [connection signal="pressed" from="VBoxContainer/ScrollContainer/MarginContainer/Actions/MoveRight/ActionEdit" to="." method="edit_action" binds= [&"move_right"]]

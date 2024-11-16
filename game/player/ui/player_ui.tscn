@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://0wc72b0o2o11"]
+[gd_scene load_steps=29 format=3 uid="uid://0wc72b0o2o11"]
 
 [ext_resource type="Script" path="res://game/player/ui/player_ui.gd" id="1_2pprn"]
 [ext_resource type="Material" uid="uid://cmd5ms7ovbyru" path="res://game/player/ui/blood_vignette/blood_vignette.tres" id="2_k62wa"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://djbso2agyek2p" path="res://game/player/ui/additional_button.png" id="6_10yoo"]
 [ext_resource type="Texture2D" uid="uid://p85ppsyx0g2n" path="res://game/player/ui/weapon_bg.png" id="7_6c3s8"]
 [ext_resource type="Shader" path="res://game/player/ui/solid_color.gdshader" id="8_iqift"]
+[ext_resource type="Script" path="res://game/player/ui/position_loader.gd" id="8_witf6"]
 [ext_resource type="Texture2D" uid="uid://dhhiaodkovkws" path="res://game/player/ui/weapon_selection_bg.png" id="11_kgyyy"]
 [ext_resource type="Texture2D" uid="uid://cqlo1boor0w4t" path="res://game/player/ui/skill_button.png" id="14_nojcu"]
 
@@ -23,6 +24,14 @@ shader_parameter/power = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6sal7"]
 size = Vector2(640, 256)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fqc3t"]
+shader = ExtResource("8_iqift")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/power = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x4djl"]
+size = Vector2(120, 120)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jse5g"]
 shader = ExtResource("8_iqift")
@@ -43,29 +52,6 @@ shader_parameter/power = 1.0
 shader = ExtResource("8_iqift")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/power = 1.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fqc3t"]
-shader = ExtResource("8_iqift")
-shader_parameter/color = Color(1, 1, 1, 1)
-shader_parameter/power = 1.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_x4djl"]
-size = Vector2(120, 120)
-
-[sub_resource type="Animation" id="Animation_koxqv"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 0, 0, 0)]
-}
 
 [sub_resource type="Animation" id="Animation_j6hmo"]
 resource_name = "Death"
@@ -99,11 +85,26 @@ tracks/0/keys = {
 "values": [Color(1, 0, 0, 0), Color(1, 0, 0, 0.188235), Color(1, 0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_koxqv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_e0ahq"]
 _data = {
-&"RESET": SubResource("Animation_koxqv"),
 &"Death": SubResource("Animation_j6hmo"),
-&"Hurt": SubResource("Animation_42oh0")
+&"Hurt": SubResource("Animation_42oh0"),
+&"RESET": SubResource("Animation_koxqv")
 }
 
 [node name="PlayerUI" type="Control"]
@@ -152,6 +153,7 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 texture = ExtResource("4_425vn")
+expand_mode = 1
 
 [node name="HealthImmediate" type="TextureProgressBar" parent="Controller/HealthBar"]
 layout_mode = 1
@@ -168,6 +170,7 @@ grow_vertical = 0
 mouse_filter = 2
 step = 0.001
 value = 100.0
+nine_patch_stretch = true
 texture_progress = ExtResource("5_2wb1l")
 
 [node name="Health" type="TextureProgressBar" parent="Controller/HealthBar"]
@@ -185,6 +188,7 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 value = 100.0
+nine_patch_stretch = true
 texture_progress = ExtResource("5_3xbtg")
 
 [node name="Label" type="Label" parent="Controller/HealthBar"]
@@ -201,6 +205,10 @@ text = "100/100"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="PositionLoader" type="Node" parent="Controller/HealthBar"]
+script = ExtResource("8_witf6")
+id = "health_bar"
+
 [node name="TouchControls" type="Control" parent="Controller"]
 layout_mode = 1
 anchors_preset = 15
@@ -208,6 +216,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="MoveVirtualJoystick" parent="Controller/TouchControls" instance=ExtResource("2_x7k0l")]
 layout_mode = 1
@@ -223,7 +232,10 @@ joystick_mode = 1
 pressed_color = Color(0, 0.273438, 1, 1)
 base_texture = ExtResource("3_svvw5")
 tip_texture = ExtResource("4_opsbs")
-use_input_actions = false
+
+[node name="PositionLoader" type="Node" parent="Controller/TouchControls/MoveVirtualJoystick"]
+script = ExtResource("8_witf6")
+id = "move_js"
 
 [node name="AimVirtualJoystick" parent="Controller/TouchControls" instance=ExtResource("2_x7k0l")]
 layout_mode = 1
@@ -242,7 +254,10 @@ joystick_mode = 1
 pressed_color = Color(1, 0, 0, 1)
 base_texture = ExtResource("3_svvw5")
 tip_texture = ExtResource("5_5uxix")
-use_input_actions = false
+
+[node name="PositionLoader" type="Node" parent="Controller/TouchControls/AimVirtualJoystick"]
+script = ExtResource("8_witf6")
+id = "aim_js"
 
 [node name="ShootArea" type="TouchScreenButton" parent="Controller/TouchControls"]
 position = Vector2(320, 128)
@@ -255,12 +270,139 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -128.0
+offset_right = -8.0
+offset_bottom = -8.0
 grow_horizontal = 0
 grow_vertical = 0
 
 [node name="AdditionalButton" type="TouchScreenButton" parent="Controller/TouchControls/Anchor"]
-position = Vector2(-128, -128)
+scale = Vector2(0.5, 0.5)
 texture_normal = ExtResource("6_10yoo")
+
+[node name="PositionLoader" type="Node" parent="Controller/TouchControls/Anchor"]
+script = ExtResource("8_witf6")
+id = "additional"
+
+[node name="CurrentWeapon" type="TextureRect" parent="Controller"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -288.0
+offset_top = -160.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+texture = ExtResource("7_6c3s8")
+
+[node name="Icon" type="TextureRect" parent="Controller/CurrentWeapon"]
+material = SubResource("ShaderMaterial_fqc3t")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Controller/CurrentWeapon"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -31.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+text = "120/60"
+
+[node name="PositionLoader" type="Node" parent="Controller/CurrentWeapon"]
+script = ExtResource("8_witf6")
+id = "weapon"
+
+[node name="Skill" type="TextureProgressBar" parent="Controller"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -288.0
+offset_right = -8.0
+offset_bottom = -168.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+fill_mode = 4
+nine_patch_stretch = true
+texture_under = ExtResource("14_nojcu")
+texture_progress = ExtResource("14_nojcu")
+tint_under = Color(1, 1, 1, 0.501961)
+tint_progress = Color(1, 1, 1, 0.752941)
+
+[node name="Icon" type="TextureRect" parent="Controller/Skill"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="Count" type="Label" parent="Controller/Skill"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -65.0
+offset_right = -20.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/Skill"]
+position = Vector2(60, 60)
+shape = SubResource("RectangleShape2D_x4djl")
+
+[node name="PositionLoader" type="Node" parent="Controller/Skill"]
+script = ExtResource("8_witf6")
+id = "skill"
 
 [node name="WeaponSelection" type="Control" parent="Controller"]
 visible = false
@@ -294,6 +436,7 @@ rotation = 1.5708
 pivot_offset = Vector2(220, 220)
 mouse_filter = 2
 texture = ExtResource("11_kgyyy")
+expand_mode = 1
 
 [node name="BGHeavy" type="TextureRect" parent="Controller/WeaponSelection"]
 self_modulate = Color(1, 1, 1, 0.501961)
@@ -312,6 +455,7 @@ scale = Vector2(1, -1)
 pivot_offset = Vector2(220, 220)
 mouse_filter = 2
 texture = ExtResource("11_kgyyy")
+expand_mode = 1
 
 [node name="BGSupport" type="TextureRect" parent="Controller/WeaponSelection"]
 self_modulate = Color(1, 1, 1, 0.501961)
@@ -329,6 +473,7 @@ grow_vertical = 2
 pivot_offset = Vector2(220, 220)
 mouse_filter = 2
 texture = ExtResource("11_kgyyy")
+expand_mode = 1
 
 [node name="BGMelee" type="TextureRect" parent="Controller/WeaponSelection"]
 self_modulate = Color(1, 1, 1, 0.501961)
@@ -348,6 +493,7 @@ scale = Vector2(1, -1)
 pivot_offset = Vector2(220, 220)
 mouse_filter = 2
 texture = ExtResource("11_kgyyy")
+expand_mode = 1
 
 [node name="LightWeaponIcon" type="TextureRect" parent="Controller/WeaponSelection"]
 auto_translate_mode = 1
@@ -480,145 +626,6 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
 horizontal_alignment = 1
 autowrap_mode = 2
-
-[node name="CurrentWeapon" type="TextureRect" parent="Controller"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -288.0
-offset_top = -232.0
-offset_bottom = -88.0
-grow_horizontal = 0
-grow_vertical = 2
-texture = ExtResource("7_6c3s8")
-
-[node name="Icon" type="TextureRect" parent="Controller/CurrentWeapon"]
-material = SubResource("ShaderMaterial_fqc3t")
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = -60.0
-offset_right = 120.0
-offset_bottom = 60.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Label" type="Label" parent="Controller/CurrentWeapon"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -60.0
-offset_top = -31.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 4
-text = "120/60"
-
-[node name="PCCurrentWeapon" type="ReferenceRect" parent="Controller"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -288.0
-offset_top = 200.0
-offset_bottom = 344.0
-grow_horizontal = 0
-grow_vertical = 2
-mouse_filter = 2
-border_width = 4.0
-
-[node name="Skill" type="TextureProgressBar" parent="Controller"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -128.0
-offset_top = -80.0
-offset_right = -8.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-max_value = 1.0
-step = 0.01
-value = 1.0
-fill_mode = 4
-texture_under = ExtResource("14_nojcu")
-texture_progress = ExtResource("14_nojcu")
-tint_under = Color(1, 1, 1, 0.501961)
-tint_progress = Color(1, 1, 1, 0.752941)
-
-[node name="Icon" type="TextureRect" parent="Controller/Skill"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -40.0
-offset_top = -40.0
-offset_right = 40.0
-offset_bottom = 40.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-
-[node name="Count" type="Label" parent="Controller/Skill"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -60.0
-offset_top = -65.0
-offset_right = -20.0
-offset_bottom = -10.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 40
-horizontal_alignment = 2
-vertical_alignment = 2
-
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Controller/Skill"]
-position = Vector2(60, 60)
-shape = SubResource("RectangleShape2D_x4djl")
-
-[node name="PCSkill" type="ReferenceRect" parent="Controller"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -128.0
-offset_top = 71.0
-offset_right = -8.0
-offset_bottom = 191.0
-grow_horizontal = 0
-grow_vertical = 2
-mouse_filter = 2
-border_width = 4.0
 
 [node name="PlayerTint" type="ColorRect" parent="."]
 layout_mode = 1

@@ -1,0 +1,453 @@
+[gd_scene load_steps=9 format=3 uid="uid://5wx4yqp027gq"]
+
+[ext_resource type="Script" path="res://menu/controls/controls.gd" id="1_eiwbe"]
+[ext_resource type="PackedScene" uid="uid://0wc72b0o2o11" path="res://game/player/ui/player_ui.tscn" id="2_mu25c"]
+[ext_resource type="Texture2D" uid="uid://durmmh0vjl0eg" path="res://menu/theme/icons/exit.png" id="3_d1pvs"]
+[ext_resource type="Script" path="res://menu/controls/position_editor.gd" id="3_mu25c"]
+[ext_resource type="Script" path="res://menu/controls/joystick_editor.gd" id="4_f7qr5"]
+[ext_resource type="Script" path="res://game/player/ui/position_loader.gd" id="5_50mix"]
+[ext_resource type="Texture2D" uid="uid://ndobp7p586tx" path="res://menu/theme/icons/edit.png" id="5_hg74u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mu25c"]
+bg_color = Color(0.464844, 0, 0, 0.215686)
+
+[node name="Controls" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_eiwbe")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.453125, 0.453125, 0.453125, 1)
+
+[node name="Markup" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Line" type="ColorRect" parent="Markup"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.25
+anchor_right = 1.0
+anchor_bottom = 0.25
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.6, 0, 0.8, 1)
+
+[node name="Line2" type="ColorRect" parent="Markup"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.65
+anchor_right = 1.0
+anchor_bottom = 0.65
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.6, 0, 0.8, 1)
+
+[node name="Line3" type="ColorRect" parent="Markup"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.313
+anchor_right = 0.313
+anchor_bottom = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.6, 0, 0.8, 1)
+
+[node name="Line4" type="ColorRect" parent="Markup"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.687
+anchor_right = 0.687
+anchor_bottom = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.6, 0, 0.8, 1)
+
+[node name="ShootAreaHSplit" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/split_bar_background = SubResource("StyleBoxFlat_mu25c")
+split_offset = 640
+
+[node name="ShootAreaVSplit" type="VSplitContainer" parent="ShootAreaHSplit"]
+layout_mode = 2
+theme_override_styles/split_bar_background = SubResource("StyleBoxFlat_mu25c")
+split_offset = 256
+
+[node name="Area" type="ColorRect" parent="ShootAreaHSplit/ShootAreaVSplit"]
+custom_minimum_size = Vector2(320, 64)
+layout_mode = 2
+color = Color(0.662745, 0, 0, 0.34902)
+
+[node name="Label" type="Label" parent="ShootAreaHSplit/ShootAreaVSplit/Area"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Зона стрельбы"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="ShootAreaHSplit/ShootAreaVSplit"]
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="ShootAreaHSplit"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+
+[node name="PlayerUI" parent="." instance=ExtResource("2_mu25c")]
+layout_mode = 1
+script = null
+
+[node name="PositionEditor" type="Node" parent="PlayerUI/Controller/HealthBar" index="4"]
+script = ExtResource("3_mu25c")
+id = "health_bar"
+
+[node name="MoveVirtualJoystick" parent="PlayerUI/Controller/TouchControls" index="0"]
+process_mode = 4
+
+[node name="AimVirtualJoystick" parent="PlayerUI/Controller/TouchControls" index="1"]
+process_mode = 4
+
+[node name="ShootArea" parent="PlayerUI/Controller/TouchControls" index="2"]
+visible = false
+
+[node name="AdditionalButton" parent="PlayerUI/Controller/TouchControls/Anchor" index="0"]
+process_mode = 4
+
+[node name="PositionEditor" type="Node" parent="PlayerUI/Controller/TouchControls/Anchor" index="2"]
+script = ExtResource("3_mu25c")
+id = "additional"
+
+[node name="PositionEditor" type="Node" parent="PlayerUI/Controller/CurrentWeapon" index="3"]
+script = ExtResource("3_mu25c")
+id = "weapon"
+
+[node name="Count" parent="PlayerUI/Controller/Skill" index="1"]
+text = "99"
+
+[node name="TouchScreenButton" parent="PlayerUI/Controller/Skill" index="2"]
+process_mode = 4
+
+[node name="PositionEditor" type="Node" parent="PlayerUI/Controller/Skill" index="4"]
+script = ExtResource("3_mu25c")
+id = "skill"
+
+[node name="MoveJoystickEditor" type="Control" parent="PlayerUI/Controller" index="6"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 128.0
+offset_top = -328.0
+offset_right = 328.0
+offset_bottom = -128.0
+grow_vertical = 0
+script = ExtResource("4_f7qr5")
+joystick_path = NodePath("../TouchControls/MoveVirtualJoystick")
+id = "move"
+
+[node name="PositionEditor" type="Node" parent="PlayerUI/Controller/MoveJoystickEditor"]
+script = ExtResource("3_mu25c")
+id = "move_js"
+
+[node name="PositionLoader" type="Node" parent="PlayerUI/Controller/MoveJoystickEditor"]
+script = ExtResource("5_50mix")
+id = "move_js"
+
+[node name="Edit" type="Button" parent="PlayerUI/Controller/MoveJoystickEditor"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -28.0
+offset_right = 28.0
+offset_bottom = 56.0
+grow_horizontal = 2
+toggle_mode = true
+icon = ExtResource("5_hg74u")
+
+[node name="SettingsPanel" type="PanelContainer" parent="PlayerUI/Controller/MoveJoystickEditor"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -180.0
+offset_top = -184.0
+offset_right = 180.0
+offset_bottom = -9.0
+grow_horizontal = 2
+
+[node name="VBox" type="VBoxContainer" parent="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel"]
+layout_mode = 2
+
+[node name="Deadzone" type="HBoxContainer" parent="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox/Deadzone"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+text = "Мёртвая зона"
+
+[node name="DeadzoneSlider" type="HSlider" parent="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox/Deadzone"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 8.0
+max_value = 40.0
+value = 20.0
+
+[node name="Scale" type="HBoxContainer" parent="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox/Scale"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+text = "Размер"
+
+[node name="ScaleSlider" type="HSlider" parent="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox/Scale"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.75
+max_value = 1.25
+step = 0.025
+value = 1.0
+
+[node name="Mode" type="HBoxContainer" parent="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox/Mode"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+text = "Режим"
+
+[node name="ModeOptions" type="OptionButton" parent="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox/Mode"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 3
+popup/item_0/text = "Статичный"
+popup/item_0/id = 0
+popup/item_1/text = "Динамический"
+popup/item_1/id = 1
+popup/item_2/text = "Плавающий"
+popup/item_2/id = 2
+
+[node name="AimJoystickEditor" type="Control" parent="PlayerUI/Controller" index="7"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -328.0
+offset_top = -328.0
+offset_right = -128.0
+offset_bottom = -128.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("4_f7qr5")
+joystick_path = NodePath("../TouchControls/AimVirtualJoystick")
+id = "aim"
+
+[node name="PositionEditor" type="Node" parent="PlayerUI/Controller/AimJoystickEditor"]
+script = ExtResource("3_mu25c")
+id = "aim_js"
+
+[node name="PositionLoader" type="Node" parent="PlayerUI/Controller/AimJoystickEditor"]
+script = ExtResource("5_50mix")
+id = "aim_js"
+
+[node name="Edit" type="Button" parent="PlayerUI/Controller/AimJoystickEditor"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -28.0
+offset_right = 28.0
+offset_bottom = 56.0
+grow_horizontal = 2
+toggle_mode = true
+icon = ExtResource("5_hg74u")
+
+[node name="SettingsPanel" type="PanelContainer" parent="PlayerUI/Controller/AimJoystickEditor"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -180.0
+offset_top = -184.0
+offset_right = 180.0
+offset_bottom = -9.0
+grow_horizontal = 2
+
+[node name="VBox" type="VBoxContainer" parent="PlayerUI/Controller/AimJoystickEditor/SettingsPanel"]
+layout_mode = 2
+
+[node name="Deadzone" type="HBoxContainer" parent="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox/Deadzone"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+text = "Мёртвая зона"
+
+[node name="DeadzoneSlider" type="HSlider" parent="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox/Deadzone"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 8.0
+max_value = 40.0
+value = 20.0
+
+[node name="Scale" type="HBoxContainer" parent="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox/Scale"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+text = "Размер"
+
+[node name="ScaleSlider" type="HSlider" parent="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox/Scale"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.75
+max_value = 1.25
+step = 0.025
+value = 1.0
+
+[node name="Mode" type="HBoxContainer" parent="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox/Mode"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+text = "Режим"
+
+[node name="ModeOptions" type="OptionButton" parent="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox/Mode"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 2
+popup/item_0/text = "Статичный"
+popup/item_0/id = 0
+popup/item_1/text = "Динамический"
+popup/item_1/id = 1
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 16.0
+offset_right = 20.0
+offset_bottom = 39.0
+grow_horizontal = 2
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Настройка управления"
+
+[node name="Description" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -117.5
+offset_top = 64.0
+offset_right = 117.5
+offset_bottom = 92.0
+grow_horizontal = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Настрой управление под себя, перетаскивая кнопки!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Exit" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -72.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 72.0
+grow_horizontal = 0
+icon = ExtResource("3_d1pvs")
+
+[node name="Save" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -207.0
+offset_top = 16.0
+offset_right = -79.0
+offset_bottom = 72.0
+grow_horizontal = 0
+text = "Сохранить"
+
+[node name="Discard" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -343.0
+offset_top = 16.0
+offset_right = -215.0
+offset_bottom = 72.0
+grow_horizontal = 0
+text = "Сбросить"
+
+[connection signal="save_requested" from="." to="." method="_on_save_requested"]
+[connection signal="save_requested" from="." to="PlayerUI/Controller/HealthBar/PositionEditor" method="_on_controls_save_requested"]
+[connection signal="save_requested" from="." to="PlayerUI/Controller/TouchControls/Anchor/PositionEditor" method="_on_controls_save_requested"]
+[connection signal="save_requested" from="." to="PlayerUI/Controller/MoveJoystickEditor" method="_on_controls_save_requested"]
+[connection signal="save_requested" from="." to="PlayerUI/Controller/MoveJoystickEditor/PositionEditor" method="_on_controls_save_requested"]
+[connection signal="save_requested" from="." to="PlayerUI/Controller/CurrentWeapon/PositionEditor" method="_on_controls_save_requested"]
+[connection signal="save_requested" from="." to="PlayerUI/Controller/Skill/PositionEditor" method="_on_controls_save_requested"]
+[connection signal="save_requested" from="." to="PlayerUI/Controller/AimJoystickEditor" method="_on_controls_save_requested"]
+[connection signal="save_requested" from="." to="PlayerUI/Controller/AimJoystickEditor/PositionEditor" method="_on_controls_save_requested"]
+[connection signal="toggled" from="PlayerUI/Controller/MoveJoystickEditor/Edit" to="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel" method="set_visible"]
+[connection signal="value_changed" from="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox/Deadzone/DeadzoneSlider" to="PlayerUI/Controller/MoveJoystickEditor" method="_on_deadzone_slider_value_changed"]
+[connection signal="value_changed" from="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox/Scale/ScaleSlider" to="PlayerUI/Controller/MoveJoystickEditor" method="_on_scale_slider_value_changed"]
+[connection signal="item_selected" from="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel/VBox/Mode/ModeOptions" to="PlayerUI/Controller/MoveJoystickEditor" method="_on_mode_options_item_selected"]
+[connection signal="toggled" from="PlayerUI/Controller/AimJoystickEditor/Edit" to="PlayerUI/Controller/AimJoystickEditor/SettingsPanel" method="set_visible"]
+[connection signal="value_changed" from="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox/Deadzone/DeadzoneSlider" to="PlayerUI/Controller/AimJoystickEditor" method="_on_deadzone_slider_value_changed"]
+[connection signal="value_changed" from="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox/Scale/ScaleSlider" to="PlayerUI/Controller/AimJoystickEditor" method="_on_scale_slider_value_changed"]
+[connection signal="item_selected" from="PlayerUI/Controller/AimJoystickEditor/SettingsPanel/VBox/Mode/ModeOptions" to="PlayerUI/Controller/AimJoystickEditor" method="_on_mode_options_item_selected"]
+[connection signal="pressed" from="Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="Discard" to="." method="_on_discard_pressed"]
+
+[editable path="PlayerUI"]

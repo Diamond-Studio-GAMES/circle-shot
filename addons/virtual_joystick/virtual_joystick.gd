@@ -22,19 +22,19 @@ enum JoystickMode {
 ## Sets the visibility mode. See [enum VirtualJoystick.VisibilityMode].
 @export var visibility_mode := VisibilityMode.ALWAYS
 ## If the input is inside this range, the output is zero.
-@export_range(0, 200) var deadzone_size: float = 10.0
+@export_range(0.0, 200.0) var deadzone_size := 10.0
 ## The max distance the tip can reach.
-@export_range(0, 500) var clampzone_size: float = 75.0
+@export_range(0.0, 500.0) var clampzone_size: float = 75.0
 @export_group("Appearance")
 ## The color of the tip when the joystick is pressed.
 @export var pressed_color := Color.GRAY
-## Texture of joystick base. Preffered size is 200x200.
+## Texture of joystick base.
 @export var base_texture: Texture2D
-## Texture of joystick moving tip. Preffered size is 100x100.
+## Texture of joystick moving tip.
 @export var tip_texture: Texture2D
 @export_group("Actions")
-## If true, the joystick uses Input Actions (Project -> Project Settings -> Input Map).
-@export var use_input_actions := true
+## If [code]true[/code], the joystick uses Input Actions (Project -> Project Settings -> Input Map).
+@export var use_input_actions := false
 @export_group("Actions", "action_")
 @export var action_left := "ui_left"
 @export var action_right := "ui_right"
