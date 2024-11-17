@@ -18,6 +18,7 @@ var _selected_melee_weapon: int = 0
 var _selected_skill: int = 0
 var _players: Dictionary[int, String]
 var _admin_id: int = -1
+var _admin := false
 var _local_game_id: int = 0
 var _udp_peers: Array[PacketPeerUDP]
 var _player_entry_scene: PackedScene = preload("uid://dj0mx5ui2wu4n")
@@ -27,6 +28,7 @@ var _player_entry_scene: PackedScene = preload("uid://dj0mx5ui2wu4n")
 @onready var _items_grid: ItemsGrid = %ItemsGrid
 @onready var _item_selector: Window = $ItemSelector
 @onready var _chat: Chat = $Panels/Chat
+@onready var _countdown_timer: Timer = $CountdownTimer
 
 
 func _ready() -> void:
@@ -73,8 +75,7 @@ func _add_player_entry(id: int, player_name: String) -> void:
 		)
 		(player_entry.get_node(^"Kick") as BaseButton).disabled = true
 	(player_entry.get_node(^"Name") as Label).text = player_name
-	# Проверка на админа своеобразная
-	(player_entry.get_node(^"Kick") as Control).visible = (%AdminPanel as Control).visible
+	(player_entry.get_node(^"Kick") as Control).visible = _admin
 	(player_entry.get_node(^"Kick") as BaseButton).pressed.connect(_on_kick_pressed.bind(id))
 	_players_container.add_child(player_entry)
 	print_verbose("Added player %d entry with name: %s." % [id, player_name])
@@ -128,8 +129,8 @@ func _set_admin(admin: bool) -> void:
 		push_error("This method must be called only by server!")
 		return
 	
-	(%AdminPanel as HBoxContainer).visible = admin
-	(%ClientHint as Label).visible = not admin
+	(%AdminPanel as Control).visible = admin
+	(%ClientHint as Control).visible = not admin
 	for i: Node in _players_container.get_children():
 		(i.get_node(^"Kick") as Control).visible = admin
 	if admin:
@@ -138,6 +139,7 @@ func _set_admin(admin: bool) -> void:
 		_request_set_environment.rpc_id(1, my_event_id, my_map_id)
 	else:
 		(%ClientHint as Label).text = "Начать игру может только хост."
+	_admin = admin
 	print_verbose("Admin set: %s." % str(admin))
 
 
@@ -149,7 +151,14 @@ func _request_set_environment(event_id: int, map_id: int) -> void:
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id != _admin_id:
-		push_warning("Request rejected: player %d is not admin!" % sender_id)
+		push_warning("Set environment request rejected: player %d is not admin!" % sender_id)
+		return
+	
+	if _game.state != Game.State.LOBBY:
+		push_warning("Set environment request rejected: current game state is not lobby!")
+		return
+	if not _countdown_timer.is_stopped():
+		push_warning("Set environment request rejected: counting down.")
 		return
 	
 	if event_id < 0 or event_id >= Globals.items_db.events.size():
@@ -193,7 +202,7 @@ func _request_kick_player(id: int) -> void:
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id != _admin_id:
-		push_warning("Request rejected: player %d is not admin!" % sender_id)
+		push_warning("Kick request rejected: player %d is not admin!" % sender_id)
 		return
 	if id == _admin_id:
 		push_warning("Cannot kick admin!")
@@ -221,34 +230,48 @@ func _request_start_event() -> void:
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id != _admin_id:
-		push_warning("Request rejected: player %d is not admin!" % sender_id)
+		push_warning("Start request rejected: player %d is not admin!" % sender_id)
 		return
 	
-	var start_reject_reason := StartRejectReason.OK
-	if _players.size() < Globals.items_db.events[_selected_event].min_players:
-		start_reject_reason = StartRejectReason.TOO_FEW_PLAYERS
-		print_verbose("Rejecting start: too few players (%d), need %d." % [
-			_players.size(),
-			Globals.items_db.events[_selected_event].min_players,
-		])
-	elif _players.size() > Globals.items_db.events[_selected_event].max_players:
-		start_reject_reason = StartRejectReason.TOO_MANY_PLAYERS
-		print_verbose("Rejecting start: too many players (%d), max %d." % [
-			_players.size(),
-			Globals.items_db.events[_selected_event].max_players,
-		])
-	elif _players.size() % Globals.items_db.events[_selected_event].players_divider != 0:
-		start_reject_reason = StartRejectReason.INDIVISIBLE_NUMBER_OF_PLAYERS
-		print_verbose("Rejecting start: indivisible number of players (%d), must divide on %d." % [
-			_players.size(),
-			Globals.items_db.events[_selected_event].players_divider,
-		])
+	if _game.state != Game.State.LOBBY:
+		push_warning("Start request rejected: current state game is not lobby!")
+		return
+	if not _countdown_timer.is_stopped():
+		push_warning("Start request rejected: counting down already!")
+		return
+	
+	var start_reject_reason: StartRejectReason = _get_start_reject_reason()
 	if start_reject_reason != StartRejectReason.OK:
 		_reject_start_event.rpc_id(sender_id, start_reject_reason, _players.size())
 		return
 	
-	print_verbose("Accepted start event request. Starting...")
-	_start_event.rpc(_selected_event, _selected_map)
+	print_verbose("Accepted start event request. Starting countdown...")
+	_countdown_timer.start()
+	_show_countdown.rpc()
+
+
+@rpc("call_local", "reliable")
+func _show_countdown() -> void:
+	if multiplayer.get_remote_sender_id() != 1:
+		push_error("This method must be called only by server!")
+		return
+	
+	if _admin:
+		(%AdminPanel as Control).hide()
+	else:
+		(%ClientHint as Control).hide()
+	(%Countdown as Control).show()
+	(%Countdown/AnimationPlayer as AnimationPlayer).play(&"Countdown")
+
+
+@rpc("call_local", "reliable")
+func _hide_countdown() -> void:
+	if _admin:
+		(%AdminPanel as Control).show()
+	else:
+		(%ClientHint as Control).show()
+	(%Countdown as Control).hide()
+	(%Countdown/AnimationPlayer as AnimationPlayer).stop()
 
 
 @rpc("reliable", "call_local")
@@ -308,10 +331,13 @@ func _start_event(event_id: int, map_id: int) -> void:
 		($UDPTimer as Timer).stop()
 	if not ($UpdateIPSTimer as Timer).is_stopped():
 		($UpdateIPSTimer as Timer).stop()
-	if multiplayer.is_server() and Globals.headless:
-		_game.load_event(event_id, map_id)
-		return
+	if multiplayer.is_server():
+		($ViewIPDialog as Window).hide()
+		if Globals.headless:
+			_game.load_event(event_id, map_id)
+			return
 	_item_selector.hide()
+	
 	_game.load_event(event_id, map_id, Globals.get_string("player_name"), [
 		_selected_skin,
 		_selected_light_weapon,
@@ -365,6 +391,29 @@ func _update_equip() -> void:
 	(%Skill as TextureRect).texture = load(skill.image_path)
 
 
+func _get_start_reject_reason() -> StartRejectReason:
+	var start_reject_reason := StartRejectReason.OK
+	if _players.size() < Globals.items_db.events[_selected_event].min_players:
+		start_reject_reason = StartRejectReason.TOO_FEW_PLAYERS
+		print_verbose("Rejecting start: too few players (%d), need %d." % [
+			_players.size(),
+			Globals.items_db.events[_selected_event].min_players,
+		])
+	elif _players.size() > Globals.items_db.events[_selected_event].max_players:
+		start_reject_reason = StartRejectReason.TOO_MANY_PLAYERS
+		print_verbose("Rejecting start: too many players (%d), max %d." % [
+			_players.size(),
+			Globals.items_db.events[_selected_event].max_players,
+		])
+	elif _players.size() % Globals.items_db.events[_selected_event].players_divider != 0:
+		start_reject_reason = StartRejectReason.INDIVISIBLE_NUMBER_OF_PLAYERS
+		print_verbose("Rejecting start: indivisible number of players (%d), must divide on %d." % [
+			_players.size(),
+			Globals.items_db.events[_selected_event].players_divider,
+		])
+	return start_reject_reason
+
+
 func _find_ips_for_broadcast() -> void:
 	_udp_peers.clear()
 	print_verbose("Finding IPs for broadcast...")
@@ -397,6 +446,18 @@ func _do_broadcast() -> void:
 	])
 
 
+func _on_countdown_timer_timeout() -> void:
+	print_verbose("Countdown ended.")	
+	var start_reject_reason: StartRejectReason = _get_start_reject_reason()
+	if start_reject_reason != StartRejectReason.OK:
+		_hide_countdown.rpc()
+		_reject_start_event.rpc_id(_admin_id, start_reject_reason, _players.size())
+		return
+	
+	print_verbose("Countdown ended. Starting...")
+	_start_event.rpc(_selected_event, _selected_map)
+
+
 func _on_game_created() -> void:
 	show()
 	(%ControlButtons/ConnectedToIP as Control).hide()
@@ -425,17 +486,24 @@ func _on_game_joined() -> void:
 func _on_game_closed() -> void:
 	hide()
 	_item_selector.hide()
+	
 	if not ($UDPTimer as Timer).is_stopped():
 		($UDPTimer as Timer).stop()
 	if not ($UpdateIPSTimer as Timer).is_stopped():
 		($UpdateIPSTimer as Timer).stop()
+	if not _countdown_timer.is_stopped():
+		_countdown_timer.stop()
+	_hide_countdown()
+	
 	for i: Node in _players_container.get_children():
 		i.queue_free()
+	
 	_chat.clear_chat()
 	(%ControlButtons/Chat as Button).button_pressed = false
 
 
 func _on_game_started() -> void:
+	_hide_countdown()
 	hide()
 
 

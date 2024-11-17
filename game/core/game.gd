@@ -95,9 +95,11 @@ func create(port: int = DEFAULT_PORT) -> void:
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	_scene_multiplayer.peer_authenticating.connect(_on_peer_authenticating)
+	_scene_multiplayer.peer_authentication_failed.connect(_on_peer_authentication_failed)
+	state = State.LOBBY
 	created.emit()
 	print_verbose("Created server at port %d." % port)
-	state = State.LOBBY
 
 
 ## Пытается подключиться к серверу по [param ip].
@@ -224,7 +226,7 @@ func _send_player_data(player_name: String, equip_data: Array[int]) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	player_name = validate_player_name(player_name, sender_id)
 	if equip_data.size() != 6:
-		push_warning("Client % has incorrect equip data size: %d." % [
+		push_warning("Client %d has incorrect equip data size: %d." % [
 			sender_id,
 			equip_data.size(),
 		])
@@ -296,7 +298,7 @@ func _init_lobby() -> void:
 
 func _authenticate_callback(peer: int, data: PackedByteArray) -> void:
 	if not peer in _scene_multiplayer.get_authenticating_peers():
-		push_warning("Unexpected authenticating message! Peer: %d is not authenticating!" % peer)
+		push_warning("Unexpected authenticating message! Peer %d is not authenticating!" % peer)
 		return
 	
 	if not multiplayer.is_server():
@@ -385,12 +387,13 @@ func _on_peer_authentication_failed(peer: int) -> void:
 
 func _on_connected_to_server() -> void:
 	($ConnectingDialog as Window).hide()
-	joined.emit()
 	multiplayer.connection_failed.disconnect(_on_connection_failed)
 	multiplayer.connected_to_server.disconnect(_on_connected_to_server)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
-	print_verbose("Connected to server.")
+	
 	state = State.LOBBY
+	joined.emit()
+	print_verbose("Connected to server.")
 
 
 func _on_connection_failed() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cmwb81du1kbtm"]
+[gd_scene load_steps=16 format=3 uid="uid://cmwb81du1kbtm"]
 
 [ext_resource type="Script" path="res://game/menus/lobby/lobby.gd" id="1_jtfrr"]
 [ext_resource type="Texture2D" uid="uid://cp68q5xemqd01" path="res://game/menus/lobby/icons/play.png" id="2_6xr3g"]
@@ -12,6 +12,44 @@
 [ext_resource type="Script" path="res://game/menus/lobby/view_ip_dialog.gd" id="5_jyb4t"]
 [ext_resource type="Texture2D" uid="uid://c3r13t5eig25e" path="res://game/menus/lobby/icons/view_ips.png" id="7_f0cv5"]
 [ext_resource type="Script" path="res://menu/item_grid/items_grid.gd" id="11_ncktp"]
+
+[sub_resource type="Animation" id="Animation_dja87"]
+resource_name = "Countdown"
+length = 3.0
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.65, 1, 1.3, 1.65, 2, 2.35, 2.7, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": ["Начало через 3...", "Начало через 3..", "Начало через 3.", "Начало через 2...", "Начало через 2..", "Начало через 2.", "Начало через 1...", "Начало через 1..", "Начало через 1.", "Начинаем!"]
+}
+
+[sub_resource type="Animation" id="Animation_5k1w6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Начало через 3..."]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8ughs"]
+_data = {
+&"Countdown": SubResource("Animation_dja87"),
+&"RESET": SubResource("Animation_5k1w6")
+}
 
 [node name="Lobby" type="Control"]
 layout_mode = 3
@@ -522,6 +560,18 @@ layout_mode = 2
 text = "Сменить карту..."
 icon = ExtResource("4_4kry5")
 
+[node name="Countdown" type="Label" parent="Panels/Lobby/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Начало через 3..."
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Panels/Lobby/VBoxContainer/Countdown"]
+libraries = {
+&"": SubResource("AnimationLibrary_8ughs")
+}
+
 [node name="ControlButtons" type="HBoxContainer" parent="Panels/Lobby/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -656,6 +706,10 @@ timeout = 5.0
 [node name="UpdateIPSTimer" type="Timer" parent="."]
 wait_time = 10.0
 
+[node name="CountdownTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/Player/Skin/ChangeSkin" to="." method="_on_change_skin_pressed"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/Player/LightWeapon/ChangeLightWeapon" to="." method="_on_change_light_weapon_pressed"]
 [connection signal="pressed" from="Panels/Lobby/VBoxContainer/Player/HeavyWeapon/ChangeHeavyWeapon" to="." method="_on_change_heavy_weapon_pressed"]
@@ -677,3 +731,4 @@ wait_time = 10.0
 [connection signal="request_completed" from="ViewIPDialog/HTTPRequest" to="ViewIPDialog" method="_on_request_completed"]
 [connection signal="timeout" from="UDPTimer" to="." method="_do_broadcast"]
 [connection signal="timeout" from="UpdateIPSTimer" to="." method="_find_ips_for_broadcast"]
+[connection signal="timeout" from="CountdownTimer" to="." method="_on_countdown_timer_timeout"]
