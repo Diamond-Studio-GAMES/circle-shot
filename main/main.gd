@@ -396,7 +396,7 @@ func apply_settings() -> void:
 	)
 	if Globals.get_setting_bool("fullscreen"):
 		if not get_window().mode in [Window.MODE_EXCLUSIVE_FULLSCREEN, Window.MODE_FULLSCREEN]:
-			get_window().mode = Window.MODE_FULLSCREEN
+			get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN
 	else:
 		if not get_window().mode in [
 			Window.MODE_WINDOWED,
