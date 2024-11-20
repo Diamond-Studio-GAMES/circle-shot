@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Circle Shot"
-config/version="2.0.0.13"
+config/version="2.0.0.21"
 run/main_scene="res://main/main.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="circle-shot"
