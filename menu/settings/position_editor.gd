@@ -24,23 +24,23 @@ func _on_parent_gui_input(event: InputEvent) -> void:
 		var viewport_size: Vector2 = _parent.get_viewport_rect().size
 		var center_pos: Vector2 = _parent.position + _parent.size / 2
 		if center_pos.y < viewport_size.y * 0.25:
-			if center_pos.x < viewport_size.x * 0.313:
+			if center_pos.x < viewport_size.x * 0.35:
 				_parent.set_anchors_preset(Control.PRESET_TOP_LEFT)
-			elif center_pos.x < viewport_size.x * 0.687:
+			elif center_pos.x < viewport_size.x * 0.65:
 				_parent.set_anchors_preset(Control.PRESET_CENTER_TOP)
 			else:
 				_parent.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-		elif center_pos.y < viewport_size.y * 0.65:
-			if center_pos.x < viewport_size.x * 0.313:
+		elif center_pos.y < viewport_size.y * 0.55:
+			if center_pos.x < viewport_size.x * 0.35:
 				_parent.set_anchors_preset(Control.PRESET_CENTER_LEFT)
-			elif center_pos.x < viewport_size.x * 0.687:
+			elif center_pos.x < viewport_size.x * 0.65:
 				_parent.set_anchors_preset(Control.PRESET_CENTER)
 			else:
 				_parent.set_anchors_preset(Control.PRESET_CENTER_RIGHT)
 		else:
-			if center_pos.x < viewport_size.x * 0.313:
+			if center_pos.x < viewport_size.x * 0.35:
 				_parent.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-			elif center_pos.x < viewport_size.x * 0.687:
+			elif center_pos.x < viewport_size.x * 0.65:
 				_parent.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
 			else:
 				_parent.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)

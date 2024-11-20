@@ -220,7 +220,7 @@ func heal(amount: int) -> void:
 	if not multiplayer.is_server():
 		push_error("Unexpected call on client!")
 		return
-	if current_health <= 0 or amount <= 0:
+	if current_health <= 0 or amount <= 0 or current_health >= max_health:
 		return
 	
 	var new_health: int = clampi(current_health + amount, 0, max_health)

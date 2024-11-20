@@ -54,7 +54,7 @@ func _create_hit_marker(where: Vector2) -> void:
 		return
 	
 	if Globals.get_setting_bool("vibration_hit"):
-		Input.vibrate_handheld(100, 0.15)
+		Input.vibrate_handheld(100, 0.07)
 	if Globals.get_setting_bool("hit_markers"):
 		var marker: Node2D = _hit_marker_scene.instantiate()
 		marker.global_position = where
@@ -68,7 +68,7 @@ func _create_kill_marker(where: Vector2) -> void:
 		return
 	
 	if Globals.get_setting_bool("vibration_hit"):
-		Input.vibrate_handheld(400, 0.3)
+		Input.vibrate_handheld(300, 0.15)
 	if Globals.get_setting_bool("hit_markers"):
 		var marker: Node2D = _death_marker_scene.instantiate()
 		marker.global_position = where

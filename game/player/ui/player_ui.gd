@@ -6,8 +6,8 @@ const DEFAULT_WEAPON_BG_COLOR := Color(1.0, 1.0, 1.0, 0.5)
 const SELECTED_WEAPON_BG_COLOR := Color.WHITE
 const MIN_VIBRATION_DURATION_MS: int = 100
 const MAX_VIBRATION_DURATION_MS: int = 500
-const MIN_VIBRATION_AMPLITUDE := 0.1
-const MAX_VIBRATION_AMPLITUDE := 0.5
+const MIN_VIBRATION_AMPLITUDE := 0.05
+const MAX_VIBRATION_AMPLITUDE := 0.2
 
 var input_method: Main.InputMethod
 var vibration_enabled: bool

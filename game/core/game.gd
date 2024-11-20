@@ -346,8 +346,7 @@ func _authenticate_callback(peer: int, data: PackedByteArray) -> void:
 			data.get_string_from_utf8(),
 		])
 		return
-	# TODO: Ждать фикса бага с get_peers
-	if multiplayer.get_peers().size() + int(not Globals.headless) >= max_players:
+	if multiplayer.get_peers().size() + int(not Globals.headless) + 1 > max_players:
 		_scene_multiplayer.send_auth(peer, PackedByteArray([FailReason.FULL_ROOM]))
 		print_verbose("Rejecting %d: full room." % peer)
 		return

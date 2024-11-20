@@ -473,7 +473,9 @@ func _loading_init() -> void:
 	
 	Globals.initialize(self)
 	if DisplayServer.get_name() == "headless" or OS.has_feature("dedicated_server"):
-		print("Detected headless platform")
+		print("Running in headless mode")
+		Engine.max_fps = 0
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		Globals.headless = true
 	if OS.has_feature("pc"):
 		get_tree().root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP

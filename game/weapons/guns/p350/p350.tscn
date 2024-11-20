@@ -14,9 +14,9 @@ _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 5), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_u2hho"]
-min_value = -3.0
+min_value = -4.0
 max_value = 0.0
-_data = [Vector2(0.224913, 0), 0.0, 0.0, 0, 0, Vector2(1, -3), 0.0, 0.0, 0, 0]
+_data = [Vector2(0.224913, 0), 0.0, 0.0, 0, 0, Vector2(1, -4), 0.0, 0.0, 0, 0]
 point_count = 2
 metadata/_snap_enabled = true
 
@@ -335,7 +335,7 @@ _data = {
 shoot_interval = 0.4
 to_aim_time = 0.2
 projectile_scene = ExtResource("2_tgivs")
-spread_base = 1.5
+spread_base = 2.0
 spread_walk = 3.0
 spread_curve = SubResource("Curve_mhxuf")
 spread_increasing_time = 0.325

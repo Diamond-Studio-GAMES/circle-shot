@@ -99,10 +99,10 @@ func _on_event_selector_window_input(event: InputEvent) -> void:
 	if mb:
 		($EventSelector as Window).set_input_as_handled()
 		if _mouse_button_events.get(_editing_action, -1) == mb.button_index:
-			($EventSelector as AcceptDialog).dialog_text = "Введено текущее событие."
+			($EventSelector as AcceptDialog).dialog_text = "Эта кнопка занята этим же действием."
 			return
 		if mb.button_index in _mouse_button_events.values():
-			($EventSelector as AcceptDialog).dialog_text = "Эта кнопка уже занята другим действием."
+			($EventSelector as AcceptDialog).dialog_text = "Эта кнопка занята другим действием."
 			return
 		if mb.button_index in [
 			MOUSE_BUTTON_LEFT,

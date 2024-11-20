@@ -51,9 +51,9 @@ color = Color(0.6, 0, 0.8, 1)
 [node name="Line2" type="ColorRect" parent="Markup"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.65
+anchor_top = 0.55
 anchor_right = 1.0
-anchor_bottom = 0.65
+anchor_bottom = 0.55
 offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -62,8 +62,8 @@ color = Color(0.6, 0, 0.8, 1)
 [node name="Line3" type="ColorRect" parent="Markup"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.313
-anchor_right = 0.313
+anchor_left = 0.35
+anchor_right = 0.35
 anchor_bottom = 1.0
 offset_right = 1.0
 grow_horizontal = 2
@@ -73,8 +73,8 @@ color = Color(0.6, 0, 0.8, 1)
 [node name="Line4" type="ColorRect" parent="Markup"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.687
-anchor_right = 0.687
+anchor_left = 0.65
+anchor_right = 0.65
 anchor_bottom = 1.0
 offset_right = 1.0
 grow_horizontal = 2
@@ -432,10 +432,10 @@ text = "Сбросить"
 [connection signal="save_requested" from="." to="." method="_on_save_requested"]
 [connection signal="save_requested" from="." to="PlayerUI/Controller/HealthBar/PositionEditor" method="_on_controls_save_requested"]
 [connection signal="save_requested" from="." to="PlayerUI/Controller/TouchControls/Anchor/PositionEditor" method="_on_controls_save_requested"]
-[connection signal="save_requested" from="." to="PlayerUI/Controller/MoveJoystickEditor" method="_on_controls_save_requested"]
-[connection signal="save_requested" from="." to="PlayerUI/Controller/MoveJoystickEditor/PositionEditor" method="_on_controls_save_requested"]
 [connection signal="save_requested" from="." to="PlayerUI/Controller/CurrentWeapon/PositionEditor" method="_on_controls_save_requested"]
 [connection signal="save_requested" from="." to="PlayerUI/Controller/Skill/PositionEditor" method="_on_controls_save_requested"]
+[connection signal="save_requested" from="." to="PlayerUI/Controller/MoveJoystickEditor" method="_on_controls_save_requested"]
+[connection signal="save_requested" from="." to="PlayerUI/Controller/MoveJoystickEditor/PositionEditor" method="_on_controls_save_requested"]
 [connection signal="save_requested" from="." to="PlayerUI/Controller/AimJoystickEditor" method="_on_controls_save_requested"]
 [connection signal="save_requested" from="." to="PlayerUI/Controller/AimJoystickEditor/PositionEditor" method="_on_controls_save_requested"]
 [connection signal="toggled" from="PlayerUI/Controller/MoveJoystickEditor/Edit" to="PlayerUI/Controller/MoveJoystickEditor/SettingsPanel" method="set_visible"]
