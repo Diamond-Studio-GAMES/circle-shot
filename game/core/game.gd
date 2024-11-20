@@ -178,10 +178,11 @@ func load_event(event_id: int, map_id: int, player_name := "", equip_data: Array
 		_players_not_ready.append(1)
 		_players_equip_data.clear()
 		_players_names.clear()
+		($WaitPlayersTimer as Timer).start()
 	event = await _loader.load_event(event_id, map_id)
 	if not is_instance_valid(event):
 		show_error("Ошибка при загрузке события! Отключаюсь.")
-		push_error("Loading of event failed. Disconnecting.")
+		push_error("Loading failed. Disconnecting.")
 		close()
 		return
 	closed.connect(_loader.finish_load, CONNECT_ONE_SHOT)
@@ -286,6 +287,7 @@ func _check_players_ready() -> void:
 		return
 	print_verbose("Waiting for players: %s." % str(_players_not_ready))
 	if _players_not_ready.is_empty():
+		($WaitPlayersTimer as Timer).stop()
 		_start_event.rpc()
 
 
@@ -423,7 +425,6 @@ func _on_server_disconnected() -> void:
 	show_error("Разорвано соединение с сервером!")
 	push_warning("Disconnected from server.")
 	# Излучаем сигнал сами, потому что мы уже отключены
-	# TODO: Если пофиксят излучение сервер дисконнетед то мб можно без этого
 	closed.emit()
 	close()
 
@@ -431,3 +432,13 @@ func _on_server_disconnected() -> void:
 func _on_event_ended() -> void:
 	ended.emit()
 	state = State.LOBBY
+
+
+func _on_wait_players_timer_timeout() -> void:
+	if 1 in _players_not_ready:
+		($WaitPlayersTimer as Timer).start()
+		return
+	for id: int in _players_not_ready:
+		push_warning("Disconnecting peer %d for inactivity." % id)
+		_scene_multiplayer.disconnect_peer(id)
+		multiplayer.peer_disconnected.emit(id)

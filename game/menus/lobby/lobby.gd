@@ -21,6 +21,7 @@ var _admin_id: int = -1
 var _admin := false
 var _local_game_id: int = 0
 var _udp_peers: Array[PacketPeerUDP]
+var _client_timers: Dictionary[int, Timer]
 var _player_entry_scene: PackedScene = preload("uid://dj0mx5ui2wu4n")
 
 @onready var _game: Game = get_parent()
@@ -38,6 +39,7 @@ func _ready() -> void:
 	_game.started.connect(_on_game_started)
 	_game.ended.connect(_on_game_ended)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	multiplayer.peer_connected.connect(_on_peer_connected)
 	hide()
 	
 	_selected_event = Globals.get_int("selected_event")
@@ -98,15 +100,16 @@ func _register_new_player(player_name: String) -> void:
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	
 	if sender_id in _players:
 		push_warning("Player %d is already registered!")
 		return
 	
+	if _client_timers.has(sender_id):
+		_client_timers[sender_id].queue_free()
+		_client_timers.erase(sender_id)
 	for i: int in _players:
 		_add_player_entry.rpc_id(sender_id, i, _players[i])
 	_set_environment.rpc_id(sender_id, _selected_event, _selected_map)
-	
 	player_name = Game.validate_player_name(player_name, sender_id)
 	_players[sender_id] = player_name
 	
@@ -333,6 +336,13 @@ func _start_event(event_id: int, map_id: int) -> void:
 		($UpdateIPSTimer as Timer).stop()
 	if multiplayer.is_server():
 		($ViewIPDialog as Window).hide()
+		for id: int in multiplayer.get_peers():
+			if not id in _players.keys():
+				(multiplayer as SceneMultiplayer).disconnect_peer(id)
+				if _client_timers.has(id):
+					_client_timers[id].queue_free()
+					_client_timers.erase(id)
+				push_warning("Start event: peer %d kicked for inactivity." % id)
 		if Globals.headless:
 			_game.load_event(event_id, map_id)
 			return
@@ -447,7 +457,7 @@ func _do_broadcast() -> void:
 
 
 func _on_countdown_timer_timeout() -> void:
-	print_verbose("Countdown ended.")	
+	print_verbose("Countdown ended.")
 	var start_reject_reason: StartRejectReason = _get_start_reject_reason()
 	if start_reject_reason != StartRejectReason.OK:
 		_hide_countdown.rpc()
@@ -456,6 +466,13 @@ func _on_countdown_timer_timeout() -> void:
 	
 	print_verbose("Countdown ended. Starting...")
 	_start_event.rpc(_selected_event, _selected_map)
+
+
+func _on_client_timer_timeout(id: int) -> void:
+	(multiplayer as SceneMultiplayer).disconnect_peer(id)
+	push_warning("Peer %d kicked for inactivity." % id)
+	_client_timers[id].queue_free()
+	_client_timers.erase(id)
 
 
 func _on_game_created() -> void:
@@ -512,6 +529,18 @@ func _on_game_ended() -> void:
 	if multiplayer.is_server():
 		($UDPTimer as Timer).start()
 		($UpdateIPSTimer as Timer).start()
+
+
+func _on_peer_connected(id: int) -> void:
+	if not multiplayer.is_server():
+		return
+	var timer := Timer.new()
+	timer.wait_time = 3.0
+	timer.one_shot = true
+	timer.autostart = true
+	timer.timeout.connect(_on_client_timer_timeout.bind(id))
+	add_child(timer)
+	_client_timers[id] = timer
 
 
 func _on_peer_disconnected(id: int) -> void:
