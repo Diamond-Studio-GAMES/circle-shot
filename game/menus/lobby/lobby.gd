@@ -157,9 +157,6 @@ func _request_set_environment(event_id: int, map_id: int) -> void:
 		push_warning("Set environment request rejected: player %d is not admin!" % sender_id)
 		return
 	
-	if _game.state != Game.State.LOBBY:
-		push_warning("Set environment request rejected: current game state is not lobby!")
-		return
 	if not _countdown_timer.is_stopped():
 		push_warning("Set environment request rejected: counting down.")
 		return

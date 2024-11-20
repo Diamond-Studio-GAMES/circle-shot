@@ -287,8 +287,18 @@ func _check_players_ready() -> void:
 		return
 	print_verbose("Waiting for players: %s." % str(_players_not_ready))
 	if _players_not_ready.is_empty():
-		($WaitPlayersTimer as Timer).stop()
-		_start_event.rpc()
+		if not _players_names.is_empty():
+			($WaitPlayersTimer as Timer).stop()
+			_start_event.rpc()
+		else:
+			print_verbose("All players disconnected, returning to lobby.")
+			closed.disconnect(_loader.finish_load)
+			_loader.finish_load()
+			event.queue_free()
+			# Как будто всё хорошо
+			started.emit()
+			ended.emit()
+			state = State.LOBBY
 
 
 func _init_lobby() -> void:
@@ -438,7 +448,7 @@ func _on_wait_players_timer_timeout() -> void:
 	if 1 in _players_not_ready:
 		($WaitPlayersTimer as Timer).start()
 		return
-	for id: int in _players_not_ready:
+	for id: int in _players_not_ready.duplicate(): # чтобы корректно итерировать
 		push_warning("Disconnecting peer %d for inactivity." % id)
 		_scene_multiplayer.disconnect_peer(id)
 		multiplayer.peer_disconnected.emit(id)
