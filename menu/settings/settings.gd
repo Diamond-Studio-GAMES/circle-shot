@@ -47,15 +47,8 @@ func _ready() -> void:
 	(%AimDZoneSlider as HSlider).value = Globals.get_controls_float("aim_deadzone")
 	(%AimZoneSlider as HSlider).set_value_no_signal(Globals.get_controls_float("aim_zone"))
 	
-	var viewport_size: Vector2 = get_viewport_rect().size
-	if viewport_size.x >= viewport_size.y:
-		_aim_visual.custom_minimum_size.x = AIM_VISUAL_MAX_SIZE
-		_aim_visual.custom_minimum_size.y = \
-				viewport_size.y / viewport_size.x * AIM_VISUAL_MAX_SIZE
-	else:
-		_aim_visual.custom_minimum_size.y = AIM_VISUAL_MAX_SIZE
-		_aim_visual.custom_minimum_size.x = \
-				viewport_size.x / viewport_size.y * AIM_VISUAL_MAX_SIZE
+	_update_aim_visual_size()
+	get_window().size_changed.connect(_update_aim_visual_size)
 	
 	# Кастомные треки
 	(%CustomTracksCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("custom_tracks"))
@@ -134,6 +127,18 @@ func _toggle_input_method_settings_visibility(method: Main.InputMethod) -> void:
 			(%KeyboardSettings as Control).show()
 		Main.InputMethod.TOUCH:
 			(%TouchSettings as Control).show()
+
+
+func _update_aim_visual_size() -> void:
+	var viewport_size: Vector2 = get_viewport_rect().size
+	if viewport_size.x >= viewport_size.y:
+		_aim_visual.custom_minimum_size.x = AIM_VISUAL_MAX_SIZE
+		_aim_visual.custom_minimum_size.y = \
+				viewport_size.y / viewport_size.x * AIM_VISUAL_MAX_SIZE
+	else:
+		_aim_visual.custom_minimum_size.y = AIM_VISUAL_MAX_SIZE
+		_aim_visual.custom_minimum_size.x = \
+				viewport_size.x / viewport_size.y * AIM_VISUAL_MAX_SIZE
 
 
 func _on_exit_pressed() -> void:

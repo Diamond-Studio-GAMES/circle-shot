@@ -28,14 +28,16 @@ enum FailReason {
 enum State {
 	## Игра закрыта.
 	CLOSED = 0,
+	## Подключение.
+	CONNECTING = 1,
 	## Подключено, в лобби.
-	LOBBY = 1,
+	LOBBY = 2,
 	## Загрузка игры.
-	LOADING = 2,
+	LOADING = 3,
 	## Подключено, находится в событии.
-	EVENT = 3,
+	EVENT = 4,
 	## Одиночная игра.
-	SOLO = 4,
+	SOLO = 5,
 }
 ## Порт для подключения по умолчанию.
 const DEFAULT_PORT: int = 7415
@@ -124,6 +126,7 @@ func join(ip: String, port: int = DEFAULT_PORT) -> void:
 	_scene_multiplayer.peer_authenticating.connect(_on_peer_authenticating)
 	_scene_multiplayer.peer_authentication_failed.connect(_on_peer_authentication_failed)
 	multiplayer.multiplayer_peer = peer
+	state = State.CONNECTING
 	($ConnectingDialog as Window).show()
 	($ConnectingDialog as AcceptDialog).dialog_text = "Подключение к %s..." % ip
 	print_verbose("Connecting to %s..." % ip)
@@ -365,6 +368,7 @@ func _authenticate_callback(peer: int, data: PackedByteArray) -> void:
 	if state in [State.LOADING, State.EVENT]:
 		_scene_multiplayer.send_auth(peer, PackedByteArray([FailReason.IN_GAME]))
 		print_verbose("Rejecting %d: already in game." % peer)
+		return
 	
 	_scene_multiplayer.send_auth(peer, PackedByteArray([OK]))
 	_scene_multiplayer.complete_auth(peer)

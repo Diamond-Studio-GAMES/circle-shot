@@ -14,7 +14,7 @@ enum InputMethod {
 	## Касаниями.
 	TOUCH = 1,
 }
-## Перечисление с допустимыми типами событий при использовании
+## Перечисление с допустимыми типами событий для действия при использовании
 ## [enum Main.InputMethod.KEYBOARD_AND_MOUSE].
 enum ActionEventType {
 	## События типа [InputEventKey].
@@ -22,6 +22,10 @@ enum ActionEventType {
 	## События типа [InputEventMouseButton].
 	MOUSE_BUTTON = 1,
 }
+## Максимальное соотношение ширины к высоте, превысив которое содержимое окна начнёт обрезаться.
+const MAX_ASPECT_RATIO := 2.34
+## Минимальное соотношение ширины к высоте, пренизив которое содержимое окна начнёт обрезаться.
+const MIN_ASPECT_RATIO := 1.5
 ## Разрешённые расширения файлов для загрузки в качестве пользовательских треков.
 const ALLOWED_MUSIC_FILE_EXTENSIONS: Array[String] = [".mp3", ".ogg"]
 ## Максимальная длина названия файла пользовательского трека. Лишнее обрезается.
@@ -42,14 +46,18 @@ var _preloaded_resources: Array[Resource]
 
 ## Путь до папки с пользовательскими треками.
 @onready var music_path: String = OS.get_system_dir(OS.SYSTEM_DIR_MUSIC).path_join("Circle Shot")
+@onready var _default_window_content_width: int = \
+		ProjectSettings.get_setting("display/window/size/viewport_width")
+@onready var _default_window_content_height: int = \
+		ProjectSettings.get_setting("display/window/size/viewport_height")
 @onready var _load_status_label: Label = $LoadingScreen/StatusLabel
 @onready var _load_progress_bar: ProgressBar = $LoadingScreen/ProgressBar
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action(&"fullscreen") and event.is_pressed() \
-			and Globals.save_file and OS.has_feature("pc"):
-		Globals.set_setting_bool("fullscreen", not Globals.get_setting_bool("fullscreen", false))
+	if OS.has_feature("pc") and event.is_action(&"fullscreen") \
+			and event.is_pressed() and Globals.save_file:
+		Globals.set_setting_bool("fullscreen", not Globals.get_setting_bool("fullscreen"))
 		apply_settings()
 
 
@@ -437,12 +445,33 @@ func apply_controls_settings() -> void:
 		InputMap.action_add_event(i, event)
 
 
+func _update_window_stretch_aspect() -> void:
+	var ratio: float = get_window().size.x / float(get_window().size.y)
+	if ratio > MAX_ASPECT_RATIO:
+		get_window().content_scale_size = Vector2i(
+				roundi(_default_window_content_height * MAX_ASPECT_RATIO),
+				_default_window_content_height
+		)
+		get_window().content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP_WIDTH
+	elif ratio < MIN_ASPECT_RATIO:
+		get_window().content_scale_size = Vector2i(
+				_default_window_content_width,
+				roundi(_default_window_content_width / MIN_ASPECT_RATIO),
+		)
+		get_window().content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP_HEIGHT
+	else:
+		get_window().content_scale_size = \
+				Vector2i(_default_window_content_width, _default_window_content_height)
+		get_window().content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+
+
 func _start_load() -> void:
 	$SplashScreen.queue_free()
 	($LoadingScreen/AnimationPlayer as AnimationPlayer).play(&"Begin")
 	_loading_init()
 	await loading_stage_finished
 	
+	# TODO: а стоит ли это запускать в headless режиме?
 	_loading_check_server()
 	var success: bool = await loading_stage_finished
 	if success:
@@ -473,15 +502,16 @@ func _loading_init() -> void:
 	
 	Globals.initialize(self)
 	if DisplayServer.get_name() == "headless" or OS.has_feature("dedicated_server"):
-		print("Running in headless mode")
+		print("Running in headless mode.")
 		Engine.max_fps = 0
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		Globals.headless = true
-	if OS.has_feature("pc"):
-		get_tree().root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
 	
+	_update_window_stretch_aspect()
+	get_window().size_changed.connect(_update_window_stretch_aspect)
 	multiplayer.multiplayer_peer = null # Чтобы убрать OfflineMultiplayerPeer
 	get_viewport().set_canvas_cull_mask_bit(1, false)
+	
 	setup_settings()
 	apply_settings()
 	setup_controls_settings()
