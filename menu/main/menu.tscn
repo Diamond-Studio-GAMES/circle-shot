@@ -188,7 +188,7 @@ horizontal_alignment = 1
 [node name="Other" type="Label" parent="About/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
-text = "Нужен человек который сможет пофиксить снайперку! СРОЧНО!!!"
+text = "Новые версии в лаунчере выходят раньше."
 autowrap_mode = 2
 
 [node name="Close" type="Button" parent="About/MarginContainer/VBoxContainer"]

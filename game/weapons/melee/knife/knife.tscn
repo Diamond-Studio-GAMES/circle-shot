@@ -145,6 +145,7 @@ to_aim_time = 0.2
 ammo_per_load = 1
 ammo_total = 0
 speed_multiplier_when_current = 1.15
+shoot_on_joystick_release = true
 metadata/_custom_type_script = ExtResource("1_efdma")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
