@@ -182,7 +182,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_wlqd8")
-expand_mode = 1
 stretch_mode = 6
 
 [node name="Logo" type="TextureRect" parent="LoadingScreen"]
@@ -196,6 +195,7 @@ offset_right = 400.0
 offset_bottom = 224.0
 grow_horizontal = 2
 texture = ExtResource("2_j1upr")
+expand_mode = 1
 
 [node name="ProgressBar" type="ProgressBar" parent="LoadingScreen"]
 layout_mode = 1

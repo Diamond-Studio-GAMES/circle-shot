@@ -11,10 +11,12 @@ script = ExtResource("1_pse65")
 [node name="Marker" type="Node2D" parent="Visual"]
 
 [node name="Arrow" type="Sprite2D" parent="Visual/Marker"]
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_her2q")
-offset = Vector2(-16, 0)
+offset = Vector2(-32, 0)
 
 [node name="Icon" type="Sprite2D" parent="Visual/Marker/Arrow"]
-position = Vector2(-80, 0)
+position = Vector2(-160, 0)
 
 [node name="Icon" type="Sprite2D" parent="Visual/Marker"]
+scale = Vector2(0.5, 0.5)

@@ -3,21 +3,21 @@
 [ext_resource type="Texture2D" uid="uid://dmcjw00hj8l16" path="res://menu/theme/textures/panel.png" id="1_xws5c"]
 [ext_resource type="Texture2D" uid="uid://dl131g2b7pe4q" path="res://menu/theme/textures/tick_on.png" id="2_o68rj"]
 [ext_resource type="Texture2D" uid="uid://dqof8ne6c5lta" path="res://menu/theme/textures/tick_off.png" id="3_ffew2"]
-[ext_resource type="Texture2D" uid="uid://bvi0gto0pv3ac" path="res://menu/theme/icons/window_close.png" id="3_t8llw"]
 [ext_resource type="Texture2D" uid="uid://bnbnacwlpgjqp" path="res://menu/theme/textures/check_on.png" id="4_7wph1"]
 [ext_resource type="Texture2D" uid="uid://biy2qtvagvk7t" path="res://menu/theme/textures/check_off.png" id="5_cyn6e"]
 [ext_resource type="Texture2D" uid="uid://c758phnlcedry" path="res://menu/theme/textures/grabber.png" id="6_6oate"]
 [ext_resource type="Texture2D" uid="uid://d2ev06d0tena0" path="res://menu/theme/textures/slider_fg.png" id="7_y4gxc"]
 [ext_resource type="Texture2D" uid="uid://dwfh6mwuf6y2q" path="res://menu/theme/textures/slider_bg.png" id="8_4crbn"]
 [ext_resource type="Texture2D" uid="uid://bldkefdc25uel" path="res://menu/theme/textures/edit.png" id="9_wtx1e"]
-[ext_resource type="Texture2D" uid="uid://dviqrh0tmt4al" path="res://menu/theme/icons/dropdown.png" id="10_o7e32"]
 [ext_resource type="Texture2D" uid="uid://c2p7rqrp1lojj" path="res://menu/theme/textures/menu_selected.png" id="11_30rsj"]
+[ext_resource type="Texture2D" uid="uid://dviqrh0tmt4al" path="res://menu/theme/textures/dropdown.png" id="11_t7j08"]
 [ext_resource type="Texture2D" uid="uid://b8i74pnnwti2s" path="res://menu/theme/textures/menu_non_selected.png" id="12_dnw44"]
 [ext_resource type="Texture2D" uid="uid://dai426mwk81ur" path="res://menu/theme/textures/menu_hover.png" id="13_l0equ"]
 [ext_resource type="Texture2D" uid="uid://8cue2wwapt6y" path="res://menu/theme/textures/menu_bg.png" id="14_egv83"]
 [ext_resource type="Texture2D" uid="uid://i620baydxvy6" path="res://menu/theme/textures/scroll.png" id="15_o4fbm"]
 [ext_resource type="Texture2D" uid="uid://cgyrbha3f6r1f" path="res://menu/theme/textures/v_grabber.png" id="15_t7j08"]
 [ext_resource type="Texture2D" uid="uid://ci5gdlrk1x3ee" path="res://menu/theme/textures/h_grabber.png" id="16_wqc4x"]
+[ext_resource type="Texture2D" uid="uid://bvi0gto0pv3ac" path="res://menu/theme/textures/window_close.png" id="18_wqc4x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4so7"]
 content_margin_left = 32.0
@@ -254,7 +254,7 @@ LinkButton/colors/font_hover_color = Color(0.1875, 0.1875, 0.1875, 1)
 LinkButton/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 LinkButton/colors/font_pressed_color = Color(0.28125, 0.28125, 0.28125, 1)
 OptionButton/constants/arrow_margin = 16
-OptionButton/icons/arrow = ExtResource("10_o7e32")
+OptionButton/icons/arrow = ExtResource("11_t7j08")
 PanelContainer/styles/panel = SubResource("StyleBoxTexture_nn2ej")
 PopupMenu/colors/font_color = Color(0, 0, 0, 1)
 PopupMenu/colors/font_hover_color = Color(0.164062, 0.164062, 0.164062, 1)
@@ -280,7 +280,7 @@ Window/colors/title_color = Color(0, 0, 0, 1)
 Window/constants/close_h_offset = 24
 Window/constants/close_v_offset = 24
 Window/constants/title_height = 28
-Window/icons/close = ExtResource("3_t8llw")
-Window/icons/close_pressed = ExtResource("3_t8llw")
+Window/icons/close = ExtResource("18_wqc4x")
+Window/icons/close_pressed = ExtResource("18_wqc4x")
 Window/styles/embedded_border = SubResource("StyleBoxTexture_prk1v")
 Window/styles/embedded_unfocused_border = SubResource("StyleBoxTexture_prk1v")

@@ -641,7 +641,7 @@ max_length = 80
 context_menu_enabled = false
 
 [node name="Send" type="TextureButton" parent="Panels/Chat/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(48, 0)
+custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 texture_normal = ExtResource("4_6keib")
 ignore_texture_size = true

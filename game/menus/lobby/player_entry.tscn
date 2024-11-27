@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dj0mx5ui2wu4n"]
 
 [ext_resource type="Texture2D" uid="uid://1hk5pve5cp0m" path="res://game/menus/lobby/icons/kick.png" id="1_k7dg0"]
-[ext_resource type="Texture2D" uid="uid://kuiewk52kk1s" path="res://menu/theme/icons/empty.png" id="2_iotav"]
+[ext_resource type="Texture2D" uid="uid://ctcg17yhajnc4" path="res://game/menus/lobby/icons/empty_kick.png" id="2_lrcoo"]
 
 [node name="PlayerEntry" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 24)
@@ -20,6 +20,6 @@ size_flags_horizontal = 8
 texture_normal = ExtResource("1_k7dg0")
 texture_pressed = ExtResource("1_k7dg0")
 texture_hover = ExtResource("1_k7dg0")
-texture_disabled = ExtResource("2_iotav")
+texture_disabled = ExtResource("2_lrcoo")
 ignore_texture_size = true
 stretch_mode = 5

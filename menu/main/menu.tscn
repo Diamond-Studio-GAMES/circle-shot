@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://4wb77emq8t5p"]
+[gd_scene load_steps=12 format=3 uid="uid://4wb77emq8t5p"]
 
 [ext_resource type="Script" path="res://menu/main/menu.gd" id="1_6hvox"]
 [ext_resource type="Texture2D" uid="uid://drssc5o2ehjq" path="res://main/logo.png" id="1_m6h1l"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://djuddec1qr5ot" path="res://menu/main/icons/shop.png" id="4_jpuob"]
 [ext_resource type="Texture2D" uid="uid://d2rpk8yt0h06x" path="res://menu/main/icons/achievements.png" id="5_noej1"]
 [ext_resource type="Texture2D" uid="uid://c3sk875fn0rx" path="res://menu/main/icons/settings.png" id="6_0pcoh"]
+[ext_resource type="Texture2D" uid="uid://c3x171iwlnadt" path="res://menu/main/icons/inventory.png" id="6_ts3g1"]
 [ext_resource type="Texture2D" uid="uid://b0j3g7rkerkdm" path="res://menu/theme/icons/help.png" id="7_aw44p"]
 [ext_resource type="PackedScene" uid="uid://cuewsvjjnyl40" path="res://menu/main/name_dialog.tscn" id="10_yw6bl"]
 
@@ -42,8 +43,9 @@ offset_right = 400.0
 offset_bottom = 176.0
 grow_horizontal = 2
 texture = ExtResource("1_m6h1l")
+expand_mode = 1
 
-[node name="ButtonsContainer" type="GridContainer" parent="."]
+[node name="ButtonsContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -51,18 +53,19 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -194.0
-offset_top = -124.0
+offset_top = -144.0
 offset_right = 194.0
-offset_bottom = 188.0
+offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
-columns = 2
 
-[node name="PlaySolo" type="Button" parent="ButtonsContainer"]
+[node name="PlayButtonsContainer" type="HBoxContainer" parent="ButtonsContainer"]
+layout_mode = 2
+
+[node name="PlaySolo" type="Button" parent="ButtonsContainer/PlayButtonsContainer"]
 custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
-theme_override_constants/outline_size = 0
-theme_override_constants/icon_max_width = 0
+theme_override_constants/icon_max_width = 160
 disabled = true
 text = "Играть одному"
 icon = ExtResource("2_tkm62")
@@ -70,35 +73,65 @@ icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
 
-[node name="PlayNetwork" type="Button" parent="ButtonsContainer"]
+[node name="PlayNetwork" type="Button" parent="ButtonsContainer/PlayButtonsContainer"]
 custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
-theme_override_constants/icon_max_width = 0
+theme_override_constants/icon_max_width = 160
 text = "Играть по сети"
 icon = ExtResource("3_fpx5a")
 icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
 
-[node name="Shop" type="Button" parent="ButtonsContainer"]
+[node name="GameButtonsContainer" type="HBoxContainer" parent="ButtonsContainer"]
 layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Inventory" type="Button" parent="ButtonsContainer/GameButtonsContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+theme_override_constants/icon_max_width = 80
+disabled = true
+text = "Инвентарь"
+icon = ExtResource("6_ts3g1")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Shop" type="Button" parent="ButtonsContainer/GameButtonsContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+theme_override_constants/icon_max_width = 80
 disabled = true
 text = "Магазин"
 icon = ExtResource("4_jpuob")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
 
-[node name="Achievements" type="Button" parent="ButtonsContainer"]
+[node name="Achievements" type="Button" parent="ButtonsContainer/GameButtonsContainer"]
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
+theme_override_constants/icon_max_width = 80
 disabled = true
 text = "Достижения"
 icon = ExtResource("5_noej1")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
 
-[node name="Settings" type="Button" parent="ButtonsContainer"]
+[node name="MiscButtonsContainer" type="HBoxContainer" parent="ButtonsContainer"]
 layout_mode = 2
+
+[node name="Settings" type="Button" parent="ButtonsContainer/MiscButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Настройки"
 icon = ExtResource("6_0pcoh")
 
-[node name="About" type="Button" parent="ButtonsContainer"]
+[node name="About" type="Button" parent="ButtonsContainer/MiscButtonsContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Об игре"
 icon = ExtResource("7_aw44p")
 
@@ -155,7 +188,7 @@ layout_mode = 2
 text = "Summersay415 - идея, программирование, оружия и скины
 wiziritka - скины и карты
 DanKras - скины и оружие, загрузочный экран
-BaCat8, Kaurt, MilDeV - скины
+BaCat86, Kaurt, MilDeV - скины
 
 Тестировщики (и благодарность):
 ZeroHero135, LohDebil228, Блоха в Сарафане"
@@ -196,9 +229,9 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "ОК"
 
-[connection signal="pressed" from="ButtonsContainer/PlayNetwork" to="." method="_on_play_network_pressed"]
-[connection signal="pressed" from="ButtonsContainer/Settings" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="ButtonsContainer/About" to="About" method="popup_centered"]
+[connection signal="pressed" from="ButtonsContainer/PlayButtonsContainer/PlayNetwork" to="." method="_on_play_network_pressed"]
+[connection signal="pressed" from="ButtonsContainer/MiscButtonsContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="ButtonsContainer/MiscButtonsContainer/About" to="About" method="popup_centered"]
 [connection signal="name_accepted" from="NameDialog" to="." method="_on_name_dialog_name_accepted"]
 [connection signal="visibility_changed" from="NameDialog" to="." method="_on_name_dialog_visibility_changed"]
 [connection signal="close_requested" from="About" to="About" method="hide"]

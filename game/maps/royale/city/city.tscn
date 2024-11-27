@@ -4,8 +4,6 @@
 [ext_resource type="TileSet" uid="uid://cd3bbm1gifps4" path="res://game/maps/royale/city/tile_set.tres" id="2_itd2i"]
 
 [node name="Map" instance=ExtResource("1_wh5vx")]
-metadata/_edit_vertical_guides_ = [-6400.0, 6400.0]
-metadata/_edit_horizontal_guides_ = [-6400.0, 6400.0]
 
 [node name="TileMapLayers" type="Node2D" parent="." index="0"]
 

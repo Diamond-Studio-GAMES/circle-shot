@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dviqrh0tmt4al"
-path="res://.godot/imported/dropdown.png-9d7b5adf05e7bc4bcdef950c12319f27.ctex"
+uid="uid://ctcg17yhajnc4"
+path="res://.godot/imported/empty_kick.png-2b7bbceef56e5ef7536f13b62bc5d55b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://menu/theme/icons/dropdown.png"
-dest_files=["res://.godot/imported/dropdown.png-9d7b5adf05e7bc4bcdef950c12319f27.ctex"]
+source_file="res://game/menus/lobby/icons/empty_kick.png"
+dest_files=["res://.godot/imported/empty_kick.png-2b7bbceef56e5ef7536f13b62bc5d55b.ctex"]
 
 [params]
 
