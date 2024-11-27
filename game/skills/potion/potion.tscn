@@ -5,7 +5,8 @@
 
 [node name="Potion" type="Node2D"]
 script = ExtResource("1_otbai")
-use_times = 1
+heal_amount = 51
+use_cooldown = 50
 metadata/_custom_type_script = ExtResource("2_7nba0")
 
 [node name="Timer" type="Timer" parent="."]
