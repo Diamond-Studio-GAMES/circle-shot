@@ -1,0 +1,99 @@
+[gd_scene load_steps=17 format=3 uid="uid://cw5ms0gp35p0b"]
+
+[ext_resource type="Shader" path="res://game/skins/programming/c_like/vfx/glitch.gdshader" id="1_icbet"]
+[ext_resource type="Texture2D" uid="uid://bljt8bxcqypuu" path="res://game/skins/programming/c_like/textures/c.png" id="2_a4era"]
+[ext_resource type="Texture2D" uid="uid://dhjcnsb15sgl1" path="res://game/skins/programming/c_like/textures/cpp.png" id="2_clteu"]
+[ext_resource type="Texture2D" uid="uid://bfjmili5836j6" path="res://game/skins/programming/c_like/vfx/shift_noise.tres" id="2_hw111"]
+[ext_resource type="Script" path="res://game/skins/programming/c_like/c_like.gd" id="3_ijpx6"]
+[ext_resource type="Texture2D" uid="uid://b5idw4yrhjwpj" path="res://game/skins/programming/c_like/textures/csharp.png" id="5_wmgll"]
+[ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="6_3ek4b"]
+[ext_resource type="Texture2D" uid="uid://b4k1uqu3g3bnr" path="res://game/skins/programming/c_like/textures/holyc.png" id="6_xrx04"]
+[ext_resource type="PackedScene" uid="uid://dl6xv8irqbsfq" path="res://game/skins/programming/c_like/vfx/errors_hurt_vfx.tscn" id="8_hw111"]
+[ext_resource type="PackedScene" uid="uid://b5h3w2m2lel7x" path="res://game/skins/programming/c_like/vfx/segfault_death_vfx.tscn" id="9_hqfjw"]
+[ext_resource type="PackedScene" uid="uid://s5idjm02x343" path="res://game/skins/programming/c_like/vfx/binary_blood.tscn" id="9_wsgo3"]
+[ext_resource type="PackedScene" uid="uid://c1mt2q646tmyh" path="res://game/skins/programming/c_like/vfx/patch_heal_vfx.tscn" id="10_8kk3g"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wsgo3"]
+resource_local_to_scene = true
+shader = ExtResource("1_icbet")
+shader_parameter/glitch = 0.0
+shader_parameter/shift_glitch = 0.0
+shader_parameter/shift_glitch_texture = ExtResource("2_hw111")
+
+[sub_resource type="Animation" id="Animation_hqfjw"]
+resource_name = "Hurt"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/glitch")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.01, -0.045, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/shift_glitch")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.03, -0.15, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_8kk3g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/glitch")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/shift_glitch")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sh8jf"]
+_data = {
+&"Hurt": SubResource("Animation_hqfjw"),
+&"RESET": SubResource("Animation_8kk3g")
+}
+
+[node name="CLike" type="Sprite2D"]
+material = SubResource("ShaderMaterial_wsgo3")
+texture = ExtResource("2_a4era")
+script = ExtResource("3_ijpx6")
+textures = Array[Texture2D]([ExtResource("2_a4era"), ExtResource("2_clteu"), ExtResource("5_wmgll"), ExtResource("6_xrx04")])
+custom_hurt_vfx_scene = ExtResource("8_hw111")
+custom_death_vfx_scene = ExtResource("9_hqfjw")
+custom_heal_vfx_scene = ExtResource("10_8kk3g")
+custom_blood_scene = ExtResource("9_wsgo3")
+metadata/_custom_type_script = ExtResource("6_3ek4b")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_sh8jf")
+}

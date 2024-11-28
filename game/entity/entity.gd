@@ -46,7 +46,7 @@ var _disarmed_counter: int = 0
 @onready var entity_input: EntityInput = $Input
 @onready var visual: Node2D = $Visual
 @onready var _effects: Node2D = $Effects
-@onready var _vfx_parent: Node2D = get_tree().get_first_node_in_group("VFXParent")
+@onready var _vfx_parent: Node2D = get_tree().get_first_node_in_group(&"VfxParent")
 
 
 func _ready() -> void:

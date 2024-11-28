@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1mt2q646tmyh"]
+
+[ext_resource type="Texture2D" uid="uid://bcv5d3lvchbv8" path="res://game/skins/programming/c_like/vfx/patch.png" id="1_y60um"]
+
+[sub_resource type="Curve" id="Curve_r8f3g"]
+min_value = -400.0
+max_value = 200.0
+_data = [Vector2(0, -400), 0.0, 0.0, 0, 0, Vector2(0.285223, 15.5772), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_tvjfb"]
+offsets = PackedFloat32Array(0.247148, 0.760456)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="PatchHealVfx" type="Node2D"]
+
+[node name="Particles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 3
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("1_y60um")
+emission_shape = 1
+emission_sphere_radius = 128.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+radial_accel_min = 1.0
+radial_accel_max = 1.0
+radial_accel_curve = SubResource("Curve_r8f3g")
+color_ramp = SubResource("Gradient_tvjfb")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[connection signal="ready" from="Particles" to="Particles" method="restart"]
+[connection signal="timeout" from="Timer" to="." method="queue_free"]

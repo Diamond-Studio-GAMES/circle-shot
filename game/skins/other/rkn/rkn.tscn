@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://chpvrgitya08l"]
+[gd_scene load_steps=9 format=3 uid="uid://chpvrgitya08l"]
 
-[ext_resource type="Texture2D" uid="uid://cbe7p8vig2fo7" path="res://game/skins/other/rkn/rkn.png" id="1_vmqjf"]
+[ext_resource type="Texture2D" uid="uid://cjtckq4vtw5v3" path="res://game/skins/other/rkn/rkn.png" id="1_5lv05"]
 [ext_resource type="Script" path="res://game/skins/other/rkn/rkn.gd" id="2_q3vus"]
-[ext_resource type="Texture2D" uid="uid://b4n44qj6g285d" path="res://game/skins/other/rkn/true_rkn.png" id="3_upk0t"]
+[ext_resource type="PackedScene" uid="uid://bj1ubr1twmg8w" path="res://game/skins/other/rkn/rkn_death_vfx.tscn" id="3_a4guw"]
 [ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="3_v1luj"]
+[ext_resource type="Texture2D" uid="uid://da7lkffe1t7w4" path="res://game/skins/other/rkn/true_rkn.png" id="5_508rb"]
 
 [sub_resource type="Animation" id="Animation_gfrao"]
 length = 0.001
@@ -11,7 +12,7 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TrueRKN:self_modulate")
+tracks/0/path = NodePath("TrueRkn:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -27,7 +28,7 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TrueRKN:self_modulate")
+tracks/0/path = NodePath("TrueRkn:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -43,14 +44,15 @@ _data = {
 &"TrueSide": SubResource("Animation_s3uvg")
 }
 
-[node name="RKN" type="Sprite2D"]
-texture = ExtResource("1_vmqjf")
+[node name="Rkn" type="Sprite2D"]
+texture = ExtResource("1_5lv05")
 script = ExtResource("2_q3vus")
+custom_death_vfx_scene = ExtResource("3_a4guw")
 metadata/_custom_type_script = ExtResource("3_v1luj")
 
-[node name="TrueRKN" type="Sprite2D" parent="."]
+[node name="TrueRkn" type="Sprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0)
-texture = ExtResource("3_upk0t")
+texture = ExtResource("5_508rb")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

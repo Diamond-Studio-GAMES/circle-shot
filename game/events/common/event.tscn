@@ -206,7 +206,7 @@ metadata/_custom_type_script = ExtResource("1_kxt6o")
 
 [node name="Other" type="Node2D" parent="." groups=["OtherParent"]]
 
-[node name="VFX" type="Node2D" parent="." groups=["VFXParent"]]
+[node name="Vfx" type="Node2D" parent="." groups=["VfxParent"]]
 
 [node name="EntitiesSpawner" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("../Entities")

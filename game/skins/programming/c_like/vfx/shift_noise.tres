@@ -1,0 +1,15 @@
+[gd_resource type="NoiseTexture2D" load_steps=3 format=3 uid="uid://bfjmili5836j6"]
+
+[sub_resource type="Gradient" id="Gradient_dhpxg"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wg67m"]
+noise_type = 0
+fractal_type = 2
+fractal_gain = 1.0
+
+[resource]
+width = 1
+height = 160
+generate_mipmaps = false
+color_ramp = SubResource("Gradient_dhpxg")
+noise = SubResource("FastNoiseLite_wg67m")

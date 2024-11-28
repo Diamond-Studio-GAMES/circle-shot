@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://game/entity/entity.gd" id="1_rxssn"]
 [ext_resource type="Script" path="res://game/entity/entity_input.gd" id="2_1a3pf"]
-[ext_resource type="PackedScene" uid="uid://cct2g1r8bubi8" path="res://game/entity/heal_vfx/heal_pluses.tscn" id="2_xk3vx"]
+[ext_resource type="PackedScene" uid="uid://cct2g1r8bubi8" path="res://game/entity/heal_vfx/heal_pluses_vfx.tscn" id="2_xk3vx"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_c2pj3"]
 properties/0/path = NodePath(".:direction")

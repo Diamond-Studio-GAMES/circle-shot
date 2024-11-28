@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_oll6o")
 name = "синеП"
-brief_description = "ZVP ан учорд Я"
+brief_description = "ZvP ан учорд Я"
 rarity = 1
 id = "sinep"
 scene_path = "uid://cd1lphpx3gsyb"
-image_path = "uid://dpk0u7atpi23s"
+image_path = "uid://137jpruwt1ev"

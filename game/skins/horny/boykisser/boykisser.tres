@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://q5725b0xhqyh"]
+
+[ext_resource type="Script" path="res://game/player/equip/skin_data.gd" id="1_oageq"]
+
+[resource]
+script = ExtResource("1_oageq")
+name = "Бойкиссер"
+brief_description = "OwO"
+rarity = 1
+id = "owo"
+scene_path = "uid://dagskw28ang0p"
+image_path = "uid://blkvcndqkr10h"
+metadata/_custom_type_script = ExtResource("1_oageq")

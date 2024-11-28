@@ -2,6 +2,7 @@ extends PlayerSkin
 
 
 func _ready() -> void:
+	super()
 	player.health_changed.connect(_on_player_health_changed)
 
 

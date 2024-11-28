@@ -7,6 +7,10 @@ signal local_player_created(player: Player)
 signal local_team_set(team: int)
 
 const SPAWN_POINT_RANDOMNESS := 40.0
+const HIT_VIBRATION_INTENSITY := 0.07
+const HIT_VIBRATION_DURATION_MS: int = 100
+const KILL_VIBRATION_INTENSITY := 0.15
+const KILL_VIBRATION_DURATION_MS: int = 300
 
 @export var player_scenes: Array[PackedScene]
 
@@ -54,11 +58,11 @@ func _create_hit_marker(where: Vector2) -> void:
 		return
 	
 	if Globals.get_setting_bool("vibration_hit"):
-		Input.vibrate_handheld(100, 0.07)
+		Input.vibrate_handheld(HIT_VIBRATION_DURATION_MS, HIT_VIBRATION_INTENSITY)
 	if Globals.get_setting_bool("hit_markers"):
 		var marker: Node2D = _hit_marker_scene.instantiate()
 		marker.global_position = where
-		$VFX.add_child(marker)
+		$Vfx.add_child(marker)
 
 
 @rpc("reliable", "call_local", "authority", 1)
@@ -68,11 +72,11 @@ func _create_kill_marker(where: Vector2) -> void:
 		return
 	
 	if Globals.get_setting_bool("vibration_hit"):
-		Input.vibrate_handheld(300, 0.15)
+		Input.vibrate_handheld(KILL_VIBRATION_DURATION_MS, KILL_VIBRATION_INTENSITY)
 	if Globals.get_setting_bool("hit_markers"):
 		var marker: Node2D = _death_marker_scene.instantiate()
 		marker.global_position = where
-		$VFX.add_child(marker)
+		$Vfx.add_child(marker)
 
 
 func set_players_data(players_names: Dictionary[int, String],

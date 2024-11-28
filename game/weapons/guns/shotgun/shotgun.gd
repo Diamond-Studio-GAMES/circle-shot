@@ -64,7 +64,7 @@ func _create_projectile() -> void:
 		projectile.damage_multiplier = _player.damage_multiplier
 		projectile.rotation = _player.player_input.aim_direction.angle() + deg_to_rad(
 				_calculate_spread() * (-1 + 2.0 / (buckshot_in_shot - 1) * i)
-		)
+		) + deg_to_rad(_calculate_recoil()) * signf(_player.player_input.aim_direction.x)
 		projectile.team = _player.team
 		projectile.who = _player.id
 		projectile.name += str(randi())

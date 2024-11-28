@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_3fmcj")
 name = "Arch Linux"
-brief_description = "I use Arch btw UwU"
+brief_description = "I use Arch btw"
 rarity = 1
 id = "femboy_distro"
 scene_path = "uid://bbmeo164q20gn"

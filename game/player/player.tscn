@@ -5,8 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://byjbep0gi5cm3" path="res://game/player/vfx/drop.png" id="3_8a6xh"]
 [ext_resource type="Texture2D" uid="uid://d2j3okv8l0sm3" path="res://game/player/control_indicator.png" id="3_fptox"]
 [ext_resource type="Script" path="res://game/player/player_input.gd" id="3_knbu5"]
-[ext_resource type="PackedScene" uid="uid://bp6v2plelkof8" path="res://game/player/vfx/blood_shards.tscn" id="3_tk865"]
-[ext_resource type="PackedScene" uid="uid://ctqgs3w1llfuf" path="res://game/player/vfx/death_blood.tscn" id="4_nsvnj"]
+[ext_resource type="PackedScene" uid="uid://bp6v2plelkof8" path="res://game/player/vfx/blood_hurt_vfx.tscn" id="3_tk865"]
+[ext_resource type="PackedScene" uid="uid://ctqgs3w1llfuf" path="res://game/player/vfx/blood_death_vfx.tscn" id="4_nsvnj"]
 [ext_resource type="Texture2D" uid="uid://bk76lmnl8rml0" path="res://game/events/common/minimap/marker.png" id="8_05q0u"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i6vnq"]

@@ -1,0 +1,219 @@
+[gd_scene load_steps=12 format=3 uid="uid://b5h3w2m2lel7x"]
+
+[ext_resource type="Shader" path="res://game/skins/programming/c_like/vfx/glitch.gdshader" id="1_0166k"]
+[ext_resource type="Texture2D" uid="uid://bfjmili5836j6" path="res://game/skins/programming/c_like/vfx/shift_noise.tres" id="2_mec1c"]
+[ext_resource type="Texture2D" uid="uid://cnjlsovowurap" path="res://game/skins/programming/c_like/vfx/segfault.png" id="3_fmk61"]
+[ext_resource type="Texture2D" uid="uid://bb51b5csgc4du" path="res://game/skins/programming/c_like/vfx/errors.png" id="4_uo8tu"]
+[ext_resource type="Texture2D" uid="uid://dxn0hekl76yle" path="res://game/skins/programming/c_like/vfx/coredump.png" id="5_5uknl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yb8wo"]
+resource_local_to_scene = true
+shader = ExtResource("1_0166k")
+shader_parameter/glitch = 0.0
+shader_parameter/shift_glitch = 0.0
+shader_parameter/shift_glitch_texture = ExtResource("2_mec1c")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_omr4w"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_30iwm"]
+offsets = PackedFloat32Array(0.209125, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Animation" id="Animation_nq1af"]
+resource_name = "Death"
+length = 2.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Console:material:shader_parameter/glitch")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.45, 0.5, 0.6, 0.8, 1.2, 1.5, 1.6, 1.65, 2.05, 2.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.002, 0.004, -0.006, 0.004, 0.001, -0.002, 0.001, -0.024, -0.002, 0.006, 0.1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Console:material:shader_parameter/shift_glitch")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.45, 0.5, 0.6, 0.8, 1.2, 1.5, 1.6, 1.65, 2.05, 2.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.005, -0.02, 0.045, -0.02, -0.005, 0.006, -0.005, -0.06, 0.006, 0.02, 0.4]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Console:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("3_fmk61"), ExtResource("5_5uknl")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("Console:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Particles")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"restart"
+}]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(2.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Console:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 2.05, 2.3),
+"transitions": PackedFloat32Array(1, 3, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(3, 0.01)]
+}
+
+[sub_resource type="Animation" id="Animation_rfqb7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Console:material:shader_parameter/glitch")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Console:material:shader_parameter/shift_glitch")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Console:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_fmk61")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Console:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Console:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lbbt7"]
+_data = {
+&"Death": SubResource("Animation_nq1af"),
+&"RESET": SubResource("Animation_rfqb7")
+}
+
+[node name="SegfaultDeathVfx" type="Node2D"]
+
+[node name="Console" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_yb8wo")
+texture = ExtResource("3_fmk61")
+
+[node name="Particles" type="CPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_omr4w")
+emitting = false
+amount = 12
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("4_uo8tu")
+emission_shape = 1
+emission_sphere_radius = 64.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 160.0
+initial_velocity_max = 220.0
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+damping_min = 60.0
+damping_max = 60.0
+color_ramp = SubResource("Gradient_30iwm")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_lbbt7")
+}
+autoplay = "Death"
