@@ -5,7 +5,6 @@
 [resource]
 script = ExtResource("1_obf2e")
 name = "AK-74"
-type = 1
 rarity = 0
 id = "akr"
 damage_text = "Урон/с: 53"

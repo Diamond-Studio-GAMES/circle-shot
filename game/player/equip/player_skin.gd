@@ -25,7 +25,7 @@ var _cached_default_death_vfx_scene: PackedScene
 var _cached_default_blood: CPUParticles2D
 
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	if custom_hurt_vfx_scene:
 		_cached_default_hurt_vfx_scene = player.hurt_vfx_scene
 		player.hurt_vfx_scene = custom_hurt_vfx_scene

@@ -5,7 +5,6 @@
 [resource]
 script = ExtResource("1_cddvc")
 name = "Коктейль Молотова"
-type = 2
 rarity = 1
 id = "molotov"
 damage_text = "Урон/с: 24"

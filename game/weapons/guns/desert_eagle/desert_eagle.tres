@@ -5,7 +5,6 @@
 [resource]
 script = ExtResource("1_fksgu")
 name = "Desert Eagle"
-type = 0
 rarity = 1
 id = "deagle"
 damage_text = "Урон/с: 42"

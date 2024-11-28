@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://buupfjlqbteex"]
+
+[ext_resource type="Texture2D" uid="uid://vcip4ihytck" path="res://game/skins/horny/sunflower/cum_drop.png" id="1_k1l4d"]
+
+[sub_resource type="Gradient" id="Gradient_v1oj7"]
+offsets = PackedFloat32Array(0, 0.125, 0.5, 0.75)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+metadata/_snap_count = 40
+
+[node name="CumBlood" type="CPUParticles2D"]
+position = Vector2(0, -32)
+emitting = false
+amount = 6
+lifetime = 2.0
+draw_order = 1
+texture = ExtResource("1_k1l4d")
+emission_shape = 1
+emission_sphere_radius = 64.0
+gravity = Vector2(0, 98)
+color_ramp = SubResource("Gradient_v1oj7")

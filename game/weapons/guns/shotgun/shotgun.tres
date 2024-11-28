@@ -5,7 +5,6 @@
 [resource]
 script = ExtResource("1_sdfg8")
 name = "Дробовик"
-type = 0
 rarity = 1
 id = "shotgun"
 damage_text = "Урон/с: 61"

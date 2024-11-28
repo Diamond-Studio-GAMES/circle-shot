@@ -5,7 +5,6 @@
 [resource]
 script = ExtResource("1_cx1jm")
 name = "P350"
-type = 0
 rarity = 0
 id = "p350"
 damage_text = "Урон/с: 38"

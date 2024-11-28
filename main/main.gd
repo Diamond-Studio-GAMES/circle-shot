@@ -45,7 +45,9 @@ var loaded_custom_tracks: Dictionary[String, AudioStream]
 var _preloaded_resources: Array[Resource]
 
 ## Путь до папки с пользовательскими треками.
-@onready var music_path: String = OS.get_system_dir(OS.SYSTEM_DIR_MUSIC).path_join("Circle Shot")
+@onready var music_path: String = OS.get_system_dir(OS.SYSTEM_DIR_MUSIC).path_join(
+		str(ProjectSettings.get_setting("application/config/name"))
+)
 @onready var _default_window_content_width: int = \
 		ProjectSettings.get_setting("display/window/size/viewport_width")
 @onready var _default_window_content_height: int = \

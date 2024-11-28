@@ -31,6 +31,7 @@ radial_accel_curve = SubResource("Curve_r8f3g")
 color_ramp = SubResource("Gradient_tvjfb")
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 1.1
 one_shot = true
 autostart = true
 

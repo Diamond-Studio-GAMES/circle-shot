@@ -5,7 +5,6 @@
 [resource]
 script = ExtResource("1_2etgi")
 name = "Дымовая граната"
-type = 2
 rarity = 1
 id = "smoke"
 damage_text = "Создаёт дым"

@@ -30,6 +30,7 @@ var _recoil_timer := 0.0
 var _spread_timer := 0.0
 var _recoil_timer_tween: Tween
 var _spread_timer_tween: Tween
+var _post_equip_tween: Tween
 
 @onready var _shoot_point: Marker2D = $ShootPoint
 @onready var _anim: AnimationPlayer = $AnimationPlayer
@@ -76,9 +77,10 @@ func _make_current() -> void:
 		return
 	
 	_anim.play(&"PostEquip")
-	var tween: Tween = create_tween()
-	tween.tween_property(self, ^"rotation", _calculate_aim_direction(), to_aim_time)
-	await tween.finished
+	_post_equip_tween = create_tween()
+	_post_equip_tween.tween_property(self, ^":rotation", _calculate_aim_direction(), to_aim_time)
+	await _post_equip_tween.finished
+	
 	unlock_shooting()
 
 
@@ -87,6 +89,8 @@ func _unmake_current() -> void:
 		_spread_timer_tween.kill()
 	if is_instance_valid(_recoil_timer_tween):
 		_recoil_timer_tween.kill()
+	if is_instance_valid(_post_equip_tween):
+		_post_equip_tween.kill()
 	
 	_spread_timer = 0.0
 	_recoil_timer = 0.0

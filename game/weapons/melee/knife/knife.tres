@@ -5,7 +5,6 @@
 [resource]
 script = ExtResource("1_2u2my")
 name = "Нож"
-type = 3
 rarity = 0
 id = "knife"
 damage_text = "Урон: 55"

@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1qhrnuorldh0"]
+
+[ext_resource type="Texture2D" uid="uid://b7s5b4hl8ct08" path="res://game/skins/other/ruble/arrow_up.png" id="1_vaynw"]
+
+[sub_resource type="Gradient" id="Gradient_cm366"]
+offsets = PackedFloat32Array(0, 0.155894, 0.695817, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="UpHealVfx" type="Node2D"]
+
+[node name="Particles" type="CPUParticles2D" parent="."]
+position = Vector2(0, 8)
+emitting = false
+lifetime = 0.7
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("1_vaynw")
+emission_shape = 1
+emission_sphere_radius = 80.0
+direction = Vector2(0, -1)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 14.0
+initial_velocity_max = 14.0
+color_ramp = SubResource("Gradient_cm366")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.8
+autostart = true
+
+[connection signal="ready" from="Particles" to="Particles" method="restart"]
+[connection signal="timeout" from="Timer" to="." method="queue_free"]

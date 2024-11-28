@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dahg8i0tk3jd3"
-path="res://.godot/imported/up.png-002625e2fc15aacd93e02918c4320e47.ctex"
+uid="uid://ctultwf070spd"
+path="res://.godot/imported/nonono.png-76797dc08beaacd43cfef4b79eef9e2f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/skins/other/ruble/up.png"
-dest_files=["res://.godot/imported/up.png-002625e2fc15aacd93e02918c4320e47.ctex"]
+source_file="res://game/skins/other/ruble/nonono.png"
+dest_files=["res://.godot/imported/nonono.png-76797dc08beaacd43cfef4b79eef9e2f.ctex"]
 
 [params]
 

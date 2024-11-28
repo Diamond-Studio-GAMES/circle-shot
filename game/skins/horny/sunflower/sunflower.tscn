@@ -1,9 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bpjnm762i7c78"]
+[gd_scene load_steps=6 format=3 uid="uid://bpjnm762i7c78"]
 
 [ext_resource type="Texture2D" uid="uid://cpdges6wbihy0" path="res://game/skins/horny/sunflower/sunflower.png" id="2_nm6ld"]
 [ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="2_ra5tm"]
+[ext_resource type="PackedScene" uid="uid://cu4wtikyguq3i" path="res://game/skins/horny/sunflower/cum_hurt_vfx.tscn" id="3_nws58"]
+[ext_resource type="PackedScene" uid="uid://iutlr15vmmri" path="res://game/skins/horny/sunflower/cum_death_vfx.tscn" id="4_76ifu"]
+[ext_resource type="PackedScene" uid="uid://buupfjlqbteex" path="res://game/skins/horny/sunflower/cum_blood.tscn" id="5_76ifu"]
 
 [node name="Sunflower" type="Sprite2D"]
 texture = ExtResource("2_nm6ld")
 script = ExtResource("2_ra5tm")
+custom_hurt_vfx_scene = ExtResource("3_nws58")
+custom_death_vfx_scene = ExtResource("4_76ifu")
+custom_blood_scene = ExtResource("5_76ifu")
 metadata/_custom_type_script = ExtResource("2_ra5tm")

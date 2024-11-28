@@ -6,6 +6,7 @@ extends Weapon
 @export var shoot_interval := 1.0
 @export var to_aim_time := 0.15
 var _shoot_timer: float = 0.0
+var _post_equip_tween: Tween
 @onready var _anim: AnimationPlayer = $AnimationPlayer
 @onready var _aim: Node2D = $Aim
 @onready var _attack: Attack = $Attack
@@ -55,9 +56,10 @@ func _make_current() -> void:
 		return
 	
 	_anim.play(&"PostEquip")
-	var tween: Tween = create_tween()
-	tween.tween_property(self, ^"rotation", _calculate_aim_direction(), to_aim_time)
-	await tween.finished
+	_post_equip_tween = create_tween()
+	_post_equip_tween.tween_property(self, ^":rotation", _calculate_aim_direction(), to_aim_time)
+	await _post_equip_tween.finished
+	
 	unlock_shooting()
 
 
