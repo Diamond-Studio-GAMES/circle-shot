@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://dkyv0lecs1vaf"]
+
+[ext_resource type="Texture2D" uid="uid://cny4dd5qryoja" path="res://game/skins/programming/godot/merge.png" id="1_tul4p"]
+
+[sub_resource type="Curve" id="Curve_yj56d"]
+min_value = -400.0
+max_value = 200.0
+_data = [Vector2(0, -400), 0.0, 0.0, 0, 0, Vector2(0.628866, -212.239), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_6fs2g"]
+offsets = PackedFloat32Array(0, 0.638783, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="MergeHealVfx" type="Node2D"]
+
+[node name="Particles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 4
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("1_tul4p")
+emission_shape = 1
+emission_sphere_radius = 128.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+radial_accel_min = 1.0
+radial_accel_max = 1.0
+radial_accel_curve = SubResource("Curve_yj56d")
+color_ramp = SubResource("Gradient_6fs2g")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+autostart = true
+
+[connection signal="ready" from="Particles" to="Particles" method="restart"]
+[connection signal="timeout" from="Timer" to="." method="queue_free"]

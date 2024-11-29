@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cuqnkho78cmd6"]
 
-[ext_resource type="Texture2D" uid="uid://cux3audvtug0l" path="res://game/skins/standard/classic/player_classic.png" id="2_v1k3a"]
+[ext_resource type="Texture2D" uid="uid://cux3audvtug0l" path="res://game/skins/standard/classic/classic.png" id="2_v1k3a"]
 [ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="2_v584y"]
 
 [node name="PlayerClassic" type="Sprite2D"]

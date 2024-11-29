@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cux3audvtug0l"
-path="res://.godot/imported/player_classic.png-890d2df854e8ed8691aa121eefb37852.ctex"
+uid="uid://dkxl8okaxmi5w"
+path="res://.godot/imported/recovery.png-e596e655744be5abfa7c9f0b81917b9e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/skins/standard/classic/player_classic.png"
-dest_files=["res://.godot/imported/player_classic.png-890d2df854e8ed8691aa121eefb37852.ctex"]
+source_file="res://game/skins/programming/android/recovery.png"
+dest_files=["res://.godot/imported/recovery.png-e596e655744be5abfa7c9f0b81917b9e.ctex"]
 
 [params]
 

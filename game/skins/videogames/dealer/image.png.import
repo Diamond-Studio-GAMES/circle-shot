@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bekw7hsphgsss"
-path="res://.godot/imported/death.png-d8fb55bc5efba44d33aed09ad85b19b9.ctex"
+uid="uid://cbt1jl708r5td"
+path="res://.godot/imported/image.png-cbaa3d848556f789ec4077b7e7f92c1f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/skins/programming/kabakova/death.png"
-dest_files=["res://.godot/imported/death.png-d8fb55bc5efba44d33aed09ad85b19b9.ctex"]
+source_file="res://game/skins/videogames/dealer/image.png"
+dest_files=["res://.godot/imported/image.png-cbaa3d848556f789ec4077b7e7f92c1f.ctex"]
 
 [params]
 

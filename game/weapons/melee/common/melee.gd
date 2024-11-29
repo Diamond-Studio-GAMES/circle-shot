@@ -64,6 +64,10 @@ func _make_current() -> void:
 
 
 func _unmake_current() -> void:
+	if is_instance_valid(_post_equip_tween):
+		_post_equip_tween.finished.emit()
+		_post_equip_tween.kill()
+	
 	rotation = 0.0
 	_anim.play(&"RESET")
 	_anim.advance(0.01)

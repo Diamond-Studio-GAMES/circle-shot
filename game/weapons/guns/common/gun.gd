@@ -90,6 +90,7 @@ func _unmake_current() -> void:
 	if is_instance_valid(_recoil_timer_tween):
 		_recoil_timer_tween.kill()
 	if is_instance_valid(_post_equip_tween):
+		_post_equip_tween.finished.emit()
 		_post_equip_tween.kill()
 	
 	_spread_timer = 0.0

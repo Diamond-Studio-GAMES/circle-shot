@@ -1,0 +1,91 @@
+[gd_scene load_steps=6 format=3 uid="uid://cdl30g16twg5o"]
+
+[ext_resource type="Texture2D" uid="uid://dkxl8okaxmi5w" path="res://game/skins/programming/android/recovery.png" id="1_na521"]
+[ext_resource type="Texture2D" uid="uid://bfmwla164lais" path="res://game/skins/programming/android/recovery_error.png" id="2_8io1f"]
+
+[sub_resource type="Animation" id="Animation_2u4ae"]
+resource_name = "Death"
+length = 3.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Recovery:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("1_na521"), ExtResource("2_8io1f"), ExtResource("1_na521"), ExtResource("2_8io1f"), ExtResource("1_na521"), ExtResource("2_8io1f")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Recovery:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 3, 3.35),
+"transitions": PackedFloat32Array(0.5, 1, 2, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.1), Vector2(1, 1), Vector2(1, 1), Vector2(2.5, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(3.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_qh0i3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Recovery:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_na521")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Recovery:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qjbvu"]
+_data = {
+&"Death": SubResource("Animation_2u4ae"),
+&"RESET": SubResource("Animation_qh0i3")
+}
+
+[node name="RecoveryDeathVfx" type="Node2D"]
+
+[node name="Recovery" type="Sprite2D" parent="."]
+texture = ExtResource("1_na521")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_qjbvu")
+}
+autoplay = "Death"

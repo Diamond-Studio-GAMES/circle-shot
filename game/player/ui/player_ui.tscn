@@ -1,8 +1,9 @@
-[gd_scene load_steps=29 format=3 uid="uid://0wc72b0o2o11"]
+[gd_scene load_steps=31 format=3 uid="uid://0wc72b0o2o11"]
 
 [ext_resource type="Script" path="res://game/player/ui/player_ui.gd" id="1_2pprn"]
-[ext_resource type="Material" uid="uid://cmd5ms7ovbyru" path="res://game/player/ui/blood_vignette/blood_vignette.tres" id="2_k62wa"]
+[ext_resource type="Shader" path="res://game/player/ui/blood_vignette/blood_vignette.gdshader" id="2_bioi4"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick.tscn" id="2_x7k0l"]
+[ext_resource type="Texture2D" uid="uid://bew6f3wt1larh" path="res://game/player/ui/blood_vignette/noise.tres" id="3_2wypa"]
 [ext_resource type="Texture2D" uid="uid://d3dyhqt2lduyi" path="res://game/player/ui/joystick_base.png" id="3_svvw5"]
 [ext_resource type="Texture2D" uid="uid://d01n7clmawdjx" path="res://game/player/ui/blood_vignette/vignette.png" id="3_tfa7a"]
 [ext_resource type="Texture2D" uid="uid://d4b1wfymlf7bu" path="res://game/player/ui/health_bar_empty.png" id="4_425vn"]
@@ -16,6 +17,14 @@
 [ext_resource type="Script" path="res://game/player/ui/position_loader.gd" id="8_witf6"]
 [ext_resource type="Texture2D" uid="uid://dhhiaodkovkws" path="res://game/player/ui/weapon_selection_bg.png" id="11_kgyyy"]
 [ext_resource type="Texture2D" uid="uid://cqlo1boor0w4t" path="res://game/player/ui/skill_button.png" id="14_nojcu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l5du6"]
+shader = ExtResource("2_bioi4")
+shader_parameter/noise = ExtResource("3_2wypa")
+shader_parameter/time_multiplier = 0.05
+shader_parameter/alpha_multiplier = 0.375
+shader_parameter/noise_scale = 0.5
+shader_parameter/alpha_total_multiplier = 0.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xie73"]
 shader = ExtResource("8_iqift")
@@ -128,7 +137,7 @@ mouse_filter = 2
 
 [node name="BloodVignette" type="TextureRect" parent="Controller"]
 visible = false
-material = ExtResource("2_k62wa")
+material = SubResource("ShaderMaterial_l5du6")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

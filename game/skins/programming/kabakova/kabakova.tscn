@@ -1,11 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://c80v57cmun6n5"]
+[gd_scene load_steps=7 format=3 uid="uid://c80v57cmun6n5"]
 
-[ext_resource type="PackedScene" uid="uid://cio2wgh4fglo4" path="res://game/skins/programming/kabakova/death_kabakova.tscn" id="2_fr12t"]
+[ext_resource type="PackedScene" uid="uid://cio2wgh4fglo4" path="res://game/skins/programming/kabakova/graphic_death_vfx.tscn" id="2_fr12t"]
 [ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="2_lsj16"]
 [ext_resource type="Texture2D" uid="uid://cqmt55f6clp6c" path="res://game/skins/programming/kabakova/kabakova.png" id="2_wnbls"]
+[ext_resource type="PackedScene" uid="uid://dyfo457xyce0q" path="res://game/skins/programming/kabakova/x_and_y_hurt_vfx.tscn" id="3_go1nj"]
+[ext_resource type="PackedScene" uid="uid://cd77mloov7sbg" path="res://game/skins/programming/kabakova/numbers_blood.tscn" id="4_osqjj"]
+[ext_resource type="PackedScene" uid="uid://dfagdds1gg8ks" path="res://game/skins/programming/kabakova/x_and_y_heal_vfx.tscn" id="5_bp77c"]
 
 [node name="Kabakova" type="Sprite2D"]
 texture = ExtResource("2_wnbls")
 script = ExtResource("2_lsj16")
+custom_hurt_vfx_scene = ExtResource("3_go1nj")
 custom_death_vfx_scene = ExtResource("2_fr12t")
+custom_heal_vfx_scene = ExtResource("5_bp77c")
+custom_blood_scene = ExtResource("4_osqjj")
 metadata/_custom_type_script = ExtResource("2_lsj16")
