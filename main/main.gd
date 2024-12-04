@@ -22,6 +22,8 @@ enum ActionEventType {
 	## События типа [InputEventMouseButton].
 	MOUSE_BUTTON = 1,
 }
+## URL сервера с данными для игры (патчами, предложениями в магазине, ...).
+const SERVER_URL := "https://diamondstudiogames.github.io"
 ## Максимальное соотношение ширины к высоте, превысив которое содержимое окна начнёт обрезаться.
 const MAX_ASPECT_RATIO := 2.34
 ## Минимальное соотношение ширины к высоте, пренизив которое содержимое окна начнёт обрезаться.
@@ -189,7 +191,7 @@ func setup_settings() -> void:
 	)
 	Globals.set_setting_bool(
 			"fullscreen",
-			Globals.get_setting_bool("fullscreen", OS.has_feature("pc"))
+			Globals.get_setting_bool("fullscreen", not OS.has_feature("pc"))
 	)
 	Globals.set_setting_bool(
 			"preload",
@@ -535,8 +537,9 @@ func _loading_check_server() -> void:
 	http.request_completed.connect(_on_check_http_request_completed.bind(http))
 	add_child(http)
 	
-	var err: Error = http.request("https://diamond-studio-games.github.io/README.md")
+	var err: Error = http.request(SERVER_URL.path_join("README.md"))
 	if err != OK:
+		http.request_completed.disconnect(_on_check_http_request_completed)
 		push_warning("Can't connect to server! Error: %s" % error_string(err))
 		loading_stage_finished.emit(false)
 		http.queue_free()
