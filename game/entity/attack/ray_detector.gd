@@ -17,7 +17,7 @@ func _physics_process(delta: float) -> void:
 				force_raycast_update()
 				_physics_process(delta)
 				return
-			if not entity.name in _exceptions:
+			if not entity.name in _exceptions and _attack.can_deal_damage(entity):
 				if multiplayer.is_server():
 					_attack.deal_damage(entity)
 				_exceptions[entity.name] = damage_interval

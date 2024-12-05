@@ -69,7 +69,7 @@ var _health_bar_tween: Tween
 
 func _ready() -> void:
 	input_method = Globals.get_controls_int("input_method") as Main.InputMethod
-	vibration_enabled = Globals.get_setting_bool("vibration_damage")
+	vibration_enabled = Globals.get_setting_bool("vibration")
 	
 	match input_method:
 		Main.InputMethod.KEYBOARD_AND_MOUSE:

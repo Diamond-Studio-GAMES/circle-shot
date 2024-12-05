@@ -57,7 +57,7 @@ func _create_hit_marker(where: Vector2) -> void:
 		push_error("This method must be called only by server!")
 		return
 	
-	if Globals.get_setting_bool("vibration_hit"):
+	if Globals.get_setting_bool("vibration"):
 		Input.vibrate_handheld(HIT_VIBRATION_DURATION_MS, HIT_VIBRATION_INTENSITY)
 	if Globals.get_setting_bool("hit_markers"):
 		var marker: Node2D = _hit_marker_scene.instantiate()
@@ -71,7 +71,7 @@ func _create_kill_marker(where: Vector2) -> void:
 		push_error("This method must be called only by server!")
 		return
 	
-	if Globals.get_setting_bool("vibration_hit"):
+	if Globals.get_setting_bool("vibration"):
 		Input.vibrate_handheld(KILL_VIBRATION_DURATION_MS, KILL_VIBRATION_INTENSITY)
 	if Globals.get_setting_bool("hit_markers"):
 		var marker: Node2D = _death_marker_scene.instantiate()

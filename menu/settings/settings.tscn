@@ -47,7 +47,7 @@ OpenGL - традиционный отрисовщик, поддерживающ
 Если при попытки включить эту опцию она сама обратно выключается: попробуйте в настройках приложения самостоятельно выдать нужное разрешение.
 Изменения будут применены после перезапуска игры.", "Настраивает способ стрельбы.
 Зона стрельбы - чтобы вести огонь, удерживайте левый верхний угол.
-Джойстик прицеливания - чтобы отвести огонь, отведите в сторону джойстик прицеливания. На некоторых оружиях выстрел будет совершён только после того, как вы отпустите палец.", "Включает умный джойстик, заключающийся в том, что зависимость скорости передвижения от расстояния ручки джойстика до его центра становится нелинейной. Это позволяет легче уменьшать скорость ходьбы.", "Настраивает мёртвую зону прицеливания, в которой направление прицела остаётся неизменным вне зависимости от положения курсора.", "Настраивает зону прицеливания, в которой расстояние курсора от центра определяет дальность прицеливания (например, насколько сильно должна быть брошена граната). Если курсор выходит за пределы этой зоны, дальность прицеливания считается максимальной.", "Отключение мини-карты может повысить производительность на слабых устройствах."])
+Джойстик прицеливания - чтобы отвести огонь, отведите в сторону джойстик прицеливания. На некоторых оружиях выстрел будет совершён только после того, как вы отпустите палец.", "Включает умный джойстик, заключающийся в том, что зависимость скорости передвижения от расстояния ручки джойстика до его центра становится нелинейной. Это позволяет легче уменьшать скорость ходьбы.", "Настраивает мёртвую зону прицеливания, в которой направление прицела остаётся неизменным вне зависимости от положения курсора.", "Настраивает зону прицеливания, в которой расстояние курсора от центра определяет дальность прицеливания (например, насколько сильно должна быть брошена граната). Если курсор выходит за пределы этой зоны, дальность прицеливания считается максимальной.", "Отключение мини-карты может повысить производительность на слабых устройствах.", "Включает вибрацию при получении и нанесении урона.", "Включает отображение нанесенного и полученного урона (а также лечения) в виде отлетающих от персонажей чисел."])
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -374,55 +374,53 @@ layout_mode = 2
 icon = ExtResource("1_xh6xh")
 expand_icon = true
 
-[node name="VibDamage" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game"]
+[node name="Vibration" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/VibDamage"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/Vibration"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme_type_variation = &"HeaderSmall"
-text = "Вибрация при получении урона"
+text = "Вибрация"
 vertical_alignment = 1
 
-[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/VibDamage"]
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/Vibration"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VibDamageCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/VibDamage/Setting"]
+[node name="VibrationCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/Vibration/Setting"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
 
-[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/VibDamage/Setting"]
-visible = false
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/Vibration/Setting"]
 custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 icon = ExtResource("1_xh6xh")
 expand_icon = true
 
-[node name="VibHit" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game"]
+[node name="ShowDamage" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/VibHit"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/ShowDamage"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme_type_variation = &"HeaderSmall"
-text = "Вибрация при попадании"
+text = "Отображать урон"
 vertical_alignment = 1
 
-[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/VibHit"]
+[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/ShowDamage"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VibHitCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/VibHit/Setting"]
+[node name="ShowDamageCheck" type="CheckButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/ShowDamage/Setting"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
 
-[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/VibHit/Setting"]
-visible = false
+[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/ShowDamage/Setting"]
 custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 icon = ExtResource("1_xh6xh")
@@ -1027,8 +1025,10 @@ visible = false
 [connection signal="item_selected" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/DodgeDirection/Setting/DodgeOptions" to="." method="_on_dodge_options_item_selected"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/DodgeDirection/Setting/Help" to="." method="show_help" binds= [5]]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/SmoothCamera/Setting/SmoothCameraCheck" to="." method="_on_smooth_camera_check_toggled"]
-[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/VibDamage/Setting/VibDamageCheck" to="." method="_on_vib_damage_check_toggled"]
-[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/VibHit/Setting/VibHitCheck" to="." method="_on_vib_hit_check_toggled"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/Vibration/Setting/VibrationCheck" to="." method="_on_vibration_check_toggled"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/Vibration/Setting/Help" to="." method="show_help" binds= [14]]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/ShowDamage/Setting/ShowDamageCheck" to="." method="_on_show_damage_check_toggled"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/ShowDamage/Setting/Help" to="." method="show_help" binds= [15]]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen/Setting/FullscreenCheck" to="." method="_on_fullscreen_check_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen/Setting/Help" to="." method="show_help" binds= [1]]
 [connection signal="item_selected" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Renderer/Setting/RendererOptions" to="." method="_on_renderer_options_item_selected"]

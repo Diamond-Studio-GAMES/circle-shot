@@ -50,6 +50,8 @@ func _ready() -> void:
 	_selected_support_weapon = Globals.get_int("selected_support_weapon")
 	_selected_melee_weapon = Globals.get_int("selected_melee_weapon")
 	_selected_skill = Globals.get_int("selected_skill")
+	
+	_validate_selected_items()
 	_update_equip()
 	_update_environment()
 	
@@ -353,6 +355,50 @@ func _start_event(event_id: int, map_id: int) -> void:
 		_selected_melee_weapon,
 		_selected_skill,
 	])
+
+
+func _validate_selected_items() -> void:
+	if _selected_event < 0 or _selected_event >= Globals.items_db.events.size():
+		push_warning("Incorrect selected event: %d. Reverting to default." % _selected_event)
+		_selected_event = 0
+		Globals.set_int("selected_event", _selected_event)
+	if _selected_map < 0 or _selected_map >= Globals.items_db.events[_selected_event].maps.size():
+		push_warning("Incorrect selected map: %d. Reverting to default." % _selected_map)
+		_selected_map = 0
+		Globals.set_int("selected_map", _selected_map)
+	
+	if _selected_skin < 0 or _selected_skin >= Globals.items_db.skins.size():
+		push_warning("Incorrect selected skin: %d. Reverting to default." % _selected_skin)
+		_selected_skin = 0
+		Globals.set_int("selected_skin", _selected_skin)
+	if _selected_light_weapon < 0 \
+			or _selected_light_weapon >= Globals.items_db.weapons_light.size():
+		push_warning("Incorrect selected light weapon: %d. Reverting to default." \
+				% _selected_light_weapon)
+		_selected_light_weapon = 0
+		Globals.set_int("selected_light_weapon", _selected_light_weapon)
+	if _selected_heavy_weapon < 0 \
+			or _selected_heavy_weapon >= Globals.items_db.weapons_heavy.size():
+		push_warning("Incorrect selected heavy weapon: %d. Reverting to default." \
+				% _selected_heavy_weapon)
+		_selected_heavy_weapon = 0
+		Globals.set_int("selected_heavy_weapon", _selected_heavy_weapon)
+	if _selected_support_weapon < 0 \
+			or _selected_support_weapon >= Globals.items_db.weapons_support.size():
+		push_warning("Incorrect selected support weapon: %d. Reverting to default." \
+				% _selected_support_weapon)
+		_selected_support_weapon = 0
+		Globals.set_int("selected_support_weapon", _selected_support_weapon)
+	if _selected_melee_weapon < 0 \
+			or _selected_melee_weapon >= Globals.items_db.weapons_melee.size():
+		push_warning("Incorrect selected melee weapon: %d. Reverting to default." \
+				% _selected_melee_weapon)
+		_selected_melee_weapon = 0
+		Globals.set_int("selected_melee_weapon", _selected_melee_weapon)
+	if _selected_skill < 0 or _selected_skill >= Globals.items_db.skills.size():
+		push_warning("Incorrect selected skill: %d. Reverting to default." % _selected_skill)
+		_selected_skill = 0
+		Globals.set_int("selected_skill", _selected_skill)
 
 
 func _update_environment() -> void:

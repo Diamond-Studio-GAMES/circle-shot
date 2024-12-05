@@ -206,16 +206,16 @@ func setup_settings() -> void:
 			Globals.get_setting_bool("custom_tracks", OS.has_feature("pc"))
 	)
 	Globals.set_setting_bool(
-			"vibration_damage",
-			Globals.get_setting_bool("vibration_damage", false)
-	)
-	Globals.set_setting_bool(
-			"vibration_hit",
-			Globals.get_setting_bool("vibration_hit", false)
+			"vibration",
+			Globals.get_setting_bool("vibration", false)
 	)
 	Globals.set_setting_bool(
 			"smooth_camera",
 			Globals.get_setting_bool("smooth_camera", true)
+	)
+	Globals.set_setting_bool(
+			"show_damage",
+			Globals.get_setting_bool("show_damage", true)
 	)
 
 

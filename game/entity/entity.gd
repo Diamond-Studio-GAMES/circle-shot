@@ -42,6 +42,7 @@ var server_position := Vector2.ZERO
 var _immune_counter: int = 0
 var _immobile_counter: int = 0
 var _disarmed_counter: int = 0
+var _numbers_vfx_scene: PackedScene
 
 @onready var entity_input: EntityInput = $Input
 @onready var visual: Node2D = $Visual
@@ -52,6 +53,9 @@ var _disarmed_counter: int = 0
 func _ready() -> void:
 	current_health = max_health
 	server_position = position
+	
+	if Globals.get_setting_bool("show_damage"):
+		_numbers_vfx_scene = load("uid://dxiacndmn0qr7")
 
 
 func _physics_process(delta: float) -> void:
@@ -182,17 +186,36 @@ func set_health(health: int) -> void:
 		if multiplayer.is_server():
 			queue_free()
 		return
+	
 	health_changed.emit(current_health, health)
 	if health < current_health:
 		if hurt_vfx_scene:
 			var hurt_vfx: Node2D = hurt_vfx_scene.instantiate()
 			hurt_vfx.position = position
 			_vfx_parent.add_child(hurt_vfx)
+		if _numbers_vfx_scene:
+			var numbers_vfx: Node2D = _numbers_vfx_scene.instantiate()
+			numbers_vfx.position = position
+			(numbers_vfx.get_node(^"Label") as Label).text = str(current_health - health)
+			if is_local():
+				(numbers_vfx.get_node(^"Label") as Label).add_theme_color_override(
+						&"font_color", Color.RED
+				)
+			_vfx_parent.add_child(numbers_vfx)
 	else: 
 		if heal_vfx_scene:
 			var heal_vfx: Node2D = heal_vfx_scene.instantiate()
 			heal_vfx.position = position
 			_vfx_parent.add_child(heal_vfx)
+		if _numbers_vfx_scene:
+			var numbers_vfx: Node2D = _numbers_vfx_scene.instantiate()
+			numbers_vfx.position = position
+			(numbers_vfx.get_node(^"Label") as Label).text = str(health - current_health)
+			(numbers_vfx.get_node(^"Label") as Label).add_theme_color_override(
+					&"font_color", Color.GREEN
+			)
+			_vfx_parent.add_child(numbers_vfx)
+	
 	current_health = health
 	if current_health > max_health:
 		max_health = current_health

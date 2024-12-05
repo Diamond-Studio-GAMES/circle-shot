@@ -41,11 +41,11 @@ func _ready() -> void:
 	(%FireModeOptions as OptionButton).selected = int(Globals.get_controls_bool("joystick_fire"))
 	(%SquareCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("square_joystick"))
 	(%SneakSlider as HSlider).value = Globals.get_controls_float("sneak_multiplier")
-	(%VibDamageCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration_damage"))
-	(%VibHitCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration_hit"))
+	(%VibrationCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration"))
 	(%SmoothCameraCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("smooth_camera"))
 	(%AimDZoneSlider as HSlider).value = Globals.get_controls_float("aim_deadzone")
 	(%AimZoneSlider as HSlider).set_value_no_signal(Globals.get_controls_float("aim_zone"))
+	(%ShowDamageCheck as BaseButton).set_pressed_no_signal(Globals.get_setting_bool("show_damage"))
 	
 	_update_aim_visual_size()
 	get_window().size_changed.connect(_update_aim_visual_size)
@@ -66,8 +66,7 @@ func _ready() -> void:
 	if not OS.has_feature("pc"):
 		(%FullscreenCheck.get_parent().get_parent() as Control).hide()
 	if not OS.has_feature("mobile"):
-		(%VibDamageCheck.get_parent().get_parent() as Control).hide()
-		(%VibHitCheck.get_parent().get_parent() as Control).hide()
+		(%VibrationCheck.get_parent().get_parent() as Control).hide()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -304,12 +303,8 @@ func _on_sneak_slider_value_changed(value: float) -> void:
 	(%SneakValue as Label).text = "x%.2f" % value
 
 
-func _on_vib_hit_check_toggled(toggled_on: bool) -> void:
-	Globals.set_setting_bool("vibration_hit", toggled_on)
-
-
-func _on_vib_damage_check_toggled(toggled_on: bool) -> void:
-	Globals.set_setting_bool("vibration_damage", toggled_on)
+func _on_vibration_check_toggled(toggled_on: bool) -> void:
+	Globals.set_setting_bool("vibration", toggled_on)
 
 
 func _on_configure_actions_pressed() -> void:
@@ -356,3 +351,7 @@ func _on_aim_visual_draw() -> void:
 
 func _on_configure_controls_pressed() -> void:
 	Globals.main.open_screen(load("uid://5wx4yqp027gq") as PackedScene)
+
+
+func _on_show_damage_check_toggled(toggled_on: bool) -> void:
+	Globals.set_setting_bool("show_damage", toggled_on)

@@ -17,8 +17,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	for i: Entity in _entities:
 		if not i.name in _exceptions:
-			_attack.deal_damage(i)
-			_exceptions[i.name] = damage_interval
+			var success: bool = _attack.deal_damage(i)
+			if success:
+				_exceptions[i.name] = damage_interval
 	
 	for i: StringName in _exceptions.keys():
 		_exceptions[i] -= delta
