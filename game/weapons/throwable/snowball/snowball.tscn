@@ -1,7 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://cr1yo5ya4kwex"]
+[gd_scene load_steps=10 format=3 uid="uid://cr1yo5ya4kwex"]
 
 [ext_resource type="Script" path="res://game/weapons/throwable/snowball/snowball.gd" id="1_1p8re"]
-[ext_resource type="PackedScene" uid="uid://c7yp4ideasf2" path="res://game/weapons/throwable/snowball/snowball_projectile.tscn" id="2_n1dvg"]
 [ext_resource type="Texture2D" uid="uid://dldqsm5tvmy3m" path="res://game/weapons/throwable/snowball/snowball.png" id="3_lldaj"]
 
 [sub_resource type="Animation" id="Animation_ba2m7"]
@@ -382,20 +381,16 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_e181f"]
 _data = {
-"Equip0": SubResource("Animation_ba2m7"),
-"Equip1": SubResource("Animation_3dnu3"),
-"RESET": SubResource("Animation_atipv"),
-"Reload": SubResource("Animation_xa57s"),
-"Throw0": SubResource("Animation_krkhg"),
-"Throw1": SubResource("Animation_1xecl")
+&"Equip0": SubResource("Animation_ba2m7"),
+&"Equip1": SubResource("Animation_3dnu3"),
+&"RESET": SubResource("Animation_atipv"),
+&"Reload": SubResource("Animation_xa57s"),
+&"Throw0": SubResource("Animation_krkhg"),
+&"Throw1": SubResource("Animation_1xecl")
 }
 
 [node name="Snowball" type="Node2D"]
 script = ExtResource("1_1p8re")
-equip_time_per_snowball = 0.3
-shoot_interval = 0.45
-spread = 7.0
-projectile = ExtResource("2_n1dvg")
 ammo_per_load = 2
 ammo_total = 30
 
@@ -404,7 +399,7 @@ position = Vector2(77, -46)
 gizmo_extents = 16.0
 
 [node name="Aim" type="Line2D" parent="."]
-z_index = 4
+z_index = 5
 position = Vector2(77, -46)
 points = PackedVector2Array(0, 0, 5000, 0)
 width = 60.0
@@ -421,5 +416,5 @@ texture = ExtResource("3_lldaj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_e181f")
+&"": SubResource("AnimationLibrary_e181f")
 }

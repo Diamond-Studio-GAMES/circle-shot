@@ -15,6 +15,7 @@ metadata/_snap_enabled = true
 [node name="BeanHurtVfx" type="Node2D"]
 
 [node name="Particles" type="CPUParticles2D" parent="."]
+z_index = 1
 emitting = false
 amount = 4
 lifetime = 0.5

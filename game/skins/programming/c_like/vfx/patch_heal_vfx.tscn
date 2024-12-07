@@ -15,6 +15,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 [node name="PatchHealVfx" type="Node2D"]
 
 [node name="Particles" type="CPUParticles2D" parent="."]
+z_index = 1
 emitting = false
 amount = 3
 one_shot = true

@@ -328,7 +328,7 @@ region_enabled = true
 region_rect = Rect2(400, 0, 0, 128)
 
 [node name="Aim" type="Line2D" parent="."]
-z_index = 4
+z_index = 5
 position = Vector2(128, 0)
 points = PackedVector2Array(-41, 0, -71, -70, 14, -240, 94, -240, 192, -77, 192, 77, 94, 240, 14, 240, -71, 70)
 closed = true

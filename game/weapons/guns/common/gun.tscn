@@ -10,7 +10,7 @@ metadata/_custom_type_script = ExtResource("1_in83w")
 
 [node name="Aim" type="Line2D" parent="ShootPoint"]
 visible = false
-z_index = 4
+z_index = 5
 points = PackedVector2Array(0, 0, 2048, 0)
 width = 8.0
 default_color = Color(0, 0, 0, 0.25098)

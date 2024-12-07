@@ -15,6 +15,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 [node name="ErrorsHurtVfx" type="Node2D"]
 
 [node name="Particles" type="CPUParticles2D" parent="."]
+z_index = 1
 material = SubResource("CanvasItemMaterial_6ormg")
 emitting = false
 amount = 4

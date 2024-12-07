@@ -14,7 +14,7 @@ metadata/_custom_type_script = ExtResource("1_34i6u")
 [node name="ThrowPoint" type="Marker2D" parent="ThrowPivot"]
 
 [node name="Aim" type="Line2D" parent="ThrowPivot/ThrowPoint"]
-z_index = 4
+z_index = 5
 points = PackedVector2Array(0, 0, 6500, 0)
 width = 48.0
 default_color = Color(0, 0, 0, 0.25098)

@@ -154,7 +154,7 @@ offset = Vector2(44, 0)
 
 [node name="Aim" type="Line2D" parent="."]
 visible = false
-z_index = 4
+z_index = 5
 position = Vector2(116, 0)
 points = PackedVector2Array(0, 0, 96, 0)
 width = 32.0

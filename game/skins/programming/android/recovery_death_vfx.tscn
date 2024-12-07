@@ -82,6 +82,7 @@ _data = {
 [node name="RecoveryDeathVfx" type="Node2D"]
 
 [node name="Recovery" type="Sprite2D" parent="."]
+z_index = -2
 texture = ExtResource("1_na521")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

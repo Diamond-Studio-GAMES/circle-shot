@@ -188,10 +188,12 @@ _data = {
 [node name="SegfaultDeathVfx" type="Node2D"]
 
 [node name="Console" type="Sprite2D" parent="."]
+z_index = -2
 material = SubResource("ShaderMaterial_yb8wo")
 texture = ExtResource("3_fmk61")
 
 [node name="Particles" type="CPUParticles2D" parent="."]
+z_index = 1
 material = SubResource("CanvasItemMaterial_omr4w")
 emitting = false
 amount = 12

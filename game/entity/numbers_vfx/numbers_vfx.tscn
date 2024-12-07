@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://game/entity/numbers_vfx/numbers_vfx.gd" id="1_obvo0"]
 
 [node name="NumbersVfx" type="Node2D"]
-z_index = 1
+z_index = 4
 script = ExtResource("1_obvo0")
 gravity = 320.0
 despawn_time = 0.5

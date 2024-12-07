@@ -266,7 +266,7 @@ func _on_custom_tracks_check_toggled(toggled_on: bool) -> void:
 	if toggled_on and OS.has_feature("android"):
 		var perms: PackedStringArray = OS.get_granted_permissions()
 		if not (
-				perms.has("android.permission.READ_MEDIA_AUDIO") \
+				perms.has("android.permission.READ_MEDIA_AUDIO") 
 				or perms.has("android.permission.READ_EXTERNAL_STORAGE")
 				or perms.has("android.permission.WRITE_EXTERNAL_STORAGE")
 		):

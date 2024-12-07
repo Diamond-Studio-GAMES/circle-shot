@@ -10,6 +10,7 @@ metadata/_snap_enabled = true
 [node name="HealPlusesVfx" type="Node2D"]
 
 [node name="Particles" type="CPUParticles2D" parent="."]
+z_index = 1
 emitting = false
 amount = 3
 lifetime = 0.8

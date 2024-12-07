@@ -11,3 +11,4 @@ texture_filter = 1
 scale = Vector2(10, 10)
 tile_set = ExtResource("1_o3igp")
 collision_enabled = false
+navigation_enabled = false

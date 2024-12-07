@@ -62,7 +62,7 @@ death_vfx_scene = ExtResource("4_nsvnj")
 shape = SubResource("CircleShape2D_i6vnq")
 
 [node name="Name" type="Node2D" parent="." index="1"]
-z_index = 4
+z_index = 6
 position = Vector2(0, -120)
 
 [node name="Label" type="Label" parent="Name" index="0"]
@@ -111,7 +111,7 @@ gizmo_extents = 32.0
 
 [node name="ControlIndicator" type="Sprite2D" parent="." index="4"]
 visible = false
-z_index = 5
+z_index = 10
 position = Vector2(0, 96)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fptox")
@@ -141,7 +141,7 @@ update_scale = false
 [node name="Visual" type="Sprite2D" parent="Minimap/MinimapMarker" index="0"]
 visible = false
 visibility_layer = 2
-z_index = -1
+z_index = -7
 scale = Vector2(20, 20)
 texture = ExtResource("8_05q0u")
 
