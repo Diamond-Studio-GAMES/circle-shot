@@ -687,8 +687,7 @@ func _on_check_http_request_completed(result: HTTPRequest.Result,
 		return
 	if response_code != HTTPClient.RESPONSE_OK:
 		push_warning(
-				"Connect to server: response code is not 200! Response code: %d" % response_code
-		)
+				"Connect to server: response code is not 200! Response code: %d" % response_code)
 		loading_stage_finished.emit(false)
 		return
 	print_verbose("Connection success.")
