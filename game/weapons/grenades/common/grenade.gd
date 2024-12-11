@@ -28,17 +28,17 @@ func _process(_delta: float) -> void:
 		if not visible and ammo_in_stock > 0:
 			_make_current()
 		_aim.visible = _player.player_input.showing_aim
-		_throw_pivot.rotation = _calculate_aim_direction()
+		_throw_pivot.rotation = _calculate_aim_angle()
 		
 		_aim_spread_left.rotation_degrees = -_calculate_spread()
 		_aim_spread_right.rotation_degrees = _calculate_spread()
 		
 		# Вычисление длины пути гранаты через формулу по физике xD
 		var speed_multiplier: float = _player.player_input.aim_direction.length()
-		var time: float = minf(projectile_speed * speed_multiplier / projectile_damping, \
+		var time: float = minf(projectile_speed * speed_multiplier / projectile_damping,
 				projectile_explosion_time)
-		_aim.points[1].x = projectile_speed * time * speed_multiplier - \
-				projectile_damping / 2 * time * time
+		_aim.points[1].x = projectile_speed * time * speed_multiplier \
+				- projectile_damping / 2 * time * time
 		
 		if _player.player_input.shooting and ammo_in_stock > 0 \
 				and multiplayer.is_server() and not _reloading:
@@ -86,25 +86,25 @@ func _shoot() -> void:
 	
 	if multiplayer.is_server():
 		var projectile: GrenadeProjectile = projectile_scene.instantiate()
-		projectile.global_position = _throw_point.global_position
+		projectile.position = _throw_point.global_position
 		var spread: float = deg_to_rad(_calculate_spread())
-		projectile.direction = throw_direction.rotated(randf_range(-spread, spread))
+		projectile.direction = throw_direction.normalized().rotated(randf_range(-spread, spread))
 		projectile.speed *= minf(throw_direction.length(), 1.0)
 		_customize_projectile(projectile)
 		projectile.name += str(randi())
 		_projectiles_parent.add_child(projectile)
 
 
+func _can_reload() -> bool:
+	return false
+
+
 func get_ammo_text() -> String:
 	return "Осталось: %d" % ammo_in_stock
 
 
-func can_reload() -> bool:
-	return false
-
-
 func _calculate_spread() -> float:
-	return spread_walk * clampf((_player.entity_input.direction.length() - spread_walk_ratio) \
+	return spread_walk * clampf((_player.entity_input.direction.length() - spread_walk_ratio)
 			/ (1.0 - spread_walk_ratio), 0.0, 1.0) + spread_base
 
 

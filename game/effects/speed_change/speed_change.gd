@@ -8,9 +8,9 @@ func _start_effect() -> void:
 	var multiplier: float = _data[0]
 	_entity.speed_multiplier *= multiplier
 	if multiplier > 1.0:
-		($Speedup as Node2D).show()
+		($Speedup as CanvasItem).show()
 	elif multiplier < 1.0:
-		($Slowdown as Node2D).show()
+		($Slowdown as CanvasItem).show()
 		negative = true
 
 

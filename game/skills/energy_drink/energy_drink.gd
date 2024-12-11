@@ -7,6 +7,7 @@ extends Skill
 @export var boost_duration := 5.0
 @export var shake_amplitude := 32.0
 @export var shake_duration := 0.6
+
 var _use_effect_scene: PackedScene = preload("uid://c7rmbgdh6weme")
 @onready var _timer: Timer = $Timer
 
@@ -23,8 +24,7 @@ func _use() -> void:
 		_player.add_effect.rpc(Effect.SPEED_CHANGE, boost_duration, [1.0 + speed_boost])
 		_player.add_effect.rpc(Effect.DAMAGE_CHANGE, boost_duration, [1.0 + damage_boost])
 	if _player.is_local():
-		var camera: SmartCamera = get_viewport().get_camera_2d()
-		camera.shake(shake_amplitude, shake_duration)
+		(get_viewport().get_camera_2d() as SmartCamera).shake(shake_amplitude, shake_duration)
 	_timer.start(0.35)
 	await _timer.timeout
 	_player.unmake_disarmed()

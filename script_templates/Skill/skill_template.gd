@@ -8,6 +8,5 @@ func _use() -> void:
 _TS_pass
 
 
-# Расскоментируй, если нужны особые условия для использования навыка
-#func can_use() -> bool:
-_TS_#return super() # Пиши новые условия тут
+#func _can_use() -> bool:
+_TS_#return # Пиши условия здесь

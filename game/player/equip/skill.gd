@@ -25,7 +25,7 @@ func initialize(player: Player, skill_data: SkillData) -> void:
 	_initialize()
 
 
-@rpc("authority", "call_local", "reliable", 2)
+@rpc("authority", "call_local", "reliable", 5)
 func use() -> void:
 	_player.skill_vars[0] -= 1
 	_player.skill_vars[1] = use_cooldown
@@ -34,7 +34,8 @@ func use() -> void:
 
 
 func can_use() -> bool:
-	return _player.skill_vars[0] > 0 and _player.skill_vars[1] <= 0 and not _player.is_disarmed()
+	return not _player.is_disarmed() and _player.skill_vars[0] > 0 \
+			and _player.skill_vars[1] <= 0 and _can_use()
 
 
 func _initialize() -> void:
@@ -43,3 +44,7 @@ func _initialize() -> void:
 
 func _use() -> void:
 	pass
+
+
+func _can_use() -> bool:
+	return true

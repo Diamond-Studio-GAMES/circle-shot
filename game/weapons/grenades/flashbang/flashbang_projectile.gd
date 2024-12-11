@@ -41,13 +41,9 @@ func unmute() -> void:
 	AudioServer.set_bus_mute(music_idx, false)
 	AudioServer.set_bus_mute(sfx_idx, false)
 	var tween: Tween = get_tree().create_tween()
-	tween.tween_method(
-			func(db: float) -> void: AudioServer.set_bus_volume_db(music_idx, db),
-			-60.0, _previous_music_db, unmute_duration
-	)
+	tween.tween_method(func(db: float) -> void: AudioServer.set_bus_volume_db(music_idx, db),
+			-60.0, _previous_music_db, unmute_duration)
 	tween.parallel()
-	tween.tween_method(
-			func(db: float) -> void: AudioServer.set_bus_volume_db(sfx_idx, db),
-			-60.0, _previous_sfx_db, unmute_duration
-	)
+	tween.tween_method(func(db: float) -> void: AudioServer.set_bus_volume_db(sfx_idx, db),
+			-60.0, _previous_sfx_db, unmute_duration)
 	

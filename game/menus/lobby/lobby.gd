@@ -17,8 +17,8 @@ var _selected_support_weapon: int = 0
 var _selected_melee_weapon: int = 0
 var _selected_skill: int = 0
 var _players: Dictionary[int, String]
-var _admin_id: int = -1
 var _admin := false
+var _admin_id: int = -1
 var _local_lobby_id: int = 0
 var _udp_peers: Array[PacketPeerUDP]
 var _client_timers: Dictionary[int, Timer]
@@ -61,56 +61,55 @@ func _ready() -> void:
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_WM_GO_BACK_REQUEST \
-				when multiplayer.has_multiplayer_peer() and not is_instance_valid(_game.event):
+				when multiplayer.has_multiplayer_peer() and _game.state == Game.State.LOBBY:
 			_on_leave_pressed()
 
 
-@rpc("reliable", "call_local")
+@rpc("reliable", "call_local", "authority", 1)
 func _add_player_entry(id: int, player_name: String) -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
+	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
+		push_error("This method must be called only by server.")
 		return
 	
 	var player_entry: Node = _player_entry_scene.instantiate()
 	player_entry.name = str(id)
 	if id == multiplayer.get_unique_id():
 		(player_entry.get_node(^"Name") as Label).add_theme_color_override(
-				&"font_color", Color.CORNFLOWER_BLUE
-		)
+				&"font_color", Color.CORNFLOWER_BLUE)
 		(player_entry.get_node(^"Kick") as BaseButton).disabled = true
 	(player_entry.get_node(^"Name") as Label).text = player_name
-	(player_entry.get_node(^"Kick") as Control).visible = _admin
+	(player_entry.get_node(^"Kick") as CanvasItem).visible = _admin
 	(player_entry.get_node(^"Kick") as BaseButton).pressed.connect(_on_kick_pressed.bind(id))
 	_players_container.add_child(player_entry)
 	print_verbose("Added player %d entry with name: %s." % [id, player_name])
 
 
-@rpc("reliable", "call_local")
+@rpc("reliable", "call_local", "authority", 1)
 func _delete_player_entry(id: int) -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
+	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
+		push_error("This method must be called only by server.")
 		return
 	
 	_players_container.get_node(str(id)).queue_free()
 	print_verbose("Deleted player %d entry." % id)
 
 
-@rpc("any_peer", "reliable", "call_local")
+@rpc("any_peer", "reliable", "call_local", 1)
 func _register_new_player(player_name: String) -> void:
 	if not multiplayer.is_server():
-		push_error("Unexpected call on client!")
+		push_error("Unexpected call on client.")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id in _players:
-		push_warning("Player %d is already registered!")
+		push_warning("Player %d is already registered.")
 		return
 	
 	if _client_timers.has(sender_id):
 		_client_timers[sender_id].queue_free()
 		_client_timers.erase(sender_id)
-	for i: int in _players:
-		_add_player_entry.rpc_id(sender_id, i, _players[i])
+	for id: int in _players:
+		_add_player_entry.rpc_id(sender_id, id, _players[id])
 	_set_environment.rpc_id(sender_id, _selected_event, _selected_map)
 	player_name = Game.validate_player_name(player_name, sender_id)
 	_players[sender_id] = player_name
@@ -128,35 +127,35 @@ func _register_new_player(player_name: String) -> void:
 	print_verbose("Registered player %d with name %s." % [sender_id, player_name])
 
 
-@rpc("reliable", "call_local")
+@rpc("reliable", "call_local", "authority", 1)
 func _set_admin(admin: bool) -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
+	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
+		push_error("This method must be called only by server.")
 		return
 	
-	(%AdminPanel as Control).visible = admin
-	(%ClientHint as Control).visible = not admin
+	(%AdminPanel as CanvasItem).visible = admin
+	(%ClientHint as CanvasItem).visible = not admin
 	for i: Node in _players_container.get_children():
-		(i.get_node(^"Kick") as Control).visible = admin
+		(i.get_node(^"Kick") as CanvasItem).visible = admin
 	if admin:
-		var my_event_id: int = Globals.get_int("selected_event")
-		var my_map_id: int = Globals.get_int("selected_map")
-		_request_set_environment.rpc_id(1, my_event_id, my_map_id)
+		# Просим сервер установить выбранные ранее НАМИ карты
+		_request_set_environment.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER,
+				Globals.get_int("selected_event"), Globals.get_int("selected_map"))
 	else:
 		(%ClientHint as Label).text = "Начать игру может только хост."
 	_admin = admin
 	print_verbose("Admin set: %s." % str(admin))
 
 
-@rpc("any_peer", "reliable", "call_local")
+@rpc("any_peer", "reliable", "call_local", 1)
 func _request_set_environment(event_id: int, map_id: int) -> void:
 	if not multiplayer.is_server():
-		push_error("Unexpected call on client!")
+		push_error("Unexpected call on client.")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id != _admin_id:
-		push_warning("Set environment request rejected: player %d is not admin!" % sender_id)
+		push_warning("Set environment request rejected: player %d is not admin." % sender_id)
 		return
 	
 	if not _countdown_timer.is_stopped():
@@ -184,10 +183,10 @@ func _request_set_environment(event_id: int, map_id: int) -> void:
 	_set_environment.rpc(event_id, map_id)
 
 
-@rpc("call_local", "reliable")
+@rpc("call_local", "reliable", "authority", 1)
 func _set_environment(event_id: int, map_id: int) -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
+	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
+		push_error("This method must be called only by server.")
 		return
 	
 	_selected_event = event_id
@@ -196,21 +195,21 @@ func _set_environment(event_id: int, map_id: int) -> void:
 	_update_environment()
 
 
-@rpc("any_peer", "reliable", "call_local")
+@rpc("any_peer", "reliable", "call_local", 1)
 func _request_kick_player(id: int) -> void:
 	if not multiplayer.is_server():
-		push_error("Unexpected call on client!")
+		push_error("Unexpected call on client.")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if sender_id != _admin_id:
-		push_warning("Kick request rejected: player %d is not admin!" % sender_id)
+		push_warning("Kick request rejected: player %d is not admin." % sender_id)
 		return
 	if id == _admin_id:
-		push_warning("Cannot kick admin!")
+		push_warning("Cannot kick admin.")
 		return
 	if _game.state != Game.State.LOBBY:
-		push_warning("Cannot kick if not in lobby!")
+		push_warning("Cannot kick if not in lobby.")
 		return
 	
 	print_verbose("Accepted kick request. Kicking: %d." % id)
@@ -224,10 +223,10 @@ func _request_kick_player(id: int) -> void:
 	_delete_player_entry.rpc(id)
 
 
-@rpc("any_peer", "reliable", "call_local")
+@rpc("any_peer", "reliable", "call_local", 1)
 func _request_start_event() -> void:
 	if not multiplayer.is_server():
-		push_error("Unexpected call on client!")
+		push_error("Unexpected call on client.")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
@@ -252,80 +251,70 @@ func _request_start_event() -> void:
 	_show_countdown.rpc()
 
 
-@rpc("call_local", "reliable")
+@rpc("call_local", "reliable", "authority", 1)
 func _show_countdown() -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
+	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
+		push_error("This method must be called only by server.")
 		return
 	
 	if _admin:
-		(%AdminPanel as Control).hide()
+		(%AdminPanel as CanvasItem).hide()
 	else:
-		(%ClientHint as Control).hide()
-	(%Countdown as Control).show()
+		(%ClientHint as CanvasItem).hide()
+	(%Countdown as CanvasItem).show()
 	(%Countdown/AnimationPlayer as AnimationPlayer).play(&"Countdown")
 
 
-@rpc("call_local", "reliable")
+@rpc("call_local", "reliable", "authority", 1)
 func _hide_countdown() -> void:
 	if _admin:
 		(%AdminPanel as Control).show()
 	else:
 		(%ClientHint as Control).show()
-	(%Countdown as Control).hide()
+	(%Countdown as CanvasItem).hide()
 	(%Countdown/AnimationPlayer as AnimationPlayer).stop()
 
 
-@rpc("reliable", "call_local")
+@rpc("reliable", "call_local", "authority", 1)
 func _reject_start_event(reason: StartRejectReason, players_count: int) -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
+	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
+		push_error("This method must be called only by server.")
 		return
 	
 	match reason:
 		StartRejectReason.OK:
 			push_warning("This method can't be called with OK reject reason!")
 		StartRejectReason.TOO_FEW_PLAYERS:
-			_game.show_error(
-					"Невозможно начать игру: слишком мало игроков (%d) при минимуме в %d!" % [
-						players_count,
-						Globals.items_db.events[_selected_event].min_players,
-					]
-			)
+			_game.show_error("Невозможно начать игру: слишком мало игроков (%d) \
+при минимуме в %d!" % [players_count, Globals.items_db.events[_selected_event].min_players])
 			print_verbose("Start rejected: too few players (%d) with minimum %d." % [
 				players_count,
 				Globals.items_db.events[_selected_event].min_players,
 			])
 		StartRejectReason.TOO_MANY_PLAYERS:
-			_game.show_error(
-					"Невозможно начать игру: слишком много игроков (%d) при максимуме в %d!" % [
-						players_count,
-						Globals.items_db.events[_selected_event].max_players,
-					]
-			)
+			_game.show_error("Невозможно начать игру: слишком много игроков (%d) \
+при максимуме в %d!" % [players_count, Globals.items_db.events[_selected_event].max_players])
 			print_verbose("Start rejected: too many players (%d) with maximum %d." % [
 				players_count,
 				Globals.items_db.events[_selected_event].max_players,
 			])
 		StartRejectReason.INDIVISIBLE_NUMBER_OF_PLAYERS:
-			_game.show_error(
-					"Невозможно начать игру: количество игроков (%d) не делится на %d!" % [
-						players_count,
-						Globals.items_db.events[_selected_event].players_divider,
-					]
-			)
+			_game.show_error("Невозможно начать игру: количество игроков (%d) не делится на %d!" % [
+				players_count,
+				Globals.items_db.events[_selected_event].players_divider,
+			])
 			print_verbose("Start rejected: number of players (%d) doesn't divide on %d." % [
 				players_count,
 				Globals.items_db.events[_selected_event].players_divider,
 			])
 		_:
-			push_warning("Received invalid reject reason!")
+			push_warning("Received invalid reject reason.")
 
 
-@rpc("call_local", "reliable")
+@rpc("call_local", "reliable", "authority", 1)
 func _start_event(event_id: int, map_id: int) -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
+	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
+		push_error("This method must be called only by server.")
 		return
 	
 	_chat.clear_chat()
@@ -341,7 +330,7 @@ func _start_event(event_id: int, map_id: int) -> void:
 				if _client_timers.has(id):
 					_client_timers[id].queue_free()
 					_client_timers.erase(id)
-				push_warning("Start event: peer %d kicked for inactivity." % id)
+				push_warning("Start event: peer %d kicked as not registered." % id)
 		if Globals.headless:
 			_game.load_event(event_id, map_id)
 			return
@@ -373,25 +362,25 @@ func _validate_selected_items() -> void:
 		Globals.set_int("selected_skin", _selected_skin)
 	if _selected_light_weapon < 0 \
 			or _selected_light_weapon >= Globals.items_db.weapons_light.size():
-		push_warning("Incorrect selected light weapon: %d. Reverting to default." \
+		push_warning("Incorrect selected light weapon: %d. Reverting to default."
 				% _selected_light_weapon)
 		_selected_light_weapon = 0
 		Globals.set_int("selected_light_weapon", _selected_light_weapon)
 	if _selected_heavy_weapon < 0 \
 			or _selected_heavy_weapon >= Globals.items_db.weapons_heavy.size():
-		push_warning("Incorrect selected heavy weapon: %d. Reverting to default." \
+		push_warning("Incorrect selected heavy weapon: %d. Reverting to default."
 				% _selected_heavy_weapon)
 		_selected_heavy_weapon = 0
 		Globals.set_int("selected_heavy_weapon", _selected_heavy_weapon)
 	if _selected_support_weapon < 0 \
 			or _selected_support_weapon >= Globals.items_db.weapons_support.size():
-		push_warning("Incorrect selected support weapon: %d. Reverting to default." \
+		push_warning("Incorrect selected support weapon: %d. Reverting to default."
 				% _selected_support_weapon)
 		_selected_support_weapon = 0
 		Globals.set_int("selected_support_weapon", _selected_support_weapon)
 	if _selected_melee_weapon < 0 \
 			or _selected_melee_weapon >= Globals.items_db.weapons_melee.size():
-		push_warning("Incorrect selected melee weapon: %d. Reverting to default." \
+		push_warning("Incorrect selected melee weapon: %d. Reverting to default."
 				% _selected_melee_weapon)
 		_selected_melee_weapon = 0
 		Globals.set_int("selected_melee_weapon", _selected_melee_weapon)
@@ -471,7 +460,6 @@ func _find_ips_for_broadcast() -> void:
 	_udp_peers.clear()
 	print_verbose("Finding IPs for broadcast...")
 	# Отсылаем пакеты по всем локальным адресам
-	# TODO: Ждать PR где добавят возможность искать широковещательные адреса
 	for i: String in IP.get_local_addresses():
 		if i.begins_with("192.168.") or i.begins_with("10.42.") or i.begins_with("10.22."):
 			var udp := PacketPeerUDP.new()
@@ -479,7 +467,7 @@ func _find_ips_for_broadcast() -> void:
 			# Меняем конец IP на 255
 			var broadcast_ip: String = i.rsplit('.', true, 1)[0] + ".255"
 			udp.set_dest_address(broadcast_ip, Game.LISTEN_PORT)
-			print_verbose("Found IP to broadcast: %s" % broadcast_ip)
+			print_verbose("Found IP to broadcast: %s." % broadcast_ip)
 			_udp_peers.append(udp)
 
 
@@ -499,18 +487,6 @@ func _do_broadcast() -> void:
 	])
 
 
-func _on_countdown_timer_timeout() -> void:
-	print_verbose("Countdown ended.")
-	var start_reject_reason: StartRejectReason = _get_start_reject_reason()
-	if start_reject_reason != StartRejectReason.OK:
-		_hide_countdown.rpc()
-		_reject_start_event.rpc_id(_admin_id, start_reject_reason, _players.size())
-		return
-	
-	print_verbose("Starting...")
-	_start_event.rpc(_selected_event, _selected_map)
-
-
 func _on_client_timer_timeout(id: int) -> void:
 	(multiplayer as SceneMultiplayer).disconnect_peer(id)
 	push_warning("Peer %d kicked for inactivity." % id)
@@ -520,8 +496,8 @@ func _on_client_timer_timeout(id: int) -> void:
 
 func _on_game_created() -> void:
 	show()
-	(%ControlButtons/ConnectedToIP as Control).hide()
-	(%ControlButtons/ViewIPs as Control).show()
+	(%ControlButtons/ConnectedToIP as CanvasItem).hide()
+	(%ControlButtons/ViewIPs as CanvasItem).show()
 	_players.clear()
 	($UDPTimer as Timer).start()
 	($UpdateIPSTimer as Timer).start()
@@ -529,20 +505,23 @@ func _on_game_created() -> void:
 			* OS.get_unique_id().hash() + OS.get_process_id()
 	_local_lobby_id %= 256
 	if not Globals.headless:
-		_register_new_player.rpc_id(1, Globals.get_string("player_name"))
+		_register_new_player.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER,
+				Globals.get_string("player_name"))
 	_do_broadcast()
 
 
 func _on_game_joined() -> void:
 	show()
-	(%AdminPanel as HBoxContainer).hide()
-	(%ClientHint as Label).show()
-	(%ControlButtons/ConnectedToIP as Control).show()
+	(%AdminPanel as CanvasItem).hide()
+	(%ClientHint as CanvasItem).show()
+	(%ControlButtons/ConnectedToIP as CanvasItem).show()
 	(%ControlButtons/ConnectedToIP as LinkButton).text = "Подключёно к %s" % \
-			(multiplayer.multiplayer_peer as ENetMultiplayerPeer).get_peer(1).get_remote_address()
-	(%ControlButtons/ViewIPs as Control).hide()
+			(multiplayer.multiplayer_peer as ENetMultiplayerPeer).get_peer(
+			MultiplayerPeer.TARGET_PEER_SERVER).get_remote_address()
+	(%ControlButtons/ViewIPs as CanvasItem).hide()
 	(%ClientHint as Label).text = "Ожидание сервера..."
-	_register_new_player.rpc_id(1, Globals.get_string("player_name"))
+	_register_new_player.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER,
+			Globals.get_string("player_name"))
 
 
 func _on_game_closed() -> void:
@@ -561,7 +540,7 @@ func _on_game_closed() -> void:
 		i.queue_free()
 	
 	_chat.clear_chat()
-	(%ControlButtons/Chat as Button).button_pressed = false
+	(%ControlButtons/Chat as BaseButton).button_pressed = false
 
 
 func _on_game_started() -> void:
@@ -595,8 +574,8 @@ func _on_peer_disconnected(id: int) -> void:
 	_chat.players_names.erase(id)
 	_players.erase(id)
 	if id == _admin_id:
-		if _players.size() > 0:
-			_admin_id = (_players.keys() as Array[int])[0]
+		if not _players.is_empty():
+			_admin_id = _players.keys()[0]
 			_set_admin.rpc_id(_admin_id, true)
 		else:
 			_admin_id = -1
@@ -605,11 +584,23 @@ func _on_peer_disconnected(id: int) -> void:
 
 
 func _on_kick_pressed(id: int) -> void:
-	_request_kick_player.rpc_id(1, id)
+	_request_kick_player.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER, id)
+
+
+func _on_countdown_timer_timeout() -> void:
+	print_verbose("Countdown ended.")
+	var start_reject_reason: StartRejectReason = _get_start_reject_reason()
+	if start_reject_reason != StartRejectReason.OK:
+		_hide_countdown.rpc()
+		_reject_start_event.rpc_id(_admin_id, start_reject_reason, _players.size())
+		return
+	
+	print_verbose("Starting...")
+	_start_event.rpc(_selected_event, _selected_map)
 
 
 func _on_start_event_pressed() -> void:
-	_request_start_event.rpc_id(1)
+	_request_start_event.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER)
 
 
 func _on_leave_pressed() -> void:
@@ -617,9 +608,8 @@ func _on_leave_pressed() -> void:
 
 
 func _on_connected_to_ip_pressed() -> void:
-	DisplayServer.clipboard_set(
-			(multiplayer.multiplayer_peer as ENetMultiplayerPeer).get_peer(1).get_remote_address()
-	)
+	DisplayServer.clipboard_set((multiplayer.multiplayer_peer as ENetMultiplayerPeer).get_peer(
+		MultiplayerPeer.TARGET_PEER_SERVER).get_remote_address())
 
 
 func _on_change_event_pressed() -> void:
@@ -675,11 +665,11 @@ func _on_item_selected(type: ItemsDB.Item, id: int) -> void:
 	match type:
 		ItemsDB.Item.EVENT:
 			if id != _selected_event:
-				_request_set_environment.rpc_id(1, id, 0)
+				_request_set_environment.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER, id, 0)
 				Globals.set_int("selected_event", id)
 				Globals.set_int("selected_map", 0)
 		ItemsDB.Item.MAP:
-			_request_set_environment.rpc_id(1, _selected_event, id)
+			_request_set_environment.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER, _selected_event, id)
 			Globals.set_int("selected_map", id)
 		ItemsDB.Item.SKIN:
 			_selected_skin = id

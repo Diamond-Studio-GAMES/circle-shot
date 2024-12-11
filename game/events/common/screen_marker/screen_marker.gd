@@ -4,6 +4,7 @@ extends Node2D
 @export var margin := 120.0
 @export var arrow_margin := 16.0
 var _screen_angle: float
+
 @onready var _visual: CanvasLayer = $Visual
 @onready var _marker: Node2D = $Visual/Marker
 @onready var _icon: Sprite2D = $Visual/Marker/Icon

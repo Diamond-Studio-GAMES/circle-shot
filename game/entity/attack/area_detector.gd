@@ -15,16 +15,16 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	for i: Entity in _entities:
-		if not i.name in _exceptions:
-			var success: bool = _attack.deal_damage(i)
+	for entity: Entity in _entities:
+		if not entity.name in _exceptions:
+			var success: bool = _attack.deal_damage(entity)
 			if success:
-				_exceptions[i.name] = damage_interval
+				_exceptions[entity.name] = damage_interval
 	
-	for i: StringName in _exceptions.keys():
-		_exceptions[i] -= delta
-		if _exceptions[i] <= 0.0:
-			_exceptions.erase(i)
+	for exception: StringName in _exceptions.keys():
+		_exceptions[exception] -= delta
+		if _exceptions[exception] <= 0.0:
+			_exceptions.erase(exception)
 
 
 func _on_body_entered(body: Node2D) -> void:

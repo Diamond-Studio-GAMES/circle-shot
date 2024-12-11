@@ -38,13 +38,13 @@ func _make_teams() -> void:
 	_spawn_points_red.shuffle()
 	
 	var next_team: int = -1
-	for i: int in _players_names:
+	for player: int in _players_names:
 		if next_team < 0:
 			var team: int = randi() % 2
-			_players_teams[i] = team
+			_players_teams[player] = team
 			next_team = 1 - team
 		else:
-			_players_teams[i] = next_team
+			_players_teams[player] = next_team
 			next_team = -1
 
 
@@ -76,15 +76,15 @@ func _player_disconnected(_who: int) -> void:
 		_time_remained = 1
 
 
-@rpc("reliable", "call_local")
+@rpc("reliable", "call_local", "authority", 3)
 func _update_time(remained: int) -> void:
 	_teamfight_ui.set_time(remained)
 
 
-@rpc("reliable", "call_local")
+@rpc("reliable", "call_local", "authority", 3)
 func _freeze_players() -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
+	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
+		push_error("This method must be called only by server.")
 		return
 	
 	get_tree().call_group(&"Player", &"make_disarmed")
@@ -111,11 +111,7 @@ func _determine_winner() -> void:
 		_teamfight_ui.show_winner.rpc(-1)
 	_freeze_players.rpc()
 	await get_tree().create_timer(6.5).timeout
-	get_tree().call_group(&"Player", &"queue_free")
-	for i: Node in get_tree().get_first_node_in_group(&"ProjectilesParent").get_children():
-		i.queue_free()
-	for i: Node in get_tree().get_first_node_in_group(&"OtherParent").get_children():
-		i.queue_free()
+	_cleanup()
 	await get_tree().create_timer(0.5).timeout
 	_end.rpc()
 

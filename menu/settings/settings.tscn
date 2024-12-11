@@ -458,48 +458,6 @@ layout_mode = 2
 icon = ExtResource("1_xh6xh")
 expand_icon = true
 
-[node name="CurrentRenderer" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video"]
-unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(0, 48)
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-text = "Текущий отрисовщик: Vulkan"
-vertical_alignment = 1
-
-[node name="Renderer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video"]
-visible = false
-layout_mode = 2
-
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Renderer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_type_variation = &"HeaderSmall"
-text = "Предпочитаемый отрисовщик"
-vertical_alignment = 1
-
-[node name="Setting" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Renderer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="RendererOptions" type="OptionButton" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Renderer/Setting"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-selected = 0
-item_count = 2
-popup/item_0/text = "Vulkan"
-popup/item_0/id = 0
-popup/item_1/text = "OpenGL"
-popup/item_1/id = 0
-
-[node name="Help" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Renderer/Setting"]
-custom_minimum_size = Vector2(48, 0)
-layout_mode = 2
-icon = ExtResource("1_xh6xh")
-expand_icon = true
-
 [node name="ShaderCache" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video"]
 layout_mode = 2
 
@@ -1031,8 +989,6 @@ visible = false
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Game/ShowDamage/Setting/Help" to="." method="show_help" binds= [15]]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen/Setting/FullscreenCheck" to="." method="_on_fullscreen_check_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Fullscreen/Setting/Help" to="." method="show_help" binds= [1]]
-[connection signal="item_selected" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Renderer/Setting/RendererOptions" to="." method="_on_renderer_options_item_selected"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/Renderer/Setting/Help" to="." method="show_help" binds= [0]]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/ShaderCache/Setting/ShaderCacheCheck" to="." method="_on_shader_cache_check_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/ShaderCache/Setting/Help" to="." method="show_help" binds= [1]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ScrollContainer/Sections/Video/ClearCache/ClearShaderCache" to="." method="_on_clear_shader_cache_pressed"]

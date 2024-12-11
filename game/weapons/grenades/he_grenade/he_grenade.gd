@@ -2,7 +2,7 @@ extends Grenade
 
 
 func _customize_projectile(projectile: GrenadeProjectile) -> void:
-	for i: Attack in projectile.get_node(^"Explosion/Attacks").get_children():
-		i.who = _player.id
-		i.team = _player.team
-		i.damage_multiplier = _player.damage_multiplier
+	for attack: Attack in projectile.get_node(^"Explosion/Attacks").get_children():
+		attack.who = _player.id
+		attack.team = _player.team
+		attack.damage_multiplier = _player.damage_multiplier

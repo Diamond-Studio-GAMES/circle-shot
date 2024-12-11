@@ -12,8 +12,8 @@ func _process(delta: float) -> void:
 
 func reload() -> void:
 	_reloading = true
-	var tween: Tween = create_tween()
-	tween.tween_property(self, ^"rotation", 0.0, to_aim_time)
+	_turn_tween = create_tween()
+	_turn_tween.tween_property(self, ^":rotation", 0.0, to_aim_time)
 	block_shooting()
 	_anim.play(&"StartReload")
 	
@@ -50,9 +50,9 @@ func reload() -> void:
 	
 	_anim.play(&"PostReload")
 	
-	tween = create_tween()
-	tween.tween_property(self, ^"rotation", _calculate_aim_direction(), to_aim_time)
-	await tween.finished
+	_turn_tween = create_tween()
+	_turn_tween.tween_property(self, ^":rotation", _calculate_aim_angle(), to_aim_time)
+	await _turn_tween.finished
 	
 	unlock_shooting()
 
@@ -62,9 +62,9 @@ func _create_projectile() -> void:
 		var projectile: Attack = projectile_scene.instantiate()
 		projectile.global_position = _shoot_point.global_position
 		projectile.damage_multiplier = _player.damage_multiplier
-		projectile.rotation = _player.player_input.aim_direction.angle() + deg_to_rad(
-				_calculate_spread() * (-1 + 2.0 / (buckshot_in_shot - 1) * i)
-		) + deg_to_rad(_calculate_recoil()) * signf(_player.player_input.aim_direction.x)
+		projectile.rotation = _player.player_input.aim_direction.angle() \
+				+ deg_to_rad(_calculate_spread() * (-1 + 2.0 / (buckshot_in_shot - 1) * i)) \
+				+ deg_to_rad(_calculate_recoil()) * signf(_player.player_input.aim_direction.x)
 		projectile.team = _player.team
 		projectile.who = _player.id
 		projectile.name += str(randi())

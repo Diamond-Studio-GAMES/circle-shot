@@ -30,7 +30,7 @@ var _recoil_timer := 0.0
 var _spread_timer := 0.0
 var _recoil_timer_tween: Tween
 var _spread_timer_tween: Tween
-var _post_equip_tween: Tween
+var _turn_tween: Tween
 
 @onready var _shoot_point: Marker2D = $ShootPoint
 @onready var _anim: AnimationPlayer = $AnimationPlayer
@@ -45,7 +45,7 @@ func _process(_delta: float) -> void:
 	
 	if can_shoot():
 		_aim.visible = _player.player_input.showing_aim
-		rotation = _calculate_aim_direction() + deg_to_rad(_calculate_recoil())
+		rotation = _calculate_aim_angle() + deg_to_rad(_calculate_recoil())
 		
 		var spread: float = _calculate_spread()
 		_aim_spread_left.rotation_degrees = -spread
@@ -77,9 +77,9 @@ func _make_current() -> void:
 		return
 	
 	_anim.play(&"PostEquip")
-	_post_equip_tween = create_tween()
-	_post_equip_tween.tween_property(self, ^":rotation", _calculate_aim_direction(), to_aim_time)
-	await _post_equip_tween.finished
+	_turn_tween = create_tween()
+	_turn_tween.tween_property(self, ^":rotation", _calculate_aim_angle(), to_aim_time)
+	await _turn_tween.finished
 	
 	unlock_shooting()
 
@@ -89,9 +89,9 @@ func _unmake_current() -> void:
 		_spread_timer_tween.kill()
 	if is_instance_valid(_recoil_timer_tween):
 		_recoil_timer_tween.kill()
-	if is_instance_valid(_post_equip_tween):
-		_post_equip_tween.finished.emit()
-		_post_equip_tween.kill()
+	if is_instance_valid(_turn_tween):
+		_turn_tween.finished.emit()
+		_turn_tween.kill()
 	
 	_spread_timer = 0.0
 	_recoil_timer = 0.0
@@ -107,7 +107,7 @@ func _shoot() -> void:
 	
 	ammo -= ammo_per_shot
 	_anim.play(&"Shoot")
-	_anim.seek(0, true)
+	_anim.seek(0.0, true)
 	if multiplayer.is_server():
 		_create_projectile()
 	
@@ -117,12 +117,9 @@ func _shoot() -> void:
 		_recoil_timer_tween.kill()
 	
 	_spread_timer_tween = create_tween()
-	_spread_timer_tween.tween_property(
-			self, ^"_spread_timer", _spread_timer + shoot_interval, spread_increasing_time
-	)
-	_spread_timer_tween.tween_property(
-			self, ^"_spread_timer", 0.0, spread_reset_time
-	).from(
+	_spread_timer_tween.tween_property(self, ^":_spread_timer",
+			_spread_timer + shoot_interval, spread_increasing_time)
+	_spread_timer_tween.tween_property(self, ^":_spread_timer", 0.0, spread_reset_time).from(
 			(fposmod(_spread_timer + shoot_interval - spread_curve_time, spread_post_curve_time)
 			+ spread_curve_time)
 			if _spread_timer + shoot_interval > spread_curve_time + spread_post_curve_time else
@@ -130,12 +127,9 @@ func _shoot() -> void:
 	)
 	
 	_recoil_timer_tween = create_tween()
-	_recoil_timer_tween.tween_property(
-			self, ^"_recoil_timer", _recoil_timer + shoot_interval, recoil_increasing_time
-	)
-	_recoil_timer_tween.tween_property(
-			self, ^"_recoil_timer", 0.0, recoil_reset_time
-	).from(
+	_recoil_timer_tween.tween_property(self, ^":_recoil_timer",
+			_recoil_timer + shoot_interval, recoil_increasing_time)
+	_recoil_timer_tween.tween_property(self, ^":_recoil_timer", 0.0, recoil_reset_time).from(
 			(fposmod(_recoil_timer + shoot_interval - recoil_curve_time, recoil_cycle_curve_time)
 			+ recoil_curve_time)
 			if _recoil_timer + shoot_interval > recoil_curve_time + recoil_cycle_curve_time else
@@ -143,13 +137,13 @@ func _shoot() -> void:
 	)
 
 
-func can_reload() -> bool:
-	return super() and _shoot_timer <= 0.0
+func _can_reload() -> bool:
+	return _shoot_timer <= 0.0
 
 
 func reload() -> void:
-	var tween: Tween = create_tween()
-	tween.tween_property(self, ^"rotation", 0.0, to_aim_time)
+	_turn_tween = create_tween()
+	_turn_tween.tween_property(self, ^":rotation", 0.0, to_aim_time)
 	_anim.play(&"Reload")
 	block_shooting()
 	
@@ -159,21 +153,21 @@ func reload() -> void:
 		return
 	
 	_anim.play(&"PostReload")
-	tween = create_tween()
-	tween.tween_property(self, ^"rotation", _calculate_aim_direction(), to_aim_time)
+	_turn_tween = create_tween()
+	_turn_tween.tween_property(self, ^":rotation", _calculate_aim_angle(), to_aim_time)
 	
 	var difference: int = min(ammo_per_load - ammo, ammo_in_stock)
 	ammo += difference
 	ammo_in_stock -= difference
 	_player.ammo_text_updated.emit(get_ammo_text())
 	
-	await tween.finished
+	await _turn_tween.finished
 	unlock_shooting()
 
 
 func _calculate_recoil() -> float:
 	if _recoil_timer > recoil_curve_time:
-		return recoil_cycle_curve.sample_baked(fposmod(_recoil_timer - recoil_curve_time, \
+		return recoil_cycle_curve.sample_baked(fposmod(_recoil_timer - recoil_curve_time,
 				recoil_cycle_curve_time) / recoil_cycle_curve_time)
 	if _recoil_timer > 0.01:
 		return recoil_curve.sample_baked(minf(_recoil_timer / recoil_curve_time, 1.0))
@@ -187,7 +181,7 @@ func _calculate_shoot_spread() -> float:
 
 
 func _calculate_walk_spread() -> float:
-	return spread_walk * clampf((_player.entity_input.direction.length() - spread_walk_ratio) \
+	return spread_walk * clampf((_player.entity_input.direction.length() - spread_walk_ratio)
 			/ (1.0 - spread_walk_ratio), 0.0, 1.0)
 
 
@@ -197,7 +191,7 @@ func _calculate_spread() -> float:
 
 func _create_projectile() -> void:
 	var projectile: Attack = projectile_scene.instantiate()
-	projectile.global_position = _shoot_point.global_position
+	projectile.position = _shoot_point.global_position
 	projectile.damage_multiplier = _player.damage_multiplier
 	var spread: float = _calculate_spread()
 	projectile.rotation = _player.player_input.aim_direction.angle() \

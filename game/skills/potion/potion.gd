@@ -14,10 +14,10 @@ func _use() -> void:
 	if multiplayer.is_server():
 		_timer.start(1.25)
 		await _timer.timeout
-		_player.heal(floori(heal_amount / 3.0))
+		_player.heal(ceili(heal_amount / 3.0))
 		_timer.start(0.2)
 		await _timer.timeout
-		_player.heal(floori(heal_amount / 3.0))
+		_player.heal(roundi(heal_amount / 3.0))
 		_timer.start(0.2)
 		await _timer.timeout
 		_player.heal(floori(heal_amount / 3.0))
@@ -29,5 +29,5 @@ func _use() -> void:
 	_player.unmake_disarmed()
 
 
-func can_use() -> bool:
-	return super() and _player.current_health != _player.max_health
+func _can_use() -> bool:
+	return _player.current_health != _player.max_health

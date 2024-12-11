@@ -17,12 +17,12 @@ func _process(_delta: float) -> void:
 	_fps_label.text = "FPS: %d" % Engine.get_frames_per_second()
 
 
-@rpc("any_peer", "reliable", "call_remote", 6)
+@rpc("any_peer", "reliable", "call_remote", 10)
 func _process_ping() -> void:
 	_ping_response.rpc_id(multiplayer.get_remote_sender_id())
 
 
-@rpc("reliable", "authority", "call_remote", 6)
+@rpc("reliable", "authority", "call_remote", 10)
 func _ping_response() -> void:
 	var ping_msec: int = Time.get_ticks_msec() - _sent_ticks_msec
 	_ping_label.text = "Пинг: %d мс" % ping_msec
@@ -31,7 +31,7 @@ func _ping_response() -> void:
 
 func _do_ping() -> void:
 	_sent_ticks_msec = Time.get_ticks_msec()
-	_process_ping.rpc_id(1)
+	_process_ping.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER)
 
 
 func _on_game_joined() -> void:

@@ -20,7 +20,7 @@ func _ready() -> void:
 			_ip_edit.text = clipboard_content
 	
 	_udp.listen(Game.LISTEN_PORT)
-	print_verbose("Started listening...")
+	print_verbose("Started listening.")
 
 
 func _process(_delta: float) -> void:
@@ -35,12 +35,12 @@ func _process(_delta: float) -> void:
 		var player_name: String = Game.validate_player_name(data.slice(3).get_string_from_utf8())
 		var players: int = data[1]
 		var max_players: int = data[2]
-		print_verbose("Found lobby: %s (%d/%d) with ID %d from IP: %s" % [
+		print_verbose("Found lobby: %s (%d/%d) with ID %d from IP: %s." % [
 			player_name,
 			players,
 			max_players,
 			data[0],
-			peer.get_packet_ip()
+			peer.get_packet_ip(),
 		])
 		
 		if _lobbies_container.has_node(id_nodepath):
@@ -48,7 +48,7 @@ func _process(_delta: float) -> void:
 			(_lobbies_container.get_node(id_nodepath) as Button).text = "%s (%d/%d)" % [
 				player_name,
 				players,
-				max_players
+				max_players,
 			]
 			print_verbose("Lobby %d already in list. Updating timer." % data[0])
 		else:
@@ -95,4 +95,4 @@ func _on_game_joined() -> void:
 func _on_game_closed() -> void:
 	show()
 	_udp.listen(Game.LISTEN_PORT)
-	print_verbose("Listening restarted...")
+	print_verbose("Listening restarted.")

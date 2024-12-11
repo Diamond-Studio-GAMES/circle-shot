@@ -12,68 +12,60 @@ func _ready() -> void:
 	
 	# Конфигурация настроек
 	_override_file.load("user://engine_settings.cfg")
-	#var preffered_renderer: int
-	#if _override_file.get_value("rendering", "renderer/rendering_method") == "mobile":
-		#preffered_renderer = 0
-	#else:
-		#preffered_renderer = 1
-	#(%RendererOptions as OptionButton).selected = preffered_renderer
 	var shader_cache: bool = \
 			_override_file.get_value("rendering", "shader_compiler/shader_cache/enabled")
-	(%ShaderCacheCheck as Button).set_pressed_no_signal(shader_cache)
-	#if RenderingServer.get_rendering_device():
-		#(%CurrentRenderer as Label).text = "Текущий отрисовщик: Vulkan"
-	#else:
-		#(%CurrentRenderer as Label).text = "Текущий отрисовщик: OpenGL"
+	(%ShaderCacheCheck as BaseButton).set_pressed_no_signal(shader_cache)
 	
-	(%HitMarkersCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("hit_markers"))
-	(%ShowMinimapCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("minimap"))
-	(%ShowDebugCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("debug_info"))
-	(%MasterVolumeSlider as HSlider).set_value_no_signal(Globals.get_setting_float("master_volume"))
-	(%MusicVolumeSlider as HSlider).set_value_no_signal(Globals.get_setting_float("music_volume"))
-	(%SFXVolumeSlider as HSlider).set_value_no_signal(Globals.get_setting_float("sfx_volume"))
-	(%FullscreenCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("fullscreen"))
-	(%PreloadCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("preload"))
+	(%HitMarkersCheck as BaseButton).set_pressed_no_signal(Globals.get_setting_bool("hit_markers"))
+	(%ShowMinimapCheck as BaseButton).set_pressed_no_signal(Globals.get_setting_bool("minimap"))
+	(%ShowDebugCheck as BaseButton).set_pressed_no_signal(Globals.get_setting_bool("debug_info"))
+	(%MasterVolumeSlider as Range).set_value_no_signal(Globals.get_setting_float("master_volume"))
+	(%MusicVolumeSlider as Range).set_value_no_signal(Globals.get_setting_float("music_volume"))
+	(%SFXVolumeSlider as Range).set_value_no_signal(Globals.get_setting_float("sfx_volume"))
+	(%FullscreenCheck as BaseButton).set_pressed_no_signal(Globals.get_setting_bool("fullscreen"))
+	(%PreloadCheck as BaseButton).set_pressed_no_signal(Globals.get_setting_bool("preload"))
 	(%DodgeOptions as OptionButton).selected = int(Globals.get_setting_bool("aim_dodge"))
 	(%InputOptions as OptionButton).selected = Globals.get_controls_int("input_method")
 	_toggle_input_method_settings_visibility(Globals.get_controls_int("input_method"))
-	(%FollowMouseCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("follow_mouse"))
+	(%FollowMouseCheck as BaseButton).set_pressed_no_signal(
+			Globals.get_controls_bool("follow_mouse"))
 	(%FireModeOptions as OptionButton).selected = int(Globals.get_controls_bool("joystick_fire"))
-	(%SquareCheck as Button).set_pressed_no_signal(Globals.get_controls_bool("square_joystick"))
-	(%SneakSlider as HSlider).value = Globals.get_controls_float("sneak_multiplier")
-	(%VibrationCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("vibration"))
-	(%SmoothCameraCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("smooth_camera"))
-	(%AimDZoneSlider as HSlider).value = Globals.get_controls_float("aim_deadzone")
-	(%AimZoneSlider as HSlider).set_value_no_signal(Globals.get_controls_float("aim_zone"))
+	(%SquareCheck as BaseButton).set_pressed_no_signal(Globals.get_controls_bool("square_joystick"))
+	(%SneakSlider as Range).value = Globals.get_controls_float("sneak_multiplier")
+	(%VibrationCheck as BaseButton).set_pressed_no_signal(Globals.get_setting_bool("vibration"))
+	(%SmoothCameraCheck as BaseButton).set_pressed_no_signal(
+			Globals.get_setting_bool("smooth_camera"))
+	(%AimDZoneSlider as Range).value = Globals.get_controls_float("aim_deadzone")
+	(%AimZoneSlider as Range).set_value_no_signal(Globals.get_controls_float("aim_zone"))
 	(%ShowDamageCheck as BaseButton).set_pressed_no_signal(Globals.get_setting_bool("show_damage"))
 	
 	_update_aim_visual_size()
 	get_window().size_changed.connect(_update_aim_visual_size)
 	
 	# Кастомные треки
-	(%CustomTracksCheck as Button).set_pressed_no_signal(Globals.get_setting_bool("custom_tracks"))
-	_on_custom_tracks_check_toggled((%CustomTracksCheck as Button).button_pressed)
+	(%CustomTracksCheck as BaseButton).set_pressed_no_signal(
+			Globals.get_setting_bool("custom_tracks"))
+	_on_custom_tracks_check_toggled((%CustomTracksCheck as BaseButton).button_pressed)
 	(%CustomTracksPath as Label).text = "Путь к папке с треками: %s" % Globals.main.music_path
 	if not Globals.main.loaded_custom_tracks.is_empty():
-		for i: Node in %LoadedTracks.get_children():
-			i.queue_free()
+		for node: Node in %LoadedTracks.get_children():
+			node.queue_free()
 		
-		for i: String in Globals.main.loaded_custom_tracks:
+		for track: String in Globals.main.loaded_custom_tracks:
 			var label := Label.new()
-			label.text = i
+			label.text = track
 			%LoadedTracks.add_child(label)
 	
 	if not OS.has_feature("pc"):
-		(%FullscreenCheck.get_parent().get_parent() as Control).hide()
+		(%FullscreenCheck.get_parent().get_parent() as CanvasItem).hide()
 	if not OS.has_feature("mobile"):
-		(%VibrationCheck.get_parent().get_parent() as Control).hide()
+		(%VibrationCheck.get_parent().get_parent() as CanvasItem).hide()
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action(&"fullscreen") and event.is_pressed():
-		(%FullscreenCheck as CheckButton).set_pressed_no_signal(
-				Globals.get_setting_bool("fullscreen")
-		)
+		(%FullscreenCheck as BaseButton).set_pressed_no_signal(
+				Globals.get_setting_bool("fullscreen"))
 
 
 func _notification(what: int) -> void:
@@ -83,10 +75,10 @@ func _notification(what: int) -> void:
 
 
 func show_section(section_name: String) -> void:
-	for i: Control in %Sections.get_children():
-		i.hide()
+	for section: CanvasItem in %Sections.get_children():
+		section.hide()
 	
-	(%Sections.get_node(NodePath(section_name)) as Control).show()
+	(%Sections.get_node(section_name) as CanvasItem).show()
 
 
 func show_help(help_idx: int) -> void:
@@ -110,22 +102,22 @@ func remove_recursive(path: String) -> void:
 				files_to_remove.append(file_name)
 			file_name = dir_access.get_next()
 		
-		for i: String in files_to_remove:
-			dir_access.remove(i)
-		for i: String in dirs_to_remove:
-			remove_recursive(dir_access.get_current_dir().path_join(i))
+		for file: String in files_to_remove:
+			dir_access.remove(file)
+		for dir: String in dirs_to_remove:
+			remove_recursive(dir_access.get_current_dir().path_join(dir))
 		
 		dir_access.remove(dir_access.get_current_dir())
 
 
 func _toggle_input_method_settings_visibility(method: Main.InputMethod) -> void:
-	(%KeyboardSettings as Control).hide()
-	(%TouchSettings as Control).hide()
+	(%KeyboardSettings as CanvasItem).hide()
+	(%TouchSettings as CanvasItem).hide()
 	match method:
 		Main.InputMethod.KEYBOARD_AND_MOUSE:
-			(%KeyboardSettings as Control).show()
+			(%KeyboardSettings as CanvasItem).show()
 		Main.InputMethod.TOUCH:
-			(%TouchSettings as Control).show()
+			(%TouchSettings as CanvasItem).show()
 
 
 func _update_aim_visual_size() -> void:
@@ -138,6 +130,13 @@ func _update_aim_visual_size() -> void:
 		_aim_visual.custom_minimum_size.y = AIM_VISUAL_MAX_SIZE
 		_aim_visual.custom_minimum_size.x = \
 				viewport_size.x / viewport_size.y * AIM_VISUAL_MAX_SIZE
+
+
+func _on_request_permissions_result(permission: String, granted: bool) -> void:
+	print_verbose("Permission %s granted: %s." % [permission, str(granted)])
+	var lambda: Callable = func(value: bool) -> void:
+		(%CustomTracksCheck as BaseButton).button_pressed = value
+	lambda.call_deferred(granted)
 
 
 func _on_exit_pressed() -> void:
@@ -172,29 +171,11 @@ func _on_sfx_volume_slider_value_changed(value: float) -> void:
 
 
 func _on_shader_cache_check_toggled(toggled_on: bool) -> void:
-	_override_file.set_value(
-			"rendering", "shader_compiler/shader_cache/enabled", toggled_on
-	)
-	_override_file.set_value(
-			"rendering", "shader_compiler/shader_cache/enabled.mobile", toggled_on
-	)
-	_override_file.set_value(
-			"rendering", "rendering_device/pipeline_cache/enable", toggled_on
-	)
-	_override_file.set_value(
-			"rendering", "rendering_device/pipeline_cache/enable.mobile", toggled_on
-	)
-	_override_file.save("user://engine_settings.cfg")
-
-
-func _on_renderer_options_item_selected(index: int) -> void:
-	var new_renderer: String = "gl_compatibility" if index != 0 else "mobile"
-	_override_file.set_value(
-			"rendering", "renderer/rendering_method", new_renderer
-	)
-	_override_file.set_value(
-			"rendering", "renderer/rendering_method.mobile", new_renderer
-	)
+	_override_file.set_value("rendering", "shader_compiler/shader_cache/enabled", toggled_on)
+	_override_file.set_value("rendering", "shader_compiler/shader_cache/enabled.mobile", toggled_on)
+	_override_file.set_value("rendering", "rendering_device/pipeline_cache/enable", toggled_on)
+	_override_file.set_value("rendering",
+			"rendering_device/pipeline_cache/enable.mobile", toggled_on)
 	_override_file.save("user://engine_settings.cfg")
 
 
@@ -270,20 +251,12 @@ func _on_custom_tracks_check_toggled(toggled_on: bool) -> void:
 				or perms.has("android.permission.READ_EXTERNAL_STORAGE")
 				or perms.has("android.permission.WRITE_EXTERNAL_STORAGE")
 		):
-			get_tree().on_request_permissions_result.connect(
-					_on_request_permissions_result, CONNECT_ONE_SHOT
-			)
+			get_tree().on_request_permissions_result.connect(_on_request_permissions_result,
+					CONNECT_ONE_SHOT)
 			OS.request_permissions()
-	(%CustomTracksSettings as Control).visible = toggled_on
+	(%CustomTracksSettings as CanvasItem).visible = toggled_on
 	Globals.set_setting_bool("custom_tracks", toggled_on)
 	Globals.main.apply_settings()
-
-
-func _on_request_permissions_result(permission: String, granted: bool) -> void:
-	print_verbose("Permission %s granted: %s." % [permission, str(granted)])
-	var lambda: Callable = func(value: bool) -> void:
-		(%CustomTracksCheck as Button).button_pressed = value
-	lambda.call_deferred(granted)
 
 
 func _on_preload_check_toggled(toggled_on: bool) -> void:
@@ -319,7 +292,7 @@ func _on_smooth_camera_check_toggled(toggled_on: bool) -> void:
 
 func _on_aim_d_zone_slider_value_changed(value: float) -> void:
 	Globals.set_controls_float("aim_deadzone", value)
-	(%AimZoneSlider as HSlider).min_value = maxf(value + 0.1, 0.3)
+	(%AimZoneSlider as Range).min_value = maxf(value + 0.1, 0.3)
 	_aim_visual.queue_redraw()
 
 
@@ -330,23 +303,15 @@ func _on_aim_zone_slider_value_changed(value: float) -> void:
 
 func _on_aim_visual_draw() -> void:
 	var min_side: float = minf(_aim_visual.size.x, _aim_visual.size.y) / 2
-	_aim_visual.draw_circle(
-			_aim_visual.size / 2, min_side * Globals.get_controls_float("aim_zone"),
-			Color.GREEN, true, -1.0, true
-	)
-	_aim_visual.draw_circle(
-			_aim_visual.size / 2, min_side * Globals.get_controls_float("aim_deadzone"),
-			Color.RED, true, -1.0, true
-	)
+	_aim_visual.draw_circle(_aim_visual.size / 2,
+			min_side * Globals.get_controls_float("aim_zone"), Color.GREEN, true, -1.0, true)
+	_aim_visual.draw_circle(_aim_visual.size / 2,
+			min_side * Globals.get_controls_float("aim_deadzone"), Color.RED, true, -1.0, true)
 	
-	_aim_visual.draw_line(
-			Vector2(_aim_visual.size.x / 2, 0.0),
-			Vector2(_aim_visual.size.x / 2, _aim_visual.size.y), Color.BLACK
-	)
-	_aim_visual.draw_line(
-			Vector2(0.0, _aim_visual.size.y / 2),
-			Vector2(_aim_visual.size.x, _aim_visual.size.y / 2), Color.BLACK
-	)
+	_aim_visual.draw_line(Vector2(_aim_visual.size.x / 2, 0.0),
+			Vector2(_aim_visual.size.x / 2, _aim_visual.size.y), Color.BLACK)
+	_aim_visual.draw_line(Vector2(0.0, _aim_visual.size.y / 2),
+			Vector2(_aim_visual.size.x, _aim_visual.size.y / 2), Color.BLACK)
 
 
 func _on_configure_controls_pressed() -> void:

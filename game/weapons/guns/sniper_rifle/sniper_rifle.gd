@@ -8,16 +8,18 @@ var _aiming := false
 @onready var _aim_ray: RayCast2D = $ShootPoint/AimRay
 @onready var _aim_target: Marker2D = $ShootPoint/AimTarget
 @onready var _end_aim: Marker2D = $ShootPoint/EndAim
-@onready var _aim_texture_material: ShaderMaterial = ($Aim/Base/Aim as Control).material
+@onready var _aim_texture_material: ShaderMaterial = ($Aim/Base/Aim as CanvasItem).material
 
 
 func _process(delta: float) -> void:
 	super(delta)
-	if _aiming and _player.is_local():
-		_aim_target.global_position = _calculate_aim_target_position()
-		_aim_texture_material.set_shader_parameter(
-				&"radius", _calculate_spread() * BLUR_SPREAD_MULTIPLIER
-		)
+	if _aiming:
+		if _player.is_local():
+			_aim_target.global_position = _calculate_aim_target_position()
+			_aim_texture_material.set_shader_parameter(&"radius",
+					_calculate_spread() * BLUR_SPREAD_MULTIPLIER)
+		if _player.is_disarmed():
+			end_aim()
 
 
 func _exit_tree() -> void:
@@ -27,7 +29,7 @@ func _exit_tree() -> void:
 
 func _initialize() -> void:
 	super()
-	($ShootPoint as Node2D).hide()
+	($ShootPoint as CanvasItem).hide()
 
 
 func _unmake_current() -> void:
@@ -47,9 +49,6 @@ func has_additional_button() -> bool:
 
 
 func additional_button() -> void:
-	if not can_shoot():
-		return
-	
 	if _aiming:
 		end_aim()
 	else:
@@ -68,10 +67,8 @@ func start_aim() -> void:
 	if _player.id != multiplayer.get_unique_id():
 		return
 	
-	_aim_ray.enabled = true
-	_aim_ray.force_raycast_update()
 	($Aim as CanvasLayer).show()
-	($ShootPoint as Node2D).show()
+	($ShootPoint as CanvasItem).show()
 	var camera: SmartCamera = get_viewport().get_camera_2d()
 	camera.target = _aim_target
 	camera.position_smoothing_enabled = false
@@ -85,8 +82,7 @@ func end_aim() -> void:
 		return
 	
 	($Aim as CanvasLayer).hide()
-	($ShootPoint as Node2D).hide()
-	_aim_ray.enabled = false
+	($ShootPoint as CanvasItem).hide()
 	
 	var camera: SmartCamera = get_viewport().get_camera_2d()
 	if not is_instance_valid(camera):
@@ -100,10 +96,8 @@ func end_aim() -> void:
 
 
 func _calculate_aim_target_position() -> Vector2:
-	var ratio: float = (
-			_aim_ray.get_collision_point() - _aim_ray.global_position
-	).length() / absf(_aim_ray.position.x - _end_aim.position.x) if _aim_ray.is_colliding() else 1.0
-	return _aim_ray.global_position.lerp(
-			_end_aim.global_position,
-			minf(_player.player_input.aim_direction.length(), ratio),
-	)
+	_aim_ray.force_raycast_update()
+	var ratio: float = (_aim_ray.get_collision_point() - _aim_ray.global_position).length() \
+			/ absf(_aim_ray.position.x - _end_aim.position.x) if _aim_ray.is_colliding() else 1.0
+	return _aim_ray.global_position.lerp(_end_aim.global_position,
+			minf(_player.player_input.aim_direction.length(), ratio))

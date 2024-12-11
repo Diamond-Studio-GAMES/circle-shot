@@ -1,6 +1,10 @@
 class_name Menu
 extends Control
 
+## Меню игры.
+##
+## Класс главного меню игры.
+
 var _name_accepted := false
 
 func _ready() -> void:

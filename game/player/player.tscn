@@ -142,7 +142,7 @@ update_scale = false
 visible = false
 visibility_layer = 2
 z_index = -7
-scale = Vector2(20, 20)
+scale = Vector2(10, 10)
 texture = ExtResource("8_05q0u")
 
 [connection signal="health_changed" from="." to="." method="_on_health_changed"]

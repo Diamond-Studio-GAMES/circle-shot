@@ -69,31 +69,32 @@ func _find_ips() -> void:
 	
 	var error: Error = _http_request.request("https://icanhazip.com/")
 	if error != OK:
-		push_warning("Can't connect to server! Error: %s" % error_string(error))
+		push_warning("Quiry global IP: can't create request. Error: %s." % error_string(error))
 		dialog_text += '\n'
-		dialog_text += "Невозможно создать запрос для получения глобального IP-адреса! \
-Ошибка: %s" % error_string(error)
+		dialog_text += "Невозможно создать запрос для получения глобального IP-адреса!
+Ошибка: %s." % error_string(error)
 
 
 func _on_request_completed(result: int, response_code: int,
 		_headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result != HTTPRequest.RESULT_SUCCESS:
-		push_warning("Quiry global IP: result is not Success! Result: %d" % result)
+		push_warning("Quiry global IP: result is not Success. Result: %d." % result)
 		dialog_text += '\n'
-		dialog_text += "Ошибка запроса глобального IP-адреса! Код ошибки: %d" % result
+		dialog_text += "Ошибка запроса глобального IP-адреса! Код ошибки: %d." % result
 		return
 	if response_code != HTTPClient.RESPONSE_OK:
-		push_warning("Quiry global IP: response code is not 200! Response code: %d" % response_code)
+		push_warning("Quiry global IP: response code is not 200. Response code: %d" % response_code)
 		dialog_text += '\n'
-		dialog_text += "Ошибка получения глобального IP-адреса! Код ошибки: %d" % response_code
+		dialog_text += "Ошибка получения глобального IP-адреса! Код ошибки: %d." % response_code
 		return
 	_global_ip = body.get_string_from_utf8().strip_escapes()
 	dialog_text += '\n'
 	dialog_text += "Глобальный IP-адрес: %s" % _global_ip
 	dialog_text += '\n'
 	dialog_text += "Чтобы игроки могли подключиться по глобальному IP-адресу, \
-необходимо открыть порт: %d" % Game.DEFAULT_PORT
-	print_verbose("Global IP: %s" % _global_ip)
+необходимо открыть порт: %d." % Game.DEFAULT_PORT
+	if Globals.headless or OS.is_stdout_verbose():
+		print("Global IP: %s" % _global_ip)
 
 
 func _on_custom_action(action: StringName) -> void:
@@ -101,7 +102,7 @@ func _on_custom_action(action: StringName) -> void:
 		&"update_ips":
 			_find_ips()
 		&"copy_ips":
-			var to_copy: String = ""
+			var to_copy := ""
 			if not _global_ip.is_empty():
 				to_copy += _global_ip
 				to_copy += '\n'

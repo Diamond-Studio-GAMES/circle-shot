@@ -18,7 +18,7 @@ func _ready() -> void:
 		($MinimapViewport as SubViewport).world_2d = get_viewport().find_world_2d()
 	else:
 		($MinimapViewport as SubViewport).render_target_update_mode = SubViewport.UPDATE_DISABLED
-		($Main/Minimap as Control).hide()
+		($Main/Minimap as CanvasItem).hide()
 
 
 func _input(event: InputEvent) -> void:
@@ -58,14 +58,14 @@ func _on_message_posted(message: String) -> void:
 	$Main/ChatPreview.add_child(rtl)
 	var tween: Tween = rtl.create_tween()
 	tween.tween_interval(messages_visible_time)
-	tween.tween_property(rtl, ^"modulate", Color.TRANSPARENT, 0.5)
+	tween.tween_property(rtl, ^":modulate", Color.TRANSPARENT, 0.5)
 	tween.tween_callback(rtl.queue_free)
 
 
 func _on_chat_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		for i: Node in $Main/ChatPreview.get_children():
-			i.queue_free()
+		for rtl: Node in $Main/ChatPreview.get_children():
+			rtl.queue_free()
 
 
 func _on_quit_dialog_confirmed() -> void:

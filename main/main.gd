@@ -68,13 +68,13 @@ func _input(event: InputEvent) -> void:
 ## Открывает меню. Закрывает все остальное.
 func open_menu() -> void:
 	if is_instance_valid(menu):
-		push_error("Menu is already opened!")
+		push_error("Menu is already opened.")
 		return
 	
 	if is_instance_valid(game):
 		game.queue_free()
-	for i: Node in screens:
-		i.queue_free()
+	for screen: Node in screens:
+		screen.queue_free()
 	
 	var menu_scene: PackedScene = load("uid://4wb77emq8t5p")
 	menu = menu_scene.instantiate()
@@ -85,13 +85,13 @@ func open_menu() -> void:
 ## Открывает игру с меню локальной игры. Закрывает всё остальное.
 func open_local_game() -> void:
 	if is_instance_valid(game):
-		push_error("Game is already opened!")
+		push_error("Game is already opened.")
 		return
 	
 	if is_instance_valid(menu):
 		menu.queue_free()
-	for i: Node in screens:
-		i.queue_free()
+	for screen: Node in screens:
+		screen.queue_free()
 	
 	var game_scene: PackedScene = load("uid://scqgxynxowrb")
 	game = game_scene.instantiate()
@@ -100,7 +100,7 @@ func open_local_game() -> void:
 	print_verbose("Opened game with local menu.")
 
 
-## Открывает экран, указанный в [param screen], регистрируя его в [member screens].
+## Открывает экран, указанный в [param screen_scene], и регистрирует его в [member screens].
 ## Возвращает узел этого экрана или [code]null[/code], если такой экран уже открыт.
 func open_screen(screen_scene: PackedScene) -> Control:
 	var screen: Control = screen_scene.instantiate()
@@ -110,7 +110,7 @@ func open_screen(screen_scene: PackedScene) -> Control:
 	screen.tree_exited.connect(screens.erase.bind(screen))
 	add_child(screen)
 	screens.append(screen)
-	print_verbose("Opened screen '%s'." % screen.name)
+	print_verbose("Opened screen: %s." % screen.name)
 	return screen
 
 
@@ -121,7 +121,7 @@ func show_critical_error(info := "", log_error := "") -> void:
 	var dialog := AcceptDialog.new()
 	dialog.title = "Критическая ошибка!"
 	dialog.dialog_text = "Произошла критическая ошибка. Подробности можно найти в логах. \
-			Игра будет завершена при закрытии этого диалога."
+Игра будет завершена при закрытии этого диалога."
 	if not info.is_empty():
 		dialog.dialog_text += "\nИнформация: %s." % info
 	if not log_error.is_empty():
@@ -139,84 +139,40 @@ func show_critical_error(info := "", log_error := "") -> void:
 func setup_settings() -> void:
 	var override_file := ConfigFile.new()
 	override_file.load("user://engine_settings.cfg")
-	#var preffered_renderer: String = ProjectSettings.get_setting_with_override(
-			#&"rendering/renderer/rendering_method"
-	#)
 	var shader_cache: bool = ProjectSettings.get_setting_with_override(
-			&"rendering/shader_compiler/shader_cache/enabled"
-	)
-	override_file.set_value(
-			"rendering", "shader_compiler/shader_cache/enabled", shader_cache
-	)
-	override_file.set_value(
-			"rendering", "shader_compiler/shader_cache/enabled.mobile", shader_cache
-	)
-	#override_file.set_value(
-			#"rendering", "rendering_device/pipeline_cache/enable", shader_cache
-	#)
-	#override_file.set_value(
-			#"rendering", "rendering_device/pipeline_cache/enable.mobile", shader_cache
-	#)
-	#override_file.set_value(
-			#"rendering", "renderer/rendering_method", preffered_renderer
-	#)
-	#override_file.set_value(
-			#"rendering", "renderer/rendering_method.mobile", preffered_renderer
-	#)
+			&"rendering/shader_compiler/shader_cache/enabled")
+	override_file.set_value("rendering",
+			"shader_compiler/shader_cache/enabled", shader_cache)
+	override_file.set_value("rendering",
+			"shader_compiler/shader_cache/enabled.mobile", shader_cache)
 	override_file.save("user://engine_settings.cfg")
 	
-	Globals.set_setting_bool(
-			"hit_markers",
-			Globals.get_setting_bool("hit_markers", true)
-	)
-	Globals.set_setting_bool(
-			"minimap",
-			Globals.get_setting_bool("minimap", true)
-	)
-	Globals.set_setting_bool(
-			"debug_info",
-			Globals.get_setting_bool("debug_info", false)
-	)
-	Globals.set_setting_float(
-			"master_volume",
-			Globals.get_setting_float("master_volume", 1.0)
-	)
-	Globals.set_setting_float(
-			"music_volume",
-			Globals.get_setting_float("music_volume", 0.7)
-	)
-	Globals.set_setting_float(
-			"sfx_volume",
-			Globals.get_setting_float("sfx_volume", 1.0)
-	)
-	Globals.set_setting_bool(
-			"fullscreen",
-			Globals.get_setting_bool("fullscreen", not OS.has_feature("pc"))
-	)
-	Globals.set_setting_bool(
-			"preload",
-			Globals.get_setting_bool("preload", true)
-	)
-	Globals.set_setting_bool(
-			"aim_dodge",
-			Globals.get_setting_bool("aim_dodge", false)
-	)
-	Globals.set_setting_bool(
-			"custom_tracks",
-			Globals.get_setting_bool("custom_tracks", OS.has_feature("pc"))
-	)
-	Globals.set_setting_bool(
-			"vibration",
-			Globals.get_setting_bool("vibration", false)
-	)
-	Globals.set_setting_bool(
-			"smooth_camera",
-			Globals.get_setting_bool("smooth_camera", true)
-	)
-	Globals.set_setting_bool(
-			"show_damage",
-			Globals.get_setting_bool("show_damage", true)
-	)
+	Globals.set_setting_bool("hit_markers",
+			Globals.get_setting_bool("hit_markers", true))
+	Globals.set_setting_bool("minimap",
+			Globals.get_setting_bool("minimap", true))
+	Globals.set_setting_bool("debug_info",
+			Globals.get_setting_bool("debug_info", false))
+	Globals.set_setting_float("master_volume",
+			Globals.get_setting_float("master_volume", 1.0))
+	Globals.set_setting_float("music_volume",
+			Globals.get_setting_float("music_volume", 0.7))
+	Globals.set_setting_float("sfx_volume",
+			Globals.get_setting_float("sfx_volume", 1.0))
+	Globals.set_setting_bool("fullscreen",
+			Globals.get_setting_bool("fullscreen", not OS.has_feature("pc")))
+	Globals.set_setting_bool("preload",
+			Globals.get_setting_bool("preload", true))
+	Globals.set_setting_bool("aim_dodge",
+			Globals.get_setting_bool("aim_dodge", false))
+	Globals.set_setting_bool("custom_tracks",
+			Globals.get_setting_bool("custom_tracks", OS.has_feature("pc")))
+	Globals.set_setting_bool("vibration",
+			Globals.get_setting_bool("vibration", false))
+	Globals.set_setting_bool("smooth_camera",
+			Globals.get_setting_bool("smooth_camera", true))
+	Globals.set_setting_bool("show_damage",
+			Globals.get_setting_bool("show_damage", true))
 
 
 ## Устанавливает настройки управления по умолчанию, если их ещё нет.
@@ -224,41 +180,27 @@ func setup_controls_settings() -> void:
 	var default_input_method: InputMethod = InputMethod.KEYBOARD_AND_MOUSE
 	if OS.has_feature("mobile"):
 		default_input_method = InputMethod.TOUCH
-	Globals.set_controls_int(
-			"input_method",
-			Globals.get_controls_int("input_method", default_input_method)
-	)
-	Globals.set_controls_bool(
-			"follow_mouse",
-			Globals.get_controls_bool("follow_mouse", true)
-	)
-	Globals.set_controls_bool(
-			"joystick_fire",
-			Globals.get_controls_bool("joystick_fire", false)
-	)
-	Globals.set_controls_float(
-			"sneak_multiplier",
-			Globals.get_controls_float("sneak_multiplier", 0.5)
-	)
-	Globals.set_controls_bool(
-			"square_joystick",
-			Globals.get_controls_bool("square_joystick", false)
-	)
-	Globals.set_controls_float(
-			"aim_deadzone",
-			Globals.get_controls_float("aim_deadzone", 0.2)
-	)
-	Globals.set_controls_float(
-			"aim_zone",
-			Globals.get_controls_float("aim_zone", 0.6)
-	)
+	Globals.set_controls_int("input_method",
+			Globals.get_controls_int("input_method", default_input_method))
+	Globals.set_controls_bool("follow_mouse",
+			Globals.get_controls_bool("follow_mouse", true))
+	Globals.set_controls_bool("joystick_fire",
+			Globals.get_controls_bool("joystick_fire", false))
+	Globals.set_controls_float("sneak_multiplier",
+			Globals.get_controls_float("sneak_multiplier", 0.5))
+	Globals.set_controls_bool("square_joystick",
+			Globals.get_controls_bool("square_joystick", false))
+	Globals.set_controls_float("aim_deadzone",
+			Globals.get_controls_float("aim_deadzone", 0.2))
+	Globals.set_controls_float("aim_zone",
+			Globals.get_controls_float("aim_zone", 0.6))
 	
 	InputMap.load_from_project_settings()
-	for i: StringName in InputMap.get_actions():
-		if i.begins_with("ui_"):
+	for action: StringName in InputMap.get_actions():
+		if action.begins_with("ui_"):
 			continue
 		
-		var event: InputEvent = InputMap.action_get_events(i)[0]
+		var event: InputEvent = InputMap.action_get_events(action)[0]
 		var coded_event_type: ActionEventType
 		var coded_event_value: int
 		
@@ -271,141 +213,81 @@ func setup_controls_settings() -> void:
 			coded_event_type = ActionEventType.KEY
 			coded_event_value = key.physical_keycode
 		
-		Globals.set_controls_int(
-				"action_%s_event_type" % i,
-				Globals.get_controls_int("action_%s_event_type" % i, coded_event_type)
-		)
-		Globals.set_controls_int(
-				"action_%s_event_value" % i,
-				Globals.get_controls_int("action_%s_event_value" % i, coded_event_value)
-		)
+		Globals.set_controls_int("action_%s_event_type" % action,
+				Globals.get_controls_int("action_%s_event_type" % action, coded_event_type))
+		Globals.set_controls_int("action_%s_event_value" % action,
+				Globals.get_controls_int("action_%s_event_value" % action, coded_event_value))
 	
 	#region Настройки управления на телефоне
-	Globals.set_controls_int(
-			"anchors_preset_health_bar",
-			Globals.get_controls_int("anchors_preset_health_bar", Control.PRESET_CENTER_BOTTOM)
-	)
-	Globals.set_controls_vector2(
-			"offsets_lt_health_bar",
-			Globals.get_controls_vector2("offsets_lt_health_bar", Vector2(-240, -64))
-	)
-	Globals.set_controls_vector2(
-			"offsets_rb_health_bar",
-			Globals.get_controls_vector2("offsets_rb_health_bar", Vector2(240, -16))
-	)
+	Globals.set_controls_int("anchors_preset_health_bar",
+			Globals.get_controls_int("anchors_preset_health_bar", Control.PRESET_CENTER_BOTTOM))
+	Globals.set_controls_vector2("offsets_lt_health_bar",
+			Globals.get_controls_vector2("offsets_lt_health_bar", Vector2(-240.0, -64.0)))
+	Globals.set_controls_vector2("offsets_rb_health_bar",
+			Globals.get_controls_vector2("offsets_rb_health_bar", Vector2(240.0, -16.0)))
 	
-	Globals.set_controls_int(
-			"anchors_preset_additional",
-			Globals.get_controls_int("anchors_preset_additional", Control.PRESET_BOTTOM_RIGHT)
-	)
-	Globals.set_controls_vector2(
-			"offsets_lt_additional",
-			Globals.get_controls_vector2("offsets_lt_additional", Vector2(-128, -128))
-	)
-	Globals.set_controls_vector2(
-			"offsets_rb_additional",
-			Globals.get_controls_vector2("offsets_rb_additional", Vector2(-8, -8))
-	)
+	Globals.set_controls_int("anchors_preset_additional",
+			Globals.get_controls_int("anchors_preset_additional", Control.PRESET_BOTTOM_RIGHT))
+	Globals.set_controls_vector2("offsets_lt_additional",
+			Globals.get_controls_vector2("offsets_lt_additional", Vector2(-128.0, -128.0)))
+	Globals.set_controls_vector2("offsets_rb_additional",
+			Globals.get_controls_vector2("offsets_rb_additional", Vector2(-8.0, -8.0)))
 	
-	Globals.set_controls_int(
-			"anchors_preset_move_js",
-			Globals.get_controls_int("anchors_preset_move_js", Control.PRESET_BOTTOM_LEFT)
-	)
-	Globals.set_controls_vector2(
-			"offsets_lt_move_js",
-			Globals.get_controls_vector2("offsets_lt_move_js", Vector2(128, -328))
-	)
-	Globals.set_controls_vector2(
-			"offsets_rb_move_js",
-			Globals.get_controls_vector2("offsets_rb_move_js", Vector2(328, -128))
-	)
+	Globals.set_controls_int("anchors_preset_move_js",
+			Globals.get_controls_int("anchors_preset_move_js", Control.PRESET_BOTTOM_LEFT))
+	Globals.set_controls_vector2("offsets_lt_move_js",
+			Globals.get_controls_vector2("offsets_lt_move_js", Vector2(128.0, -328.0)))
+	Globals.set_controls_vector2("offsets_rb_move_js",
+			Globals.get_controls_vector2("offsets_rb_move_js", Vector2(328.0, -128.0)))
 	
-	Globals.set_controls_int(
-			"anchors_preset_aim_js",
-			Globals.get_controls_int("anchors_preset_aim_js", Control.PRESET_BOTTOM_RIGHT)
-	)
-	Globals.set_controls_vector2(
-			"offsets_lt_aim_js",
-			Globals.get_controls_vector2("offsets_lt_aim_js", Vector2(-328, -328))
-	)
-	Globals.set_controls_vector2(
-			"offsets_rb_aim_js",
-			Globals.get_controls_vector2("offsets_rb_aim_js", Vector2(-128, -128))
-	)
+	Globals.set_controls_int("anchors_preset_aim_js",
+			Globals.get_controls_int("anchors_preset_aim_js", Control.PRESET_BOTTOM_RIGHT))
+	Globals.set_controls_vector2("offsets_lt_aim_js",
+			Globals.get_controls_vector2("offsets_lt_aim_js", Vector2(-328.0, -328.0)))
+	Globals.set_controls_vector2("offsets_rb_aim_js",
+			Globals.get_controls_vector2("offsets_rb_aim_js", Vector2(-128.0, -128.0)))
 	
-	Globals.set_controls_int(
-			"anchors_preset_weapon",
-			Globals.get_controls_int("anchors_preset_weapon", Control.PRESET_CENTER_RIGHT)
-	)
-	Globals.set_controls_vector2(
-			"offsets_lt_weapon",
-			Globals.get_controls_vector2("offsets_lt_weapon", Vector2(-288, -232))
-	)
-	Globals.set_controls_vector2(
-			"offsets_rb_weapon",
-			Globals.get_controls_vector2("offsets_rb_weapon", Vector2(0, -88))
-	)
+	Globals.set_controls_int("anchors_preset_weapon",
+			Globals.get_controls_int("anchors_preset_weapon", Control.PRESET_CENTER_RIGHT))
+	Globals.set_controls_vector2("offsets_lt_weapon",
+			Globals.get_controls_vector2("offsets_lt_weapon", Vector2(-288.0, -232.0)))
+	Globals.set_controls_vector2("offsets_rb_weapon",
+			Globals.get_controls_vector2("offsets_rb_weapon", Vector2(0.0, -88.0)))
 	
-	Globals.set_controls_int(
-			"anchors_preset_skill",
-			Globals.get_controls_int("anchors_preset_skill", Control.PRESET_CENTER_RIGHT)
-	)
-	Globals.set_controls_vector2(
-			"offsets_lt_skill",
-			Globals.get_controls_vector2("offsets_lt_skill", Vector2(-128, -80))
-	)
-	Globals.set_controls_vector2(
-			"offsets_rb_skill",
-			Globals.get_controls_vector2("offsets_rb_skill", Vector2(-8, 40))
-	)
+	Globals.set_controls_int("anchors_preset_skill",
+			Globals.get_controls_int("anchors_preset_skill", Control.PRESET_CENTER_RIGHT))
+	Globals.set_controls_vector2("offsets_lt_skill",
+			Globals.get_controls_vector2("offsets_lt_skill", Vector2(-128.0, -80.0)))
+	Globals.set_controls_vector2("offsets_rb_skill",
+			Globals.get_controls_vector2("offsets_rb_skill", Vector2(-8.0, 40.0)))
 	
-	Globals.set_controls_float(
-			"move_joystick_scale",
-			Globals.get_controls_float("move_joystick_scale", 1.0)
-	)
-	Globals.set_controls_float(
-			"move_joystick_deadzone",
-			Globals.get_controls_float("move_joystick_deadzone", 20.0)
-	)
-	Globals.set_controls_int(
-			"move_joystick_mode",
-			Globals.get_controls_int("move_joystick_mode", VirtualJoystick.JoystickMode.DYNAMIC)
-	)
+	Globals.set_controls_float("move_joystick_scale",
+			Globals.get_controls_float("move_joystick_scale", 1.0))
+	Globals.set_controls_float("move_joystick_deadzone",
+			Globals.get_controls_float("move_joystick_deadzone", 20.0))
+	Globals.set_controls_int("move_joystick_mode",
+			Globals.get_controls_int("move_joystick_mode", VirtualJoystick.JoystickMode.DYNAMIC))
 	
-	Globals.set_controls_float(
-			"aim_joystick_scale",
-			Globals.get_controls_float("aim_joystick_scale", 1.0)
-	)
-	Globals.set_controls_float(
-			"aim_joystick_deadzone",
-			Globals.get_controls_float("aim_joystick_deadzone", 20.0)
-	)
-	Globals.set_controls_int(
-			"aim_joystick_mode",
-			Globals.get_controls_int("aim_joystick_type", VirtualJoystick.JoystickMode.DYNAMIC)
-	)
+	Globals.set_controls_float("aim_joystick_scale",
+			Globals.get_controls_float("aim_joystick_scale", 1.0))
+	Globals.set_controls_float("aim_joystick_deadzone",
+			Globals.get_controls_float("aim_joystick_deadzone", 20.0))
+	Globals.set_controls_int("aim_joystick_mode",
+			Globals.get_controls_int("aim_joystick_type", VirtualJoystick.JoystickMode.DYNAMIC))
 	
-	Globals.set_controls_vector2(
-			"shoot_area",
-			Globals.get_controls_vector2("shoot_area", Vector2(640, 256))
-	)
+	Globals.set_controls_vector2("shoot_area",
+			Globals.get_controls_vector2("shoot_area", Vector2(640.0, 256.0)))
 	#endregion
 
 
 ## Применяет общие настройки.
 func apply_settings() -> void:
-	AudioServer.set_bus_volume_db(
-			AudioServer.get_bus_index(&"Master"),
-			linear_to_db(Globals.get_setting_float("master_volume"))
-	)
-	AudioServer.set_bus_volume_db(
-			AudioServer.get_bus_index(&"Music"),
-			linear_to_db(Globals.get_setting_float("music_volume"))
-	)
-	AudioServer.set_bus_volume_db(
-			AudioServer.get_bus_index(&"SFX"),
-			linear_to_db(Globals.get_setting_float("sfx_volume"))
-	)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(&"Master"),
+			linear_to_db(Globals.get_setting_float("master_volume")))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(&"Music"),
+			linear_to_db(Globals.get_setting_float("music_volume")))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(&"SFX"),
+			linear_to_db(Globals.get_setting_float("sfx_volume")))
 	if Globals.get_setting_bool("fullscreen"):
 		if not get_window().mode in [Window.MODE_EXCLUSIVE_FULLSCREEN, Window.MODE_FULLSCREEN]:
 			get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN
@@ -426,14 +308,14 @@ func apply_controls_settings() -> void:
 	
 	if not Globals.get_controls_int("input_method") == InputMethod.KEYBOARD_AND_MOUSE:
 		return
-	for i: StringName in InputMap.get_actions():
-		if i.begins_with("ui_"):
+	for action: StringName in InputMap.get_actions():
+		if action.begins_with("ui_"):
 			continue
-		InputMap.action_erase_events(i)
+		InputMap.action_erase_events(action)
 		
 		var coded_event_type: ActionEventType = \
-				Globals.get_controls_int("action_%s_event_type" % i) as ActionEventType
-		var coded_event_value: int = Globals.get_controls_int("action_%s_event_value" % i)
+				Globals.get_controls_int("action_%s_event_type" % action) as ActionEventType
+		var coded_event_value: int = Globals.get_controls_int("action_%s_event_value" % action)
 		var event: InputEvent
 		
 		match coded_event_type:
@@ -446,7 +328,7 @@ func apply_controls_settings() -> void:
 				mb.button_index = coded_event_value as MouseButton
 				event = mb
 		
-		InputMap.action_add_event(i, event)
+		InputMap.action_add_event(action, event)
 
 
 func _update_window_stretch_aspect() -> void:
@@ -460,7 +342,7 @@ func _update_window_stretch_aspect() -> void:
 	elif ratio < MIN_ASPECT_RATIO:
 		get_window().content_scale_size = Vector2i(
 				_default_window_content_width,
-				roundi(_default_window_content_width / MIN_ASPECT_RATIO),
+				roundi(_default_window_content_width / MIN_ASPECT_RATIO)
 		)
 		get_window().content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP_HEIGHT
 	else:
@@ -496,16 +378,18 @@ func _start_load() -> void:
 	if Globals.headless:
 		open_local_game()
 		game.create()
+		var http: HTTPRequest = game.get_node(^"Lobby/ViewIPDialog/HTTPRequest")
+		http.request("https://icanhazip.com/")
 
 
 func _loading_init() -> void:
 	print_verbose("Initializing...")
 	_load_status_label.text = "Инициализация..."
-	_load_progress_bar.value = 0
+	_load_progress_bar.value = 0.0
 	await get_tree().process_frame
 	
 	Globals.initialize(self)
-	if DisplayServer.get_name() == "headless" or OS.has_feature("dedicated_server"):
+	if DisplayServer.get_name() == "headless":
 		print("Running in headless mode.")
 		Engine.max_fps = 0
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
@@ -529,7 +413,7 @@ func _loading_init() -> void:
 func _loading_check_server() -> void:
 	print_verbose("Checking connection to server...")
 	_load_status_label.text = "Проверка соединения с сервером..."
-	_load_progress_bar.value = 0
+	_load_progress_bar.value = 0.0
 	await get_tree().process_frame
 	
 	var http := HTTPRequest.new()
@@ -540,7 +424,7 @@ func _loading_check_server() -> void:
 	var err: Error = http.request(SERVER_URL.path_join("README.md"))
 	if err != OK:
 		http.request_completed.disconnect(_on_check_http_request_completed)
-		push_warning("Can't connect to server! Error: %s" % error_string(err))
+		push_warning("Can't connect to server. Error: %s." % error_string(err))
 		loading_stage_finished.emit(false)
 		http.queue_free()
 
@@ -553,7 +437,7 @@ func _loading_custom_tracks() -> void:
 	
 	print_verbose("Loading custom tracks...")
 	_load_status_label.text = "Загрузка пользовательских треков..."
-	_load_progress_bar.value = 0
+	_load_progress_bar.value = 0.0
 	await get_tree().process_frame
 	
 	var dir := DirAccess.open(music_path)
@@ -572,9 +456,9 @@ func _loading_custom_tracks() -> void:
 		if to_load.size() >= 20:
 			break
 		if not dir.current_is_dir():
-			for i: String in ALLOWED_MUSIC_FILE_EXTENSIONS:
-				if file_name.ends_with(i):
-					to_load[dir.get_current_dir().path_join(file_name)] = i
+			for extension: String in ALLOWED_MUSIC_FILE_EXTENSIONS:
+				if file_name.ends_with(extension):
+					to_load[dir.get_current_dir().path_join(file_name)] = extension
 					print_verbose("Found track: %s." % dir.get_current_dir().path_join(file_name))
 					break
 		file_name = dir.get_next()
@@ -582,20 +466,20 @@ func _loading_custom_tracks() -> void:
 	var to_load_count: int = to_load.size()
 	var counter: int = 0
 	var last_ticks: int = Time.get_ticks_msec()
-	for i: String in to_load:
+	for path: String in to_load:
 		var stream: AudioStream
 		var valid := true
-		var file := FileAccess.open(i, FileAccess.READ)
+		var file := FileAccess.open(path, FileAccess.READ)
 		if not file:
 			valid = false
 			push_error("Failed creating FileAccess at path %s. Error: %s." % [
-				i,
+				path,
 				error_string(FileAccess.get_open_error()),
 			])
 		if valid and file.get_length() > 15 * 1024 * 1024:
 			valid = false
 		if valid:
-			match to_load[i]:
+			match to_load[path]:
 				".mp3":
 					var mp3 := AudioStreamMP3.new()
 					mp3.data = file.get_buffer(file.get_length())
@@ -606,8 +490,7 @@ func _loading_custom_tracks() -> void:
 						stream = mp3
 				".ogg":
 					var ogg := AudioStreamOggVorbis.load_from_buffer(
-							file.get_buffer(file.get_length())
-					)
+							file.get_buffer(file.get_length()))
 					if ogg:
 						ogg.loop = true
 						stream = ogg
@@ -615,12 +498,12 @@ func _loading_custom_tracks() -> void:
 						valid = false
 		
 		if valid:
-			print_verbose("Loaded track: %s." % i)
+			print_verbose("Loaded track: %s." % path)
 			loaded_custom_tracks[
-				i.get_file().get_basename().left(MAX_MUSIC_FILE_NAME_LENGTH)
+				path.get_file().get_basename().left(MAX_MUSIC_FILE_NAME_LENGTH)
 			] = stream
 		else:
-			print_verbose("Track %s is invalid." % i)
+			print_verbose("Track at %s is invalid." % path)
 		
 		_load_progress_bar.value = 100.0 * counter / to_load_count
 		counter += 1
@@ -640,7 +523,7 @@ func _loading_preload_resources() -> void:
 	
 	print_verbose("Preloading resources...")
 	_load_status_label.text = "Загрузка ресурсов в память..."
-	_load_progress_bar.value = 0
+	_load_progress_bar.value = 0.0
 	await get_tree().process_frame
 	
 	var counter: int = 1
@@ -649,12 +532,12 @@ func _loading_preload_resources() -> void:
 	var to_preload_count: int = to_preload.size()
 	
 	var last_ticks: int = Time.get_ticks_msec()
-	for i: String in to_preload:
-		var resource: Resource = load(i)
+	for path: String in to_preload:
+		var resource: Resource = load(path)
 		_preloaded_resources.append(resource)
 		_load_progress_bar.value = 100.0 * counter / to_preload_count
 		counter += 1
-		print_verbose("Preloaded resource: %s." % i)
+		print_verbose("Preloaded resource: %s." % path)
 		if Time.get_ticks_msec() - last_ticks > 16:
 			await get_tree().process_frame
 			last_ticks = Time.get_ticks_msec()
@@ -666,7 +549,7 @@ func _loading_preload_resources() -> void:
 func _loading_open_menu() -> void:
 	print_verbose("Opening menu...")
 	_load_status_label.text = "Загрузка меню..."
-	_load_progress_bar.value = 100
+	_load_progress_bar.value = 100.0
 	await get_tree().process_frame
 	
 	open_menu()
@@ -682,12 +565,12 @@ func _on_check_http_request_completed(result: HTTPRequest.Result,
 		_body: PackedByteArray, http: HTTPRequest) -> void:
 	http.queue_free()
 	if result != HTTPRequest.RESULT_SUCCESS:
-		push_warning("Connect to server: result is not Success! Result: %d" % result)
+		push_warning("Connect to server: result is not Success. Result: %d." % result)
 		loading_stage_finished.emit(false)
 		return
 	if response_code != HTTPClient.RESPONSE_OK:
 		push_warning(
-				"Connect to server: response code is not 200! Response code: %d" % response_code)
+				"Connect to server: response code is not 200. Response code: %d." % response_code)
 		loading_stage_finished.emit(false)
 		return
 	print_verbose("Connection success.")

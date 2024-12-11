@@ -28,10 +28,10 @@ func _use() -> void:
 	_request_dodge.rpc_id(1, _roll_direction)
 
 
-@rpc("reliable", "call_local", "authority", 2)
+@rpc("reliable", "call_local", "authority", 5)
 func dodge(direction: Vector2) -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
+	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
+		push_error("This method must be called only by server.")
 		return
 	
 	_player.make_disarmed()
@@ -41,7 +41,7 @@ func dodge(direction: Vector2) -> void:
 	_player.collision_layer = 0
 	
 	var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
-	tween.tween_property(_player.visual, ^"rotation", TAU * _player.visual.scale.x, roll_duration)
+	tween.tween_property(_player.visual, ^":rotation", TAU * _player.visual.scale.x, roll_duration)
 	tween.tween_callback(func() -> void: _player.visual.rotation = 0.0)
 	
 	_roll_timer.start(roll_duration)
@@ -57,16 +57,17 @@ func dodge(direction: Vector2) -> void:
 	_player.collision_layer = previous_collision_layer
 
 
-@rpc("reliable", "call_local", "any_peer", 2)
+@rpc("reliable", "call_local", "any_peer", 5)
 func _request_dodge(direction: Vector2) -> void:
 	if not multiplayer.is_server():
-		push_error("Unexpected call on client!")
+		push_error("Unexpected call on client.")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if _player.id != sender_id:
 		push_warning("RPC Sender ID (%d) doesn't match with player ID (%d)!" % [
-			sender_id, _player.id
+			sender_id,
+			_player.id,
 		])
 		return
 	

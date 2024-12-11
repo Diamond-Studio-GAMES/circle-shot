@@ -5,7 +5,7 @@ extends CanvasLayer
 ##
 ## В комбинации с [Game], загружает события и прочее.
 
-## Внутренний сигнал, издаётся при завершении части общей загрузки.
+## Внутренний сигнал, издаётся при завершении части загрузки.
 signal loaded_part(success: bool)
 var _loaded_part := false
 var _loading_path: String
@@ -50,23 +50,23 @@ func load_event(event_id: int, map_id: int) -> Event:
 	if err != OK:
 		push_error("Load request for event %s failed with error: %s." % [
 			_loading_path,
-			error_string(err)
+			error_string(err),
 		])
-		_fail_load()
+		finish_load(false)
 		return null
 	set_process(true)
 	_loaded_part = false
 	
 	var success: bool = await loaded_part
 	if not success:
-		push_error("Loading of event %s failed!" % _loading_path)
-		_fail_load()
+		push_error("Loading of event %s failed." % _loading_path)
+		finish_load(false)
 		return null
 	var event_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
 	if not is_instance_valid(event_scene):
 		# TODO: удалить эту шарманку.
-		push_error("Loading of event %s failed!" % _loading_path)
-		_fail_load()
+		push_error("Loading of event %s failed." % _loading_path)
+		finish_load(false)
 		return null
 	print_verbose("Done loading event %s." % _loading_path)
 	var event: Event = event_scene.instantiate()
@@ -81,24 +81,24 @@ func load_event(event_id: int, map_id: int) -> Event:
 	if err != OK:
 		push_error("Load request for map %s failed with error: %s." % [
 			_loading_path,
-			error_string(err)
+			error_string(err),
 		])
 		event.free()
-		_fail_load()
+		finish_load(false)
 		return null
 	
 	success = await loaded_part
 	if not success:
-		push_error("Loading of map %s failed!" % _loading_path)
+		push_error("Loading of map %s failed." % _loading_path)
 		event.free()
-		_fail_load()
+		finish_load(false)
 		return null
 	var map_scene: PackedScene = ResourceLoader.load_threaded_get(_loading_path)
 	if not is_instance_valid(map_scene):
 		# TODO: удалить эту шарманку.
-		push_error("Loading of map %s failed!" % _loading_path)
+		push_error("Loading of map %s failed." % _loading_path)
 		event.free()
-		_fail_load()
+		finish_load(false)
 		return null
 	print_verbose("Done loading map %s." % _loading_path)
 	var map: Node = map_scene.instantiate()
@@ -112,17 +112,15 @@ func load_event(event_id: int, map_id: int) -> Event:
 
 
 ## Завершает загрузку, а именно анимацию.
-func finish_load() -> void:
-	_status_text.text = "Готово!"
+func finish_load(success: bool) -> void:
 	_anim.play(&"EndLoad")
-	print_verbose("Load finished.")
-
-
-func _fail_load() -> void:
-	set_process(false)
-	_anim.play(&"EndLoad")
-	_status_text.text = "Ошибка загрузки!"
-	print_verbose("Load failed.")
+	if success:
+		_status_text.text = "Готово!"
+		print_verbose("Load finished.")
+	else:
+		set_process(false)
+		_status_text.text = "Ошибка загрузки!"
+		print_verbose("Load failed.")
 
 
 func _on_game_closed() -> void:

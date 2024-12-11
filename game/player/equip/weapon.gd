@@ -33,7 +33,7 @@ func _ready() -> void:
 	ammo_in_stock = ammo_total - ammo_per_load
 
 
-@rpc("call_local", "reliable", "authority", 2)
+@rpc("call_local", "reliable", "authority", 5)
 func shoot() -> void:
 	_shoot()
 	_player.ammo_text_updated.emit(get_ammo_text())
@@ -78,7 +78,7 @@ func reload() -> void:
 
 
 func can_reload() -> bool:
-	return ammo != ammo_per_load and ammo_in_stock > 0 and can_shoot()
+	return _can_reload() and ammo != ammo_per_load and ammo_in_stock > 0 and can_shoot()
 
 
 func additional_button() -> void:
@@ -89,13 +89,17 @@ func has_additional_button() -> bool:
 	return false
 
 
+func can_use_additional_button() -> bool:
+	return can_shoot() and _can_use_additional_button()
+
+
 func get_ammo_text() -> String:
 	if ammo + ammo_in_stock <= 0:
 		return "Нет патронов"
 	return "%d/%d" % [ammo, ammo_in_stock]
 
 
-func _calculate_aim_direction() -> float:
+func _calculate_aim_angle() -> float:
 	var aim_direction: Vector2 = _player.player_input.aim_direction
 	aim_direction.x = absf(aim_direction.x)
 	return aim_direction.angle()
@@ -115,3 +119,11 @@ func _make_current() -> void:
 
 func _unmake_current() -> void:
 	pass
+
+
+func _can_reload() -> bool:
+	return true
+
+
+func _can_use_additional_button() -> bool:
+	return true

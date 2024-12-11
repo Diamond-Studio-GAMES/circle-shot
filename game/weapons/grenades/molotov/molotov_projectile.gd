@@ -18,15 +18,15 @@ func _physics_process(delta: float) -> void:
 	if _exploded:
 		return
 	
-	current_speed -= damping * delta
-	if current_speed < 0.0:
-		current_speed = 0.0
+	_current_speed -= damping * delta
+	if _current_speed < 0.0:
+		_current_speed = 0.0
 		_explosion_timer.stop()
 		_explosion_timer.timeout.emit()
 		return
-	_anim.speed_scale = current_speed / speed
+	_anim.speed_scale = _current_speed / speed
 	
-	var collision: KinematicCollision2D = move_and_collide(current_speed * direction * delta)
+	var collision: KinematicCollision2D = move_and_collide(_current_speed * direction * delta)
 	if collision:
 		_explosion_timer.stop()
 		_explosion_timer.timeout.emit()
@@ -35,8 +35,8 @@ func _physics_process(delta: float) -> void:
 func _explode() -> void:
 	($Explosion/AnimationPlayer as AnimationPlayer).play(&"Explode")
 	var camera: SmartCamera = get_viewport().get_camera_2d()
-	var multiplier: float = maxf(0.0,
-			(shake_max_distance - global_position.distance_to(camera.global_position)) 
+	var multiplier: float = maxf(
+			0.0, (shake_max_distance - global_position.distance_to(camera.global_position)) 
 			/ shake_max_distance
 	)
 	camera.shake(shake_max_amplitude * multiplier, shake_max_duration * multiplier)

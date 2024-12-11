@@ -6,7 +6,7 @@ extends Weapon
 @export var shoot_interval := 1.0
 @export var to_aim_time := 0.15
 var _shoot_timer: float = 0.0
-var _post_equip_tween: Tween
+var _turn_tween: Tween
 @onready var _anim: AnimationPlayer = $AnimationPlayer
 @onready var _aim: Node2D = $Aim
 @onready var _attack: Attack = $Attack
@@ -16,7 +16,7 @@ func _process(_delta: float) -> void:
 	_aim.hide()
 	if can_shoot():
 		_aim.visible = _player.player_input.showing_aim
-		rotation = _calculate_aim_direction()
+		rotation = _calculate_aim_angle()
 
 
 func _physics_process(delta: float) -> void:
@@ -56,24 +56,24 @@ func _make_current() -> void:
 		return
 	
 	_anim.play(&"PostEquip")
-	_post_equip_tween = create_tween()
-	_post_equip_tween.tween_property(self, ^":rotation", _calculate_aim_direction(), to_aim_time)
-	await _post_equip_tween.finished
+	_turn_tween = create_tween()
+	_turn_tween.tween_property(self, ^":rotation", _calculate_aim_angle(), to_aim_time)
+	await _turn_tween.finished
 	
 	unlock_shooting()
 
 
 func _unmake_current() -> void:
-	if is_instance_valid(_post_equip_tween):
-		_post_equip_tween.finished.emit()
-		_post_equip_tween.kill()
+	if is_instance_valid(_turn_tween):
+		_turn_tween.finished.emit()
+		_turn_tween.kill()
 	
 	rotation = 0.0
 	_anim.play(&"RESET")
 	_anim.advance(0.01)
 
 
-func can_reload() -> bool:
+func _can_reload() -> bool:
 	return false
 
 

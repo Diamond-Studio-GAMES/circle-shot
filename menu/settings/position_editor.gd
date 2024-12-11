@@ -48,12 +48,10 @@ func _on_parent_gui_input(event: InputEvent) -> void:
 
 func _on_controls_save_requested() -> void:
 	Globals.set_controls_int("anchors_preset_%s" % id, _get_preset())
-	Globals.set_controls_vector2(
-			"offsets_lt_%s" % id, Vector2(_parent.offset_left, _parent.offset_top)
-	)
-	Globals.set_controls_vector2(
-			"offsets_rb_%s" % id, Vector2(_parent.offset_right, _parent.offset_bottom)
-	)
+	Globals.set_controls_vector2("offsets_lt_%s" % id,
+			Vector2(_parent.offset_left, _parent.offset_top))
+	Globals.set_controls_vector2("offsets_rb_%s" % id,
+			Vector2(_parent.offset_right, _parent.offset_bottom))
 
 
 func _get_preset() -> Control.LayoutPreset:

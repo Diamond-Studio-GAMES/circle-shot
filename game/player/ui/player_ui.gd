@@ -4,23 +4,23 @@ extends Control
 const MIN_AIM_DIRECTION_LENGTH := 0.1
 const DEFAULT_WEAPON_BG_COLOR := Color(1.0, 1.0, 1.0, 0.5)
 const SELECTED_WEAPON_BG_COLOR := Color.WHITE
+const CHANGE_WEAPON_DEADZONE := 32.0
+const TIME_TO_SHOW_WEAPONS := 0.4
 const MIN_VIBRATION_DURATION_MS: int = 100
 const MAX_VIBRATION_DURATION_MS: int = 500
 const MIN_VIBRATION_AMPLITUDE := 0.05
 const MAX_VIBRATION_AMPLITUDE := 0.2
 
+# Настройки
 var input_method: Main.InputMethod
-var vibration_enabled: bool
 
-var aim_deadzone: float
-var aim_zone: float
-var sneak_multiplier: float
-var follow_mouse: bool
-
-var joystick_fire: bool
-var change_weapon_deadzone := 32.0
-var show_weapons_time := 0.4
-var square_joystick: bool
+var _vibration_enabled: bool
+var _aim_deadzone: float
+var _aim_max_zone: float
+var _sneak_multiplier: float
+var _follow_mouse: bool
+var _joystick_fire: bool
+var _square_joystick: bool
 
 var _player: Player
 
@@ -69,23 +69,23 @@ var _health_bar_tween: Tween
 
 func _ready() -> void:
 	input_method = Globals.get_controls_int("input_method") as Main.InputMethod
-	vibration_enabled = Globals.get_setting_bool("vibration")
+	_vibration_enabled = Globals.get_setting_bool("vibration")
 	
 	match input_method:
 		Main.InputMethod.KEYBOARD_AND_MOUSE:
 			($Controller/TouchControls as Control).hide()
 			($Controller/Skill/TouchScreenButton as Node2D).hide()
-			follow_mouse = Globals.get_controls_bool("follow_mouse")
-			sneak_multiplier = Globals.get_controls_float("sneak_multiplier")
+			_follow_mouse = Globals.get_controls_bool("follow_mouse")
+			_sneak_multiplier = Globals.get_controls_float("sneak_multiplier")
 			var smallest_side: float = minf(get_viewport_rect().size.x, get_viewport_rect().size.y)
-			aim_deadzone = Globals.get_controls_float("aim_deadzone") * smallest_side / 2
-			aim_zone = Globals.get_controls_float("aim_zone") * smallest_side / 2
-			_aim_zone = aim_zone - aim_deadzone
+			_aim_deadzone = Globals.get_controls_float("aim_deadzone") * smallest_side / 2
+			_aim_max_zone = Globals.get_controls_float("aim_zone") * smallest_side / 2
+			_aim_zone = _aim_max_zone - _aim_deadzone
 		Main.InputMethod.TOUCH:
-			joystick_fire = Globals.get_controls_bool("joystick_fire")
-			if joystick_fire:
+			_joystick_fire = Globals.get_controls_bool("joystick_fire")
+			if _joystick_fire:
 				_aim_joystick.released.connect(_on_aim_joystick_released)
-			square_joystick = Globals.get_controls_bool("square_joystick")
+			_square_joystick = Globals.get_controls_bool("square_joystick")
 			
 			_move_joystick.scale = Vector2.ONE * Globals.get_controls_float("move_joystick_scale")
 			_move_joystick.deadzone_size = Globals.get_controls_float("move_joystick_deadzone")
@@ -231,7 +231,7 @@ func _unhandled_keyboard_and_mouse_input(event: InputEvent) -> void:
 		_showing_aim = event.is_pressed()
 	
 	if event.is_action_pressed(&"show_weapons"):
-		if ($Controller/WeaponSelection as Control).visible:
+		if ($Controller/WeaponSelection as CanvasItem).visible:
 			close_weapon_selection()
 		else:
 			open_weapon_selection()
@@ -253,7 +253,7 @@ func _unhandled_keyboard_and_mouse_input(event: InputEvent) -> void:
 
 func _process_touch_input_method(delta: float) -> void:
 	var direction: Vector2 = _move_joystick.output
-	if square_joystick:
+	if _square_joystick:
 		_player.entity_input.direction = direction.normalized() * direction.length_squared()
 	else:
 		_player.entity_input.direction = _move_joystick.output
@@ -268,7 +268,7 @@ func _process_touch_input_method(delta: float) -> void:
 		_player.player_input.showing_aim = false
 		_player.player_input.turn_with_aim = false
 	
-	if not joystick_fire:
+	if not _joystick_fire:
 		_player.player_input.shooting = _shoot_area.is_pressed()
 	else:
 		if not is_instance_valid(_player.current_weapon) \
@@ -277,29 +277,31 @@ func _process_touch_input_method(delta: float) -> void:
 	
 	if _touch_index >= 0:
 		_touch_timer += delta
-		if _touch_timer > show_weapons_time and not _weapon_selection.visible:
+		if _touch_timer > TIME_TO_SHOW_WEAPONS and not _weapon_selection.visible:
 			open_weapon_selection()
 
 
 func _process_keyboard_and_mouse_input_method() -> void:
-	_player.entity_input.direction = (
-			Vector2.LEFT * int(_moving_left) + Vector2.RIGHT * int(_moving_right)
-			+ Vector2.UP * int(_moving_up) + Vector2.DOWN * int(_moving_down)
-		).normalized()
+	_player.entity_input.direction = Vector2(
+			int(_moving_right) - int(_moving_left),
+			int(_moving_down) - int(_moving_up)
+	).normalized()
 	if Input.is_action_pressed(&"sneak"):
-		_player.entity_input.direction *= sneak_multiplier
+		_player.entity_input.direction *= _sneak_multiplier
 	
 	_player.player_input.shooting = _shooting
 	_player.player_input.showing_aim = _showing_aim
 	
-	if follow_mouse or _showing_aim:
+	if _follow_mouse or _showing_aim:
 		var mouse_pos: Vector2 = _center.get_local_mouse_position()
 		var mouse_distance: float = mouse_pos.length()
-		if mouse_distance > aim_deadzone:
-			_player.player_input.aim_direction = mouse_pos.normalized() * ((
-					clampf(mouse_distance, aim_deadzone, aim_zone) - aim_deadzone
-			) / _aim_zone * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH)
-	_player.player_input.turn_with_aim = follow_mouse or _showing_aim
+		if mouse_distance > _aim_deadzone:
+			# Умножаем направление в зависимости от расстояния курсора от центра.
+			_player.player_input.aim_direction = mouse_pos.normalized() * (
+					(clampf(mouse_distance, _aim_deadzone, _aim_max_zone) - _aim_deadzone)
+					/ _aim_zone * (1.0 - MIN_AIM_DIRECTION_LENGTH) + MIN_AIM_DIRECTION_LENGTH
+			)
+	_player.player_input.turn_with_aim = _follow_mouse or _showing_aim
 
 
 func _update_skill() -> void:
@@ -327,7 +329,7 @@ func _is_point_inside_of_control(point: Vector2, control: Control) -> bool:
 
 
 func _get_weapon_type_from_vector(vector: Vector2) -> Weapon.Type:
-	if vector.length() < change_weapon_deadzone:
+	if vector.length() < CHANGE_WEAPON_DEADZONE:
 		return Weapon.Type.INVALID
 	
 	var angle: float = vector.angle()
@@ -358,8 +360,8 @@ func _on_local_player_created(player: Player) -> void:
 	
 	_tint_anim.play(&"RESET")
 	var tween: Tween = create_tween()
-	($Controller as Control).show()
-	($Controller as Control).modulate = Color.TRANSPARENT
+	($Controller as CanvasItem).show()
+	($Controller as CanvasItem).modulate = Color.TRANSPARENT
 	tween.tween_property($Controller as Control, ^":modulate", Color.WHITE, 0.5)
 	
 	player.health_changed.connect(_on_player_health_changed)
@@ -388,7 +390,7 @@ func _on_player_health_changed(old_value: int, new_value: int) -> void:
 		_health_immediate_bar_tween.tween_property(_health_immediate_bar, ^":value", new_value, 0.5)
 		
 		var change_ratio: float = (old_value - new_value) / float(_player.max_health)
-		if vibration_enabled:
+		if _vibration_enabled:
 			Input.vibrate_handheld(
 					MIN_VIBRATION_DURATION_MS +
 					roundi((MAX_VIBRATION_DURATION_MS - MIN_VIBRATION_DURATION_MS) * change_ratio),
@@ -406,9 +408,9 @@ func _on_player_health_changed(old_value: int, new_value: int) -> void:
 
 
 func _on_player_died(_who: int) -> void:
-	($Controller as Control).hide()
+	($Controller as CanvasItem).hide()
 	_tint_anim.play(&"Death")
-	if vibration_enabled:
+	if _vibration_enabled:
 		Input.vibrate_handheld(MAX_VIBRATION_DURATION_MS, MAX_VIBRATION_AMPLITUDE)
 
 
@@ -418,12 +420,10 @@ func _on_weapon_changed(_to: Weapon.Type) -> void:
 		return
 	
 	_current_weapon_icon.texture = load(_player.current_weapon.data.image_path)
-	(_current_weapon_icon.material as ShaderMaterial).set_shader_parameter(
-			&"color",
-			ItemsDB.RARITY_COLORS[_player.current_weapon.data.rarity],
-	)
+	(_current_weapon_icon.material as ShaderMaterial).set_shader_parameter(&"color",
+			ItemsDB.RARITY_COLORS[_player.current_weapon.data.rarity])
 	
-	($Controller/TouchControls/Anchor/AdditionalButton as Node2D).visible = \
+	($Controller/TouchControls/Anchor/AdditionalButton as CanvasItem).visible = \
 			_player.current_weapon.has_additional_button()
 
 
@@ -450,10 +450,8 @@ func _on_weapon_equipped(type: Weapon.Type, data: WeaponData) -> void:
 		return
 	
 	weapon_icon.texture = load(data.image_path)
-	(weapon_icon.material as ShaderMaterial).set_shader_parameter(
-			&"color",
-			ItemsDB.RARITY_COLORS[data.rarity],
-	)
+	(weapon_icon.material as ShaderMaterial).set_shader_parameter(&"color",
+			ItemsDB.RARITY_COLORS[data.rarity])
 	weapon_text.text = data.name
 
 
@@ -473,7 +471,7 @@ func _on_ammo_text_updated(text: String) -> void:
 
 func _on_aim_joystick_released(output: Vector2) -> void:
 	if (
-			is_instance_valid(_player) and is_instance_valid(_player.current_weapon) \
+			is_instance_valid(_player) and is_instance_valid(_player.current_weapon)
 			and _player.current_weapon.shoot_on_joystick_release
 			and not output.is_zero_approx()
 	):

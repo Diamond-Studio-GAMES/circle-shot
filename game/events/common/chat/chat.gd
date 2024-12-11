@@ -22,19 +22,19 @@ var players_teams: Dictionary[int, int]
 
 
 ## Постит сообщение. Должно вызываться только сервером.
-@rpc("call_local", "authority", "reliable", 5)
+@rpc("call_local", "authority", "reliable", 2)
 func post_message(message: String) -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
+	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
+		push_error("This method must be called only by server.")
 		return
 	
 	_messages.append_text(message + '\n')
 	message_posted.emit(message)
-	print_verbose("Posted message: %s" % message)
+	print_verbose('Posted message: "%s".' % message)
 	if not visible:
 		var tween: Tween = create_tween()
-		tween.tween_property(_chat_button, ^"self_modulate", Color.GREEN, 0.25)
-		tween.tween_property(_chat_button, ^"self_modulate", Color.WHITE, 0.25)
+		tween.tween_property(_chat_button, ^":self_modulate", Color.GREEN, 0.25)
+		tween.tween_property(_chat_button, ^":self_modulate", Color.WHITE, 0.25)
 
 
 ## Очищает чат.
@@ -50,14 +50,14 @@ func send_message() -> void:
 	
 	if message.is_empty():
 		return
-	_request_post_message.rpc_id(1, message)
-	print_verbose("Sent message: %s" % message)
+	_request_post_message.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER, message)
+	print_verbose('Sent message: "%s".' % message)
 
 
-@rpc("any_peer", "call_local", "reliable", 5)
+@rpc("any_peer", "call_local", "reliable", 2)
 func _request_post_message(message: String) -> void:
 	if not multiplayer.is_server():
-		push_error("Unexpected call on client!")
+		push_error("Unexpected call on client.")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
@@ -69,7 +69,7 @@ func _request_post_message(message: String) -> void:
 	if message.is_empty():
 		return
 	if message.length() > MAX_MESSAGE_LENGTH:
-		push_warning("Client %d posted message with length %d, which is more than allowed (%d)." % [
+		push_warning("Player %d posted message with length %d, which is more than allowed (%d)." % [
 			sender_id,
 			message.length(),
 			MAX_MESSAGE_LENGTH,

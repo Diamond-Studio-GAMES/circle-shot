@@ -4,26 +4,26 @@ extends AnimatableBody2D
 
 @export var speed := 800.0
 @export var damping := 200.0
-var current_speed: float
-var direction := Vector2.ZERO
+var direction: Vector2
+var _current_speed: float
 var _exploded := false
 @onready var _anim: AnimationPlayer = $Grenade/AnimationPlayer
 
 
 func _ready() -> void:
-	current_speed = speed
+	_current_speed = speed
 
 
 func _physics_process(delta: float) -> void:
 	if _exploded:
 		return
 	
-	current_speed -= damping * delta
-	if current_speed < 0.0:
-		current_speed = 0.0
-	_anim.speed_scale = current_speed / speed
+	_current_speed -= damping * delta
+	if _current_speed < 0.0:
+		_current_speed = 0.0
+	_anim.speed_scale = _current_speed / speed
 	
-	var collision: KinematicCollision2D = move_and_collide(current_speed * direction * delta)
+	var collision: KinematicCollision2D = move_and_collide(_current_speed * direction * delta)
 	if collision:
 		direction = direction.bounce(collision.get_normal())
 

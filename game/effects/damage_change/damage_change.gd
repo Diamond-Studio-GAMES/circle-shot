@@ -8,10 +8,9 @@ func _start_effect() -> void:
 	var multiplier: float = _data[0]
 	_entity.damage_multiplier *= multiplier
 	if multiplier > 1.0:
-		($Up as Node2D).show()
-		pass
+		($Up as CanvasItem).show()
 	elif multiplier < 1.0:
-		($Down as Node2D).show()
+		($Down as CanvasItem).show()
 		negative = true
 
 

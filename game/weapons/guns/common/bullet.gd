@@ -2,12 +2,12 @@ extends Attack
 
 @export var speed := 1280.0
 @export var hit_vfx_scene: PackedScene
-var direction := Vector2.ZERO
+var direction: Vector2
 
 func _ready() -> void:
 	direction = Vector2.RIGHT.rotated(rotation)
 	var tween: Tween = create_tween()
-	tween.tween_property($Sprite2D as Node2D, ^"scale:x", 1.0, 0.25).from(0.1)
+	tween.tween_property($Sprite2D as Node2D, ^":scale:x", 1.0, 0.25).from(0.1)
 
 
 func _physics_process(delta: float) -> void:

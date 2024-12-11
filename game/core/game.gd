@@ -32,7 +32,7 @@ enum State {
 	CONNECTING = 1,
 	## Подключено, в лобби.
 	LOBBY = 2,
-	## Загрузка игры.
+	## Подключено, загрузка игры.
 	LOADING = 3,
 	## Подключено, находится в событии.
 	EVENT = 4,
@@ -42,7 +42,7 @@ enum State {
 ## Порт для подключения по умолчанию.
 const DEFAULT_PORT: int = 7415
 ## Базовое время, определяющее через сколько соединение должно быть прервано (в мс).
-## За подробностями смотри [method ENetPacketPeer.set_timeout].
+## За подробностями - [method ENetPacketPeer.set_timeout].
 const BASE_TIMEOUT: int = 1500
 ## Порт, через который ищутся игры по локальной сети.
 const LISTEN_PORT: int = 7414
@@ -55,7 +55,7 @@ const MAX_PLAYER_NAME_LENGTH: int = 24
 ## Задаётся лобби на основе выбранного события. Не имеет эффекта на клиентах.
 var max_players: int = 10
 ## Текущее состояние игры.
-var state: State = State.CLOSED
+var state := State.CLOSED
 ## Ссылка на событие.
 var event: Event
 
@@ -120,7 +120,8 @@ func join(ip: String, port: int = DEFAULT_PORT) -> void:
 		push_warning("Can't initiate connection.")
 		return
 	# Уменьшаем время тайм-аута
-	peer.get_peer(1).set_timeout(BASE_TIMEOUT, BASE_TIMEOUT * 2, BASE_TIMEOUT * 3)
+	peer.get_peer(MultiplayerPeer.TARGET_PEER_SERVER).set_timeout(
+			BASE_TIMEOUT, BASE_TIMEOUT * 2, BASE_TIMEOUT * 3)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	_scene_multiplayer.peer_authenticating.connect(_on_peer_authenticating)
@@ -139,9 +140,10 @@ func close() -> void:
 		return
 	
 	if (
-			multiplayer.multiplayer_peer.get_connection_status() ==
-			MultiplayerPeer.CONNECTION_CONNECTED
-			and not 1 in _scene_multiplayer.get_authenticating_peers()
+			multiplayer.multiplayer_peer.get_connection_status()
+			== MultiplayerPeer.CONNECTION_CONNECTED
+			and not MultiplayerPeer.TARGET_PEER_SERVER
+			in _scene_multiplayer.get_authenticating_peers()
 	):
 		closed.emit()
 	
@@ -188,13 +190,13 @@ func load_event(event_id: int, map_id: int, player_name := "", equip_data: Array
 		push_error("Loading failed. Disconnecting.")
 		close()
 		return
-	closed.connect(_loader.finish_load, CONNECT_ONE_SHOT)
+	closed.connect(_loader.finish_load.bind(false), CONNECT_ONE_SHOT)
 	if multiplayer.is_server() and Globals.headless:
-		_players_not_ready.erase(1)
+		_players_not_ready.erase(MultiplayerPeer.TARGET_PEER_SERVER)
 		_check_players_ready()
 		return
-	print_verbose("Sending data. Name: %s, Equip data: %s." % [player_name, str(equip_data)])
-	_send_player_data.rpc_id(1, player_name, equip_data)
+	print_verbose("Sending data. Name: %s, equip data: %s." % [player_name, str(equip_data)])
+	_send_player_data.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER, player_name, equip_data)
 
 
 ## Показывает диалог с ошибкой.
@@ -221,38 +223,38 @@ static func validate_player_name(player_name: String, id: int = 0) -> String:
 	return player_name
 
 
-@rpc("any_peer", "reliable", "call_local")
+@rpc("any_peer", "reliable", "call_local", 1)
 func _send_player_data(player_name: String, equip_data: Array[int]) -> void:
 	if not multiplayer.is_server():
-		push_error("Unexpected call on client!")
+		push_error("Unexpected call on client.")
 		return
 	
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	player_name = validate_player_name(player_name, sender_id)
 	if equip_data.size() != 6:
-		push_warning("Client %d has incorrect equip data size: %d." % [
+		push_warning("Client %d has invalid equip data size: %d." % [
 			sender_id,
 			equip_data.size(),
 		])
 		equip_data = [0, 0, 0, 0, 0, 0]
 	
 	if equip_data[0] < 0 or equip_data[0] >= Globals.items_db.skins.size():
-		push_warning("Client's %d skin has incorrect ID: %d." % [sender_id, equip_data[0]])
+		push_warning("Client's %d skin has invalid ID: %d." % [sender_id, equip_data[0]])
 		equip_data[0] = 0
 	if equip_data[1] < 0 or equip_data[1] >= Globals.items_db.weapons_light.size():
-		push_warning("Client's %d light weapon has incorrect ID: %d." % [sender_id, equip_data[1]])
+		push_warning("Client's %d light weapon has invalid ID: %d." % [sender_id, equip_data[1]])
 		equip_data[1] = 0
 	if equip_data[2] < 0 or equip_data[2] >= Globals.items_db.weapons_heavy.size():
-		push_warning("Client's %d heavy weapon has incorrect ID: %d." % [sender_id, equip_data[2]])
+		push_warning("Client's %d heavy weapon has invalid ID: %d." % [sender_id, equip_data[2]])
 		equip_data[2] = 0
 	if equip_data[3] < 0 or equip_data[3] >= Globals.items_db.weapons_support.size():
-		push_warning("Client's %d support weapon has incorrect ID: %d." % [sender_id, equip_data[3]])
+		push_warning("Client's %d support weapon has invalid ID: %d." % [sender_id, equip_data[3]])
 		equip_data[3] = 0
 	if equip_data[4] < 0 or equip_data[4] >= Globals.items_db.weapons_melee.size():
-		push_warning("Client's %d melee weapon has incorrect ID: %d." % [sender_id, equip_data[4]])
+		push_warning("Client's %d melee weapon has invalid ID: %d." % [sender_id, equip_data[4]])
 		equip_data[4] = 0
 	if equip_data[5] < 0 or equip_data[5] >= Globals.items_db.skills.size():
-		push_warning("Client's %d skill has incorrect ID: %d." % [sender_id, equip_data[5]])
+		push_warning("Client's %d skill has invalid ID: %d." % [sender_id, equip_data[5]])
 		equip_data[5] = 0
 	
 	_players_names[sender_id] = player_name
@@ -261,15 +263,15 @@ func _send_player_data(player_name: String, equip_data: Array[int]) -> void:
 	print_verbose("Player %d sent data. Name: %s, Equip data: %s." % [
 		sender_id,
 		player_name,
-		str(equip_data)
+		str(equip_data),
 	])
 	_check_players_ready()
 
 
-@rpc("call_local", "reliable")
+@rpc("call_local", "reliable", "authority", 1)
 func _start_event() -> void:
-	if multiplayer.get_remote_sender_id() != 1:
-		push_error("This method must be called only by server!")
+	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
+		push_error("This method must be called only by server.")
 		return
 	
 	print_verbose("Starting event...")
@@ -278,15 +280,15 @@ func _start_event() -> void:
 	if multiplayer.is_server():
 		event.set_players_data(_players_names, _players_equip_data)
 	add_child(event)
-	_loader.finish_load()
+	_loader.finish_load(true)
 	started.emit()
 	state = State.EVENT
-	print_verbose("Event started.")
+	print_verbose("Event loaded. Starting...")
 
 
 func _check_players_ready() -> void:
 	if not multiplayer.is_server():
-		push_error("Unexpected call on client!")
+		push_error("Unexpected call on client.")
 		return
 	print_verbose("Waiting for players: %s." % str(_players_not_ready))
 	if _players_not_ready.is_empty():
@@ -296,7 +298,7 @@ func _check_players_ready() -> void:
 		else:
 			print_verbose("All players disconnected, returning to lobby.")
 			closed.disconnect(_loader.finish_load)
-			_loader.finish_load()
+			_loader.finish_load(true)
 			event.queue_free()
 			# Как будто всё хорошо
 			started.emit()
@@ -313,15 +315,15 @@ func _init_lobby() -> void:
 
 func _authenticate_callback(peer: int, data: PackedByteArray) -> void:
 	if not peer in _scene_multiplayer.get_authenticating_peers():
-		push_warning("Unexpected authenticating message! Peer %d is not authenticating!" % peer)
+		push_warning("Unexpected authenticating message: peer %d is not authenticating." % peer)
 		return
 	
 	if not multiplayer.is_server():
 		if peer != 1:
-			push_warning("Unexpected authenticating message! Peer: %d" % peer)
+			push_warning("Unexpected authenticating message. Peer: %d." % peer)
 			return
 		if data.is_empty():
-			push_error("Invalid data received! Data is empty!")
+			push_error("Invalid data received: data is empty.")
 			return
 		match data[0]:
 			OK:
@@ -329,7 +331,8 @@ func _authenticate_callback(peer: int, data: PackedByteArray) -> void:
 				return
 			FailReason.DIFFERENT_VERSION:
 				($ConnectingDialog as Window).hide()
-				show_error("Невозможно подключиться к игре! Версия сервера (%s) не совпадает с вашей (%s)." % [
+				show_error("Невозможно подключиться к игре! \
+Версия сервера (%s) не совпадает с твоей (%s)." % [
 					Globals.version,
 					data.slice(1).get_string_from_utf8(),
 				])
@@ -346,15 +349,13 @@ func _authenticate_callback(peer: int, data: PackedByteArray) -> void:
 				show_error("Невозможно подключиться к игре! Игра уже началась.")
 				push_warning("Can't connect: game already started.")
 			_:
-				push_error("Invalid data received! Data is not AuthState!")
+				push_error("Invalid data received: data is not AuthState.")
 		close()
 		return
 	
 	if data != Globals.version.to_utf8_buffer():
-		_scene_multiplayer.send_auth(
-				peer,
-				PackedByteArray([FailReason.DIFFERENT_VERSION]) + Globals.version.to_utf8_buffer()
-		)
+		_scene_multiplayer.send_auth(peer,
+				PackedByteArray([FailReason.DIFFERENT_VERSION]) + Globals.version.to_utf8_buffer())
 		print_verbose("Rejecting %d: different version (%s - local, %s - client)." % [
 			peer,
 			Globals.version,
@@ -421,8 +422,7 @@ func _on_connection_failed() -> void:
 func _on_peer_connected(id: int) -> void:
 	# Уменьшаем время тайм-аута
 	(multiplayer.multiplayer_peer as ENetMultiplayerPeer).get_peer(id).set_timeout(
-			BASE_TIMEOUT, BASE_TIMEOUT * 2, BASE_TIMEOUT * 3
-	)
+			BASE_TIMEOUT, BASE_TIMEOUT * 2, BASE_TIMEOUT * 3)
 	print_verbose("Peer connected: %d." % id)
 
 
@@ -449,7 +449,7 @@ func _on_event_ended() -> void:
 
 
 func _on_wait_players_timer_timeout() -> void:
-	if 1 in _players_not_ready:
+	if MultiplayerPeer.TARGET_PEER_SERVER in _players_not_ready:
 		($WaitPlayersTimer as Timer).start()
 		return
 	for id: int in _players_not_ready.duplicate(): # чтобы корректно итерировать

@@ -9,26 +9,12 @@ func _start_effect() -> void:
 	if event:
 		should_be_visible = should_be_visible or event.local_team == _entity.team
 	if should_be_visible:
-		tween.tween_property(
-				_entity,
-				^"visual:modulate", 
-				Color(1.0, 1.0, 1.0, 0.5),
-				0.5
-		)
+		tween.tween_property(_entity.visual, ^":modulate", Color(1.0, 1.0, 1.0, 0.5), 0.5)
 	else:
-		tween.tween_property(
-				_entity,
-				^":modulate", 
-				Color.TRANSPARENT,
-				0.5
-		)
+		tween.tween_property(_entity, ^":modulate", Color.TRANSPARENT, 0.5)
 
 
 func _end_effect() -> void:
 	var tween: Tween = _entity.create_tween()
-	tween.tween_property(
-			_entity,
-			^"visual:modulate" if _entity.is_local() else ^":modulate", 
-			Color.WHITE,
-			0.3
-	)
+	tween.tween_property(_entity.visual if _entity.is_local() else _entity,
+			^":modulate", Color.WHITE, 0.3)
