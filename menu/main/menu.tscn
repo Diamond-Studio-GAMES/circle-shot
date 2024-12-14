@@ -188,11 +188,16 @@ layout_mode = 2
 text = "Summersay415 - идея, программирование, оружия и скины
 wiziritka - скины и карты
 DanKras - скины и оружие, загрузочный экран
-BaCat86, Kaurt, MilDeV - скины
-
+BaCat86, Kaurt, MilDeV, ZeroHero135 - скины
 Тестировщики (и благодарность):
-ZeroHero135, LohDebil228, Блоха в Сарафане"
+LohDebil228, Блоха в Сарафане"
 autowrap_mode = 2
+
+[node name="TelegramLink" type="LinkButton" parent="About/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Telegram-канал Diamond Studio GAMES"
+uri = "https://t.me/dsgames31"
 
 [node name="EngineTitle" type="Label" parent="About/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -203,10 +208,10 @@ horizontal_alignment = 1
 [node name="Engine" type="Label" parent="About/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
-text = "Игра сделана на движке Godot Engine, имеющий лицензию MIT. С текстом лицензии можно ознакомиться по ссылке ниже:"
+text = "Игра сделана на движке Godot Engine, имеющем лицензию MIT. С текстом лицензии можно ознакомиться по ссылке ниже:"
 autowrap_mode = 2
 
-[node name="LinkButton" type="LinkButton" parent="About/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+[node name="EngineLicenseLink" type="LinkButton" parent="About/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Лицензия Godot Engine"
@@ -221,7 +226,7 @@ horizontal_alignment = 1
 [node name="Other" type="Label" parent="About/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
-text = "Новые версии в лаунчере выходят раньше."
+text = "В пятницу 13 в Dead Circle... никто не выжил."
 autowrap_mode = 2
 
 [node name="Close" type="Button" parent="About/MarginContainer/VBoxContainer"]

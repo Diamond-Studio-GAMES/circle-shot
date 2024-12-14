@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://game/player/equip/player_skin.gd" id="2_25v7j"]
 [ext_resource type="Texture2D" uid="uid://dpk0u7atpi23s" path="res://game/skins/horny/sinep/sinep.png" id="2_at1jw"]
 
-[node name="sineP" type="Sprite2D"]
+[node name="Sinep" type="Sprite2D"]
 texture = ExtResource("2_at1jw")
 script = ExtResource("2_25v7j")
 metadata/_custom_type_script = ExtResource("2_25v7j")
