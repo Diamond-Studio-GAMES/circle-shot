@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkinData" load_steps=2 format=3 uid="uid://7if1k7f67oki"]
+
+[ext_resource type="Script" path="res://game/player/equip/skin_data.gd" id="1_g7hoi"]
+
+[resource]
+script = ExtResource("1_g7hoi")
+name = "Клоун"
+brief_description = "Это НЕ разработчик"
+rarity = 1
+id = "clown"
+scene_path = "uid://dd74gwm1uh6tt"
+image_path = "uid://b5fmv0njhelm"
+metadata/_custom_type_script = ExtResource("1_g7hoi")
