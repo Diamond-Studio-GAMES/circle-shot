@@ -10,6 +10,6 @@ id = "nonutnovember"
 damage_text = "Урон: 45"
 ammo_text = "Не ограничено"
 description = ""
-scene_path = "uid://bxpa2b61ln4jx"
+scene_path = "uid://bm8ppjrpqe84c"
 image_path = "uid://8ff7tf8ct5pg"
 spawnable_scenes_paths = Array[String]([])

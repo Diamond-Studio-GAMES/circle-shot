@@ -1,8 +1,11 @@
 class_name RayDetector
 extends RayCast2D
 
+## Детектор в виде [RayCast2D] для [Attack].
 
+## Издаётся, когда луч сталкивается с чем-то. [param where] содержит позицию столкновения.
 signal hit(where: Vector2)
+## Интервал между нанесениями урона сущностям, попавших под луч.
 @export var damage_interval := 0.3
 var _exceptions: Dictionary[StringName, float]
 @onready var _attack: Attack = get_parent()

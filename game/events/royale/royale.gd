@@ -1,10 +1,15 @@
 class_name Royale
 extends Event
 
+## Событие "Королевская битва".
 
+## Базовый интервал появления аптечек.
 @export var heal_box_spawn_interval_base := 30.0
+## Увеличение интервала появления аптечек за каждого живого игрока.
 @export var heal_box_spawn_interval_per_player := 2.0
+## Базовый интервал появления коробок с боеприпасами.
 @export var ammo_box_spawn_interval_base := 40.0
+## Увеличение интервала появления коробок с боеприпасами за каждого живого игрока.
 @export var ammo_box_spawn_interval_per_player := 2.5
 
 var _spawn_counter: int = 0

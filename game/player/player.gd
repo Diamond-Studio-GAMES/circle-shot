@@ -1,21 +1,39 @@
 class_name Player
 extends Entity
 
+## Узел игрока.
+##
+## Может иметь оружие, скин и навык.
 
+## Издаётся, когда игрок меняет оружие.
 signal weapon_changed(type: Weapon.Type)
+## Издаётся, когда игрок экипирует новое оружие.
 signal weapon_equipped(type: Weapon.Type, data: WeaponData)
+## Издаётся, когда текст с информацией о боеприпасах текущего оружия был обновлён.
 signal ammo_text_updated(text: String)
+## Издаётся, когда игрок экипирует новый навык.
 signal skill_equipped(data: SkillData)
 
+## Имя игрока.
 var player_name: String
+## Массив идентификаторов экипировки. Порядок: скин, лёгкое оружие, тяжёлое оружие,
+## оружие поддержки, ближнее оружие, навык. Если ID равен -1, то оружие/навык не экипирован.
+## Если же равен -2, то оружие/навык экипирован, но он отсутствует в [ItemsDB].
 var equip_data: Array[int]
+## Массив из двух элементов. Первый - количество оставшихся использований, второй - откат.
 var skill_vars: Array[int]
+## Ссылка на скин.
 var skin: PlayerSkin
+## Ссылка на текущее оружие. Может быть равной [code]null[/code].
 var current_weapon: Weapon
+## Тип текущего оружия.
 var current_weapon_type := Weapon.Type.LIGHT
+## Ссылка на экипированный навык. Может быть равным [code]null[/code].
 var skill: Skill
 
+## Узел, содержащий ввод игрока.
 @onready var player_input: PlayerInput = $Input
+## Узел крови.
 @onready var blood: CPUParticles2D = $Visual/Blood
 @onready var _weapons: Node2D = $Visual/Weapons
 @onready var _event: Event = get_tree().get_first_node_in_group(&"Event")
@@ -59,6 +77,8 @@ func _physics_process(delta: float) -> void:
 		visual.scale.x = -1 if player_input.aim_direction.x < 0 else 1
 
 
+## Меняет оружие на тип [param to].[br]
+## [b]Примечание[/b]: этот метод должен вызываться только сервером и только как RPC.
 @rpc("call_local", "reliable", "authority", 5)
 func change_weapon(to: Weapon.Type) -> void:
 	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
@@ -71,6 +91,8 @@ func change_weapon(to: Weapon.Type) -> void:
 	_set_current_weapon(to)
 
 
+## Перезаряжает оружие.[br]
+## [b]Примечание[/b]: этот метод должен вызываться только сервером и только как RPC.
 @rpc("call_local", "reliable", "authority", 5)
 func reload_weapon() -> void:
 	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
@@ -80,6 +102,8 @@ func reload_weapon() -> void:
 	current_weapon.reload()
 
 
+## Активирует дополнительную кнопку оружия.[br]
+## [b]Примечание[/b]: этот метод должен вызываться только сервером и только как RPC.
 @rpc("call_local", "reliable", "authority", 5)
 func additional_button_weapon() -> void:
 	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
@@ -89,6 +113,9 @@ func additional_button_weapon() -> void:
 	current_weapon.additional_button()
 
 
+## Восстанавливает [param percent] процентов боеприпасов на оружии типа [param type].
+## Округление происходит вверх.[br]
+## [b]Примечание[/b]: этот метод должен вызываться только сервером и только как RPC.
 @rpc("call_local", "reliable", "authority", 5)
 func add_ammo_to_weapon(type: Weapon.Type, percent: float) -> void:
 	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
@@ -103,6 +130,8 @@ func add_ammo_to_weapon(type: Weapon.Type, percent: float) -> void:
 	ammo_text_updated.emit(current_weapon.get_ammo_text())
 
 
+## Использует навык.[br]
+## [b]Примечание[/b]: этот метод должен вызываться только сервером и только как RPC.
 @rpc("call_local", "reliable", "authority", 5)
 func use_skill() -> void:
 	if multiplayer.get_remote_sender_id() != MultiplayerPeer.TARGET_PEER_SERVER:
@@ -112,24 +141,29 @@ func use_skill() -> void:
 	skill.use()
 
 
+## Отсылает запрос на смену оружия на тип [param to].
 func try_change_weapon(to: Weapon.Type) -> void:
 	if to == current_weapon_type:
 		return
 	_request_change_weapon.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER, to)
 
 
+## Отсылает запрос на перезарядку.
 func try_reload_weapon() -> void:
 	_request_reload.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER)
 
 
+## Отсылает запрос на использование дополнительной кнопки оружия.
 func try_use_additional_button_weapon() -> void:
 	_request_additional_button.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER)
 
 
+## Отсылает запрос на перезарядку навыка.
 func try_use_skill() -> void:
 	_request_use_skill.rpc_id(MultiplayerPeer.TARGET_PEER_SERVER)
 
 
+## Устанавливает скин из [param data].
 func set_skin(data: SkinData) -> void:
 	for old_skin: Node in $Visual/Skin.get_children():
 		old_skin.queue_free()
@@ -143,6 +177,7 @@ func set_skin(data: SkinData) -> void:
 	print_verbose("Skin %s with ID %d on player %s set." % [data.id, equip_data[0], name])
 
 
+## Устанавливает оружие из [param data] типа [param type].
 func set_weapon(type: Weapon.Type, data: WeaponData) -> void:
 	var old_weapon: Node = _weapons.get_child(type)
 	if old_weapon == current_weapon:
@@ -183,6 +218,8 @@ func set_weapon(type: Weapon.Type, data: WeaponData) -> void:
 		_set_current_weapon(type)
 
 
+## Устанавливает навык из [param data]. Если [param reset_skill_vars] равен [code]true[/code],
+## то [member skill_vars] будет сброшен.
 func set_skill(data: SkillData, reset_skill_vars := false) -> void:
 	if reset_skill_vars:
 		skill_vars.clear()

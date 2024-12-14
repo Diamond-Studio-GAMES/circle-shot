@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bydh8wq8j224r"]
+
+[ext_resource type="Script" path="res://game/weapons/melee/common/melee.gd" id="1_cpujk"]
+[ext_resource type="Script" path="res://game/entity/attack/attack.gd" id="2_wwru6"]
+
+[node name="Melee" type="Node2D"]
+script = ExtResource("1_cpujk")
+ammo_per_load = 1
+ammo_total = 0
+metadata/_custom_type_script = ExtResource("1_cpujk")
+
+[node name="Attack" type="Node2D" parent="."]
+script = ExtResource("2_wwru6")
+metadata/_custom_type_script = ExtResource("2_wwru6")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

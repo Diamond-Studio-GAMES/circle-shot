@@ -1,14 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://coip6hjdsbg57"]
+[gd_scene load_steps=10 format=3 uid="uid://cdcbnw1l0jmi8"]
 
-[ext_resource type="Script" path="res://game/weapons/melee/common/melee.gd" id="1_13kgy"]
-[ext_resource type="Texture2D" uid="uid://23oj05orcymg" path="res://game/weapons/melee/sword/sword.png" id="2_8pya7"]
-[ext_resource type="Script" path="res://game/entity/attack/attack.gd" id="3_hiowd"]
-[ext_resource type="Script" path="res://game/entity/attack/shape_detector.gd" id="4_bgb4x"]
+[ext_resource type="PackedScene" uid="uid://bydh8wq8j224r" path="res://game/weapons/melee/common/melee.tscn" id="1_f8krw"]
+[ext_resource type="Texture2D" uid="uid://23oj05orcymg" path="res://game/weapons/melee/sword/sword.png" id="2_qjpw5"]
+[ext_resource type="Script" path="res://game/entity/attack/shape_detector.gd" id="3_22au4"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qbu0u"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_4wetr"]
 radius = 96.0
 
-[sub_resource type="Animation" id="Animation_5thpn"]
+[sub_resource type="Animation" id="Animation_n8qh6"]
 resource_name = "Attack"
 length = 0.6
 step = 0.05
@@ -61,7 +60,7 @@ tracks/3/keys = {
 "values": [false, true, false]
 }
 
-[sub_resource type="Animation" id="Animation_636hb"]
+[sub_resource type="Animation" id="Animation_v42y4"]
 resource_name = "Equip"
 length = 0.35
 step = 0.05
@@ -90,7 +89,7 @@ tracks/1/keys = {
 "values": [2.44346, -1.22173]
 }
 
-[sub_resource type="Animation" id="Animation_0rmtf"]
+[sub_resource type="Animation" id="Animation_lq5lt"]
 resource_name = "PostEquip"
 length = 0.15
 step = 0.05
@@ -119,7 +118,8 @@ tracks/1/keys = {
 "values": [-1.22173, -0.261799]
 }
 
-[sub_resource type="Animation" id="Animation_1qggq"]
+[sub_resource type="Animation" id="Animation_3glxw"]
+resource_name = "RESET"
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -182,36 +182,32 @@ tracks/4/keys = {
 "values": [false]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_4jlhl"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ruk6l"]
 _data = {
-&"Attack": SubResource("Animation_5thpn"),
-&"Equip": SubResource("Animation_636hb"),
-&"PostEquip": SubResource("Animation_0rmtf"),
-&"RESET": SubResource("Animation_1qggq")
+&"Attack": SubResource("Animation_n8qh6"),
+&"Equip": SubResource("Animation_v42y4"),
+&"PostEquip": SubResource("Animation_lq5lt"),
+&"RESET": SubResource("Animation_3glxw")
 }
 
-[node name="Sword" type="Node2D"]
-script = ExtResource("1_13kgy")
+[node name="Sword" instance=ExtResource("1_f8krw")]
 damage = 70
 shoot_interval = 1.1
-ammo_per_load = 1
-ammo_total = 0
 speed_multiplier_when_current = 1.08
 shoot_on_joystick_release = true
-metadata/_custom_type_script = ExtResource("1_13kgy")
 
-[node name="AttackPolygon" type="Polygon2D" parent="."]
+[node name="AttackPolygon" type="Polygon2D" parent="." index="0"]
 visible = false
 color = Color(0.67451, 0.67451, 0.67451, 1)
 polygon = PackedVector2Array(113, -219, 118, -162, 86, -148, 110, -117, 74, -99, 61, -65, 84, -8, 259, -90, 264, -144, 238, -168, 189, -210)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." index="1"]
 position = Vector2(0, 24)
 rotation = -0.261799
-texture = ExtResource("2_8pya7")
+texture = ExtResource("2_qjpw5")
 offset = Vector2(108, 0)
 
-[node name="Aim" type="Line2D" parent="."]
+[node name="Aim" type="Line2D" parent="." index="2"]
 z_index = 5
 position = Vector2(128, 0)
 points = PackedVector2Array(-41, 0, -71, -70, -13, -212, 70, -212, 148, -74, 148, 74, 70, 212, -13, 212, -71, 70)
@@ -219,22 +215,17 @@ closed = true
 width = 8.0
 default_color = Color(0, 0, 0, 0.25098)
 
-[node name="Attack" type="Node2D" parent="."]
-visible = false
-script = ExtResource("3_hiowd")
-metadata/_custom_type_script = ExtResource("3_hiowd")
-
-[node name="ShapeDetector" type="ShapeCast2D" parent="Attack"]
+[node name="ShapeDetector" type="ShapeCast2D" parent="Attack" index="0"]
 position = Vector2(176, -112)
 enabled = false
-shape = SubResource("CircleShape2D_qbu0u")
+shape = SubResource("CircleShape2D_4wetr")
 target_position = Vector2(0, 224)
 max_results = 1
 collision_mask = 11
-script = ExtResource("4_bgb4x")
-metadata/_custom_type_script = ExtResource("4_bgb4x")
+script = ExtResource("3_22au4")
+metadata/_custom_type_script = ExtResource("3_22au4")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" parent="." index="4"]
 libraries = {
-&"": SubResource("AnimationLibrary_4jlhl")
+&"": SubResource("AnimationLibrary_ruk6l")
 }

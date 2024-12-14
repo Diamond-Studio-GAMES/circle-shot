@@ -1,17 +1,16 @@
-[gd_scene load_steps=14 format=3 uid="uid://bxpa2b61ln4jx"]
+[gd_scene load_steps=13 format=3 uid="uid://bm8ppjrpqe84c"]
 
-[ext_resource type="Script" path="res://game/weapons/melee/lightsaber/lightsaber.gd" id="1_xho1k"]
-[ext_resource type="Script" path="res://game/weapons/melee/common/melee.gd" id="2_4txxk"]
-[ext_resource type="Texture2D" uid="uid://dvcfkurmahh83" path="res://game/weapons/melee/lightsaber/base.png" id="2_f6nvc"]
-[ext_resource type="Texture2D" uid="uid://cfwfho4bv0paq" path="res://game/weapons/melee/lightsaber/light.png" id="3_1wkbi"]
-[ext_resource type="Script" path="res://game/entity/attack/attack.gd" id="3_pmcw2"]
-[ext_resource type="Script" path="res://game/entity/attack/shape_detector.gd" id="4_tdj4c"]
-[ext_resource type="Texture2D" uid="uid://cpd3d53o0hohg" path="res://game/weapons/melee/lightsaber/blade.png" id="4_tnxxi"]
+[ext_resource type="PackedScene" uid="uid://bydh8wq8j224r" path="res://game/weapons/melee/common/melee.tscn" id="1_lf8ps"]
+[ext_resource type="Script" path="res://game/weapons/melee/lightsaber/lightsaber.gd" id="2_1b7xu"]
+[ext_resource type="Texture2D" uid="uid://dvcfkurmahh83" path="res://game/weapons/melee/lightsaber/base.png" id="2_xa745"]
+[ext_resource type="Texture2D" uid="uid://cfwfho4bv0paq" path="res://game/weapons/melee/lightsaber/light.png" id="3_1b7xu"]
+[ext_resource type="Texture2D" uid="uid://cpd3d53o0hohg" path="res://game/weapons/melee/lightsaber/blade.png" id="4_4txxk"]
+[ext_resource type="Script" path="res://game/entity/attack/shape_detector.gd" id="5_0d2ml"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qbu0u"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_5vqjv"]
 radius = 116.0
 
-[sub_resource type="Animation" id="Animation_5thpn"]
+[sub_resource type="Animation" id="Animation_xa745"]
 resource_name = "Attack"
 length = 0.5
 step = 0.05
@@ -64,7 +63,7 @@ tracks/3/keys = {
 "values": [false, true, false]
 }
 
-[sub_resource type="Animation" id="Animation_636hb"]
+[sub_resource type="Animation" id="Animation_1b7xu"]
 resource_name = "Equip"
 length = 0.6
 step = 0.05
@@ -141,7 +140,7 @@ tracks/5/keys = {
 "values": [Vector2(-72, 0), Vector2(-72, 0), Vector2(64, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_0rmtf"]
+[sub_resource type="Animation" id="Animation_4txxk"]
 resource_name = "PostEquip"
 length = 0.2
 step = 0.05
@@ -170,7 +169,8 @@ tracks/1/keys = {
 "values": [-0.867429, -0.261799]
 }
 
-[sub_resource type="Animation" id="Animation_1qggq"]
+[sub_resource type="Animation" id="Animation_0d2ml"]
+resource_name = "RESET"
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -281,53 +281,50 @@ tracks/8/keys = {
 "values": [Vector2(-72, 0)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_4jlhl"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j08rb"]
 _data = {
-&"Attack": SubResource("Animation_5thpn"),
-&"Equip": SubResource("Animation_636hb"),
-&"PostEquip": SubResource("Animation_0rmtf"),
-&"RESET": SubResource("Animation_1qggq")
+&"Attack": SubResource("Animation_xa745"),
+&"Equip": SubResource("Animation_1b7xu"),
+&"PostEquip": SubResource("Animation_4txxk"),
+&"RESET": SubResource("Animation_0d2ml")
 }
 
-[node name="Lightsaber" type="Node2D"]
-script = ExtResource("1_xho1k")
+[node name="Lightsaber" instance=ExtResource("1_lf8ps")]
+script = ExtResource("2_1b7xu")
 damage = 45
 shoot_interval = 0.75
 to_aim_time = 0.2
-ammo_per_load = 1
-ammo_total = 0
 speed_multiplier_when_current = 1.11
 shoot_on_joystick_release = true
-metadata/_custom_type_script = ExtResource("2_4txxk")
 
-[node name="AttackPolygon" type="Polygon2D" parent="."]
+[node name="AttackPolygon" type="Polygon2D" parent="." index="0"]
 visible = false
 polygon = PackedVector2Array(113, -219, 118, -162, 86, -148, 110, -117, 74, -99, 61, -65, 84, -8, 259, -90, 264, -144, 238, -168, 189, -210)
 
-[node name="Base" type="Sprite2D" parent="."]
+[node name="Base" type="Sprite2D" parent="." index="1"]
 position = Vector2(0, 24)
 rotation = -0.261799
-texture = ExtResource("2_f6nvc")
+texture = ExtResource("2_xa745")
 offset = Vector2(128, 0)
 
-[node name="Light" type="Sprite2D" parent="Base"]
+[node name="Light" type="Sprite2D" parent="Base" index="0"]
 self_modulate = Color(1, 0, 0, 1)
 show_behind_parent = true
 position = Vector2(-72, 0)
-texture = ExtResource("3_1wkbi")
+texture = ExtResource("3_1b7xu")
 offset = Vector2(128, 0)
 region_enabled = true
 region_rect = Rect2(400, 0, 0, 128)
 
-[node name="Blade" type="Sprite2D" parent="Base"]
+[node name="Blade" type="Sprite2D" parent="Base" index="1"]
 show_behind_parent = true
 position = Vector2(-72, 0)
-texture = ExtResource("4_tnxxi")
+texture = ExtResource("4_4txxk")
 offset = Vector2(128, 0)
 region_enabled = true
 region_rect = Rect2(400, 0, 0, 128)
 
-[node name="Aim" type="Line2D" parent="."]
+[node name="Aim" type="Line2D" parent="." index="2"]
 z_index = 5
 position = Vector2(128, 0)
 points = PackedVector2Array(-41, 0, -71, -70, 14, -240, 94, -240, 192, -77, 192, 77, 94, 240, 14, 240, -71, 70)
@@ -335,22 +332,17 @@ closed = true
 width = 8.0
 default_color = Color(0, 0, 0, 0.25098)
 
-[node name="Attack" type="Node2D" parent="."]
-visible = false
-script = ExtResource("3_pmcw2")
-metadata/_custom_type_script = ExtResource("3_pmcw2")
-
-[node name="ShapeDetector" type="ShapeCast2D" parent="Attack"]
+[node name="ShapeDetector" type="ShapeCast2D" parent="Attack" index="0"]
 position = Vector2(192, -112)
 enabled = false
-shape = SubResource("CircleShape2D_qbu0u")
+shape = SubResource("CircleShape2D_5vqjv")
 target_position = Vector2(0, 224)
 max_results = 1
 collision_mask = 11
-script = ExtResource("4_tdj4c")
-metadata/_custom_type_script = ExtResource("4_tdj4c")
+script = ExtResource("5_0d2ml")
+metadata/_custom_type_script = ExtResource("5_0d2ml")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" parent="." index="4"]
 libraries = {
-&"": SubResource("AnimationLibrary_4jlhl")
+&"": SubResource("AnimationLibrary_j08rb")
 }

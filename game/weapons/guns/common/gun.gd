@@ -1,28 +1,50 @@
 class_name Gun
 extends Weapon
 
+## Узел оружия класса "Пистолеты".
 
+## Интервал между выстрелами.
 @export var shoot_interval := 0.5
+## Сколько боеприпасов снимается за выстрел.
 @export var ammo_per_shot: int = 1
+## Время, за которое оружие поворачивается в направление прицела.
 @export var to_aim_time := 0.15
+## Сцена со снарядом.
 @export var projectile_scene: PackedScene
 
 @export_group("Spread", "spread_")
+## Базовый разброс оружия.
 @export var spread_base := 1.0
+## На сколько повысится разброс оружия при ходьбе.
 @export var spread_walk := 1.0
+## Множитель для определения максимальной скорости, при которой разброс
+## при движении не будет добавляться.
 @export_range(0.0, 1.0) var spread_walk_ratio := 0.5
+## Кривая разброса. Значения графика есть разброс в определённый момент времени. НЕ может
+## принимать отрицательные значения.
 @export var spread_curve: Curve
+## Длительность кривой разброса.
 @export var spread_curve_time := 2.0
+## Время, через которое будет циклиться таймер разброса вне длительности кривой начнёт циклиться.
 @export var spread_post_curve_time := 1.0
+## Время, за которое таймер разброса будет увеличен на [member shoot_interval].
 @export var spread_increasing_time := 0.2
+## Время, за которое разброс возвращается до базового после прекращения стрельбы.
 @export var spread_reset_time := 0.4
 
 @export_group("Recoil", "recoil_")
+## Кривая отдачи. Значения графика есть поворот оружия в определённый момент времени.
+## Может принимать отрицательные значения.
 @export var recoil_curve: Curve
+## Длительность кривой отдачи.
 @export var recoil_curve_time := 5.0
+## Кривая цикличной отдачи.
 @export var recoil_cycle_curve: Curve
+## Длительность кривой цикличной отдачи.
 @export var recoil_cycle_curve_time := 2.0
+## Время, за которое таймер отдачи будет увеличен на [member shoot_interval].
 @export var recoil_increasing_time := 0.2
+## Время, за которое отдача сбрасывается после прекращения стрельбы.
 @export var recoil_reset_time := 0.3
 
 var _shoot_timer := 0.0

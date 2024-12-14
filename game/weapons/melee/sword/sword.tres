@@ -10,6 +10,6 @@ id = "svord"
 damage_text = "Урон: 70"
 ammo_text = "Не ограничено"
 description = ""
-scene_path = "uid://coip6hjdsbg57"
+scene_path = "uid://cdcbnw1l0jmi8"
 image_path = "uid://dmd6j30ggojbq"
 spawnable_scenes_paths = Array[String]([])

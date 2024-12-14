@@ -10,6 +10,6 @@ id = "knife"
 damage_text = "Урон: 55"
 ammo_text = "Не ограничено"
 description = ""
-scene_path = "uid://bynopfeo8pgxf"
+scene_path = "uid://dw483364uyeyn"
 image_path = "uid://dq8riqdpmm2vy"
 spawnable_scenes_paths = Array[String]([])

@@ -1,9 +1,13 @@
 class_name Melee
 extends Weapon
 
+## Узел оружия класса "Ближнее".
 
+## Урон, наносимый этим оружием.
 @export var damage: int
+## Интервал между ударами.
 @export var shoot_interval := 1.0
+## Время, за которое оружие поворачивается в направление прицела.
 @export var to_aim_time := 0.15
 var _shoot_timer: float = 0.0
 var _turn_tween: Tween

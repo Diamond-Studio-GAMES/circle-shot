@@ -1,6 +1,8 @@
 class_name ShapeDetector
 extends ShapeCast2D
+## Детектор в виде [ShapeCast2D] для [Attack].
 
+## Интервал между нанесениями урона сущностям в этой области.
 @export var damage_interval := 0.3
 var _exceptions: Dictionary[StringName, float]
 @onready var _attack: Attack = get_parent()

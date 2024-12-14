@@ -96,7 +96,7 @@ func _physics_process(delta: float) -> void:
 	velocity = knockback
 	var self_velocity := Vector2.ZERO
 	if not is_immobile():
-		self_velocity = entity_input.direction.limit_length(1.0) * speed * speed_multiplier
+		self_velocity = entity_input.direction * speed * speed_multiplier
 	velocity += self_velocity
 	move_and_slide()
 	# TODO: сделать что нибудь с этим

@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://bynopfeo8pgxf"]
+[gd_scene load_steps=9 format=3 uid="uid://dw483364uyeyn"]
 
 [ext_resource type="Texture2D" uid="uid://c6hbriu7of77e" path="res://game/weapons/melee/knife/knife.png" id="1_8am4s"]
-[ext_resource type="Script" path="res://game/weapons/melee/common/melee.gd" id="1_efdma"]
-[ext_resource type="Script" path="res://game/entity/attack/attack.gd" id="3_vnmef"]
+[ext_resource type="PackedScene" uid="uid://bydh8wq8j224r" path="res://game/weapons/melee/common/melee.tscn" id="1_n4krj"]
 [ext_resource type="Script" path="res://game/entity/attack/ray_detector.gd" id="4_2ry8l"]
 
-[sub_resource type="Animation" id="Animation_5thpn"]
+[sub_resource type="Animation" id="Animation_4ld36"]
 resource_name = "Attack"
 length = 0.5
 step = 0.05
@@ -34,7 +33,7 @@ tracks/1/keys = {
 "values": [true, false]
 }
 
-[sub_resource type="Animation" id="Animation_636hb"]
+[sub_resource type="Animation" id="Animation_ei8cw"]
 resource_name = "Equip"
 length = 0.1
 tracks/0/type = "value"
@@ -62,7 +61,7 @@ tracks/1/keys = {
 "values": [0.375129, 5.85862, 0.0]
 }
 
-[sub_resource type="Animation" id="Animation_38ydn"]
+[sub_resource type="Animation" id="Animation_hhcf2"]
 resource_name = "PostEquip"
 length = 0.2
 tracks/0/type = "value"
@@ -90,7 +89,8 @@ tracks/1/keys = {
 "values": [5.85862, 0.0]
 }
 
-[sub_resource type="Animation" id="Animation_1qggq"]
+[sub_resource type="Animation" id="Animation_wr7i3"]
+resource_name = "RESET"
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -129,30 +129,26 @@ tracks/2/keys = {
 "values": [false]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_4jlhl"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pgyr4"]
 _data = {
-&"Attack": SubResource("Animation_5thpn"),
-&"Equip": SubResource("Animation_636hb"),
-&"PostEquip": SubResource("Animation_38ydn"),
-&"RESET": SubResource("Animation_1qggq")
+&"Attack": SubResource("Animation_4ld36"),
+&"Equip": SubResource("Animation_ei8cw"),
+&"PostEquip": SubResource("Animation_hhcf2"),
+&"RESET": SubResource("Animation_wr7i3")
 }
 
-[node name="Knife" type="Node2D"]
-script = ExtResource("1_efdma")
+[node name="Knife" instance=ExtResource("1_n4krj")]
 damage = 55
 shoot_interval = 0.7
 to_aim_time = 0.2
-ammo_per_load = 1
-ammo_total = 0
 speed_multiplier_when_current = 1.15
 shoot_on_joystick_release = true
-metadata/_custom_type_script = ExtResource("1_efdma")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." index="0"]
 texture = ExtResource("1_8am4s")
 offset = Vector2(44, 0)
 
-[node name="Aim" type="Line2D" parent="."]
+[node name="Aim" type="Line2D" parent="." index="1"]
 visible = false
 z_index = 5
 position = Vector2(116, 0)
@@ -160,12 +156,10 @@ points = PackedVector2Array(0, 0, 96, 0)
 width = 32.0
 default_color = Color(0, 0, 0, 0.25098)
 
-[node name="Attack" type="Node2D" parent="."]
+[node name="Attack" parent="." index="2"]
 position = Vector2(116, 0)
-script = ExtResource("3_vnmef")
-metadata/_custom_type_script = ExtResource("3_vnmef")
 
-[node name="RayDetector" type="RayCast2D" parent="Attack"]
+[node name="RayDetector" type="RayCast2D" parent="Attack" index="0"]
 enabled = false
 target_position = Vector2(96, 0)
 collision_mask = 11
@@ -173,7 +167,7 @@ hit_from_inside = true
 script = ExtResource("4_2ry8l")
 metadata/_custom_type_script = ExtResource("4_2ry8l")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" parent="." index="3"]
 libraries = {
-&"": SubResource("AnimationLibrary_4jlhl")
+&"": SubResource("AnimationLibrary_pgyr4")
 }
