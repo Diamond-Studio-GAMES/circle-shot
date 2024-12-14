@@ -1,7 +1,9 @@
 class_name AreaDetector
 extends Area2D
 
+## Детектор в виде [Area2D] для [Attack].
 
+## Интервал между нанесениями урона сущностям в этой области.
 @export var damage_interval := 1.0
 var _entities: Array[Entity]
 var _exceptions: Dictionary[StringName, float]

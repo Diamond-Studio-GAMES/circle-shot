@@ -1,11 +1,15 @@
 class_name EventUI
 extends CanvasLayer
 
+## Интерфейс события.
 
+## Максимум видимых сообщений чата в предпросмотре.
 @export var messages_visible_limit: int = 4
+## Время, в течении которого сообщения чата видно в предпросмотре.
 @export var messages_visible_time := 3.0
+## Чат.
 @onready var chat: Chat = $Main/ChatPanel
-@onready var _chat_button: BaseButton = chat.get_node(chat.chat_button_path)
+@onready var _chat_button: Button = chat.get_node(chat.chat_button_path)
 
 
 func _ready() -> void:

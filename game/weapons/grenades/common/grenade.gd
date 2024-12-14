@@ -1,13 +1,22 @@
 class_name Grenade
 extends Weapon
 
+## Узел оружия класса "Гранаты".
 
+## Сцена снаряда типа [GrenadeProjectile].
 @export var projectile_scene: PackedScene
+## Базовый разброс снаряда.
 @export var spread_base := 1.0
+## На сколько повысится разброс снаряда при ходьбе.
 @export var spread_walk := 5.0
+## Множитель для определения максимальной скорости, при которой разброс
+## при движении не будет добавляться.
 @export_range(0.0, 1.0) var spread_walk_ratio := 0.5
+## Скорость снаряда гранаты. Используется для линии прицела.
 @export var projectile_speed := 800.0
+## Замедление снаряда гранаты. Используется для линии прицела.
 @export var projectile_damping := 200.0
+## Время, через которое взорвётся снаряд. Используется для линии прицела.
 @export var projectile_explosion_time := 2.5
 
 var _reloading := false
@@ -108,6 +117,7 @@ func _calculate_spread() -> float:
 			/ (1.0 - spread_walk_ratio), 0.0, 1.0) + spread_base
 
 
+## Переопределите, чтобы настроить [GrenadeProjectile] до добавления его в дерево сцены.
 func _customize_projectile(_projectile: GrenadeProjectile) -> void:
 	pass
 

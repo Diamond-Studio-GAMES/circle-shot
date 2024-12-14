@@ -1,8 +1,11 @@
 class_name Teamfight
 extends Event
 
+## Событие "Командный бой".
 
+## Длительность матча.
 @export var match_time: int = 180
+## Время, через которое возвращаются павшие игроки.
 @export var comeback_time: int = 3
 
 var red_kills: int = 0
@@ -111,9 +114,9 @@ func _determine_winner() -> void:
 		_teamfight_ui.show_winner.rpc(-1)
 	_freeze_players.rpc()
 	await get_tree().create_timer(6.5).timeout
-	_cleanup()
+	cleanup()
 	await get_tree().create_timer(0.5).timeout
-	_end.rpc()
+	end.rpc()
 
 
 func _on_local_player_created(player: Player) -> void:

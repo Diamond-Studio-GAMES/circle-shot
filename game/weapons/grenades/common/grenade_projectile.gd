@@ -1,9 +1,13 @@
 class_name GrenadeProjectile
 extends AnimatableBody2D
 
+## Узел снаряда гранаты.
 
+## Скорость снаряда гранаты.
 @export var speed := 800.0
+## Замедление снаряда гранаты.
 @export var damping := 200.0
+## Направление снаряда.
 var direction: Vector2
 var _current_speed: float
 var _exploded := false
@@ -28,11 +32,13 @@ func _physics_process(delta: float) -> void:
 		direction = direction.bounce(collision.get_normal())
 
 
+## То же, что и [method Node.queue_free], но может вызывается только на сервере.
 func safe_free() -> void:
 	if multiplayer.is_server():
 		queue_free()
 
 
+## Вызывается при истечении таймера взрыва.
 func _explode() -> void:
 	pass
 

@@ -102,9 +102,9 @@ func _check_winner() -> void:
 	($HealBoxSpawnTimer as Timer).stop()
 	($AmmoBoxSpawnTimer as Timer).stop()
 	await get_tree().create_timer(6.5).timeout
-	_cleanup()
+	cleanup()
 	await get_tree().create_timer(0.5).timeout
-	_end.rpc()
+	end.rpc()
 
 
 func _on_local_player_died(_who: int) -> void:

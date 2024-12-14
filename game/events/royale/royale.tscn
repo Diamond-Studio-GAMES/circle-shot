@@ -144,6 +144,7 @@ heal_box_spawn_interval_base = 10.0
 heal_box_spawn_interval_per_player = 1.0
 ammo_box_spawn_interval_base = 15.0
 ammo_box_spawn_interval_per_player = 1.5
+spawn_point_randomness = 0.0
 metadata/_edit_horizontal_guides_ = []
 
 [node name="PoisonSmoke" type="Node2D" parent="." index="6"]
