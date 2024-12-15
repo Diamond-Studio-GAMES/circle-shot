@@ -361,8 +361,8 @@ func _on_local_player_created(player: Player) -> void:
 	_tint_anim.play(&"RESET")
 	var tween: Tween = create_tween()
 	($Controller as CanvasItem).show()
-	($Controller as CanvasItem).modulate = Color.TRANSPARENT
-	tween.tween_property($Controller as Control, ^":modulate", Color.WHITE, 0.5)
+	tween.tween_property($Controller as Control, ^":modulate",
+			Color.WHITE, 0.5).from(Color.TRANSPARENT)
 	
 	player.health_changed.connect(_on_player_health_changed)
 	player.died.connect(_on_player_died)

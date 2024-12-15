@@ -80,10 +80,10 @@ func _start_round() -> void:
 	var smokes: Node2D = _poison_smokes_scene.instantiate()
 	add_child(smokes)
 	for smoke: Node2D in smokes.get_children():
-		var tween: Tween = smoke.create_tween()
-		tween.tween_property(smoke, ^":position", Vector2.ZERO, poison_smoke_time)
+		var move_tween: Tween = smoke.create_tween()
+		move_tween.tween_property(smoke, ^":position", Vector2.ZERO, poison_smoke_time)
 	var tween: Tween = smokes.create_tween()
-	tween.tween_property(smokes, ^":modulate", Color.WHITE, )
+	tween.tween_property(smokes, ^":modulate", Color.WHITE, 0.3).from(Color.TRANSPARENT)
 
 
 @rpc("reliable", "call_local", "authority", 3)
@@ -94,7 +94,9 @@ func _end_round(win_team: int, winner: int, end_event := false) -> void:
 	
 	_duel_ui.end_round(_current_round, win_team, winner, end_event)
 	_current_round += 1
-	$PoisonSmokes.queue_free()
+	var tween: Tween = $PoisonSmokes.create_tween()
+	tween.tween_property($PoisonSmokes as CanvasItem, ^":modulate", Color.TRANSPARENT, 0.3)
+	tween.tween_callback($PoisonSmokes.queue_free)
 	get_tree().call_group(&"Player", &"make_disarmed")
 	get_tree().call_group(&"Player", &"make_immobile")
 	get_tree().call_group(&"Player", &"make_immune")

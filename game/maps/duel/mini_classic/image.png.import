@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cofb5quhi1fim"
-path="res://.godot/imported/image.png-9957eebf731efc91364569de2e128c79.ctex"
+path="res://.godot/imported/image.png-33b0521276ec88556dad53d26ed0faf0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/maps/duel/map/image.png"
-dest_files=["res://.godot/imported/image.png-9957eebf731efc91364569de2e128c79.ctex"]
+source_file="res://game/maps/duel/mini_classic/image.png"
+dest_files=["res://.godot/imported/image.png-33b0521276ec88556dad53d26ed0faf0.ctex"]
 
 [params]
 

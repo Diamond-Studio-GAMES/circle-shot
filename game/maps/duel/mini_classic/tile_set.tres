@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://bbu21tubro8ro"]
 
-[ext_resource type="Texture2D" uid="uid://d3aty2h3c1thc" path="res://game/maps/duel/map/tiles.png" id="1_tf2wa"]
+[ext_resource type="Texture2D" uid="uid://d3aty2h3c1thc" path="res://game/maps/duel/mini_classic/tiles.png" id="1_tf2wa"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s6c3c"]
 texture = ExtResource("1_tf2wa")
