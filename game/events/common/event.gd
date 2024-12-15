@@ -99,9 +99,9 @@ func spawn_player(id: int) -> void:
 	player.team = _players_teams[id]
 	player.id = id
 	player.player_name = _players_names[id]
-	player.equip_data = _players_equip_data[id]
+	player.equip_data = _players_equip_data[id].duplicate()
 	if id in _players_skill_vars:
-		player.skill_vars = _players_skill_vars[id]
+		player.skill_vars = _players_skill_vars[id].duplicate()
 	player.name = "Player%d" % id
 	_customize_player(player)
 	_players[id] = player
@@ -148,7 +148,7 @@ func cleanup() -> void:
 		other.queue_free()
 
 
-## Заканчивает событие.[br]
+## Заканчивает событие и возвращает в лобби.[br]
 ## [b]Примечание[/b]: этот метод должен вызываться только сервером и только как RPC.
 @rpc("call_local", "reliable", "authority", 3)
 func end() -> void:
@@ -230,7 +230,7 @@ func _initialize() -> void:
 	pass
 
 
-## Метод для переопределения. В нём требуется заполнить [code]_players_teams[/code].
+## Метод для переопределения. В нём требуется заполнить [member _players_teams].
 ## Вызывается только на сервере. Обязателен.
 func _make_teams() -> void:
 	pass

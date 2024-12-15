@@ -11,6 +11,8 @@ extends Event
 @export var ammo_box_spawn_interval_base := 40.0
 ## Увеличение интервала появления коробок с боеприпасами за каждого живого игрока.
 @export var ammo_box_spawn_interval_per_player := 2.5
+## Время, за которое ядовитый дым покроет всю карту.
+@export var poison_smoke_time := 400.0
 
 var _spawn_counter: int = 0
 var _heal_box_counter: int = 0
@@ -43,7 +45,7 @@ func _finish_start() -> void:
 		_check_winner()
 	for smoke: Node2D in $PoisonSmoke.get_children():
 		var tween: Tween = smoke.create_tween()
-		tween.tween_property(smoke, ^":position", Vector2.ZERO, 400.0)
+		tween.tween_property(smoke, ^":position", Vector2.ZERO, poison_smoke_time)
 
 
 func _make_teams() -> void:

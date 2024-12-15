@@ -1,10 +1,10 @@
 # meta-name: Событие
 # meta-description: Содержит методы, переопределив которые можно создать новое событие.
 # meta-default: true
-class_name <NEWEVENTNAME>
+class_name <NewEventName>
 extends _BASE_
 
-@onready var _<neweventname>_ui: <NEWEVENTNAME>UI = $UI
+@onready var _<new_event_name>_ui: <NewEventName>UI = $UI
 
 func _initialize() -> void:
 _TS_pass

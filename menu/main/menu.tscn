@@ -139,7 +139,6 @@ icon = ExtResource("7_aw44p")
 
 [node name="About" type="Window" parent="."]
 title = "Об игре"
-position = Vector2i(280, 28)
 size = Vector2i(720, 440)
 visible = false
 transient = true
@@ -179,6 +178,7 @@ size_flags_vertical = 3
 
 [node name="AuthorsTitle" type="Label" parent="About/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
+theme_type_variation = &"HeaderSmall"
 text = "Авторы"
 horizontal_alignment = 1
 
@@ -201,6 +201,7 @@ uri = "https://t.me/dsgames31"
 
 [node name="EngineTitle" type="Label" parent="About/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
+theme_type_variation = &"HeaderSmall"
 text = "Движок
 "
 horizontal_alignment = 1
@@ -219,6 +220,7 @@ uri = "https://godotengine.org/license"
 
 [node name="OtherTitle" type="Label" parent="About/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
+theme_type_variation = &"HeaderSmall"
 text = "Другое
 "
 horizontal_alignment = 1

@@ -4,8 +4,6 @@
 [ext_resource type="TileSet" uid="uid://b2sv5fnlc14qj" path="res://game/maps/royale/classic/tile_set.tres" id="2_woywd"]
 
 [node name="Map" instance=ExtResource("1_w4b8o")]
-metadata/_edit_vertical_guides_ = [-6400.0, 6400.0]
-metadata/_edit_horizontal_guides_ = [-6400.0, 6400.0]
 
 [node name="0" parent="SpawnPoints" index="0"]
 position = Vector2(-5295, -3950)

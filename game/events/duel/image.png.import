@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://covm4tksm55vv"
-path="res://.godot/imported/poison_smoke_base.png-1af836cc261eb9012317ff4d744946db.ctex"
+uid="uid://l44s4pxkj2mk"
+path="res://.godot/imported/image.png-b5e981aff977bb2a0d08f4ce95e56791.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/events/royale/poison_smoke_base.png"
-dest_files=["res://.godot/imported/poison_smoke_base.png-1af836cc261eb9012317ff4d744946db.ctex"]
+source_file="res://game/events/duel/image.png"
+dest_files=["res://.godot/imported/image.png-b5e981aff977bb2a0d08f4ce95e56791.ctex"]
 
 [params]
 

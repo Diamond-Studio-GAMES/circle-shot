@@ -1,0 +1,23 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://bbu21tubro8ro"]
+
+[ext_resource type="Texture2D" uid="uid://d3aty2h3c1thc" path="res://game/maps/duel/map/tiles.png" id="1_tf2wa"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s6c3c"]
+texture = ExtResource("1_tf2wa")
+texture_region_size = Vector2i(160, 160)
+0:0/next_alternative_id = 2
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-80, -80, 80, -80, 80, 80, -80, 80)
+0:0/1 = 1
+0:0/1/physics_layer_1/polygon_0/points = PackedVector2Array(-80, -80, 80, -80, 80, 80, -80, 80)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-80, -80, 80, -80, 80, 80, -80, 80)
+0:1/0 = 0
+
+[resource]
+tile_size = Vector2i(160, 160)
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 0
+physics_layer_1/collision_layer = 9
+physics_layer_1/collision_mask = 0
+sources/2 = SubResource("TileSetAtlasSource_s6c3c")

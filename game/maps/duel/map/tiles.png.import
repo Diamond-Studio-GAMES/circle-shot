@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ln5yw64d6ydf"
-path="res://.godot/imported/poison_smoke.png-6e769a9a16f6c10b8fa0499ee9be8676.ctex"
+uid="uid://d3aty2h3c1thc"
+path="res://.godot/imported/tiles.png-e26fb86cb43a4056da90c80c729ad77f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/events/royale/poison_smoke.png"
-dest_files=["res://.godot/imported/poison_smoke.png-6e769a9a16f6c10b8fa0499ee9be8676.ctex"]
+source_file="res://game/maps/duel/map/tiles.png"
+dest_files=["res://.godot/imported/tiles.png-e26fb86cb43a4056da90c80c729ad77f.ctex"]
 
 [params]
 

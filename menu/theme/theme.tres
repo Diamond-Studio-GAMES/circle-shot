@@ -245,6 +245,7 @@ HSlider/styles/grabber_area_highlight = SubResource("StyleBoxTexture_f1gs1")
 HSlider/styles/slider = SubResource("StyleBoxTexture_mnl67")
 HSplitContainer/icons/grabber = ExtResource("15_t7j08")
 Label/colors/font_color = Color(0, 0, 0, 1)
+Label/constants/line_spacing = 0
 LineEdit/colors/font_color = Color(1, 1, 1, 1)
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_8bhdh")
 LineEdit/styles/normal = SubResource("StyleBoxTexture_qmo60")

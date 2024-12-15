@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://d3nsak46hbo2c" path="res://game/events/common/event.tscn" id="1_5uf7s"]
 [ext_resource type="Script" path="res://game/events/royale/royale.gd" id="2_d2r5a"]
-[ext_resource type="PackedScene" uid="uid://b4h27swncrquh" path="res://game/events/royale/poison_smoke.tscn" id="5_mf48w"]
+[ext_resource type="PackedScene" uid="uid://b4h27swncrquh" path="res://game/events/common/poison_smoke/poison_smoke.tscn" id="5_mf48w"]
 [ext_resource type="Script" path="res://game/events/royale/royale_ui.gd" id="6_q5vxn"]
 [ext_resource type="Texture2D" uid="uid://c1rotus1aunmr" path="res://menu/theme/icons/left.png" id="7_oyafe"]
 [ext_resource type="Texture2D" uid="uid://ix82y4qydhql" path="res://menu/theme/icons/right.png" id="8_ub7jk"]
@@ -144,6 +144,7 @@ heal_box_spawn_interval_base = 10.0
 heal_box_spawn_interval_per_player = 1.0
 ammo_box_spawn_interval_base = 15.0
 ammo_box_spawn_interval_per_player = 1.5
+poison_smoke_time = 300.0
 spawn_point_randomness = 0.0
 metadata/_edit_horizontal_guides_ = []
 

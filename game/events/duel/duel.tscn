@@ -1,0 +1,252 @@
+[gd_scene load_steps=12 format=3 uid="uid://u5a0m6y2qb4l"]
+
+[ext_resource type="PackedScene" uid="uid://d3nsak46hbo2c" path="res://game/events/common/event.tscn" id="1_k4cdx"]
+[ext_resource type="Script" path="res://game/events/duel/duel.gd" id="2_e8nkp"]
+[ext_resource type="Script" path="res://game/events/duel/duel_ui.gd" id="4_jj4yx"]
+[ext_resource type="Texture2D" uid="uid://it2o6dxy7bxm" path="res://game/events/duel/round_light.png" id="6_weffi"]
+[ext_resource type="Texture2D" uid="uid://cuddy8wmbcol1" path="res://game/events/duel/round_heavy.png" id="7_leh4n"]
+[ext_resource type="Texture2D" uid="uid://bdvbqf2u7e463" path="res://game/events/duel/round_melee.png" id="8_ompgj"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_1sxaf"]
+viewport_path = NodePath("UI/MinimapViewport")
+
+[sub_resource type="Animation" id="Animation_ty3n7"]
+resource_name = "Defeat"
+length = 2.00001
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.2, 1.4, 1.6, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1.5, 1.5), Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1), Vector2(1.05, 1.05), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:theme_override_colors/font_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ki4so"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:theme_override_colors/font_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_knbec"]
+resource_name = "Victory"
+length = 7.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 4.5, 6.5),
+"transitions": PackedFloat32Array(2, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector2(2, 2), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:theme_override_colors/font_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n8n4b"]
+_data = {
+&"Defeat": SubResource("Animation_ty3n7"),
+&"RESET": SubResource("Animation_ki4so"),
+&"Victory": SubResource("Animation_knbec")
+}
+
+[node name="Event" instance=ExtResource("1_k4cdx")]
+script = ExtResource("2_e8nkp")
+poison_smoke_time = 90.0
+spawn_point_randomness = 0.0
+
+[node name="UI" parent="." index="8"]
+script = ExtResource("4_jj4yx")
+
+[node name="Minimap" parent="UI/Main" index="1"]
+texture = SubResource("ViewportTexture_1sxaf")
+
+[node name="Round0" type="TextureRect" parent="UI/Main" index="6"]
+modulate = Color(0.566406, 0.566406, 0.566406, 1)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -112.0
+offset_top = 16.0
+offset_right = -48.0
+offset_bottom = 80.0
+grow_horizontal = 2
+texture = ExtResource("6_weffi")
+expand_mode = 1
+
+[node name="Round1" type="TextureRect" parent="UI/Main" index="7"]
+modulate = Color(0.566406, 0.566406, 0.566406, 1)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 16.0
+offset_right = 32.0
+offset_bottom = 80.0
+grow_horizontal = 2
+texture = ExtResource("7_leh4n")
+expand_mode = 1
+
+[node name="Round2" type="TextureRect" parent="UI/Main" index="8"]
+modulate = Color(0.566406, 0.566406, 0.566406, 1)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 48.0
+offset_top = 16.0
+offset_right = 112.0
+offset_bottom = 80.0
+grow_horizontal = 2
+texture = ExtResource("8_ompgj")
+expand_mode = 1
+
+[node name="RoundEnd" type="Label" parent="UI/Main" index="9"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -116.0
+offset_top = -147.5
+offset_right = 116.0
+offset_bottom = -108.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"HeaderLarge"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 6
+horizontal_alignment = 1
+
+[node name="GameEnd" type="Label" parent="UI/Main" index="10"]
+self_modulate = Color(1, 0, 0, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -220.0
+offset_right = 400.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(400, 60)
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 40
+text = "ПОРАЖЕНИЕ!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Main/GameEnd" index="0"]
+libraries = {
+&"": SubResource("AnimationLibrary_n8n4b")
+}
+
+[node name="Title" parent="UI/Intro" index="1"]
+text = "ДУЭЛИ"
+
+[node name="Description" parent="UI/Intro/Title" index="0"]
+text = "Убей противника 2 раза!"
+
+[node name="Text" parent="UI/Intro" index="2"]
+text = "Каждый раунд
+новое оружие!"

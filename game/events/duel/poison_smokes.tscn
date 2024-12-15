@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkhofq2eo6jbk"]
+
+[ext_resource type="PackedScene" uid="uid://b4h27swncrquh" path="res://game/events/common/poison_smoke/poison_smoke.tscn" id="1_e8t1b"]
+
+[node name="PoisonSmokes" type="Node2D"]
+
+[node name="PoisonSmoke" parent="." instance=ExtResource("1_e8t1b")]
+position = Vector2(-3200, 0)
+rotation = 1.5708
+
+[node name="PoisonSmoke2" parent="." instance=ExtResource("1_e8t1b")]
+position = Vector2(3200, 0)
+rotation = -1.5708
